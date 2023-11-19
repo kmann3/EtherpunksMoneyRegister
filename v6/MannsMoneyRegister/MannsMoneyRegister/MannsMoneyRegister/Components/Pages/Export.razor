@@ -1,0 +1,18 @@
+﻿@page "/export"
+@inject IJSRuntime JS
+@inject Data.Services.BackupService MMR_BackupService
+<h3>Export</h3>
+
+<MudButton Color="Color.Primary" OnClick="CreateBackup">Backup</MudButton>
+
+@code {
+
+
+    private async Task CreateBackup()
+    {
+        string fileName = await MMR_BackupService.CreateBackupJsonAsync();
+        var fileStream = File.OpenRead(fileName);
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+}

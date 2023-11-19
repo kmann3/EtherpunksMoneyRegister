@@ -1,0 +1,35 @@
+﻿@page "/backup"
+@inject Data.Services.BackupService MMR_BackupService
+@inject IJSRuntime JS
+
+<h3>Backup</h3>
+
+<MudButton OnClick="BackupData">Backup</MudButton>
+
+<script>
+    window.downloadFileFromStream = async (fileName, contentStreamReference) => {
+        const arrayBuffer = await contentStreamReference.arrayBuffer();
+        const blob = new Blob([arrayBuffer]);
+        const url = URL.createObjectURL(blob);
+        const anchorElement = document.createElement('a');
+        anchorElement.href = url;
+        anchorElement.download = fileName ?? '';
+        anchorElement.click();
+        anchorElement.remove();
+        URL.revokeObjectURL(url);
+    }
+</script>
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    private async Task BackupData()
+    {
+        string fileName = await MMR_BackupService.CreateBackupJsonAsync();
+        var fileStream = File.OpenRead(fileName);
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+}

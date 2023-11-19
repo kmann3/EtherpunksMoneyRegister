@@ -1,0 +1,50 @@
+﻿@page "/"
+@using Data.Services
+@inject Data.Services.DashboardService MMR_DashboardService
+@inject NavigationManager NavManager
+
+<PageTitle>Mann's Money Management - Dashboard</PageTitle>
+
+@if (dashboardList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (dashboardList.Count == 0)
+{
+    // Probably a new setup, begin guided setup
+    <p><em>No items found</em></p>
+}
+else
+{
+
+    <MudDataGrid Items="@dashboardList" T="DashboardService.DashboardItem"
+                 Filterable="false" SortMode="@SortMode.None" Groupable="false" Style="width: 700px;"
+                 RowClick="@OnRowClick">
+        <Columns>
+            <PropertyColumn Property="x => x!.Name" />
+            <PropertyColumn Property="x => x!.CurrentBalance" Format="C" />
+            <PropertyColumn Property="x => x!.LastBalanced" Title="Last Balance" />
+            <PropertyColumn Property="x => x!.OutstandingSummary" />
+        </Columns>
+    </MudDataGrid>
+}
+
+@code {
+    private List<DashboardService.DashboardItem>? dashboardList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // TODO: We should check to see if a bill is due or a paycheck was supposed to arrive.
+
+        dashboardList = await MMR_DashboardService.GetDashboardItemsAsync();
+        if (dashboardList != null)
+        {
+            dashboardList = dashboardList.OrderBy(x => x.Name).ToList();
+        }
+    }
+
+    private void OnRowClick(DataGridRowClickEventArgs<DashboardService.DashboardItem> item)
+    {
+        NavManager.NavigateTo($"/account/{item.Item.Id}");
+    }
+}

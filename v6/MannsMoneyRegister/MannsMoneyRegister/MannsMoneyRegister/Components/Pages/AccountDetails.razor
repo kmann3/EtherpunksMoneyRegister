@@ -1,0 +1,11 @@
+﻿@page "/account/{Id:guid}"
+<h3>Account</h3>
+
+Id: @Id
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+
+}
