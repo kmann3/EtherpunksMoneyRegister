@@ -1,0 +1,17 @@
+﻿@page "/introduction"
+@inject NavigationManager NavManager
+
+<PageTitle>Introduction</PageTitle>
+<h3>Introduction</h3>
+
+This guide will step you through setting up everything.<br />
+<hr />
+<MudButton Color="Color.Primary" OnClick="GoToStepOne">1.) Click here to begin setting up accounts &#8594;</MudButton>
+
+@code {
+
+    private void GoToStepOne()
+    {
+        NavManager.NavigateTo($"/setup_accounts");
+    }
+}

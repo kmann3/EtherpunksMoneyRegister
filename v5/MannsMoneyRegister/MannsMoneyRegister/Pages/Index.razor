@@ -1,0 +1,151 @@
+﻿@page "/"
+@using MannsMoneyRegister.Data
+@using MannsMoneyRegister.Data.Entities;
+@using ClosedXML.Excel;
+@inject AccountService MMR_AccountService
+@inject BackupService MMR_BackupService
+@inject TransactionService MMR_TransactionService
+@inject NavigationManager NavManager
+@inject IJSRuntime JS
+
+<PageTitle>Dashboard</PageTitle>
+<MudButton Color="Color.Primary" OnClick="CreateBackup">Backup</MudButton>
+<MudButton Color="Color.Warning" OnClick="ExportToBackupExcel">Export To Mann Excel</MudButton>
+
+<MudFileUpload T="IBrowserFile" FilesChanged="RestoreBackup">
+    <ButtonTemplate>
+        <MudButton HtmlTag="label"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   for="@context">
+            Upload Files
+        </MudButton>
+    </ButtonTemplate>
+</MudFileUpload>
+@if (dashboardList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <MudDataGrid Items="@dashboardList" T="Data.Entities.Account" Filterable="false" SortMode="@SortMode.None" Groupable="false" Style="width: 700px;" RowClick="@OnRowClick">
+        <Columns>
+            <PropertyColumn Property="x => x!.Name" />
+            <PropertyColumn Property="x => x!.CurrentBalance" Format="C" />
+            <PropertyColumn Property="x => x!.LastBalancedUTC" Title="Last Balance" />
+            <PropertyColumn Property="x => x!.OutstandingSummary" />
+        </Columns>
+    </MudDataGrid>
+}
+
+<script>
+    window.downloadFileFromStream = async (fileName, contentStreamReference) => {
+        const arrayBuffer = await contentStreamReference.arrayBuffer();
+        const blob = new Blob([arrayBuffer]);
+        const url = URL.createObjectURL(blob);
+        const anchorElement = document.createElement('a');
+        anchorElement.href = url;
+        anchorElement.download = fileName ?? '';
+        anchorElement.click();
+        anchorElement.remove();
+        URL.revokeObjectURL(url);
+    }
+</script>
+
+@code {
+    private List<Data.Entities.Account>? dashboardList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // TODO: We should check to see if a bill is due or a paycheck was supposed to arrive.
+
+        dashboardList = await MMR_AccountService.GetAccountListAsync();
+        if (dashboardList != null)
+        {
+            dashboardList = dashboardList.OrderBy(x => x.OutstandingBalance).ThenBy(x => x.Name).ToList();
+        }
+    }
+
+    void OnRowClick(DataGridRowClickEventArgs<Data.Entities.Account> args)
+    {
+        NavManager.NavigateTo($"/account/{args.Item.Id}");
+    }
+
+    private async Task CreateBackup()
+    {
+        string fileName = await MMR_BackupService.CreateBackupJsonAsync();
+        var fileStream = File.OpenRead(fileName);
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+
+    private async Task RestoreBackup(IBrowserFile file)
+    {
+        string fileName = "restore.zip";
+        await using FileStream fs = new(fileName, FileMode.Create);
+        await file.OpenReadStream().CopyToAsync(fs);
+        fs.Close();        
+
+        await MMR_BackupService.RestoreBackupJsonAsync(fileName);
+
+        dashboardList = await MMR_AccountService.GetAccountListAsync();
+        if (dashboardList != null)
+        {
+            dashboardList = dashboardList.OrderBy(x => x.OutstandingBalance).ThenBy(x => x.Name).ToList();
+        }
+    }
+
+    private async Task ExportToBackupExcel()
+    {
+        if (dashboardList == null || dashboardList.Count == 0) return;
+        string fileName = $"export.xlsx";
+        if (File.Exists(fileName)) File.Delete(fileName);
+
+        using (var workbook = new XLWorkbook())
+        {
+            foreach (var account in dashboardList)
+            {
+                int rowNumber = 0;
+                var transactions = await MMR_TransactionService.GetAllTransactions(account);
+                var worksheet = workbook.Worksheets.Add($"{account.Name.Replace(' ', '_')}");
+
+                foreach (var transaction in transactions)
+                {
+                    rowNumber++;
+                    // Name
+                    worksheet.Cell($"A{rowNumber}").Value = transaction.Name;
+
+                    // Amount
+                    worksheet.Cell($"B{rowNumber}").Value = transaction.Amount.ToString("#.00");
+
+                    // Pending
+                    worksheet.Cell($"C{rowNumber}").Value = transaction.TransactionPendingLocalTime == null ? "" : transaction.TransactionPendingLocalTime.Value.ToString("MM/dd");
+
+                    // Cleared
+                    worksheet.Cell($"D{rowNumber}").Value = transaction.TransactionClearedLocalTime == null ? "" : transaction.TransactionClearedLocalTime.Value.ToString("MM/dd");
+
+                    // Notes
+                    worksheet.Cell($"E{rowNumber}").Value = transaction.Notes;
+
+                    // Balance
+                    worksheet.Cell($"F{rowNumber}").Value = transaction.Balance.ToString("#.00");
+                }
+
+                worksheet.Column(1).AdjustToContents();
+                worksheet.Column(2).AdjustToContents();
+                worksheet.Column(3).AdjustToContents();
+                worksheet.Column(4).AdjustToContents();
+                worksheet.Column(5).AdjustToContents();
+                worksheet.Column(6).AdjustToContents();
+            }
+            workbook.SaveAs(fileName);
+        }
+
+        var fileStream = File.OpenRead(fileName);
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+
+        if (File.Exists(fileName)) File.Delete(fileName);
+    }
+}

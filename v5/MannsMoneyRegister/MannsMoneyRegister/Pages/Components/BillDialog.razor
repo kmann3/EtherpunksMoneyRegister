@@ -1,0 +1,86 @@
+﻿@inject IDialogService DialogService
+
+<MudDialog>
+    <DialogContent>
+        <MudTextField Label="Name" @bind-Value="BillDetails.Name" tabindex="1" Variant="@VariantType" Adornment="Adornment.Start" />
+        <MudNumericField Label="Amount" @bind-Value="BillDetails.Amount" tabindex="2" Format="N2" Immediate="false" Culture="System.Globalization.CultureInfo.CurrentCulture" T="decimal" Variant="@VariantType" />
+        <MudSelect T="Bill.Regularity" Label="Bill Frequency" @bind-Value="@BillDetails.BillFrequency" tabindex="3" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined">
+            @foreach (Bill.Regularity item in Enum.GetValues(typeof(Bill.Regularity)))
+            {
+                <MudSelectItem Value="@item">@item</MudSelectItem>
+            }
+        </MudSelect>
+        <MudGrid Spacing="3">
+            <MudItem>
+                <MudSelect T="BillGroup" Label="Bill Group" @bind-Value="@BillDetails.BillGroup" tabindex="4" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined">
+                    @foreach (BillGroup item in BillGroupList)
+                    {
+                        <MudSelectItem Value="@item">@item.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem Class="d-flex align-center justify-center">
+                <MudButton OnClick="NewBillGroupDialog" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" />
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        @if (!IsNew)
+        {
+            <MudButton Color="Color.Warning" OnClick="Delete">Delete</MudButton>
+        }
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Save">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public Bill BillDetails { get; set; }
+
+    [Parameter]
+    public List<BillGroup> BillGroupList { get; set; }
+
+    [Parameter]
+    public bool IsNew { get; set; }
+
+    private Variant VariantType = Variant.Outlined;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (BillGroupList.Count == 1)
+        {
+            BillDetails.BillGroup = BillGroupList.First();
+        }
+    }
+
+    private void Save()
+    {
+        MudDialog.Close(DialogResult.Ok(BillDetails));
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void Delete()
+    {
+        BillDetails.DeletedOnUTC = DateTime.UtcNow;
+        MudDialog.Close(DialogResult.Ok(BillDetails));
+    }
+
+    private async Task NewBillGroupDialog()
+    {
+        var result = await DialogUtil.ShowCategoryDialog(DialogService, true, new Category());
+
+        if (!result.Canceled)
+        {
+            BillDetails.BillGroup = ((BillGroup)result.Data);
+            BillGroupList.Add((BillGroup)result.Data);
+        }
+    }
+}

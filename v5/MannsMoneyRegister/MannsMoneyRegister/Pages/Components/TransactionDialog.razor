@@ -1,0 +1,189 @@
+﻿@inject IDialogService DialogService
+
+<MudDialog DefaultFocus="DefaultFocus.FirstChild">
+    <DialogContent>
+        <MudSelect @bind-Value="@TransactionDetails.TransactionType">
+            @foreach (Transaction.EntryType entryType in Enum.GetValues(typeof(Transaction.EntryType)))
+            {
+                <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
+            }
+        </MudSelect>
+        <MudSelect T="Account" Label="Account" @bind-Value="@TransactionDetails.Account" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined">
+            @foreach (var account in AccountList)
+            {
+                <MudSelectItem Value="@account">@account.Name</MudSelectItem>
+            }
+        </MudSelect>
+        <MudTextField Label="Name" @bind-Value="TransactionDetails.Name" tabindex="1" Variant="Variant.Outlined" Adornment="Adornment.Start" />
+        <MudNumericField Label="Amount" @bind-Value="TransactionDetails.Amount" tabindex="2" Format="N2" Immediate="false" Culture="System.Globalization.CultureInfo.CurrentCulture" T="decimal" Variant="Variant.Outlined" />
+        
+        <div class="d-flex">
+            <MudSelect T="Category" Label="Categories" @bind-SelectedValues="selectedCategories" tabindex="3"
+                AdornmentIcon="@Icons.Material.Filled.Search" AnchorOrigin="Origin.BottomCenter" MultiSelection="true" Variant="Variant.Outlined"
+                MultiSelectionTextFunc="@(new Func<List<string>, string>(GetSelectedItemsText))">
+                @foreach (var item in CategoryList)
+            {
+                <MudSelectItem T="Category" Value="@item">@item.Name</MudSelectItem>
+            }
+        </MudSelect>
+
+            <MudButton OnClick="NewCategoryDialog" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" />
+        </div>
+        
+        <MudDatePicker @ref="_entryDatePicker" Label="Entry Date" Editable="true" @bind-Date="TransactionDetails.TransactionPendingLocalTime" tabindex="4" PickerVariant="PickerVariant.Dialog">
+            <PickerActions>
+                <MudButton Class="mr-auto align-self-start" OnClick="@(() => _entryDatePicker.Clear())">Clear</MudButton>
+                <MudButton OnClick="@(() => _entryDatePicker.GoToDate(DateTime.UtcNow, true))">Today</MudButton>
+                <MudButton OnClick="@(() => _entryDatePicker.Close(false))">Cancel</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@(() => _entryDatePicker.Close())">Ok</MudButton>
+            </PickerActions>
+        </MudDatePicker>
+        <MudDatePicker @ref="_ClearedDatePicker" Label="Cleared Date" Editable="true" @bind-Date="TransactionDetails.TransactionClearedLocalTime" tabindex="5" PickerVariant="PickerVariant.Dialog">
+            <PickerActions>
+                <MudButton Class="mr-auto align-self-start" OnClick="@(() => _ClearedDatePicker.Clear())">Clear</MudButton>
+                <MudButton OnClick="@(() => _ClearedDatePicker.GoToDate(DateTime.UtcNow, true))">Today</MudButton>
+                <MudButton OnClick="@(() => _ClearedDatePicker.Close(false))">Cancel</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@(() => _ClearedDatePicker.Close())">Ok</MudButton>
+            </PickerActions>
+        </MudDatePicker>
+        <div class="d-flex">
+            <MudFileUpload T="IReadOnlyList<IBrowserFile>" FilesChanged="UploadFiles" tabindex="6">
+                <ButtonTemplate>
+                    <MudButton HtmlTag="label"
+                                Variant="Variant.Filled"
+                                Color="Color.Primary"
+                                StartIcon="@Icons.Material.Filled.PhotoCamera"
+                                for="@context">
+                        Upload Files
+                    </MudButton>
+                </ButtonTemplate>
+            </MudFileUpload>
+            @if (files != null)
+            {
+                <MudList>
+                    @foreach (var file in files)
+                    {
+                        <MudListItem Icon="@Icons.Material.Filled.AttachFile">
+                            @file.Name <code>@file.Size bytes</code>
+                        </MudListItem>
+                    }
+                </MudList>
+            }
+        </div>
+    </DialogContent>
+    <DialogActions>
+        @if (!IsNew)
+        {
+            <MudButton Color="Color.Warning" OnClick="Delete">Delete</MudButton>
+        }
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Save">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public Transaction TransactionDetails { get; set; }
+
+    [Parameter]
+    public List<Category> CategoryList { get; set; }
+
+    [Parameter]
+    public List<Account> AccountList { get; set; }
+
+    [Parameter]
+    public bool IsNew { get; set; }
+
+    [Parameter]
+    public Transaction.EntryType TransactionType { get; set; }
+
+    private IList<IBrowserFile> files = new List<IBrowserFile>();
+
+    /// <summary>
+    /// Selected Tags
+    /// </summary>
+    private IEnumerable<Category> selectedCategories = new HashSet<Category>();
+
+    string selectedAccountName { get; set; }
+
+    MudDatePicker _entryDatePicker;
+    MudDatePicker _ClearedDatePicker;
+
+    protected override async Task OnInitializedAsync()
+    {
+        selectedAccountName = (AccountList.Where(x => x.Id == TransactionDetails.AccountId)).Single().Name;
+        ResetSelectedCategories();
+    }
+
+    private void UploadFiles(IReadOnlyList<IBrowserFile> files)
+    {
+        foreach (var file in files)
+        {
+            this.files.Add(file);
+        }
+        //TODO upload the files to the server
+    }
+
+    private string GetSelectedItemsText(List<string> selectedValues)
+    {
+        return $"{selectedValues.Count} tag{(selectedValues.Count != 1 ? "s" : "")}";
+    }
+
+    private void ResetSelectedCategories()
+    {
+        HashSet<Category> t = new HashSet<Category>();
+        if (TransactionDetails.Categories == null) return;
+        foreach (var item in TransactionDetails.Categories)
+        {
+            t.Add(item);
+        }
+
+        selectedCategories = t;
+    }
+
+    private async Task NewCategoryDialog()
+    {
+        var result = await DialogUtil.ShowCategoryDialog(DialogService, true, new Category());
+
+        if (!result.Canceled)
+        {
+            var catData = result.Data as Category;
+            CategoryList.Add(catData!);
+            TransactionDetails.Categories.Add(catData!);
+        }
+    }
+
+    private void Delete()
+    {
+        TransactionDetails.DeletedOnUTC = DateTime.UtcNow;
+        MudDialog.Close(DialogResult.Ok(TransactionDetails));
+    }
+
+    private void Save()
+    {
+        // Adjust tags in list from selected Tags
+        TransactionDetails.Categories = new List<Category>();
+        foreach(var cat in selectedCategories)
+        {
+            TransactionDetails.Categories.Add(cat);
+        }
+
+        switch (TransactionDetails.TransactionType)
+        {
+            case Transaction.EntryType.Credit:
+                TransactionDetails.Amount = (Math.Abs(TransactionDetails.Amount));
+                break;
+            case Transaction.EntryType.Debit:
+                TransactionDetails.Amount = -(Math.Abs(TransactionDetails.Amount));
+                break;
+        }
+
+        MudDialog.Close(DialogResult.Ok(TransactionDetails));
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+}

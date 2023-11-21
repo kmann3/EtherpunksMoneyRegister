@@ -104,8 +104,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Amount = -10.81M,
             TransactionGroupId = TransactionGroup_AllBills.Id,
             NextDueDate = new DateTime(year, month, 15),
-            Frequency = MR_Enum.Regularity.Monthly,
-            TransactionType = MR_Enum.TransactionType.Debit,
+            Frequency = MMR_Enum.Regularity.Monthly,
+            TransactionType = MMR_Enum.TransactionType.Debit,
         };
 
         builder.Entity<RecurringTransaction>().HasData(recTran_AdobePhotoshop);
@@ -116,8 +116,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Amount = -16.79M,
             TransactionGroupId = TransactionGroup_AllBills.Id,
             NextDueDate = new DateTime(year, month, 18),
-            Frequency = MR_Enum.Regularity.Monthly,
-            TransactionType = MR_Enum.TransactionType.Debit
+            Frequency = MMR_Enum.Regularity.Monthly,
+            TransactionType = MMR_Enum.TransactionType.Debit
         };
 
         builder.Entity<RecurringTransaction>().HasData(recTran_Allstate);
@@ -128,8 +128,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Amount = 150M,
             TransactionGroupId = null,
             NextDueDate = new DateTime(year, month, 18),
-            Frequency = MR_Enum.Regularity.Monthly,
-            TransactionType = MR_Enum.TransactionType.Credit
+            Frequency = MMR_Enum.Regularity.Monthly,
+            TransactionType = MMR_Enum.TransactionType.Credit
         });
 
         builder.Entity<RecurringTransaction>().HasData(new RecurringTransaction()
@@ -138,8 +138,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Amount = 1343.72M,
             TransactionGroupId = null,
             NextDueDate = new DateTime(year, month, 22),
-            Frequency = MR_Enum.Regularity.Monthly,
-            TransactionType = MR_Enum.TransactionType.Credit
+            Frequency = MMR_Enum.Regularity.Monthly,
+            TransactionType = MMR_Enum.TransactionType.Credit
         });
 
 
@@ -159,7 +159,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Name = "payday",
             TransactionPendingUTC = new DateTime(year, month - 1, 25),
             TransactionClearedUTC = new DateTime(year, month - 1, 25),
-            TransactionType = MR_Enum.TransactionType.Credit,
+            TransactionType = MMR_Enum.TransactionType.Credit,
         };
 
         builder.Entity<Transaction>().HasData(transIncomeSSDI);
@@ -176,7 +176,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             CreatedById = adminUser.Id,
             Name = "Adobe Photoshop",
             RecurringTransactionId = recTran_AdobePhotoshop.Id,
-            TransactionType = MR_Enum.TransactionType.Debit,
+            TransactionType = MMR_Enum.TransactionType.Debit,
         };
 
         builder.Entity<Transaction>().HasData(trans2);

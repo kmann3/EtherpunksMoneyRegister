@@ -1,0 +1,49 @@
+﻿@inject IDialogService DialogService
+
+<MudDialog>
+    <DialogContent>
+        <MudTextField Label="Name" @bind-Value="AccountDetails.Name" tabindex="1" Variant="Variant.Outlined" Adornment="Adornment.Start" />
+        <MudNumericField Label="Amount" @bind-Value="AccountDetails.StartingBalance" tabindex="2" Format="N2" Immediate="false" Culture="System.Globalization.CultureInfo.CurrentCulture" T="decimal" Variant="Variant.Outlined" />
+        <MudTextField Label="Account Number" @bind-Value="AccountDetails.AccountNumber" tabindex="3" Variant="Variant.Outlined" Adornment="Adornment.Start" />
+        <MudNumericField Label="Interest Rate" @bind-Value="AccountDetails.InterestRate" tabindex="4" Immediate="false" Culture="System.Globalization.CultureInfo.CurrentCulture" T="decimal" Variant="Variant.Outlined" />
+        <MudTextField T="string" Label="Notes" @bind-Value="AccountDetails.Notes" tabindex="5" Variant="Variant.Outlined" Lines="3" />
+        <MudTextField Label="Login URL" @bind-Value="AccountDetails.LoginUrl" tabindex="6" Variant="Variant.Outlined" Adornment="Adornment.Start" />
+    </DialogContent>
+    <DialogActions>
+        @if (!IsNew)
+        {
+            <MudButton Color="Color.Warning" OnClick="Delete">Delete</MudButton>
+        }
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Save">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public Account AccountDetails { get; set; }
+
+    [Parameter]
+    public bool IsNew { get; set; }
+
+    private void Save()
+    {
+        AccountDetails.CurrentBalance = AccountDetails.StartingBalance;
+
+        MudDialog.Close(DialogResult.Ok(AccountDetails));
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void Delete()
+    {
+        AccountDetails.DeletedOnUTC = DateTime.UtcNow;
+        MudDialog.Close(DialogResult.Ok(AccountDetails));
+    }
+}

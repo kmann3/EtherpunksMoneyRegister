@@ -1,0 +1,82 @@
+﻿@page "/setup_accounts"
+@inject NavigationManager NavManager
+@inject AccountService MMR_AccountService
+@inject IDialogService DialogService
+@using System.Collections.ObjectModel
+
+<PageTitle>Account Setup</PageTitle>
+
+<h3>Account Setup</h3>
+
+<MudButton Color="Color.Primary" OnClick="AddAccount">Add an account</MudButton><br />
+<hr />
+<em>If you make a mistake here, you can always go into settings and adjust as needed.</em><br />
+@if (accountList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <MudDataGrid Items="@accountList" T="Account"
+        Filterable="false" SortMode="@SortMode.None" Groupable="false" Style="width: 700px;"
+        RowClick="@OnRowClick">
+        <Columns>
+            <PropertyColumn Property="x => x!.Name" />
+            <PropertyColumn Property="x => x!.StartingBalance" Format="C" />
+            <PropertyColumn Property="x => x!.Notes" Title="Notes" />
+        </Columns>
+    </MudDataGrid>
+}
+
+<MudButton Color="Color.Primary" OnClick="GoToStepTwo">2.) Click here to setup bills &#8594;</MudButton>
+<br />
+
+
+@code {
+    private ObservableCollection<Account> accountList = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        List<Account> list = await MMR_AccountService.GetAccountListAsync();
+
+        if (list != null)
+        {
+            list = list.OrderBy(x => x.Name).ToList();
+            accountList = new ObservableCollection<Account>(list);
+        }
+    }
+
+    private async Task AddAccount()
+    {
+        var result = await DialogUtil.ShowAccountDialog(DialogService, true, new Account());
+
+        if (!result.Canceled)
+        {
+            await MMR_AccountService.CreateNewAccountAsync((Account)result.Data);
+            accountList.Add((Account)result.Data);
+            accountList = new ObservableCollection<Account>(accountList.OrderBy(x => x.Name));
+        }
+    }
+
+    async void OnRowClick(DataGridRowClickEventArgs<Account> args)
+    {
+        var result = await DialogUtil.ShowAccountDialog(DialogService, false, args.Item);
+
+        if(!result.Canceled)
+        {
+            await MMR_AccountService.UpdateAccountAsync((Account)result.Data, true);
+            accountList.Remove(args.Item);
+
+            if(((Account)result.Data).DeletedOnUTC == null)
+            {
+                accountList.Add((Account)result.Data);
+            }
+        }
+    }
+
+    private void GoToStepTwo()
+    {
+        NavManager.NavigateTo($"/setup_bills");
+    }
+}

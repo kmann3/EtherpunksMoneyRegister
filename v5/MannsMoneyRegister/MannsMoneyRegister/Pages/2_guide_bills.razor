@@ -1,0 +1,95 @@
+﻿@page "/setup_bills"
+@inject NavigationManager NavManager
+@inject BillService MMR_BillService
+@inject IDialogService DialogService
+
+<PageTitle>Bill Setup</PageTitle>
+<h3>Account Setup</h3>
+
+<MudButton Color="Color.Primary" OnClick="AddBill">Add a bill</MudButton>
+<br />
+<hr />
+<em>If you make a mistake here, you can always go into settings and adjust as needed.</em>
+<br />
+@if (billList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <MudDataGrid Items="@billList" T="Bill"
+                 Filterable="false" SortMode="@SortMode.None" Groupable="false" Style="width: 700px;"
+                 RowClick="@OnRowClick">
+        <Columns>
+            <PropertyColumn Property="x => x.Name" />
+            <PropertyColumn Property="x => x.Amount" Format="C" />
+            <PropertyColumn Property="x => x.Notes" Title="Notes" />
+            <PropertyColumn Property="x => x.BillFrequency" Title="Frequency" />
+            <TemplateColumn Title="Group">
+                <CellTemplate>
+                    @if(context.Item.BillGroup == null)
+                    {
+                        <text>&nbsp;</text>
+                    } else
+                    {
+                        @context.Item.BillGroup.Name
+                    }
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+    </MudDataGrid>
+}
+
+<MudButton Color="Color.Primary" OnClick="Home">3. Done! Back to Dashboard!</MudButton>
+
+
+@code {
+    private List<Bill> billList;
+    private List<BillGroup> billGroupList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        billList = await MMR_BillService.GetBillListAsync();
+        billGroupList = await MMR_BillService.GetBillGroupListAsync();
+
+        if(billList != null)
+        {
+            billList = billList.OrderBy(x => x.Name).ToList();
+        }
+
+        if(billGroupList != null)
+        {
+            billGroupList = billGroupList.OrderBy(x => x.Name).ToList();
+            // TODO: Should I use Sort? Does it really matter?
+        }
+    }
+
+    private async Task AddBill()
+    {
+        var result = await DialogUtil.ShowBillDialog(DialogService, true, new Bill(), billGroupList);
+
+        if (!result.Canceled)
+        {
+            await MMR_BillService.CreateNewBillAsync((Bill)result.Data);
+            billList.Add((Bill)result.Data);
+        }
+    }
+
+    async void OnRowClick(DataGridRowClickEventArgs<Bill> args)
+    {
+        // Open up the account for editing. They probably made a mistake and want to correct it.
+        var result = await DialogUtil.ShowBillDialog(DialogService, false, args.Item, billGroupList);
+
+        if(!result.Canceled)
+        {
+            await MMR_BillService.UpdateBillAsync((Bill)result.Data);
+            billList.Remove(args.Item);
+            billList.Add((Bill)result.Data);
+        }
+    }
+
+    private void Home()
+    {
+        NavManager.NavigateTo($"/");
+    }
+}

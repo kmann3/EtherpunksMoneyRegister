@@ -1,0 +1,127 @@
+﻿@inject IDialogService DialogService
+
+<MudDialog>
+    <DialogContent>
+        <MudContainer Style="max-height: 300px; overflow-y: scroll">
+            <MudTreeView Items="@TreeItems">
+                <ItemTemplate>
+                    <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems">
+                        <Content>
+                            <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild" />
+                            <MudCheckBox T="bool?" Checked="@(context.HasPartialChildSelection() ? null : context.IsChecked)" CheckedChanged="@((e) => CheckedChanged(context))"></MudCheckBox>
+                            <MudText>@context.Text</MudText>
+                        </Content>
+                    </MudTreeViewItem>
+                </ItemTemplate>
+            </MudTreeView>
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Save">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public List<BillGroup> BillGroupList { get; set; }
+
+    [Parameter]
+    public List<Bill> BillUngroupedList { get; set; }
+
+    private HashSet<TreeItemData> TreeItems { get; set; } = new HashSet<TreeItemData>();
+
+    protected override void OnInitialized()
+    {
+        foreach(var group in BillGroupList)
+        {
+            TreeItemData rootItem = new TreeItemData(group.Name);
+            rootItem.Tag = group;
+
+            foreach(var bill in group.Bills.OrderBy(x => x.Name))
+            {
+                string displayText = bill.Name;
+                if(bill.NextDueDate != null)
+                {
+                    displayText += $" (Due: {bill.NextDueDate.Value.ToShortDateString()})";
+                }
+                TreeItemData childItem = new TreeItemData(displayText);
+                childItem.Tag = bill;
+
+                rootItem.AddChild(childItem);
+            }
+
+            TreeItems.Add(rootItem);
+        }
+
+        TreeItemData ungroupedRoot = new TreeItemData("Ungrouped Bills");
+        ungroupedRoot.Tag = null;
+
+        foreach(var bill in BillUngroupedList.OrderBy(x => x.Name))
+        {
+            string displayText = bill.Name;
+            if (bill.NextDueDate != null)
+            {
+                displayText += $" (Due: {bill.NextDueDate.Value.ToShortDateString()})";
+            }
+            TreeItemData ungroupedChild = new TreeItemData(displayText);
+            ungroupedChild.Tag = bill;
+
+            ungroupedRoot.AddChild(ungroupedChild);
+        }
+
+        TreeItems.Add(ungroupedRoot);
+    }
+
+    /// <summary>
+    /// Literally copied from MudBlazor
+    /// https://www.mudblazor.com/components/treeview#custom-checkbox-behavior
+    /// </summary>
+    /// <param name="item"></param>
+    protected void CheckedChanged(TreeItemData item)
+    {
+        item.IsChecked = !item.IsChecked;
+        // checked status on any child items should mirror this parent item
+        if (item.HasChild)
+        {
+            foreach (TreeItemData child in item.TreeItems)
+            {
+                child.IsChecked = item.IsChecked;
+            }
+        }
+        // if there's a parent and all children are checked/unchecked, parent should match
+        if (item.Parent != null)
+        {
+            item.Parent.IsChecked = !item.Parent.TreeItems.Any(i => !i.IsChecked);
+        }
+    }
+
+    private void Save()
+    {
+        List<Bill> returnList = new();
+        foreach(var root in TreeItems)
+        {
+            if (root.TreeItems.Count == 0) continue;
+            foreach (var child in root.TreeItems)
+            {
+                if (!child.IsChecked || child.Tag == null) continue;
+
+                if (child.Tag is Bill bill)
+                {
+                    returnList.Add(bill);
+                    Console.WriteLine($"Bill selected: {bill.Name}");
+                }
+            }
+        }
+
+        MudDialog.Close(DialogResult.Ok(returnList));
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+}
