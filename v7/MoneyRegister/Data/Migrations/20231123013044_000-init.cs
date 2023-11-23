@@ -428,7 +428,7 @@ namespace MoneyRegister.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Accounts",
                 columns: new[] { "Id", "AccountNumber", "CreatedById", "CreatedOnUTC", "CurrentBalance", "DeletedById", "DeletedOnUTC", "InterestRate", "LastBalancedUTC", "LoginUrl", "Name", "Notes", "OutstandingBalance", "OutstandingItemCount", "StartingBalance" },
-                values: new object[] { new Guid("0af5ab9b-c1fb-4255-bc49-9b7c23014a78"), "", "00000000-0000-0000-0000-000000000000", new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9362), 1987.19m, null, null, 0.0m, new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9369), "", "Cash", "", -10.81m, 1, 200.0m });
+                values: new object[] { new Guid("0af5ab9b-c1fb-4255-bc49-9b7c23014a78"), "", "00000000-0000-0000-0000-000000000000", new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9362), 1987.19m, null, null, 0.0m, new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9369), "", "Neches FCU", "", -10.81m, 1, 200.0m });
 
             migrationBuilder.InsertData(
                 table: "Categories",
@@ -436,6 +436,7 @@ namespace MoneyRegister.Data.Migrations
                 values: new object[,]
                 {
                     { new Guid("18cbb4e6-c061-4c99-ba1c-48aa58796a3c"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9380), null, null, "gas" },
+                    { new Guid("18dbbacf-91e6-4788-bcb8-29798c74a5b7"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 11, 22, 16, 11, 10, 297, DateTimeKind.Unspecified), null, null, "gaming" },
                     { new Guid("27e5f753-ad87-4e3b-891d-b8b8b79e8045"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9385), null, null, "medications" },
                     { new Guid("34940e40-e15f-4c60-82ec-e2f17aac7d04"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9381), null, null, "groceries" },
                     { new Guid("5aa2d257-47c6-4099-9b9b-ddb92e697ef0"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9378), null, null, "fast-food" },

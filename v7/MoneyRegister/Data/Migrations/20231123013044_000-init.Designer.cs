@@ -11,7 +11,7 @@ using MoneyRegister.Data;
 namespace MoneyRegister.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231119102052_000-init")]
+    [Migration("20231123013044_000-init")]
     partial class _000init
     {
         /// <inheritdoc />
@@ -256,7 +256,7 @@ namespace MoneyRegister.Data.Migrations
                             InterestRate = 0.0m,
                             LastBalancedUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9369),
                             LoginUrl = "",
-                            Name = "Cash",
+                            Name = "Neches FCU",
                             Notes = "",
                             OutstandingBalance = -10.81m,
                             OutstandingItemCount = 1,
@@ -434,6 +434,13 @@ namespace MoneyRegister.Data.Migrations
                             CreatedById = "00000000-0000-0000-0000-000000000000",
                             CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9386),
                             Name = "streaming"
+                        },
+                        new
+                        {
+                            Id = new Guid("18dbbacf-91e6-4788-bcb8-29798c74a5b7"),
+                            CreatedById = "00000000-0000-0000-0000-000000000000",
+                            CreatedOnUTC = new DateTime(2023, 11, 22, 16, 11, 10, 297, DateTimeKind.Unspecified),
+                            Name = "gaming"
                         },
                         new
                         {

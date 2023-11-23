@@ -5,6 +5,18 @@
 <h3>Backup</h3>
 
 <MudButton OnClick="BackupData">Backup</MudButton>
+<br />
+<br />
+<MudFileUpload T="IBrowserFile" FilesChanged="RestoreBackup">
+    <ButtonTemplate>
+        <MudButton HtmlTag="label"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   for="@context">
+            Upload Files
+        </MudButton>
+    </ButtonTemplate>
+</MudFileUpload>
 
 <script>
     window.downloadFileFromStream = async (fileName, contentStreamReference) => {
@@ -31,5 +43,15 @@
         var fileStream = File.OpenRead(fileName);
         using var streamRef = new DotNetStreamReference(stream: fileStream);
         await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+
+    private async Task RestoreBackup(IBrowserFile file)
+    {
+        string fileName = "restore.zip";
+        await using FileStream fs = new(fileName, FileMode.Create);
+        await file.OpenReadStream().CopyToAsync(fs);
+        fs.Close();
+
+        await MMR_BackupService.RestoreBackupJsonAsync(fileName);
     }
 }
