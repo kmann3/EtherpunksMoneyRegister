@@ -51,7 +51,7 @@
                     <CellTemplate>
                         @if (context.Item.Link_Category_Transactions.Count() > 0)
                         {
-                            @foreach (var cat in context.Item.Link_Category_Transactions.Order(x => x.Category.Name))
+                            @foreach (var cat in context.Item.Link_Category_Transactions.OrderBy(x => x.Category.Name))
                             {
                                 <MudLink Href="@GetCategoryLink(cat.CategoryId)">@cat.Category.Name</MudLink>
 
