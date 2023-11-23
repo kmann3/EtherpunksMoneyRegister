@@ -22,8 +22,8 @@ public class ApplicationUser : IdentityUser, IEntityTypeConfiguration<Applicatio
     public string LocalTimeZone { get; set; } = "Central Standard Time";
     public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
-    [JsonIgnore]
-    public List<Transaction> Transactions { get; set; }
+    //[JsonIgnore]
+    //public List<Transaction> Transactions { get; set; } = new();
     // CURRENCY?
 
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)

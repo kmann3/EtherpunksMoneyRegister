@@ -68,9 +68,10 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
 
     public string Notes { get; set; } = string.Empty;
 
-    public List<Category> Categories { get; set; }
+    public List<Link_Category_Transaction> Link_Category_Transactions { get; } = new List<Link_Category_Transaction>();
+    //public List<Category> Categories { get; set; } = new();
 
-    public List<TransactionFile> Files { get; set; }
+    public List<TransactionFile> Files { get; set; } = new();
 
     [JsonIgnore]
     public RecurringTransaction? RecurringTransaction { get; set; }

@@ -1,6 +1,6 @@
 ﻿@page "/"
 @using Data.Services
-@inject Data.Services.DashboardService MMR_DashboardService
+@inject Data.Services.DashboardService MR_DashboardService
 @inject NavigationManager NavManager
 
 <PageTitle>Mann's Money Management - Dashboard</PageTitle>
@@ -36,7 +36,7 @@ else
     {
         // TODO: We should check to see if a bill is due or a paycheck was supposed to arrive.
 
-        dashboardList = await MMR_DashboardService.GetDashboardItemsAsync();
+        dashboardList = await MR_DashboardService.GetDashboardItemsAsync();
         if (dashboardList != null)
         {
             dashboardList = dashboardList.OrderBy(x => x.Name).ToList();

@@ -1,5 +1,5 @@
 ﻿@page "/backup"
-@inject Data.Services.BackupService MMR_BackupService
+@inject Data.Services.BackupService MR_BackupService
 @inject IJSRuntime JS
 
 <h3>Backup</h3>
@@ -39,7 +39,7 @@
 
     private async Task BackupData()
     {
-        string fileName = await MMR_BackupService.CreateBackupJsonAsync();
+        string fileName = await MR_BackupService.CreateBackupJsonAsync();
         var fileStream = File.OpenRead(fileName);
         using var streamRef = new DotNetStreamReference(stream: fileStream);
         await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
@@ -52,6 +52,6 @@
         await file.OpenReadStream().CopyToAsync(fs);
         fs.Close();
 
-        await MMR_BackupService.RestoreBackupJsonAsync(fileName);
+        await MR_BackupService.RestoreBackupJsonAsync(fileName);
     }
 }

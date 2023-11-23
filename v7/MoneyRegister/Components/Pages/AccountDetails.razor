@@ -1,15 +1,228 @@
 ﻿@page "/account/{Id:guid}"
-<h3>Account</h3>
+@using Data.Services
+@using Data.Entities
+@inject Data.Services.AccountService MR_AccountService
 
-Id: @Id
+@if(accountDetails == null)
+{
+    <p><em>Loading...</em></p>
+} else
+{
+    <PageTitle>@accountDetails.Name - Transactions</PageTitle>
+    <h1>@accountDetails.Name</h1>
+    <MudItem xs="12" md="4">
+        <MudSelect T="string" Label="Accounts" @bind-Value="@selectedAccountName" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+            @foreach (var item in accounts)
+            {
+                <MudSelectItem Value="@(item.Name)" Tag="@(item)" />
+            }
+        </MudSelect>
+    </MudItem>
+
+
+    <p>
+        <em>
+            <h5>Balance: @accountDetails.CurrentBalance</h5><br />
+            Outstanding Balance: @accountDetails.OutstandingBalance<br />
+            Outstanding Item Count: @accountDetails.OutstandingItemCount<br />
+            Outstanding Summary: @accountDetails.OutstandingSummary<br />
+            Notes: @accountDetails.Notes <br />
+            Starting Balance: @accountDetails.StartingBalance <br />
+        </em>
+        <MudDataGrid Items="@accountDetails.Transactions" T="Transaction"
+                     Filterable="true" Groupable="false" Hover="true" Striped="true" Virtualize="true" Bordered="true" Dense="true"
+                     FilterMode="@DataGridFilterMode.ColumnFilterRow"
+                     SortMode="@SortMode.None"
+                     RowClick="@OnRowClick" RowStyleFunc="@_rowStyleFunc">
+            <!-- Button here to add a transaction via dialog -->
+            <ToolBarContent>
+                <MudButton Color="Color.Primary" OnClick="AddNewDebit">Add Debit</MudButton>
+                <MudButton Color="Color.Primary" OnClick="AddNewCredit">Add Credit</MudButton>
+                <MudButton Color="Color.Primary" OnClick="ReserveBills">Reserve Bills</MudButton>
+                <MudButton Color="Color.Error" OnClick="RecalculateBalances">Recalculate Balances</MudButton>
+            </ToolBarContent>
+            <Columns>
+                <PropertyColumn Property="x => x.Name" />
+                <PropertyColumn Property="x => x.Amount" />
+                <PropertyColumn Property="x => x.TransactionPendingLocalTime" Format="d" Title="Pending" />
+                <PropertyColumn Property="x => x.TransactionClearedLocalTime" Format="d" Title="Cleared" />
+                <PropertyColumn Property="x => x.Notes" Title="Notes" />
+                <TemplateColumn Title="Categories">
+                    <CellTemplate>
+                        @if (context.Item.Link_Category_Transactions.Count() > 0)
+                        {
+                            @foreach (var cat in context.Item.Link_Category_Transactions.Order(x => x.Category.Name))
+                            {
+                                <MudLink Href="@GetCategoryLink(cat.CategoryId)">@cat.Category.Name</MudLink>
+
+                                if (cat.CategoryId != context.Item.Link_Category_Transactions.OrderBy(x => x.Category.Name).Last().CategoryId)
+                                {
+                                    <text>, &nbsp;</text>
+                                }
+                            }
+                        }
+                    </CellTemplate>
+                </TemplateColumn>
+                <PropertyColumn Property="x => x.Balance" Format="C" />
+                <TemplateColumn CellClass="d-flex justify-end" Filterable="false">
+                    <CellTemplate>
+                        <MudStack Row>
+                            @if (context.Item.TransactionPendingUTC == null && context.Item.TransactionClearedUTC == null)
+                            {
+                                <MudButton Size="@Size.Small" Variant="@Variant.Outlined" Color="@Color.Primary" OnClick="@(() => this.SetTransactionToPending(context.Item))">Pending</MudButton>
+                            }
+                            @if (context.Item.TransactionClearedUTC == null)
+                            {
+                                <MudButton Size="@Size.Small" Variant="@Variant.Outlined" Color="@Color.Primary" OnClick="@(() => this.SetTransactionToCleared(context.Item))">Cleared</MudButton>
+                            }
+                            <MudButton Size="@Size.Small" Variant="@Variant.Outlined" Color="@Color.Error" OnClick="@(() => this.DeleteTransaction(context.Item))">Delete</MudButton>
+                        </MudStack>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+        </MudDataGrid>
+    </p>
+}
 
 @code {
     [Parameter]
     public Guid Id { get; set; }
 
+    private List<Account> accounts { get; set; }
+
+    private Account accountDetails;
+
+    private string selectedAccountName { get; set; }
+
+    private Func<Transaction?, int, string> _rowStyleFunc => (x, i) =>
+       {
+           string reservedTransactionColor = "ff9933";
+           string waitingClearanceTransactionColor = "ffff33";
+
+           if (x.TransactionPendingUTC == null && x.TransactionClearedUTC == null)
+           {
+               return $"background-color:#{reservedTransactionColor}";
+           }
+           else if (x.TransactionClearedUTC == null)
+           {
+               return $"background-color:#{waitingClearanceTransactionColor}";
+           }
+
+           return "";
+       };
+
     protected override async Task OnInitializedAsync()
     {
-        
+        accountDetails = await MR_AccountService.GetAccountDetailsAsync(Id);
+        accounts = new List<Account>();
+        accounts.Add(accountDetails);
     }
 
+    private async Task OnRowClick(DataGridRowClickEventArgs<Transaction> args)
+    {
+        // decimal oldAmount = args.Item.Amount;
+        // DateTime? oldTransactionClearedUTC = args.Item.TransactionClearedUTC;
+        // var result = await DialogUtil.ShowTransactionDialog(DialogService, false, args.Item, accounts, categories);
+
+        // if (!result.Canceled)
+        // {
+        //     Transaction modifiedTransaction = result.Data as Transaction;
+        //     if (modifiedTransaction.DeletedOnUTC.HasValue)
+        //     {
+        //         await MMR_TransactionService.DeleteTransactionAsync(accountDetails, modifiedTransaction);
+        //         //args.RowIndex
+        //         accountDetails.Transactions.Remove(args.Item);
+        //     }
+        //     else
+        //     {
+        //         await MMR_TransactionService.UpdateTransactionAsync(accountDetails, modifiedTransaction);
+        //     }
+        // }
+    }
+
+    private string GetCategoryLink(Guid id)
+    {
+        return $"/cat/{id.ToString()}";
+    }
+
+    private async Task ReserveBills()
+    {
+        // var result = await DialogUtil.ShowBillGroupSelectDialog(DialogService, allBillGroupsList, allUngroupedBillsList);
+
+        // if (!result.Canceled)
+        // {
+        //     List<Bill> selectedBillList = result.Data as List<Bill>;
+
+        //     await MMR_BillService.ReserveBillsAsync(selectedBillList!, accountDetails!);
+        //     accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
+        // }
+    }
+
+    private async Task AddNewDebit()
+    {
+        // Transaction newTransaction = new();
+        // newTransaction.Account = accountDetails!;
+        // newTransaction.AccountId = Id;
+        // newTransaction.TransactionPendingUTC = DateTime.UtcNow;
+        // newTransaction.TransactionType = Transaction.EntryType.Debit;
+        // newTransaction.Categories = new List<Category>();
+
+        // var result = await DialogUtil.ShowTransactionDialog(DialogService, true, newTransaction, accounts, categories);
+
+        // if (!result.Canceled)
+        // {
+        //     newTransaction = (Transaction)result.Data;
+
+        //     await MMR_TransactionService.CreateNewTransactionAsync(accountDetails!, newTransaction);
+        //     accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
+        // }
+    }
+
+    private async Task AddNewCredit()
+    {
+        // Transaction newTransaction = new();
+        // newTransaction.TransactionPendingUTC = DateTime.UtcNow;
+        // newTransaction.TransactionClearedUTC = DateTime.UtcNow;
+        // newTransaction.TransactionType = Transaction.EntryType.Credit;
+
+        // newTransaction.Account = accountDetails!;
+        // newTransaction.AccountId = Id;
+        // newTransaction.TransactionPendingUTC = DateTime.UtcNow;
+        // newTransaction.Categories = new List<Category>();
+
+        // var result = await DialogUtil.ShowTransactionDialog(DialogService, true, newTransaction, accounts, categories);
+
+        // if (!result.Canceled)
+        // {
+
+        //     newTransaction = result.Data as Transaction;
+
+        //     await MMR_TransactionService.CreateNewTransactionAsync(accountDetails!, newTransaction!);
+        //     accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
+        // }
+    }
+
+    private async Task SetTransactionToPending(Transaction item)
+    {
+        // item.TransactionPendingUTC = DateTime.UtcNow;
+        // await MMR_TransactionService.UpdateTransactionAsync(accountDetails!, item);
+    }
+
+    private async Task SetTransactionToCleared(Transaction item)
+    {
+        // item.TransactionClearedUTC = DateTime.UtcNow;
+        // await MMR_TransactionService.UpdateTransactionAsync(accountDetails!, item);
+    }
+
+    private async Task RecalculateBalances()
+    {
+        //await MMR_AccountService.RecalculateAccountAsync(accountDetails!);
+    }
+
+    private async Task DeleteTransaction(Transaction item)
+    {
+        // item.DeletedOnUTC = DateTime.UtcNow;
+        // await MMR_TransactionService.DeleteTransactionAsync(accountDetails, item);
+        // accountDetails.Transactions.Remove(item);
+    }
 }

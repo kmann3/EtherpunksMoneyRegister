@@ -34,7 +34,12 @@ public class Program
 
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlite(connectionString));
+            options
+                .UseSqlite(connectionString)
+#if DEBUG
+                .EnableSensitiveDataLogging()
+#endif
+                );
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
         builder.Services.AddIdentityCore<ApplicationUser>(options =>
@@ -51,6 +56,7 @@ public class Program
 
         builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
+        builder.Services.AddScoped<AccountService>();
         builder.Services.AddScoped<BackupService>();
         builder.Services.AddScoped<DashboardService>();
 

@@ -7,7 +7,7 @@ namespace MoneyRegister.Data.Services;
 
 public class BackupService
 {
-    private ApplicationDbContext dbContext;
+    private ApplicationDbContext _dbContext;
     public static string accountsJsonFileName = $"accounts.json";
     public static string categoriesJsonFileName = $"categories.json";
     public static string filesJsonFileName = $"files.json";
@@ -16,22 +16,22 @@ public class BackupService
     public static string transactionGroupsJsonFileName = $"transaction_groups.json";
     public static string usersJsonFileName = $"users.json";
 
-    public BackupService(ApplicationDbContext dbContext)
+    public BackupService(ApplicationDbContext _dbContext)
     {
-        this.dbContext = dbContext;
+        _dbContext = _dbContext;
     }
 
     public async Task<string> CreateBackupJsonAsync()
     {
         string fileName = $"backup-{DateTime.Now:yyyyMMdd.HHmmdd}";
 
-        List<Account> accountList = await dbContext.Accounts.ToListAsync();
-        List<Category> categoryList = await dbContext.Categories.ToListAsync();
-//        List<TransactionFile> fileList = await dbContext.Files.ToListAsync();
-        List<RecurringTransaction> recurringTransactionList = await dbContext.RecurringTransactions.ToListAsync();
-        List<Transaction> transactionList = await dbContext.Transactions.ToListAsync();
-        List<TransactionGroup> transactionGroupList = await dbContext.TransactionGroups.ToListAsync();
-        List<ApplicationUser> userList = await dbContext.ApplicationUsers.ToListAsync();
+        List<Account> accountList = await _dbContext.Accounts.ToListAsync();
+        List<Category> categoryList = await _dbContext.Categories.ToListAsync();
+//        List<TransactionFile> fileList = await _dbContext.Files.ToListAsync();
+        List<RecurringTransaction> recurringTransactionList = await _dbContext.RecurringTransactions.ToListAsync();
+        List<Transaction> transactionList = await _dbContext.Transactions.ToListAsync();
+        List<TransactionGroup> transactionGroupList = await _dbContext.TransactionGroups.ToListAsync();
+        List<ApplicationUser> userList = await _dbContext.ApplicationUsers.ToListAsync();
 
         var options = new JsonSerializerOptions { WriteIndented = true };
         string jsonString = string.Empty;
@@ -89,16 +89,16 @@ public class BackupService
 
             if (!File.Exists($"restore/{usersJsonFileName}")) throw new FileNotFoundException($"Json file not found: restore/{usersJsonFileName}");
 
-            dbContext.RemoveRange(await dbContext.Accounts.ToListAsync());
-            dbContext.RemoveRange(await dbContext.Categories.ToListAsync());
-            dbContext.RemoveRange(await dbContext.RecurringTransactions.ToListAsync());
-            dbContext.RemoveRange(await dbContext.Transactions.ToListAsync());
-            dbContext.RemoveRange(await dbContext.TransactionGroups.ToListAsync());
-            dbContext.RemoveRange(await dbContext.ApplicationUsers.ToListAsync());
+            _dbContext.RemoveRange(await _dbContext.Accounts.ToListAsync());
+            _dbContext.RemoveRange(await _dbContext.Categories.ToListAsync());
+            _dbContext.RemoveRange(await _dbContext.RecurringTransactions.ToListAsync());
+            _dbContext.RemoveRange(await _dbContext.Transactions.ToListAsync());
+            _dbContext.RemoveRange(await _dbContext.TransactionGroups.ToListAsync());
+            _dbContext.RemoveRange(await _dbContext.ApplicationUsers.ToListAsync());
 
             Console.WriteLine("Database purged");
 
-            await dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             string jsonString;
 
@@ -108,33 +108,33 @@ public class BackupService
 
             jsonString = await File.ReadAllTextAsync($"restore/{usersJsonFileName}");
             List<ApplicationUser> users = JsonSerializer.Deserialize<List<ApplicationUser>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{usersJsonFileName}");
-            await dbContext.ApplicationUsers.AddRangeAsync(users);
+            await _dbContext.ApplicationUsers.AddRangeAsync(users);
 
             Console.WriteLine("Users restored");
 
             jsonString = await File.ReadAllTextAsync($"restore/{accountsJsonFileName}");
             List<Account> accounts = JsonSerializer.Deserialize<List<Account>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{accountsJsonFileName}");
-            await dbContext.Accounts.AddRangeAsync(accounts);
+            await _dbContext.Accounts.AddRangeAsync(accounts);
 
             Console.WriteLine("Accounts");
 
             jsonString = await File.ReadAllTextAsync($"restore/{categoriesJsonFileName}");
             List<Category> categories = JsonSerializer.Deserialize<List<Category>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{categoriesJsonFileName}");
-            await dbContext.Categories.AddRangeAsync(categories);
+            await _dbContext.Categories.AddRangeAsync(categories);
 
             jsonString = await File.ReadAllTextAsync($"restore/{transactionGroupsJsonFileName}");
             List<TransactionGroup> transactionGroups = JsonSerializer.Deserialize<List<TransactionGroup>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{transactionGroupsJsonFileName}");
-            await dbContext.TransactionGroups.AddRangeAsync(transactionGroups);
+            await _dbContext.TransactionGroups.AddRangeAsync(transactionGroups);
 
             jsonString = await File.ReadAllTextAsync($"restore/{recurringTransactionsJsonFileName}");
             List<RecurringTransaction> recurringTransactions = JsonSerializer.Deserialize<List<RecurringTransaction>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{recurringTransactionsJsonFileName}");
-            await dbContext.RecurringTransactions.AddRangeAsync(recurringTransactions);
+            await _dbContext.RecurringTransactions.AddRangeAsync(recurringTransactions);
 
             jsonString = await File.ReadAllTextAsync($"restore/{transactionsJsonFileName}");
             List<Transaction> transactions = JsonSerializer.Deserialize<List<Transaction>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{transactionGroupsJsonFileName}");
-            await dbContext.Transactions.AddRangeAsync(transactions);
+            await _dbContext.Transactions.AddRangeAsync(transactions);
 
-            await dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
         } catch(Exception ex)
         {

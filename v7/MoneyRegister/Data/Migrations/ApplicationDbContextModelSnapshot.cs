@@ -17,7 +17,7 @@ namespace MoneyRegister.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
 
-            modelBuilder.Entity("Link_Category_RecurringTransactions", b =>
+            modelBuilder.Entity("CategoryRecurringTransaction", b =>
                 {
                     b.Property<Guid>("CategoriesId")
                         .HasColumnType("TEXT");
@@ -29,22 +29,7 @@ namespace MoneyRegister.Data.Migrations
 
                     b.HasIndex("RecurringTransactionsId");
 
-                    b.ToTable("Link_Category_RecurringTransactions");
-                });
-
-            modelBuilder.Entity("Link_Category_Transaction", b =>
-                {
-                    b.Property<Guid>("CategoriesId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("TransactionsId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("CategoriesId", "TransactionsId");
-
-                    b.HasIndex("TransactionsId");
-
-                    b.ToTable("Link_Category_Transaction");
+                    b.ToTable("CategoryRecurringTransaction");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -245,19 +230,19 @@ namespace MoneyRegister.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0af5ab9b-c1fb-4255-bc49-9b7c23014a78"),
+                            Id = new Guid("458b5c32-ba64-4e89-805e-5ba3f10b0a39"),
                             AccountNumber = "",
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9362),
+                            CreatedOnUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3662),
                             CurrentBalance = 1987.19m,
-                            InterestRate = 0.0m,
-                            LastBalancedUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9369),
+                            InterestRate = 0m,
+                            LastBalancedUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3668),
                             LoginUrl = "",
-                            Name = "Neches FCU",
+                            Name = "Cash",
                             Notes = "",
                             OutstandingBalance = -10.81m,
                             OutstandingItemCount = 1,
-                            StartingBalance = 200.0m
+                            StartingBalance = 200m
                         });
                 });
 
@@ -347,8 +332,8 @@ namespace MoneyRegister.Data.Migrations
                         {
                             Id = "00000000-0000-0000-0000-000000000000",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "59dfaf52-0009-49b2-8d4c-db2d025b8608",
-                            CreatedOn = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9121),
+                            ConcurrencyStamp = "85bf28c6-5e07-44b5-b02a-4b895444ad19",
+                            CreatedOn = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3552),
                             Email = "",
                             EmailConfirmed = false,
                             FirstName = "admin",
@@ -357,7 +342,7 @@ namespace MoneyRegister.Data.Migrations
                             LocalTimeZone = "Central Standard Time",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "713d71f7-51f0-4dd7-8ecc-cb596254e9f4",
+                            SecurityStamp = "0fe8379a-e82f-4e03-a082-2716e8d37ffd",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -399,52 +384,67 @@ namespace MoneyRegister.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("18cbb4e6-c061-4c99-ba1c-48aa58796a3c"),
+                            Id = new Guid("5a843a9f-46ba-43f5-8a25-2403dc493e67"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9380),
-                            Name = "gas"
+                            CreatedOnUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3685),
+                            Name = "bills"
                         },
                         new
                         {
-                            Id = new Guid("27e5f753-ad87-4e3b-891d-b8b8b79e8045"),
+                            Id = new Guid("e7a9812e-4103-41ed-a03d-0229a9bf98e8"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9385),
-                            Name = "medications"
-                        },
-                        new
-                        {
-                            Id = new Guid("34940e40-e15f-4c60-82ec-e2f17aac7d04"),
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9381),
-                            Name = "groceries"
-                        },
-                        new
-                        {
-                            Id = new Guid("5aa2d257-47c6-4099-9b9b-ddb92e697ef0"),
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9378),
+                            CreatedOnUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3687),
                             Name = "fast-food"
                         },
                         new
                         {
-                            Id = new Guid("b7e07c97-b19a-4eb7-a21c-f7f04752f283"),
+                            Id = new Guid("4866ec66-cb78-4d02-8bc4-a87e49007346"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9386),
+                            CreatedOnUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3688),
+                            Name = "gas"
+                        },
+                        new
+                        {
+                            Id = new Guid("952f2215-bd4d-4465-960c-38508ff5dc7e"),
+                            CreatedById = "00000000-0000-0000-0000-000000000000",
+                            CreatedOnUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3690),
+                            Name = "groceries"
+                        },
+                        new
+                        {
+                            Id = new Guid("44aa736c-a782-4e5b-b62a-9f043ff59a68"),
+                            CreatedById = "00000000-0000-0000-0000-000000000000",
+                            CreatedOnUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3692),
+                            Name = "medications"
+                        },
+                        new
+                        {
+                            Id = new Guid("a1ffa337-28af-4a0e-b60f-c12dcbb5c0d1"),
+                            CreatedById = "00000000-0000-0000-0000-000000000000",
+                            CreatedOnUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3694),
                             Name = "streaming"
-                        },
+                        });
+                });
+
+            modelBuilder.Entity("MoneyRegister.Data.Entities.Link_Category_Transaction", b =>
+                {
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("TransactionId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryId", "TransactionId");
+
+                    b.HasIndex("TransactionId");
+
+                    b.ToTable("Link_Categories_Transactions");
+
+                    b.HasData(
                         new
                         {
-                            Id = new Guid("18dbbacf-91e6-4788-bcb8-29798c74a5b7"),
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 22, 16, 11, 10, 297, DateTimeKind.Unspecified),
-                            Name = "gaming"
-                        },
-                        new
-                        {
-                            Id = new Guid("f8cd9912-25ee-4a10-bb9f-3e686d55e6b7"),
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9377),
-                            Name = "bills"
+                            CategoryId = new Guid("5a843a9f-46ba-43f5-8a25-2403dc493e67"),
+                            TransactionId = new Guid("6b83e03a-3e91-4aea-bc89-923ef6eec980")
                         });
                 });
 
@@ -512,221 +512,53 @@ namespace MoneyRegister.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("53066614-6c99-4a75-a8f7-8060626bbeca"),
-                            Amount = -13.0m,
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9693),
-                            Frequency = 3,
-                            Name = "Etherpunk DNS",
-                            NextDueDate = new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Notes = "",
-                            TransactionType = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("54aca43c-77b8-447c-99b5-f2a9cbb1998a"),
-                            Amount = 150.0m,
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9720),
-                            Frequency = 0,
-                            Name = "Mom / Cellphone",
-                            NextDueDate = new DateTime(2023, 12, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Notes = "",
-                            TransactionType = 0
-                        },
-                        new
-                        {
-                            Id = new Guid("699ed7e7-3829-48df-98fc-7c6d13abd241"),
-                            Amount = 378.27m,
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9745),
-                            Frequency = 0,
-                            Name = "OPM",
-                            NextDueDate = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Notes = "",
-                            TransactionType = 0
-                        },
-                        new
-                        {
-                            Id = new Guid("830af3fd-ad62-43f5-9d23-daa961a7919a"),
-                            Amount = 1998.0m,
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9732),
-                            DayOfWeekValue = 3,
-                            Frequency = 2,
-                            FrequencyValue = 4,
-                            Name = "SSDI",
-                            NextDueDate = new DateTime(2023, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Notes = "",
-                            TransactionType = 0
-                        },
-                        new
-                        {
-                            Id = new Guid("d542b67c-11e8-4880-a8d8-6cc9c613fcdc"),
-                            Amount = -59.4m,
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9708),
-                            Frequency = 3,
-                            Name = "Etherpunk Webhosting",
-                            NextDueDate = new DateTime(2024, 1, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Notes = "",
-                            TransactionType = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("09c4a9ac-78dd-4aec-9805-c219daa630fc"),
-                            Amount = -2.99m,
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9537),
-                            Frequency = 0,
-                            Name = "Apple iCloud",
-                            NextDueDate = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Notes = "",
-                            TransactionGroupId = new Guid("da0c6b64-6975-4c0e-89ad-f096466ff3a4"),
-                            TransactionType = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("4e1cca60-3ecb-41d1-9265-df24a6d1a5ce"),
-                            Amount = -472.12m,
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9639),
-                            Frequency = 0,
-                            Name = "Health Insurance",
-                            NextDueDate = new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Notes = "",
-                            TransactionGroupId = new Guid("da0c6b64-6975-4c0e-89ad-f096466ff3a4"),
-                            TransactionType = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("58e9475b-e553-42aa-84c8-0f8bd0fd8300"),
-                            Amount = -719.52m,
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9579),
-                            Frequency = 0,
-                            Name = "Loan - Ford Explorer",
-                            NextDueDate = new DateTime(2023, 12, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Notes = "",
-                            TransactionGroupId = new Guid("da0c6b64-6975-4c0e-89ad-f096466ff3a4"),
-                            TransactionType = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("6256ea4d-6822-4445-8fe7-e476f5dfcf44"),
+                            Id = new Guid("9d6fc15f-ca13-4ae0-8db9-8ab0cf0bb10c"),
                             Amount = -10.81m,
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9498),
+                            CreatedOnUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3798),
                             Frequency = 0,
                             Name = "Adobe Photoshop",
                             NextDueDate = new DateTime(2023, 12, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "",
-                            TransactionGroupId = new Guid("da0c6b64-6975-4c0e-89ad-f096466ff3a4"),
+                            TransactionGroupId = new Guid("c749a735-453b-4afe-9e17-2c55959d2261"),
                             TransactionType = 1
                         },
                         new
                         {
-                            Id = new Guid("a5644261-6862-4e72-94af-677acd7a377d"),
-                            Amount = -36.81m,
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9613),
-                            Frequency = 0,
-                            Name = "Fitness Your Way",
-                            NextDueDate = new DateTime(2023, 12, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Notes = "",
-                            TransactionGroupId = new Guid("da0c6b64-6975-4c0e-89ad-f096466ff3a4"),
-                            TransactionType = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("bba98b29-af98-4cbf-963b-1d6d1bcbe2e6"),
-                            Amount = -83.36m,
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9653),
-                            Frequency = 0,
-                            Name = "Loan - DebtCon/Vacation",
-                            NextDueDate = new DateTime(2023, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Notes = "",
-                            TransactionGroupId = new Guid("da0c6b64-6975-4c0e-89ad-f096466ff3a4"),
-                            TransactionType = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("bbc47043-cc36-4159-a722-e8ec4deba673"),
-                            Amount = -12.79m,
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9626),
-                            Frequency = 0,
-                            Name = "Google / Etherpunk Email",
-                            NextDueDate = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Notes = "",
-                            TransactionGroupId = new Guid("da0c6b64-6975-4c0e-89ad-f096466ff3a4"),
-                            TransactionType = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("c40f3ad9-2c10-4236-9971-2570ea24df55"),
-                            Amount = -104.0m,
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9667),
-                            Frequency = 0,
-                            Name = "Verizon / Cellphone",
-                            NextDueDate = new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Notes = "",
-                            TransactionGroupId = new Guid("da0c6b64-6975-4c0e-89ad-f096466ff3a4"),
-                            TransactionType = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("cf32f842-89ac-43a6-a860-929c11ca07f2"),
+                            Id = new Guid("55098d86-ad1d-4fa8-b448-dbe7273e2f9c"),
                             Amount = -16.79m,
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9523),
+                            CreatedOnUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3830),
                             Frequency = 0,
                             Name = "Allstate Apartment Insurance",
                             NextDueDate = new DateTime(2023, 12, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "",
-                            TransactionGroupId = new Guid("da0c6b64-6975-4c0e-89ad-f096466ff3a4"),
+                            TransactionGroupId = new Guid("c749a735-453b-4afe-9e17-2c55959d2261"),
                             TransactionType = 1
                         },
                         new
                         {
-                            Id = new Guid("dc85f682-c4e5-425f-b603-9998e4f4acea"),
-                            Amount = -24.67m,
+                            Id = new Guid("6f7c802f-6a7e-43e4-8a7e-f5a10fbe8721"),
+                            Amount = 150m,
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9551),
+                            CreatedOnUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3855),
                             Frequency = 0,
-                            Name = "Apple Services",
-                            NextDueDate = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Test",
+                            NextDueDate = new DateTime(2023, 12, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "",
-                            TransactionGroupId = new Guid("da0c6b64-6975-4c0e-89ad-f096466ff3a4"),
-                            TransactionType = 1
+                            TransactionType = 0
                         },
                         new
                         {
-                            Id = new Guid("ea3d515f-4c33-4519-811e-fb27c6d4a8f8"),
-                            Amount = -80.72m,
+                            Id = new Guid("06ab5fd7-e90c-4e44-b16a-86be66c233f5"),
+                            Amount = 1343.72m,
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9564),
+                            CreatedOnUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3869),
                             Frequency = 0,
-                            Name = "ATT Internet",
-                            NextDueDate = new DateTime(2023, 12, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Payday",
+                            NextDueDate = new DateTime(2023, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "",
-                            TransactionGroupId = new Guid("da0c6b64-6975-4c0e-89ad-f096466ff3a4"),
-                            TransactionType = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("f1d9797c-baf0-47d0-be4a-8d83b3db9f88"),
-                            Amount = -150.0m,
-                            CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9681),
-                            Frequency = 0,
-                            Name = "Windows",
-                            NextDueDate = new DateTime(2023, 12, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Notes = "",
-                            TransactionGroupId = new Guid("da0c6b64-6975-4c0e-89ad-f096466ff3a4"),
-                            TransactionType = 1
+                            TransactionType = 0
                         });
                 });
 
@@ -797,13 +629,13 @@ namespace MoneyRegister.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f8dc1389-d1ad-4b29-8f75-cdf8ef183374"),
-                            AccountId = new Guid("0af5ab9b-c1fb-4255-bc49-9b7c23014a78"),
-                            Amount = 1998.0m,
-                            Balance = 1998.0m,
+                            Id = new Guid("e41576d0-de07-4221-a0dd-904df0d2fa79"),
+                            AccountId = new Guid("458b5c32-ba64-4e89-805e-5ba3f10b0a39"),
+                            Amount = 1998m,
+                            Balance = 1343.72m,
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9756),
-                            Name = "SSDI",
+                            CreatedOnUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3881),
+                            Name = "payday",
                             Notes = "",
                             TransactionClearedUTC = new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TransactionPendingUTC = new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -811,15 +643,15 @@ namespace MoneyRegister.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("18ab2619-f85c-4038-98a7-2d55f4a4db9c"),
-                            AccountId = new Guid("0af5ab9b-c1fb-4255-bc49-9b7c23014a78"),
+                            Id = new Guid("6b83e03a-3e91-4aea-bc89-923ef6eec980"),
+                            AccountId = new Guid("458b5c32-ba64-4e89-805e-5ba3f10b0a39"),
                             Amount = -10.81m,
                             Balance = 1987.19m,
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9783),
+                            CreatedOnUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3936),
                             Name = "Adobe Photoshop",
                             Notes = "",
-                            RecurringTransactionId = new Guid("6256ea4d-6822-4445-8fe7-e476f5dfcf44"),
+                            RecurringTransactionId = new Guid("9d6fc15f-ca13-4ae0-8db9-8ab0cf0bb10c"),
                             TransactionType = 1
                         });
                 });
@@ -909,39 +741,24 @@ namespace MoneyRegister.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("da0c6b64-6975-4c0e-89ad-f096466ff3a4"),
+                            Id = new Guid("c749a735-453b-4afe-9e17-2c55959d2261"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 11, 19, 10, 12, 38, 619, DateTimeKind.Unspecified).AddTicks(9473),
+                            CreatedOnUTC = new DateTime(2023, 11, 23, 21, 5, 19, 180, DateTimeKind.Utc).AddTicks(3780),
                             Name = "All Regular Bills"
                         });
                 });
 
-            modelBuilder.Entity("Link_Category_RecurringTransactions", b =>
+            modelBuilder.Entity("CategoryRecurringTransaction", b =>
                 {
                     b.HasOne("MoneyRegister.Data.Entities.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MoneyRegister.Data.Entities.RecurringTransaction", null)
                         .WithMany()
                         .HasForeignKey("RecurringTransactionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Link_Category_Transaction", b =>
-                {
-                    b.HasOne("MoneyRegister.Data.Entities.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("MoneyRegister.Data.Entities.Transaction", null)
-                        .WithMany()
-                        .HasForeignKey("TransactionsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1031,6 +848,25 @@ namespace MoneyRegister.Data.Migrations
                     b.Navigation("DeletedBy");
                 });
 
+            modelBuilder.Entity("MoneyRegister.Data.Entities.Link_Category_Transaction", b =>
+                {
+                    b.HasOne("MoneyRegister.Data.Entities.Category", "Category")
+                        .WithMany("CategoryTransactions")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MoneyRegister.Data.Entities.Transaction", "Transaction")
+                        .WithMany("Link_Category_Transactions")
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Transaction");
+                });
+
             modelBuilder.Entity("MoneyRegister.Data.Entities.RecurringTransaction", b =>
                 {
                     b.HasOne("MoneyRegister.Data.Entities.ApplicationUser", "CreatedBy")
@@ -1063,9 +899,9 @@ namespace MoneyRegister.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("MoneyRegister.Data.Entities.ApplicationUser", "CreatedBy")
-                        .WithMany("Transactions")
+                        .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MoneyRegister.Data.Entities.ApplicationUser", "DeletedBy")
@@ -1100,7 +936,7 @@ namespace MoneyRegister.Data.Migrations
                     b.HasOne("MoneyRegister.Data.Entities.Transaction", "Transaction")
                         .WithMany("Files")
                         .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
@@ -1132,14 +968,16 @@ namespace MoneyRegister.Data.Migrations
                     b.Navigation("Transactions");
                 });
 
-            modelBuilder.Entity("MoneyRegister.Data.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("MoneyRegister.Data.Entities.Category", b =>
                 {
-                    b.Navigation("Transactions");
+                    b.Navigation("CategoryTransactions");
                 });
 
             modelBuilder.Entity("MoneyRegister.Data.Entities.Transaction", b =>
                 {
                     b.Navigation("Files");
+
+                    b.Navigation("Link_Category_Transactions");
                 });
 
             modelBuilder.Entity("MoneyRegister.Data.Entities.TransactionGroup", b =>

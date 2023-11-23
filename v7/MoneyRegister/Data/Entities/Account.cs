@@ -63,7 +63,7 @@ public class Account : BasicTable<Account>, IEntityTypeConfiguration<Account>
     }
 
     [JsonIgnore]
-    public List<Transaction> Transactions { get; set; }
+    public List<Transaction> Transactions { get; set; } = new();
     // TODO: Account Types? Liability, Assets?
 
     public override void Configure(EntityTypeBuilder<Account> builder)

@@ -18,31 +18,43 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<TransactionGroup> TransactionGroups { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
 
+    public DbSet<Link_Category_Transaction> Link_Categories_Transactions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+        builder.Entity<Link_Category_Transaction>().HasKey(x => new { x.CategoryId, x.TransactionId });
 
-        builder.Entity<Transaction>().HasOne(x => x.CreatedBy).WithMany(x => x.Transactions).OnDelete(DeleteBehavior.NoAction);
-        builder.Entity<TransactionFile>().HasOne(x => x.Transaction).WithMany(x => x.Files).OnDelete(DeleteBehavior.NoAction);
+        //builder.Entity<Transaction>().HasOne(x => x.CreatedBy).WithMany(x => x.Transactions).OnDelete(DeleteBehavior.NoAction);
+        //builder.Entity<TransactionFile>().HasOne(x => x.Transaction).WithMany(x => x.Files).OnDelete(DeleteBehavior.NoAction);
 
-        builder.Entity<Transaction>()
-            .HasMany(x => x.Categories)
-            .WithMany(x => x.Transactions)
-            .UsingEntity<Dictionary<string, object>>(
-            "Link_Category_Transaction",
-            x => x.HasOne<Category>().WithMany().OnDelete(DeleteBehavior.Restrict),
-            x => x.HasOne<Transaction>().WithMany().OnDelete(DeleteBehavior.Cascade)
-            );
+        //builder.Entity<Transaction>()
+        //    .HasMany(x => x.Categories)
+        //    .WithMany(x => x.Transactions)
+        //    .UsingEntity<Dictionary<string, object>>(
+        //    "Link_Category_Transaction",
+        //    x => x.HasOne<Category>().WithMany().OnDelete(DeleteBehavior.Restrict),
+        //    x => x.HasOne<Transaction>().WithMany().OnDelete(DeleteBehavior.Cascade)
+        //    );
 
-        builder.Entity<RecurringTransaction>()
-            .HasMany(x => x.Categories)
-            .WithMany(x => x.RecurringTransactions)
-            .UsingEntity<Dictionary<string, object>>(
-            "Link_Category_RecurringTransactions",
-            x => x.HasOne<Category>().WithMany().OnDelete(DeleteBehavior.Restrict),
-            x => x.HasOne<RecurringTransaction>().WithMany().OnDelete(DeleteBehavior.Cascade)
-            );
+        //builder.Entity<Transaction>()
+        //    .HasMany(x => x.Categories)
+        //    .WithMany(x => x.Transactions)
+        //    .UsingEntity(
+        //        "Link_Category_Transaction",
+        //        l => l.HasOne(typeof(Category)).WithMany().HasForeignKey("CategoryId").HasPrincipalKey(nameof(Category.Id)),
+        //        r => r.HasOne(typeof(Transaction)).WithMany().HasForeignKey("TransactionId").HasPrincipalKey(nameof(Transaction.Id)),
+        //        j => j.HasKey("TransactionId", "CategoryId"));
+
+        //builder.Entity<RecurringTransaction>()
+        //    .HasMany(x => x.Categories)
+        //    .WithMany(x => x.RecurringTransactions)
+        //    .UsingEntity<Dictionary<string, object>>(
+        //    "Link_Category_RecurringTransactions",
+        //    x => x.HasOne<Category>().WithMany().OnDelete(DeleteBehavior.Restrict),
+        //    x => x.HasOne<RecurringTransaction>().WithMany().OnDelete(DeleteBehavior.Cascade)
+        //    );
 
         SeedDatabase(builder);
 
@@ -51,31 +63,31 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     private void SeedDatabase(ModelBuilder builder)
     {
-        string fakeDirectory = @"D:\src\fake_data\mmr";
+        //string fakeDirectory = @"D:\src\fake_data\mmr";
 
-        if(Directory.Exists(fakeDirectory))
-        {
+        //if(Directory.Exists(fakeDirectory))
+        //{
 
-            if (!File.Exists($"{fakeDirectory}/{BackupService.accountsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.accountsJsonFileName}");
-            if (!File.Exists($"{fakeDirectory}/{BackupService.categoriesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.categoriesJsonFileName}");
-            //if (!File.Exists($"{fakeDirectory}/{BackupService.filesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.filesJsonFileName}");
-            if (!File.Exists($"{fakeDirectory}/{BackupService.recurringTransactionsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.recurringTransactionsJsonFileName}");
-            if (!File.Exists($"{fakeDirectory}/{BackupService.transactionsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.transactionsJsonFileName}");
-            if (!File.Exists($"{fakeDirectory}/{BackupService.transactionGroupsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.transactionGroupsJsonFileName}");
-            if (!File.Exists($"{fakeDirectory}/{BackupService.usersJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.usersJsonFileName}");
+        //    if (!File.Exists($"{fakeDirectory}/{BackupService.accountsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.accountsJsonFileName}");
+        //    if (!File.Exists($"{fakeDirectory}/{BackupService.categoriesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.categoriesJsonFileName}");
+        //    //if (!File.Exists($"{fakeDirectory}/{BackupService.filesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.filesJsonFileName}");
+        //    if (!File.Exists($"{fakeDirectory}/{BackupService.recurringTransactionsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.recurringTransactionsJsonFileName}");
+        //    if (!File.Exists($"{fakeDirectory}/{BackupService.transactionsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.transactionsJsonFileName}");
+        //    if (!File.Exists($"{fakeDirectory}/{BackupService.transactionGroupsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.transactionGroupsJsonFileName}");
+        //    if (!File.Exists($"{fakeDirectory}/{BackupService.usersJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.usersJsonFileName}");
 
-            string jsonString = string.Empty;
-            var options = new JsonSerializerOptions { WriteIndented = true };
+        //    string jsonString = string.Empty;
+        //    var options = new JsonSerializerOptions { WriteIndented = true };
 
-            FillDbType<ApplicationUser>($"{fakeDirectory}/{BackupService.usersJsonFileName}", builder, options);
-            FillDbType<Account>($"{fakeDirectory}/{BackupService.accountsJsonFileName}", builder, options);
-            FillDbType<Category>($"{fakeDirectory}/{BackupService.categoriesJsonFileName}", builder, options);
-            FillDbType<RecurringTransaction>($"{fakeDirectory}/{BackupService.recurringTransactionsJsonFileName}", builder, options);
-            FillDbType<TransactionGroup>($"{fakeDirectory}/{BackupService.transactionGroupsJsonFileName}", builder, options);
-            FillDbType<Transaction>($"{fakeDirectory}/{BackupService.transactionsJsonFileName}", builder, options);
+        //    FillDbType<ApplicationUser>($"{fakeDirectory}/{BackupService.usersJsonFileName}", builder, options);
+        //    FillDbType<Account>($"{fakeDirectory}/{BackupService.accountsJsonFileName}", builder, options);
+        //    FillDbType<Category>($"{fakeDirectory}/{BackupService.categoriesJsonFileName}", builder, options);
+        //    FillDbType<RecurringTransaction>($"{fakeDirectory}/{BackupService.recurringTransactionsJsonFileName}", builder, options);
+        //    FillDbType<TransactionGroup>($"{fakeDirectory}/{BackupService.transactionGroupsJsonFileName}", builder, options);
+        //    FillDbType<Transaction>($"{fakeDirectory}/{BackupService.transactionsJsonFileName}", builder, options);
 
-            return;
-        }
+        //    return;
+        //}
 
         // If there is no fake data or data to restore from (probably private stuff), then use some test examples.
 
@@ -204,11 +216,20 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Balance = currentBalance,
             CreatedById = adminUser.Id,
             Name = "Adobe Photoshop",
+            //Categories = new List<Category>(),
             RecurringTransactionId = recTran_AdobePhotoshop.Id,
             TransactionType = MR_Enum.TransactionType.Debit,
         };
 
         builder.Entity<Transaction>().HasData(trans2);
+
+        Link_Category_Transaction trans2CatLink = new()
+        {
+            CategoryId = billsCategory.Id,
+            TransactionId = trans2.Id
+        };
+
+        builder.Entity<Link_Category_Transaction>().HasData(trans2CatLink);
 
         account_Cash.CurrentBalance = currentBalance;
         account_Cash.OutstandingBalance = outstandingBalance;
