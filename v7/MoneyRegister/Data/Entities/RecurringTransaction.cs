@@ -16,7 +16,9 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     [Precision(18, 2)]
     public decimal Amount { get; set; } = 0M;
     public string Notes { get; set; } = string.Empty;
-    public List<Category> Categories { get; set; }
+
+    [JsonIgnore]
+    public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
 
     public MR_Enum.Regularity Frequency { get; set; } = MR_Enum.Regularity.Unknown;
 

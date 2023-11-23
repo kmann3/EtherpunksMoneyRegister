@@ -9,14 +9,11 @@ namespace MoneyRegister.Data.Entities;
 /// </summary>
 public class Category : BasicTable<Category>, IEntityTypeConfiguration<Category>
 {
-    //[JsonIgnore]
-    //public List<Transaction> Transactions { get; set; } = new();
+    [JsonIgnore]
+    public List<Link_Category_Transaction> Link_Category_Transactions { get; } = new();
 
     [JsonIgnore]
-    public List<Link_Category_Transaction> CategoryTransactions { get; } = new();
-
-    [JsonIgnore]
-    public List<RecurringTransaction> RecurringTransactions { get; set; } = new();
+    public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; set; } = new();
 
     public override void Configure(EntityTypeBuilder<Category> builder)
     {
