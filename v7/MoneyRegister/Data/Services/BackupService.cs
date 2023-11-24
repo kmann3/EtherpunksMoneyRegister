@@ -37,38 +37,44 @@ public class BackupService(ApplicationDbContext context)
         string jsonString = string.Empty;
 
         Directory.CreateDirectory(fileName);
+        try
+        {
 
-        jsonString = JsonSerializer.Serialize(accountList, options);
-        File.WriteAllText($@"{fileName}/{accountsJsonFileName}", jsonString);
+            jsonString = JsonSerializer.Serialize(accountList, options);
+            File.WriteAllText($@"{fileName}/{accountsJsonFileName}", jsonString);
 
-        jsonString = JsonSerializer.Serialize(categoryList, options);
-        File.WriteAllText($@"{fileName}/{categoriesJsonFileName}", jsonString);
+            jsonString = JsonSerializer.Serialize(categoryList, options);
+            File.WriteAllText($@"{fileName}/{categoriesJsonFileName}", jsonString);
 
-        //        // TODO: SAVE ACTUAL FILE DATA HERE
-        //#if !DEBUG
-        //throw new NotImplementedException("IMPLEMENT FILE SAVE DATA");
-        //#endif
+            //        // TODO: SAVE ACTUAL FILE DATA HERE
+            //#if !DEBUG
+            //throw new NotImplementedException("IMPLEMENT FILE SAVE DATA");
+            //#endif
 
-        jsonString = JsonSerializer.Serialize(recurringTransactionList, options);
-        File.WriteAllText($@"{fileName}/{recurringTransactionsJsonFileName}", jsonString);
+            jsonString = JsonSerializer.Serialize(recurringTransactionList, options);
+            File.WriteAllText($@"{fileName}/{recurringTransactionsJsonFileName}", jsonString);
 
-        jsonString = JsonSerializer.Serialize(transactionList, options);
-        File.WriteAllText($@"{fileName}/{transactionsJsonFileName}", jsonString);
+            jsonString = JsonSerializer.Serialize(transactionList, options);
+            File.WriteAllText($@"{fileName}/{transactionsJsonFileName}", jsonString);
 
-        jsonString = JsonSerializer.Serialize(transactionGroupList, options);
-        File.WriteAllText($@"{fileName}/{transactionGroupsJsonFileName}", jsonString);
+            jsonString = JsonSerializer.Serialize(transactionGroupList, options);
+            File.WriteAllText($@"{fileName}/{transactionGroupsJsonFileName}", jsonString);
 
-        jsonString = JsonSerializer.Serialize(userList, options);
-        File.WriteAllText($@"{fileName}/{usersJsonFileName}", jsonString);
+            jsonString = JsonSerializer.Serialize(userList, options);
+            File.WriteAllText($@"{fileName}/{usersJsonFileName}", jsonString);
 
-        jsonString = JsonSerializer.Serialize(link_category_TransactionList, options);
-        File.WriteAllText($@"{fileName}/{link_category_transactionFileName}", jsonString);
+            jsonString = JsonSerializer.Serialize(link_category_TransactionList, options);
+            File.WriteAllText($@"{fileName}/{link_category_transactionFileName}", jsonString);
 
-        jsonString = JsonSerializer.Serialize(link_category_RecurringTransactionList, options);
-        File.WriteAllText($@"{fileName}/{link_category_recurringTransactionFileName}", jsonString);
+            jsonString = JsonSerializer.Serialize(link_category_RecurringTransactionList, options);
+            File.WriteAllText($@"{fileName}/{link_category_recurringTransactionFileName}", jsonString);
 
-        ZipFile.CreateFromDirectory(fileName, fileName + ".zip");
-        Directory.Delete(fileName, true);
+            ZipFile.CreateFromDirectory(fileName, fileName + ".zip");
+        }
+        finally
+        {
+            Directory.Delete(fileName, true);
+        }
 
         return fileName + ".zip";
     }
