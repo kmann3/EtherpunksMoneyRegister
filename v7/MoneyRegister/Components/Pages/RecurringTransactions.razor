@@ -28,9 +28,7 @@ else
                     }
                 </CellTemplate>
             </TemplateColumn>
-            <PropertyColumn Property="x => x.Frequency" />
-            <PropertyColumn Property="x => x.FrequencyValue" />
-            <PropertyColumn Property="x => x.DayOfWeekValue" />
+            <PropertyColumn Property="x => x.FrequencyString" />
             <PropertyColumn Property="x => x.NextDueDate" Title="Next Due" >
                 <CellTemplate>
                     @context.Item.NextDueDate?.ToString("d")

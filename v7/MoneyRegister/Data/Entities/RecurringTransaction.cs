@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
+using Humanizer;
 
 namespace MoneyRegister.Data.Entities;
 
@@ -32,16 +33,17 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
                 case MR_Enum.Regularity.Annually:
                     return "Annually";
                 case MR_Enum.Regularity.Monthly:
-                    return $"Monthly - {FrequencyValue}";
+                    return $"{FrequencyValue.ToString().Ordinalize()} of the month";
                 case MR_Enum.Regularity.Nonregular:
                     return "Nonregular frequency";
                 case MR_Enum.Regularity.XDays:
                     return $"Every {FrequencyValue} days";
                 case MR_Enum.Regularity.XWeekYDayOfWeek:
-                    return $"Every {FrequencyValue} {DayOfWeekValue}";
+                    return $"Every {FrequencyValue.ToString().Ordinalize()} {DayOfWeekValue}";
                 case MR_Enum.Regularity.Unknown:
+                    return "Unknown";
                 default:
-                    return "";
+                    throw new NotImplementedException();
             }
         }
     }
