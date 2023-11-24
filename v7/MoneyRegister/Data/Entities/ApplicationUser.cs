@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MoneyRegister.Data.Entities;
 
@@ -22,8 +23,9 @@ public class ApplicationUser : IdentityUser, IEntityTypeConfiguration<Applicatio
     public string LocalTimeZone { get; set; } = "Central Standard Time";
     public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
-    [JsonIgnore]
-    public List<Transaction> Transactions { get; set; } = new();
+    //[JsonIgnore]
+    //public List<Transaction> Transactions { get; set; } = new();
+    
     // CURRENCY?
 
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)

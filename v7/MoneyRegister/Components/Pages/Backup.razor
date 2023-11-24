@@ -1,9 +1,9 @@
 ﻿@page "/backup"
 @inject Data.Services.BackupService MR_BackupService
+@inject ISnackbar Snackbar
 @inject IJSRuntime JS
 
 <h3>Backup</h3>
-
 <MudButton OnClick="BackupData">Backup</MudButton>
 <br />
 <br />
@@ -43,6 +43,14 @@
         var fileStream = File.OpenRead(fileName);
         using var streamRef = new DotNetStreamReference(stream: fileStream);
         await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+
+        try
+        {
+            File.Delete(fileName);
+        } catch
+        {
+
+        }
     }
 
     private async Task RestoreBackup(IBrowserFile file)
@@ -53,5 +61,15 @@
         fs.Close();
 
         await MR_BackupService.RestoreBackupJsonAsync(fileName);
+
+        try
+        {
+            File.Delete(fileName);
+        }
+        catch
+        {
+
+        }
+        Snackbar.Add("Restore completed", Severity.Info);
     }
 }

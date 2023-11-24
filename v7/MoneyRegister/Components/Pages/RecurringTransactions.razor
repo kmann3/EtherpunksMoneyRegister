@@ -1,7 +1,73 @@
 ﻿@page "/rectran"
 @inject Data.Services.RecurringTransactionService MR_RecTranService
-<h3>RecurringTransactions</h3>
+<PageTitle>Mann's Money Management - Dashboard</PageTitle>
+
+@if (recurringTransactions == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (recurringTransactions.Count == 0)
+{
+    // Probably a new setup, begin guided setup
+    <p><em>No items found</em></p>
+}
+else
+{
+
+    <MudDataGrid Items="@recurringTransactions" T="Data.Entities.RecurringTransaction"
+                 Filterable="false" SortMode="@SortMode.None" Groupable="false"
+                 RowClick="@OnRowClick">
+        <Columns>
+            <PropertyColumn Property="x => x!.Name" />
+            <PropertyColumn Property="x => x!.TransactionType" />
+            <TemplateColumn Title="Bill Group">
+                <CellTemplate>
+                    @if(context.Item.Group != null)
+                    {
+                        @context.Item.Group.Name
+                    }
+                </CellTemplate>
+            </TemplateColumn>
+            <PropertyColumn Property="x => x.Frequency" />
+            <PropertyColumn Property="x => x.FrequencyValue" />
+            <PropertyColumn Property="x => x.DayOfWeekValue" />
+            <PropertyColumn Property="x => x.NextDueDate" Title="Next Due" >
+                <CellTemplate>
+                    @context.Item.NextDueDate?.ToString("d")
+                </CellTemplate>
+            </PropertyColumn>
+            <PropertyColumn Property="x => x.Notes" />
+            <PropertyColumn Property="x => x!.Amount" Format="C" />
+            <TemplateColumn Title="Categories">
+                <CellTemplate>
+                    @if (context.Item.Link_Category_RecurringTransactions.Count() > 0)
+                    {
+                        @foreach (var cat in context.Item.Link_Category_RecurringTransactions.OrderBy(x => x.Category.Name))
+                        {
+                            @cat.Category.Name
+
+                            if (cat.CategoryId != context.Item.Link_Category_RecurringTransactions.OrderBy(x => x.Category.Name).Last().CategoryId)
+                            {
+                                <text>, &nbsp;</text>
+                            }
+                        }
+                    }
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+    </MudDataGrid>
+}
 
 @code {
+    private List<Data.Entities.RecurringTransaction> recurringTransactions;
 
+    protected override async Task OnInitializedAsync()
+    {
+        recurringTransactions = await MR_RecTranService.GetAllRecurringTransactionsAsync();
+    }
+
+    private void OnRowClick(DataGridRowClickEventArgs<Data.Entities.RecurringTransaction> item)
+    {
+        
+    }
 }

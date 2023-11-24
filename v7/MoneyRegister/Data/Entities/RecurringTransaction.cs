@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MoneyRegister.Data.Entities;
 
@@ -21,6 +22,29 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
 
     public MR_Enum.Regularity Frequency { get; set; } = MR_Enum.Regularity.Unknown;
+    [NotMapped]
+    public string FrequencyString
+    {
+        get
+        {
+            switch(Frequency)
+            {
+                case MR_Enum.Regularity.Annually:
+                    return "Annually";
+                case MR_Enum.Regularity.Monthly:
+                    return $"Monthly - {FrequencyValue}";
+                case MR_Enum.Regularity.Nonregular:
+                    return "Nonregular frequency";
+                case MR_Enum.Regularity.XDays:
+                    return $"Every {FrequencyValue} days";
+                case MR_Enum.Regularity.XWeekYDayOfWeek:
+                    return $"Every {FrequencyValue} {DayOfWeekValue}";
+                case MR_Enum.Regularity.Unknown:
+                default:
+                    return "";
+            }
+        }
+    }
 
     public int? FrequencyValue { get; set; } = null;
     public DayOfWeek? DayOfWeekValue { get; set; } = null;
