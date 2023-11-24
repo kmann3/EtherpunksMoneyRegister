@@ -57,6 +57,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
 
     public int? FrequencyValue { get; set; } = null;
     public DayOfWeek? DayOfWeekValue { get; set; } = null;
+    public DateTime? FrequencyDateValue { get; set; } = null;
     [JsonIgnore]
     public TransactionGroup? Group { get; set; }
     public Guid? TransactionGroupId { get; set; }

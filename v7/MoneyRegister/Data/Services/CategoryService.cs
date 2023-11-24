@@ -7,8 +7,15 @@ public class CategoryService(ApplicationDbContext context)
 {
     private ApplicationDbContext _context = context;
 
+    private List<Category> _categories = new();
+
     public async Task<List<Category>> GetAllCategoriesAsync()
     {
-        return await _context.Categories.OrderBy(x => x.Name).ToListAsync();
+        if(_categories.Count == 0)
+        {
+            _categories = await _context.Categories.OrderBy(x => x.Name).ToListAsync();
+        }
+
+        return _categories;
     }
 }
