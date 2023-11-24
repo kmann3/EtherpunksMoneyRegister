@@ -357,3 +357,6 @@ MigrationBackup/
 .ionide/
 /v6/MannsMoneyRegister/MannsMoneyRegister/MannsMoneyRegister/MMR.sqlite3-shm
 /v6/MannsMoneyRegister/MannsMoneyRegister/MannsMoneyRegister/MMR.sqlite3-wal
+/v7/MoneyRegister/MMR.sqlite3-shm
+/v7/MoneyRegister/MMR.sqlite3-wal
+/v7/MoneyRegister/MMR.sqlite3
