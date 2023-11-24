@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MoneyRegister.Data.Entities;
 namespace MoneyRegister.Data.Services;
 
 public class RecurringTransactionService(ApplicationDbContext context)
@@ -12,5 +13,17 @@ public class RecurringTransactionService(ApplicationDbContext context)
             .Include(x => x.Link_Category_RecurringTransactions).ThenInclude(x => x.Category)
             .OrderBy(x => x.TransactionType).ThenBy(x => x.Name)
             .ToListAsync();
+    }
+
+    public async Task DeleteRecurringTransactionAsync(RecurringTransaction recurringTransaction)
+    {
+        _context.RecurringTransactions.Remove(recurringTransaction);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateRecurringTransactionAsync(RecurringTransaction recurringTransaction)
+    {
+        _context.Attach(recurringTransaction);
+        await _context.SaveChangesAsync();
     }
 }

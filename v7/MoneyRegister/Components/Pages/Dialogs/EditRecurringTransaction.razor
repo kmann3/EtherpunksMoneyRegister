@@ -1,0 +1,53 @@
+﻿@using Data.Entities
+@using System.Globalization
+@inject Data.Services.RecurringTransactionService MR_RecTranService
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3 mb-n1" />
+            Edit - @RecurringTransactionDetails.Name
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Name" Label="Name" />
+        <MudNumericField T="decimal" @bind-Value="RecurringTransactionDetails.Amount" Immediate="false" Label="Amount" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" />
+        <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Notes" Label="Notes" AutoGrow Maxlines="3" />
+        <br />
+        <MudTextField T="string" Label="Debit/Credit" ReadOnly />
+        <MudTextField T="string" Label="CategoryList" ReadOnly />
+        <MudTextField T="string" Label="Frequency" ReadOnly />
+        <MudTextField T="string" Label="TransactionGroup" ReadOnly />
+        <MudTextField T="string" Label="Next Due Date" ReadOnly />
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Warning" OnClick="Save">Save</MudButton>
+        <MudButton Color="Color.Error" OnClick="Delete">Delete</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public RecurringTransaction RecurringTransactionDetails { get; set; } = new();
+    [Parameter] public bool IsNew { get; set; }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private async void Save()
+    {
+        await MR_RecTranService.UpdateRecurringTransactionAsync(RecurringTransactionDetails);
+        MudDialog.Close(DialogResult.Ok(RecurringTransactionDetails));
+    }
+    private async Task Delete()
+    {
+        RecurringTransactionDetails.DeletedOnUTC = DateTime.UtcNow;
+        await MR_RecTranService.DeleteRecurringTransactionAsync(RecurringTransactionDetails);
+        MudDialog.Close(DialogResult.Ok(RecurringTransactionDetails));
+    }
+}

@@ -58,8 +58,11 @@ public class Program
 
         builder.Services.AddScoped<AccountService>();
         builder.Services.AddScoped<BackupService>();
+        builder.Services.AddScoped<CategoryService>();
         builder.Services.AddScoped<DashboardService>();
-        builder.Services.AddScoped <RecurringTransactionService>();
+        builder.Services.AddScoped<RecurringTransactionService>();
+        builder.Services.AddScoped<TransactionGroupService>();
+
         builder.Services.AddScoped<TestService>();
 
         builder.Services.AddMudServices();

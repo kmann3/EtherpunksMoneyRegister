@@ -1,6 +1,11 @@
-﻿@page "/rectran"
+﻿@page "/editRecurringTransaction"
+@using Data.Entities
+@using Pages.Util
+
 @inject Data.Services.RecurringTransactionService MR_RecTranService
-<PageTitle>Mann's Money Management - Dashboard</PageTitle>
+@inject IDialogService DialogService
+
+<PageTitle>Mann's Money Management - Recurring Transactions</PageTitle>
 
 @if (recurringTransactions == null)
 {
@@ -64,8 +69,25 @@ else
         recurringTransactions = await MR_RecTranService.GetAllRecurringTransactionsAsync();
     }
 
-    private void OnRowClick(DataGridRowClickEventArgs<Data.Entities.RecurringTransaction> item)
+    private async void OnRowClick(DataGridRowClickEventArgs<Data.Entities.RecurringTransaction> item)
     {
-        
+        // Use Dialog
+        // https://www.mudblazor.com/components/dialog#passing-data
+
+        // categories?
+        var result = await DialogUtil.ShowAccountDialog(DialogService, false, item.Item);
+        if(!result.Canceled)
+        {
+            RecurringTransaction newItem = result.Data as RecurringTransaction;
+            if(newItem.DeletedOnUTC.HasValue)
+            {
+                // remove it from the list
+                recurringTransactions.Remove(item.Item);
+
+            } else
+            {
+                // Update it
+            }
+        }
     }
 }

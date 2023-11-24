@@ -28,22 +28,29 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     {
         get
         {
-            switch(Frequency)
+            try
             {
-                case MR_Enum.Regularity.Annually:
-                    return "Annually";
-                case MR_Enum.Regularity.Monthly:
-                    return $"{FrequencyValue.ToString().Ordinalize()} of the month";
-                case MR_Enum.Regularity.Nonregular:
-                    return "Nonregular frequency";
-                case MR_Enum.Regularity.XDays:
-                    return $"Every {FrequencyValue} days";
-                case MR_Enum.Regularity.XWeekYDayOfWeek:
-                    return $"Every {FrequencyValue.ToString().Ordinalize()} {DayOfWeekValue}";
-                case MR_Enum.Regularity.Unknown:
-                    return "Unknown";
-                default:
-                    throw new NotImplementedException();
+                switch (Frequency)
+                {
+                    case MR_Enum.Regularity.Annually:
+                        return "Annually";
+                    case MR_Enum.Regularity.Monthly:
+                        return $"{FrequencyValue.ToString().Ordinalize()} of the month";
+                    case MR_Enum.Regularity.Nonregular:
+                        return "Nonregular frequency";
+                    case MR_Enum.Regularity.XDays:
+                        return $"Every {FrequencyValue} days";
+                    case MR_Enum.Regularity.XWeekYDayOfWeek:
+                        return $"Every {FrequencyValue.ToString().Ordinalize()} {DayOfWeekValue}";
+                    case MR_Enum.Regularity.Unknown:
+                        return "Unknown";
+                    default:
+                        throw new NotImplementedException();
+                }
+            } catch (Exception ex)
+            {
+                // Probably value in frequncy is null but shouldn't be. This should only be hit when I messing with the DB manually and broke something
+                return "ERROR";
             }
         }
     }
