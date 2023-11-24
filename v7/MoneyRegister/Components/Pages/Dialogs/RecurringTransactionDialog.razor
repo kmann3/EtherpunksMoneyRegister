@@ -1,7 +1,9 @@
 ﻿@using Data.Entities
+@using Pages.Util
 @using System.Globalization
 @inject Data.Services.RecurringTransactionService MR_RecTranService
 @inject Data.Services.CategoryService MR_CategoryService
+@inject IDialogService DialogService
 
 <MudDialog>
     <TitleContent>
@@ -136,9 +138,16 @@
 
         selectedCategories = t;
     }
-    private void NewCategoryDialog()
+    private async Task NewCategoryDialog()
     {
-        throw new NotImplementedException();
+        var result = await DialogUtil.ShowCategoryDialog(DialogService, true, new Category());
+
+        if (!result.Canceled)
+        {
+            var catData = result.Data as Category;
+            categories.Add(catData!);
+            RecurringTransactionDetails.Link_Category_RecurringTransactions.Add(new Link_Category_RecurringTransaction() { CategoryId = catData!.Id, RecurringTransactionId = RecurringTransactionDetails.Id });
+        }
     }
 
     private void Cancel()

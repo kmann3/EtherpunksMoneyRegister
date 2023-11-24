@@ -1,0 +1,55 @@
+﻿@using Data.Entities
+
+<MudDialog>
+    <DialogContent>
+        <MudTextField @bind-Value="CategoryDetails.Name" OnKeyDown="OnKeyDown" Immediate="true" AutoFocus="true" Variant="Variant.Outlined" />
+    </DialogContent>
+    <DialogActions>
+        @if (!IsNew)
+        {
+            <MudButton Color="Color.Warning" OnClick="Delete">Delete</MudButton>
+        }
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Save">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public Category CategoryDetails { get; set; }
+
+    [Parameter]
+    public bool IsNew { get; set; }
+
+    private void Save()
+    {
+        CategoryDetails.Name = CategoryDetails.Name.Trim();//.Replace(' ', '-');
+        MudDialog.Close(DialogResult.Ok(CategoryDetails));
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void Delete()
+    {
+        CategoryDetails.DeletedOnUTC = DateTime.UtcNow;
+        MudDialog.Close(DialogResult.Ok(CategoryDetails));
+    }
+
+    private void OnKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key is "Enter" or "NumppadEnter")
+        {
+            Save();
+        }
+        else if (args.Key is " ")
+        {
+            args.Key = "-";
+        }
+    }
+}
