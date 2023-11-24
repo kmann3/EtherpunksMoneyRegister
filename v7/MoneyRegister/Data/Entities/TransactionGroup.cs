@@ -10,7 +10,7 @@ namespace MoneyRegister.Data.Entities;
 public class TransactionGroup : BasicTable<TransactionGroup>, IEntityTypeConfiguration<TransactionGroup>
 {
     [JsonIgnore]
-    public List<RecurringTransaction> RecurringTransactions { get; set; }
+    public List<RecurringTransaction> RecurringTransactions { get; set; } = new();
 
     public override void Configure(EntityTypeBuilder<TransactionGroup> builder)
     {
