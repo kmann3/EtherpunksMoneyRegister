@@ -2,14 +2,9 @@
 using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-public class AccountService
+public class AccountService(ApplicationDbContext context)
 {
-    private ApplicationDbContext _context;
-
-    public AccountService(ApplicationDbContext context)
-    {
-        _context = context;
-    }
+    private ApplicationDbContext _context = context;
 
     public async Task <Account> GetAccountDetailsAsync(Guid accountId)
     {

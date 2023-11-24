@@ -2,7 +2,7 @@
 
 namespace MoneyRegister.Data.Services;
 
-public class DashboardService
+public class DashboardService(ApplicationDbContext context)
 {
     public class DashboardItem
     {
@@ -13,12 +13,7 @@ public class DashboardService
         public DateTime? LastBalanced { get; set; } = null;
     }
 
-    private ApplicationDbContext _context;
-
-    public DashboardService(ApplicationDbContext context)
-    {
-        _context = context;
-    }
+    private ApplicationDbContext _context = context;
 
     public async Task<List<DashboardItem>> GetDashboardItemsAsync()
     {

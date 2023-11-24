@@ -27,37 +27,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         builder.Entity<Link_Category_Transaction>().HasKey(x => new { x.CategoryId, x.TransactionId });
         builder.Entity<Link_Category_RecurringTransaction>().HasKey(x => new { x.CategoryId, x.RecurringTransactionId });
-
-        //builder.Entity<Transaction>().HasOne(x => x.CreatedBy).WithMany(x => x.Transactions).OnDelete(DeleteBehavior.NoAction);
-        //builder.Entity<TransactionFile>().HasOne(x => x.Transaction).WithMany(x => x.Files).OnDelete(DeleteBehavior.NoAction);
-
-        //builder.Entity<Transaction>()
-        //    .HasMany(x => x.Categories)
-        //    .WithMany(x => x.Transactions)
-        //    .UsingEntity<Dictionary<string, object>>(
-        //    "Link_Category_Transaction",
-        //    x => x.HasOne<Category>().WithMany().OnDelete(DeleteBehavior.Restrict),
-        //    x => x.HasOne<Transaction>().WithMany().OnDelete(DeleteBehavior.Cascade)
-        //    );
-
-        //builder.Entity<Transaction>()
-        //    .HasMany(x => x.Categories)
-        //    .WithMany(x => x.Transactions)
-        //    .UsingEntity(
-        //        "Link_Category_Transaction",
-        //        l => l.HasOne(typeof(Category)).WithMany().HasForeignKey("CategoryId").HasPrincipalKey(nameof(Category.Id)),
-        //        r => r.HasOne(typeof(Transaction)).WithMany().HasForeignKey("TransactionId").HasPrincipalKey(nameof(Transaction.Id)),
-        //        j => j.HasKey("TransactionId", "CategoryId"));
-
-        //builder.Entity<RecurringTransaction>()
-        //    .HasMany(x => x.Categories)
-        //    .WithMany(x => x.RecurringTransactions)
-        //    .UsingEntity<Dictionary<string, object>>(
-        //    "Link_Category_RecurringTransactions",
-        //    x => x.HasOne<Category>().WithMany().OnDelete(DeleteBehavior.Restrict),
-        //    x => x.HasOne<RecurringTransaction>().WithMany().OnDelete(DeleteBehavior.Cascade)
-        //    );
-
+        
         SeedDatabase(builder);
 
         base.OnModelCreating(builder);

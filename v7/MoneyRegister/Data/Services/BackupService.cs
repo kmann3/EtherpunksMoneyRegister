@@ -17,6 +17,7 @@ public class BackupService(ApplicationDbContext context)
     public static string transactionGroupsJsonFileName = $"transaction_groups.json";
     public static string usersJsonFileName = $"users.json";
     public static string link_category_transactionFileName = $"link_category_transaction.json";
+    public static string link_category_recurringTransactionFileName = $"link_category_recurringTransaction.json";
 
     public async Task<string> CreateBackupJsonAsync()
     {
@@ -29,7 +30,8 @@ public class BackupService(ApplicationDbContext context)
         List<Transaction> transactionList = await _context.Transactions.ToListAsync();
         List<TransactionGroup> transactionGroupList = await _context.TransactionGroups.ToListAsync();
         List<ApplicationUser> userList = await _context.ApplicationUsers.ToListAsync();
-        List<Link_Category_Transaction> link_category_Transaction = await _context.Link_Categories_Transactions.ToListAsync();
+        List<Link_Category_Transaction> link_category_TransactionList = await _context.Link_Categories_Transactions.ToListAsync();
+        List<Link_Category_RecurringTransaction> link_category_RecurringTransactionList = await _context.Link_Category_RecurringTransactions.ToListAsync();
 
         var options = new JsonSerializerOptions { WriteIndented = true };
         string jsonString = string.Empty;
@@ -59,8 +61,11 @@ public class BackupService(ApplicationDbContext context)
         jsonString = JsonSerializer.Serialize(userList, options);
         File.WriteAllText($@"{fileName}/{usersJsonFileName}", jsonString);
 
-        jsonString = JsonSerializer.Serialize(link_category_Transaction, options);
+        jsonString = JsonSerializer.Serialize(link_category_TransactionList, options);
         File.WriteAllText($@"{fileName}/{link_category_transactionFileName}", jsonString);
+
+        jsonString = JsonSerializer.Serialize(link_category_RecurringTransactionList, options);
+        File.WriteAllText($@"{fileName}/{link_category_recurringTransactionFileName}", jsonString);
 
         ZipFile.CreateFromDirectory(fileName, fileName + ".zip");
         Directory.Delete(fileName, true);
@@ -92,7 +97,10 @@ public class BackupService(ApplicationDbContext context)
 
             if (!File.Exists($"restore/{link_category_transactionFileName}")) throw new FileNotFoundException($"Json file not found: restore/{link_category_transactionFileName}");
 
+            if (!File.Exists($"restore/{link_category_recurringTransactionFileName}")) throw new FileNotFoundException($"Json file not found: restore/{link_category_recurringTransactionFileName}");
+
             _context.RemoveRange(await _context.Link_Categories_Transactions.ToListAsync());
+            _context.RemoveRange(await _context.Link_Category_RecurringTransactions.ToListAsync());
             _context.RemoveRange(await _context.Accounts.ToListAsync());
             _context.RemoveRange(await _context.Categories.ToListAsync());
             _context.RemoveRange(await _context.RecurringTransactions.ToListAsync());
@@ -142,6 +150,10 @@ public class BackupService(ApplicationDbContext context)
             jsonString = await File.ReadAllTextAsync($"restore/{link_category_transactionFileName}");
             List<Link_Category_Transaction> link_category_Transaction = JsonSerializer.Deserialize<List<Link_Category_Transaction>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{link_category_transactionFileName}");
             await _context.Link_Categories_Transactions.AddRangeAsync(link_category_Transaction);
+
+            jsonString = await File.ReadAllTextAsync($"restore/{link_category_recurringTransactionFileName}");
+            List<Link_Category_RecurringTransaction> link_Category_RecurringTransactions = JsonSerializer.Deserialize<List<Link_Category_RecurringTransaction>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{link_category_recurringTransactionFileName}");
+            await _context.Link_Category_RecurringTransactions.AddRangeAsync(link_Category_RecurringTransactions);
 
             await _context.SaveChangesAsync();
 
