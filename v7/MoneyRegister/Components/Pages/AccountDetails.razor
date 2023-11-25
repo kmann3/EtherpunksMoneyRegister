@@ -51,13 +51,13 @@
                 <PropertyColumn Property="x => x.Notes" Title="Notes" />
                 <TemplateColumn Title="Categories">
                     <CellTemplate>
-                        @if (context.Item.Link_Category_Transactions.Count() > 0)
+                        @if (context.Item.Categories.Count() > 0)
                         {
-                            @foreach (var cat in context.Item.Link_Category_Transactions.OrderBy(x => x.Category.Name))
+                            @foreach (var cat in context.Item.Categories.OrderBy(x => x.Name))
                             {
-                                <MudLink Href="@GetCategoryLink(cat.CategoryId)">@cat.Category.Name</MudLink>
+                                <MudLink Href="@GetCategoryLink(cat.Id)">@cat.Name</MudLink>
 
-                                if (cat.CategoryId != context.Item.Link_Category_Transactions.OrderBy(x => x.Category.Name).Last().CategoryId)
+                                if (cat.Id != context.Item.Categories.OrderBy(x => x.Name).Last().Id)
                                 {
                                     <text>, &nbsp;</text>
                                 }

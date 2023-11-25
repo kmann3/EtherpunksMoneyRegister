@@ -21,7 +21,8 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
 
     [JsonIgnore]
     public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
-
+    [JsonIgnore]
+    public List<Category> Categories { get; } = new();
     public MR_Enum.Regularity Frequency { get; set; } = MR_Enum.Regularity.Unknown;
     [NotMapped]
     public string FrequencyString

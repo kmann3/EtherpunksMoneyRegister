@@ -43,13 +43,13 @@ else
             <PropertyColumn Property="x => x!.Amount" Format="C" />
             <TemplateColumn Title="Categories">
                 <CellTemplate>
-                    @if (context.Item.Link_Category_RecurringTransactions.Count() > 0)
+                    @if (context.Item.Categories.Count() > 0)
                     {
-                        @foreach (var cat in context.Item.Link_Category_RecurringTransactions.OrderBy(x => x.Category.Name))
+                        @foreach (var cat in context.Item.Categories.OrderBy(x => x.Name))
                         {
-                            @cat.Category.Name
+                            @cat.Name
 
-                            if (cat.CategoryId != context.Item.Link_Category_RecurringTransactions.OrderBy(x => x.Category.Name).Last().CategoryId)
+                            if (cat.Id != context.Item.Categories.OrderBy(x => x.Name).Last().Id)
                             {
                                 <text>, &nbsp;</text>
                             }

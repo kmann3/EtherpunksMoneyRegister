@@ -10,7 +10,7 @@ public class RecurringTransactionService(ApplicationDbContext context)
     {
         return await _context.RecurringTransactions
             .Include(x => x.Group)
-            .Include(x => x.Link_Category_RecurringTransactions).ThenInclude(x => x.Category)
+            .Include(x => x.Categories)
             .OrderBy(x => x.TransactionType).ThenBy(x => x.Name)
             .ToListAsync();
     }

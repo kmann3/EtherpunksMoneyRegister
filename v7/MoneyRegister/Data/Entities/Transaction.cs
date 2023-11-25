@@ -70,6 +70,8 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
 
     [JsonIgnore]
     public List<Link_Category_Transaction> Link_Category_Transactions { get; } = new List<Link_Category_Transaction>();
+    [JsonIgnore]
+    public List<Category> Categories { get; } = new();
 
     public List<TransactionFile> Files { get; set; } = new();
 

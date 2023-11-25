@@ -89,6 +89,7 @@
 
         <br />
         <MudTextField T="string" Label="TransactionGroup" ReadOnly />
+        <MudTextField T="string" Label="Account List" ReadOnly />
 
     </DialogContent>
     <DialogActions>
@@ -120,6 +121,7 @@
     protected override async Task OnInitializedAsync()
     {
         categories = await MR_CategoryService.GetAllCategoriesAsync();
+        ResetSelectedCategories();
     }
 
     private string GetSelectedItemsText(List<string> selectedValues)
@@ -130,10 +132,10 @@
     private void ResetSelectedCategories()
     {
         HashSet<Category> t = new HashSet<Category>();
-        if (RecurringTransactionDetails.Link_Category_RecurringTransactions.Count() == 0) return;
-        foreach (var item in RecurringTransactionDetails.Link_Category_RecurringTransactions)
+        if (RecurringTransactionDetails.Categories.Count() == 0) return;
+        foreach (var item in RecurringTransactionDetails.Categories)
         {
-            t.Add(item.Category);
+            t.Add(item);
         }
 
         selectedCategories = t;
@@ -146,7 +148,7 @@
         {
             var catData = result.Data as Category;
             categories.Add(catData!);
-            RecurringTransactionDetails.Link_Category_RecurringTransactions.Add(new Link_Category_RecurringTransaction() { CategoryId = catData!.Id, RecurringTransactionId = RecurringTransactionDetails.Id });
+            RecurringTransactionDetails.Categories.Add(catData);
         }
     }
 

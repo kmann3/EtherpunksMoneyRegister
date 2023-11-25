@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using MoneyRegister.Data.Entities;
 using MoneyRegister.Data.Services;
 using MoneyRegister.Extensions;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text.Json;
 
 namespace MoneyRegister.Data;
@@ -25,9 +27,38 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        builder.Entity<Link_Category_Transaction>().HasKey(x => new { x.CategoryId, x.TransactionId });
-        builder.Entity<Link_Category_RecurringTransaction>().HasKey(x => new { x.CategoryId, x.RecurringTransactionId });
-        
+        //builder.Entity<Link_Category_Transaction>().HasKey(x => new { x.CategoryId, x.TransactionId });
+        //builder.Entity<Link_Category_RecurringTransaction>().HasKey(x => new { x.CategoryId, x.RecurringTransactionId });
+
+        builder.Entity<Category>()
+            .HasMany(x => x.RecurringTransactions)
+            .WithMany(x => x.Categories)
+            .UsingEntity<Link_Category_RecurringTransaction>(
+
+            l => l.HasOne<RecurringTransaction>().WithMany(e => e.Link_Category_RecurringTransactions).HasForeignKey(x => x.RecurringTransactionId),
+
+            r => r.HasOne<Category>().WithMany(e => e.Link_Category_RecurringTransactions).HasForeignKey(x => x.CategoryId)
+            );
+
+        builder.Entity<Category>()
+            .HasMany(x => x.Transactions)
+            .WithMany(x => x.Categories)
+            .UsingEntity<Link_Category_Transaction>(
+
+            l => l.HasOne<Transaction>().WithMany(e => e.Link_Category_Transactions).HasForeignKey(x => x.TransactionId),
+
+            r => r.HasOne<Category>().WithMany(e => e.Link_Category_Transactions).HasForeignKey(x => x.CategoryId)
+            );
+
+        //modelBuilder.Entity<Post>()
+        //.HasMany(e => e.Tags)
+        //.WithMany(e => e.Posts)
+        //.UsingEntity(
+        //    "PostTag",
+        //    l => l.HasOne(typeof(Tag)).WithMany().HasForeignKey("TagsId").HasPrincipalKey(nameof(Tag.Id)),
+        //    r => r.HasOne(typeof(Post)).WithMany().HasForeignKey("PostsId").HasPrincipalKey(nameof(Post.Id)),
+        //    j => j.HasKey("PostsId", "TagsId"));
+
         SeedDatabase(builder);
 
         base.OnModelCreating(builder);
@@ -118,10 +149,19 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             TransactionGroupId = TransactionGroup_AllBills.Id,
             NextDueDate = new DateTime(year, month, 15),
             Frequency = MR_Enum.Regularity.Monthly,
+            FrequencyValue = 15,
             TransactionType = MR_Enum.TransactionType.Debit,
         };
 
         builder.Entity<RecurringTransaction>().HasData(recTran_AdobePhotoshop);
+
+        Link_Category_RecurringTransaction recTran1 = new()
+        {
+            CategoryId = billsCategory.Id,
+            RecurringTransactionId = recTran_AdobePhotoshop.Id,
+        };
+
+        builder.Entity<Link_Category_RecurringTransaction>().HasData(recTran1);
 
         RecurringTransaction recTran_Allstate = new()
         {
@@ -130,8 +170,17 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             TransactionGroupId = TransactionGroup_AllBills.Id,
             NextDueDate = new DateTime(year, month, 18),
             Frequency = MR_Enum.Regularity.Monthly,
+            FrequencyValue = 18,
             TransactionType = MR_Enum.TransactionType.Debit
         };
+
+        Link_Category_RecurringTransaction rectTran2 = new()
+        {
+            CategoryId = billsCategory.Id,
+            RecurringTransactionId = recTran_Allstate.Id,
+        };
+
+        builder.Entity<Link_Category_RecurringTransaction>().HasData(rectTran2);
 
         builder.Entity<RecurringTransaction>().HasData(recTran_Allstate);
 
@@ -142,19 +191,21 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             TransactionGroupId = null,
             NextDueDate = new DateTime(year, month, 18),
             Frequency = MR_Enum.Regularity.Monthly,
+            FrequencyValue = 18,
             TransactionType = MR_Enum.TransactionType.Credit
-        });
+        }); ;
 
         builder.Entity<RecurringTransaction>().HasData(new RecurringTransaction()
         {
             Name = "Payday",
             Amount = 1343.72M,
             TransactionGroupId = null,
-            NextDueDate = new DateTime(year, month, 22),
-            Frequency = MR_Enum.Regularity.Monthly,
+            NextDueDate = new DateTime(year, month, 27),
+            Frequency = MR_Enum.Regularity.XWeekYDayOfWeek,
+            FrequencyValue = 4,
+            DayOfWeekValue = DayOfWeek.Wednesday,
             TransactionType = MR_Enum.TransactionType.Credit
         });
-
 
         decimal currentBalance = 0M;
         decimal outstandingBalance = 0M;
@@ -167,7 +218,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
             AccountId = account_Cash.Id,
             Amount = transAmount,
-            Balance = 1343.72M,
+            Balance = 1998M,
             CreatedById = adminUser.Id,
             Name = "payday",
             TransactionPendingUTC = new DateTime(year, month - 1, 25),
@@ -188,20 +239,13 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Balance = currentBalance,
             CreatedById = adminUser.Id,
             Name = "Adobe Photoshop",
-            //Categories = new List<Category>(),
             RecurringTransactionId = recTran_AdobePhotoshop.Id,
             TransactionType = MR_Enum.TransactionType.Debit,
         };
 
         builder.Entity<Transaction>().HasData(trans2);
 
-        Link_Category_Transaction trans2CatLink = new()
-        {
-            CategoryId = billsCategory.Id,
-            TransactionId = trans2.Id
-        };
-
-        builder.Entity<Link_Category_Transaction>().HasData(trans2CatLink);
+        builder.Entity<Link_Category_Transaction>().HasData(new Link_Category_Transaction() { CategoryId = billsCategory.Id, TransactionId = trans2.Id});
 
         account_Cash.CurrentBalance = currentBalance;
         account_Cash.OutstandingBalance = outstandingBalance;

@@ -10,7 +10,7 @@ public class AccountService(ApplicationDbContext context)
     {
         var data = await _context.Accounts
             .Include(x => x.Transactions)
-                .ThenInclude(x => x.Link_Category_Transactions).ThenInclude(x => x.Category)
+            .ThenInclude(x => x.Categories)
             .Where(x => x.Id == accountId)
             .Select(x => new
             {
@@ -31,15 +31,15 @@ public class AccountService(ApplicationDbContext context)
         {
             //await _context.Entry(transaction).Collection(x => x.Categories).LoadAsync();
             Console.Write(transaction.Name + "--");
-            if(transaction.Link_Category_Transactions.Count > 0)
+            if(transaction.Categories.Count > 0)
             {
-                Console.WriteLine("Has it: " + transaction.Link_Category_Transactions.First().Category.Name);
+                Console.WriteLine("Has it: " + transaction.Categories.First().Name);
             }
-            if(transaction.Link_Category_Transactions.Count > 0)
+            if(transaction.Categories.Count > 0)
             {
-                foreach(var cat  in transaction.Link_Category_Transactions)
+                foreach(var cat  in transaction.Categories)
                 {
-                    Console.Write(cat.Category.Name + ":");
+                    Console.Write(cat.Name + ":");
                 }
             } else
             {
