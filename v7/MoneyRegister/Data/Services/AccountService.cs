@@ -6,9 +6,15 @@ public class AccountService(ApplicationDbContext context)
 {
     private ApplicationDbContext _context = context;
 
+    private List<Account> _accounts = new();
+
     public async Task<List<Account>> GetAllAccountsAsync()
     {
-        return await _context.Accounts.ToListAsync();
+        if(_accounts.Count == 0)
+        {
+            _accounts = await _context.Accounts.OrderBy(x => x.Name).ToListAsync();
+        }
+        return _accounts;
     }
 
     public async Task <Account> GetAccountDetailsAsync(Guid accountId)

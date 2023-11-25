@@ -7,8 +7,15 @@ public class TransactionGroupService(ApplicationDbContext context)
 {
     private ApplicationDbContext _context = context;
 
+    private List<TransactionGroup> _transactionGroups = new();
+
     public async Task<List<TransactionGroup>> GetAllTransactionGroupsAsync()
     {
-        return await _context.TransactionGroups.OrderBy(x => x.Name).ToListAsync();
+        if(_transactionGroups.Count == 0)
+        {
+            _transactionGroups = await _context.TransactionGroups.OrderBy(x => x.Name).ToListAsync();
+        }
+
+        return _transactionGroups;
     }
 }
