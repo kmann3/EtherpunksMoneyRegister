@@ -1,7 +1,6 @@
 ﻿@using Data.Entities
 @using Pages.Util
 @using System.Globalization
-@inject Data.Services.AccountService MR_AccountService
 @inject Data.Services.CategoryService MR_CategoryService
 @inject Data.Services.RecurringTransactionService MR_RecTranService
 @inject Data.Services.TransactionGroupService MR_TransactionGroupService
@@ -23,7 +22,7 @@
             }
         </MudSelect>
         <MudNumericField T="decimal" @bind-Value="RecurringTransactionDetails.Amount" Immediate="false" Label="Amount" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" />
-        <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Notes" Label="Notes" AutoGrow Maxlines="3" />
+        <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Notes" Label="Notes" AutoGrow />
 
         <div class="d-flex">
             <MudSelect T="Category" Label="Categories" @bind-SelectedValues="selectedCategories" tabindex="3"
@@ -87,11 +86,13 @@
                 <MudButton Color="Color.Primary" OnClick="@(() => _nextDueDatePicker.Close())">Ok</MudButton>
             </PickerActions>
         </MudDatePicker>
-
-        <br />
-        <MudTextField T="string" Label="TransactionGroup" ReadOnly />
-        <MudTextField T="string" Label="Account List" ReadOnly />
-
+        <MudSelect T="TransactionGroup" Label="Transaction Group" @bind-Value="@RecurringTransactionDetails.Group" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined">
+            <MudSelectItem T="TransactionGroup" Value="@(null)">None</MudSelectItem>
+            @foreach (var group in transactionGroups)
+            {
+                <MudSelectItem Value="@group">@group.Name</MudSelectItem>
+            }
+        </MudSelect>
     </DialogContent>
     <DialogActions>
         @if (!IsNew)
@@ -113,7 +114,6 @@
 
     MudDatePicker _nextDueDatePicker;
     List<Category> categories { get; set; } = new();
-    List<Account> accounts { get; set; } = new();
     List<TransactionGroup> transactionGroups = new();
 
     private DateTime? frequencyDate;
@@ -124,7 +124,6 @@
     protected override async Task OnInitializedAsync()
     {
         categories = await MR_CategoryService.GetAllCategoriesAsync();
-        accounts = await MR_AccountService.GetAllAccountsAsync();
         transactionGroups = await MR_TransactionGroupService.GetAllTransactionGroupsAsync();
         ResetSelectedCategories();
     }
