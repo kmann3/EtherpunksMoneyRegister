@@ -9,6 +9,14 @@ public class CategoryService(ApplicationDbContext context)
 
     private List<Category> _categories = new();
 
+    public async Task<Category> CreateCategoryAsync(Category newCategory)
+    {
+        _context.Categories.Add(newCategory);
+        await _context.SaveChangesAsync();
+
+        return newCategory;
+    }
+
     public async Task<List<Category>> GetAllCategoriesAsync()
     {
         if(_categories.Count == 0)

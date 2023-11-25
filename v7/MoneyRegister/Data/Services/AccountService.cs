@@ -6,6 +6,11 @@ public class AccountService(ApplicationDbContext context)
 {
     private ApplicationDbContext _context = context;
 
+    public async Task<List<Account>> GetAllAccountsAsync()
+    {
+        return await _context.Accounts.ToListAsync();
+    }
+
     public async Task <Account> GetAccountDetailsAsync(Guid accountId)
     {
         var data = await _context.Accounts

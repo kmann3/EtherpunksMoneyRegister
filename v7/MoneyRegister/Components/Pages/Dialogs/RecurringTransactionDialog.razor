@@ -77,7 +77,6 @@
                 break;
         }
 
-
         <MudDatePicker @ref="_nextDueDatePicker" Label="Next Due Date" Editable="true" @bind-Date="RecurringTransactionDetails.NextDueDate" tabindex="4" PickerVariant="PickerVariant.Dialog">
             <PickerActions>
                 <MudButton Class="mr-auto align-self-start" OnClick="@(() => _nextDueDatePicker.Clear())">Clear</MudButton>
@@ -142,13 +141,16 @@
     }
     private async Task NewCategoryDialog()
     {
+        ResetSelectedCategories();
+
         var result = await DialogUtil.ShowCategoryDialog(DialogService, true, new Category());
 
         if (!result.Canceled)
         {
             var catData = result.Data as Category;
             categories.Add(catData!);
-            RecurringTransactionDetails.Categories.Add(catData);
+            RecurringTransactionDetails.Categories.Add(catData!);
+            ResetSelectedCategories();
         }
     }
 
@@ -159,7 +161,6 @@
 
     private async void Save()
     {
-        // Sanity check frequency
         switch(RecurringTransactionDetails.Frequency)
         {
             case MR_Enum.Regularity.Annually:
@@ -183,6 +184,16 @@
                 RecurringTransactionDetails.DayOfWeekValue = null;
                 break;
             case MR_Enum.Regularity.XDays:
+                RecurringTransactionDetails.FrequencyDateValue = null;
+                //RecurringTransactionDetails.FrequencyValue = null; // Assigned from component
+                RecurringTransactionDetails.DayOfWeekValue = null;
+                break;
+            case MR_Enum.Regularity.XWeeks:
+                RecurringTransactionDetails.FrequencyDateValue = null;
+                //RecurringTransactionDetails.FrequencyValue = null; // Assigned from component
+                RecurringTransactionDetails.DayOfWeekValue = null;
+                break;
+            case MR_Enum.Regularity.XMonths:
                 RecurringTransactionDetails.FrequencyDateValue = null;
                 //RecurringTransactionDetails.FrequencyValue = null; // Assigned from component
                 RecurringTransactionDetails.DayOfWeekValue = null;

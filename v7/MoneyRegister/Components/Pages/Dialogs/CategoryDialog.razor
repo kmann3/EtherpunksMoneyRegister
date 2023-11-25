@@ -1,4 +1,5 @@
 ﻿@using Data.Entities
+@inject Data.Services.CategoryService MR_CategoryService
 
 <MudDialog>
     <DialogContent>
@@ -24,9 +25,10 @@
     [Parameter]
     public bool IsNew { get; set; }
 
-    private void Save()
+    private async void Save()
     {
         CategoryDetails.Name = CategoryDetails.Name.Trim();//.Replace(' ', '-');
+        CategoryDetails = await MR_CategoryService.CreateCategoryAsync(CategoryDetails);
         MudDialog.Close(DialogResult.Ok(CategoryDetails));
     }
 
