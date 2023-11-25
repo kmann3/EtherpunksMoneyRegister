@@ -1,8 +1,10 @@
 ﻿@using Data.Entities
 @using Pages.Util
 @using System.Globalization
-@inject Data.Services.RecurringTransactionService MR_RecTranService
+@inject Data.Services.AccountService MR_AccountService
 @inject Data.Services.CategoryService MR_CategoryService
+@inject Data.Services.RecurringTransactionService MR_RecTranService
+@inject Data.Services.TransactionGroupService MR_TransactionGroupService
 @inject IDialogService DialogService
 
 <MudDialog>
@@ -111,6 +113,8 @@
 
     MudDatePicker _nextDueDatePicker;
     List<Category> categories { get; set; } = new();
+    List<Account> accounts { get; set; } = new();
+    List<TransactionGroup> transactionGroups = new();
 
     private DateTime? frequencyDate;
     private DayOfWeek frequencyDayOfWeek;
@@ -120,6 +124,8 @@
     protected override async Task OnInitializedAsync()
     {
         categories = await MR_CategoryService.GetAllCategoriesAsync();
+        accounts = await MR_AccountService.GetAllAccountsAsync();
+        transactionGroups = await MR_TransactionGroupService.GetAllTransactionGroupsAsync();
         ResetSelectedCategories();
     }
 
