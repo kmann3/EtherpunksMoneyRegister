@@ -6,7 +6,7 @@ public class RecurringTransactionService(ApplicationDbContext context)
 {
     private ApplicationDbContext _context = context;
 
-    public async Task<List<Entities.RecurringTransaction>> GetAllRecurringTransactionsAsync()
+    public async Task<List<RecurringTransaction>> GetAllRecurringTransactionsAsync()
     {
         return await _context.RecurringTransactions
             .Include(x => x.Group)
