@@ -52,7 +52,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
                 }
             } catch (Exception ex)
             {
-                // Probably value in frequncy is null but shouldn't be. This should only be hit when I messing with the DB manually and broke something
+                // Probably value in frequency is null but shouldn't be. This should only be hit when I messing with the DB manually and broke something
                 return "ERROR";
             }
         }
