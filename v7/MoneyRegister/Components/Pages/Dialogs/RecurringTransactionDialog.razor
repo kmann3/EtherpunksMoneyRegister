@@ -162,7 +162,7 @@
     {
         ResetSelectedCategories();
 
-        var result = await DialogUtil.ShowCategoryDialog(DialogService, true, new Category());
+        var result = await DialogUtil.ShowCategoryDialogAsync(DialogService, true, new Category());
 
         if (!result.Canceled)
         {
@@ -231,14 +231,18 @@
                 throw new NotImplementedException();
         }
 
-        if (IsNew) await MR_RecTranService.UpdateRecurringTransactionAsync(RecurringTransactionDetails);
-        else await MR_RecTranService.CreateRecurringTransactionAsync(RecurringTransactionDetails);
+        if (IsNew) await MR_RecTranService.CreateRecurringTransactionAsync(RecurringTransactionDetails);
+        else await MR_RecTranService.UpdateRecurringTransactionAsync(RecurringTransactionDetails);
 
         MudDialog.Close(DialogResult.Ok(RecurringTransactionDetails));
     }
     private async Task Delete()
     {
         // POP UP A "are you very sure? This is going bye bye"
+
+        var result = await DialogUtil.ShowConfirmDialogAsync(DialogService, "Delete", "Delete", $"Are you sure you want to delete the recurring transaction: '{RecurringTransactionDetails.Name}'?", Color.Error);
+        if (result.Canceled) return;
+
         RecurringTransactionDetails.DeletedOnUTC = DateTime.UtcNow;
         await MR_RecTranService.DeleteRecurringTransactionAsync(RecurringTransactionDetails);
         MudDialog.Close(DialogResult.Ok(RecurringTransactionDetails));
