@@ -14,18 +14,18 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Name" Label="Name" />
-        <MudSelect @bind-Value="@RecurringTransactionDetails.TransactionType">
+        <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Name" Label="Name" tabindex="1" @ref="firstFocus" />
+        <MudSelect @bind-Value="@RecurringTransactionDetails.TransactionType" tabindex="2">
             @foreach (MR_Enum.TransactionType entryType in Enum.GetValues(typeof(MR_Enum.TransactionType)))
             {
                 <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
             }
         </MudSelect>
-        <MudNumericField T="decimal" @bind-Value="RecurringTransactionDetails.Amount" Immediate="false" Label="Amount" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" />
-        <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Notes" Label="Notes" AutoGrow />
+        <MudNumericField T="decimal" @bind-Value="RecurringTransactionDetails.Amount" Immediate="false" Label="Amount" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="3" />
+        <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Notes" Label="Notes" AutoGrow tabindex="4" />
 
         <div class="d-flex">
-            <MudSelect T="Category" Label="Categories" @bind-SelectedValues="selectedCategories" tabindex="3"
+            <MudSelect T="Category" Label="Categories" @bind-SelectedValues="selectedCategories" tabindex="5"
                        AdornmentIcon="@Icons.Material.Filled.Search" AnchorOrigin="Origin.BottomCenter" MultiSelection="true" Variant="Variant.Outlined"
                        MultiSelectionTextFunc="@(new Func<List<string>, string>(GetSelectedItemsText))">
                 @foreach (var item in categories)
@@ -36,7 +36,7 @@
             <MudButton OnClick="NewCategoryDialog" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" />
         </div>
 
-        <MudSelect @bind-Value="@RecurringTransactionDetails.Frequency">
+        <MudSelect @bind-Value="@RecurringTransactionDetails.Frequency" tabindex="6">
             @foreach (MR_Enum.Regularity entryType in ((MR_Enum.Regularity[]) Enum.GetValues(typeof(MR_Enum.Regularity))).OrderBy(x => x.ToString()))
             {
                 <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
@@ -86,7 +86,7 @@
                 break;
         }
 
-        <MudDatePicker @ref="_nextDueDatePicker" Label="Next Due Date" Editable="true" @bind-Date="RecurringTransactionDetails.NextDueDate" tabindex="4" PickerVariant="PickerVariant.Dialog">
+        <MudDatePicker @ref="_nextDueDatePicker" Label="Next Due Date" Editable="true" @bind-Date="RecurringTransactionDetails.NextDueDate" tabindex="7" PickerVariant="PickerVariant.Dialog">
             <PickerActions>
                 <MudButton Class="mr-auto align-self-start" OnClick="@(() => _nextDueDatePicker.Clear())">Clear</MudButton>
                 <MudButton OnClick="@(() => _nextDueDatePicker.GoToDate(DateTime.UtcNow, true))">Today</MudButton>
@@ -94,7 +94,7 @@
                 <MudButton Color="Color.Primary" OnClick="@(() => _nextDueDatePicker.Close())">Ok</MudButton>
             </PickerActions>
         </MudDatePicker>
-        <MudSelect T="TransactionGroup" Label="Transaction Group" @bind-Value="@RecurringTransactionDetails.Group" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined">
+        <MudSelect T="TransactionGroup" Label="Transaction Group" @bind-Value="@RecurringTransactionDetails.Group" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="8">
             <MudSelectItem T="TransactionGroup" Value="@(null)">None</MudSelectItem>
             @foreach (var group in transactionGroups)
             {
@@ -129,6 +129,8 @@
 
     private IEnumerable<Category> selectedCategories = new HashSet<Category>();
 
+    private MudTextField<string> firstFocus;
+
     protected override async Task OnInitializedAsync()
     {
         categories = await MR_CategoryService.GetAllCategoriesAsync();
@@ -140,6 +142,14 @@
         RecurringTransactionDetails.FrequencyDateValue ??= DateTime.Now;
         RecurringTransactionDetails.FrequencyValue ??= 1;
         RecurringTransactionDetails.DayOfWeekValue ??= DayOfWeek.Monday;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await firstFocus.FocusAsync();
+        }
     }
 
     private string GetSelectedItemsText(List<string> selectedValues)
