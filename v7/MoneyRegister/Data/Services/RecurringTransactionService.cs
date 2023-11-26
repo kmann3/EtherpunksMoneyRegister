@@ -15,6 +15,12 @@ public class RecurringTransactionService(ApplicationDbContext context)
             .ToListAsync();
     }
 
+    public async Task CreateRecurringTransactionAsync(RecurringTransaction recurringTransaction)
+    {
+        _context.RecurringTransactions.Add(recurringTransaction);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task DeleteRecurringTransactionAsync(RecurringTransaction recurringTransaction)
     {
         _context.RecurringTransactions.Remove(recurringTransaction);

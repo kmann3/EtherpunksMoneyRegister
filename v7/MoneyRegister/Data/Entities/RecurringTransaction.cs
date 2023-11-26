@@ -43,6 +43,8 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
                         return $"Every {FrequencyValue} days";
                     case MR_Enum.Regularity.XWeekYDayOfWeek:
                         return $"Every {FrequencyValue.ToString().Ordinalize()} {DayOfWeekValue}";
+                    case MR_Enum.Regularity.Weekly:
+                        return $"Every {DayOfWeekValue}";
                     case MR_Enum.Regularity.Unknown:
                         return "Unknown";
                     default:
@@ -62,7 +64,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     [JsonIgnore]
     public TransactionGroup? Group { get; set; }
     public Guid? TransactionGroupId { get; set; }
-    public MR_Enum.TransactionType TransactionType { get; set; }
+    public MR_Enum.TransactionType TransactionType { get; set; } = MR_Enum.TransactionType.Debit;
     // TODO: What about when the date falls on a weekend?
     // TODO: What if we want to transfer from one account to another? TransactionType? Or Debit+Credit?
 

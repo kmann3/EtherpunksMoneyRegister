@@ -73,6 +73,14 @@
                     }
                 </MudSelect>
                 break;
+            case MR_Enum.Regularity.Weekly:
+                <MudSelect @bind-Value="@frequencyDayOfWeek">
+                    @foreach (DayOfWeek entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
+                    {
+                        <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
+                    }
+                </MudSelect>
+                break;
             default:
                 <p>ERROR?</p>
                 break;
@@ -126,6 +134,12 @@
         categories = await MR_CategoryService.GetAllCategoriesAsync();
         transactionGroups = await MR_TransactionGroupService.GetAllTransactionGroupsAsync();
         ResetSelectedCategories();
+
+        // Assigning some values so we don't end up with an accidental null later
+        // Before saving we sanity check the values and assign nulls where needed
+        RecurringTransactionDetails.FrequencyDateValue ??= DateTime.Now;
+        RecurringTransactionDetails.FrequencyValue ??= 1;
+        RecurringTransactionDetails.DayOfWeekValue ??= DayOfWeek.Monday;
     }
 
     private string GetSelectedItemsText(List<string> selectedValues)
@@ -208,11 +222,18 @@
                 //RecurringTransactionDetails.FrequencyValue = ; // Assigned from component
                 RecurringTransactionDetails.DayOfWeekValue = frequencyDayOfWeek;
                 break;
+            case MR_Enum.Regularity.Weekly:
+                RecurringTransactionDetails.FrequencyDateValue = null;
+                RecurringTransactionDetails.FrequencyValue = null;
+                RecurringTransactionDetails.DayOfWeekValue = frequencyDayOfWeek;
+                break;
             default:
                 throw new NotImplementedException();
         }
 
-        await MR_RecTranService.UpdateRecurringTransactionAsync(RecurringTransactionDetails);
+        if (IsNew) await MR_RecTranService.UpdateRecurringTransactionAsync(RecurringTransactionDetails);
+        else await MR_RecTranService.CreateRecurringTransactionAsync(RecurringTransactionDetails);
+
         MudDialog.Close(DialogResult.Ok(RecurringTransactionDetails));
     }
     private async Task Delete()

@@ -30,6 +30,11 @@ public class MR_Enum
         XWeekYDayOfWeek = 7,
 
         /// <summary>
+        /// Every X day of week
+        /// </summary>
+        Weekly = 8,
+
+        /// <summary>
         /// Yearly recurrence
         /// </summary>
         Annually = 2,

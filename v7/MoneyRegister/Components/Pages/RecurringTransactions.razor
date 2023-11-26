@@ -22,6 +22,9 @@ else
     <MudDataGrid Items="@recurringTransactions" T="Data.Entities.RecurringTransaction"
                  Filterable="false" SortMode="@SortMode.None" Groupable="false"
                  RowClick="@OnRowClick">
+        <ToolBarContent>
+            <MudButton Color="Color.Primary" OnClick="AddRecurringTransaction">Add Recurring Transaction</MudButton>
+        </ToolBarContent>
         <Columns>
             <PropertyColumn Property="x => x!.Name" />
             <PropertyColumn Property="x => x!.TransactionType" />
@@ -78,8 +81,8 @@ else
         var result = await DialogUtil.ShowAccountDialog(DialogService, false, item.Item);
         if(!result.Canceled)
         {
-            RecurringTransaction newItem = result.Data as RecurringTransaction;
-            if(newItem.DeletedOnUTC.HasValue)
+            RecurringTransaction newItem = result.Data as RecurringTransaction ?? throw new NullReferenceException("RecurringTransaction Data returned null. This shouldn't happen.");
+            if(newItem!.DeletedOnUTC.HasValue)
             {
                 // remove it from the list
                 recurringTransactions.Remove(item.Item);
@@ -89,5 +92,21 @@ else
                 // Update it
             }
         }
+
+        this.StateHasChanged();
+    }
+
+    private async Task AddRecurringTransaction()
+    {
+        var result = await DialogUtil.ShowAccountDialog(DialogService, true, new RecurringTransaction());
+        if (!result.Canceled)
+        {
+            RecurringTransaction newItem = result.Data as RecurringTransaction ?? throw new NullReferenceException("RecurringTransaction Data returned null. This shouldn't happen.");
+            // Add the item
+
+            recurringTransactions.Add(newItem);
+        }
+
+        this.StateHasChanged();
     }
 }
