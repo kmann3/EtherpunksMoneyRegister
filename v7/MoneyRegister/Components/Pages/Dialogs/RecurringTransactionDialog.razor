@@ -15,7 +15,8 @@
     </TitleContent>
     <DialogContent>
         <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Name" Label="Name" tabindex="1" @ref="firstFocus" />
-        <MudSelect @bind-Value="@RecurringTransactionDetails.TransactionType" tabindex="2">
+
+        <MudSelect T="MR_Enum.TransactionType" Label="Type of transaction" @bind-Value="@RecurringTransactionDetails.TransactionType" tabindex="2" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
             @foreach (MR_Enum.TransactionType entryType in Enum.GetValues(typeof(MR_Enum.TransactionType)))
             {
                 <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
@@ -36,7 +37,7 @@
             <MudButton OnClick="NewCategoryDialog" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" />
         </div>
 
-        <MudSelect @bind-Value="@RecurringTransactionDetails.Frequency" tabindex="6">
+        <MudSelect T="MR_Enum.Regularity" Label="Frequency" @bind-Value="@RecurringTransactionDetails.Frequency" tabindex="6" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
             @foreach (MR_Enum.Regularity entryType in ((MR_Enum.Regularity[]) Enum.GetValues(typeof(MR_Enum.Regularity))).OrderBy(x => x.ToString()))
             {
                 <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
@@ -46,27 +47,27 @@
         @switch(RecurringTransactionDetails.Frequency)
         {
             case MR_Enum.Regularity.Annually:
-                <MudDatePicker Label="Only Calendar" @bind-Date="frequencyDate" DisableToolbar="true" />
+                <MudDatePicker Label="Select Date" @bind-Date="frequencyDate" DisableToolbar="true" tabindex="7" />
                 break;
             case MR_Enum.Regularity.Monthly:
-                <MudDatePicker Label="Only Calendar" @bind-Date="frequencyDate" DisableToolbar="true" />
+                <MudDatePicker Label="Select Day" @bind-Date="frequencyDate" DisableToolbar="true" tabindex="7" />
                 break;
             case MR_Enum.Regularity.Nonregular:
                 break;
             case MR_Enum.Regularity.Unknown:
                 break;
             case MR_Enum.Regularity.XDays:
-                <MudNumericField @bind-Value="RecurringTransactionDetails.FrequencyValue" Label="Day Count" Variant="Variant.Text" Min="0" Max="100000" />
+                <MudNumericField @bind-Value="RecurringTransactionDetails.FrequencyValue" Label="Day Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="7" />
                 break;
             case MR_Enum.Regularity.XWeeks:
-                <MudNumericField @bind-Value="RecurringTransactionDetails.FrequencyValue" Label="Week Count" Variant="Variant.Text" Min="0" Max="100000" />
+                <MudNumericField @bind-Value="RecurringTransactionDetails.FrequencyValue" Label="Week Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="7" />
                 break;
             case MR_Enum.Regularity.XMonths:
-                <MudNumericField @bind-Value="RecurringTransactionDetails.FrequencyValue" Label="Month Count" Variant="Variant.Text" Min="0" Max="100000" />
+                <MudNumericField @bind-Value="RecurringTransactionDetails.FrequencyValue" Label="Month Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="7" />
                 break;
             case MR_Enum.Regularity.XWeekYDayOfWeek:
-                <MudNumericField @bind-Value="RecurringTransactionDetails.FrequencyValue" Label="Week" Variant="Variant.Text" Min="0" Max="100000" />
-                <MudSelect @bind-Value="@frequencyDayOfWeek">
+                <MudNumericField @bind-Value="RecurringTransactionDetails.FrequencyValue" Label="Week" Variant="Variant.Text" Min="0" Max="100000" tabindex="7" />
+                <MudSelect @bind-Value="@frequencyDayOfWeek" tabindex="8">
                     @foreach (DayOfWeek entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
                     {
                         <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
@@ -74,7 +75,7 @@
                 </MudSelect>
                 break;
             case MR_Enum.Regularity.Weekly:
-                <MudSelect @bind-Value="@frequencyDayOfWeek">
+                <MudSelect @bind-Value="@frequencyDayOfWeek" tabindex="7">
                     @foreach (DayOfWeek entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
                     {
                         <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
@@ -86,7 +87,7 @@
                 break;
         }
 
-        <MudDatePicker @ref="_nextDueDatePicker" Label="Next Due Date" Editable="true" @bind-Date="RecurringTransactionDetails.NextDueDate" tabindex="7" PickerVariant="PickerVariant.Dialog">
+        <MudDatePicker @ref="_nextDueDatePicker" Label="Next Due Date" Editable="true" @bind-Date="RecurringTransactionDetails.NextDueDate" tabindex="9" PickerVariant="PickerVariant.Dialog">
             <PickerActions>
                 <MudButton Class="mr-auto align-self-start" OnClick="@(() => _nextDueDatePicker.Clear())">Clear</MudButton>
                 <MudButton OnClick="@(() => _nextDueDatePicker.GoToDate(DateTime.UtcNow, true))">Today</MudButton>
@@ -94,7 +95,7 @@
                 <MudButton Color="Color.Primary" OnClick="@(() => _nextDueDatePicker.Close())">Ok</MudButton>
             </PickerActions>
         </MudDatePicker>
-        <MudSelect T="TransactionGroup" Label="Transaction Group" @bind-Value="@RecurringTransactionDetails.Group" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="8">
+        <MudSelect T="TransactionGroup" Label="Transaction Group" @bind-Value="@RecurringTransactionDetails.Group" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="10">
             <MudSelectItem T="TransactionGroup" Value="@(null)">None</MudSelectItem>
             @foreach (var group in transactionGroups)
             {
