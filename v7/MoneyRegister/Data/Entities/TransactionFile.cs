@@ -13,11 +13,12 @@ public class TransactionFile : BasicTable<TransactionFile>, IEntityTypeConfigura
     /// We ignore the data because we're going to re-create the file itself and zip it.
     /// The Filename will have the Id so it can match accordingly.
     /// </summary>
-    [JsonIgnore]
-    public byte[] Data { get; set; } = new byte[0];
+    public byte[] Data { get; set; } = [];
     [JsonIgnore]
     public Transaction Transaction { get; set; }
     public Guid TransactionId { get; set; }
+
+    public string Notes { get; set; } = string.Empty;
 
     public override void Configure(EntityTypeBuilder<TransactionFile> builder)
     {
