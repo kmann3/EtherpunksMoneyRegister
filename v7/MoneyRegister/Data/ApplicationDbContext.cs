@@ -1,11 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using MoneyRegister.Data.Entities;
-using MoneyRegister.Data.Services;
-using MoneyRegister.Extensions;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Text.Json;
 
 namespace MoneyRegister.Data;
@@ -16,6 +12,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<TransactionFile> Files { get; set; }
+    public DbSet<Lookup_RecurringTransactionFrequency> Lookup_RecurringTransactionFrequencies { get; set; }
+    public DbSet<Lookup_TransactionType> Lookup_TransactionTypes { get; set; }
     public DbSet<RecurringTransaction> RecurringTransactions { get; set; }
     public DbSet<TransactionGroup> TransactionGroups { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
@@ -49,15 +47,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
             r => r.HasOne<Category>().WithMany(e => e.Link_Category_Transactions).HasForeignKey(x => x.CategoryId)
             );
-
-        //modelBuilder.Entity<Post>()
-        //.HasMany(e => e.Tags)
-        //.WithMany(e => e.Posts)
-        //.UsingEntity(
-        //    "PostTag",
-        //    l => l.HasOne(typeof(Tag)).WithMany().HasForeignKey("TagsId").HasPrincipalKey(nameof(Tag.Id)),
-        //    r => r.HasOne(typeof(Post)).WithMany().HasForeignKey("PostsId").HasPrincipalKey(nameof(Post.Id)),
-        //    j => j.HasKey("PostsId", "TagsId"));
 
         SeedDatabase(builder);
 
@@ -131,6 +120,28 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<Category>().HasData(medicationCategory);
         builder.Entity<Category>().HasData(streamingCategory);
 
+        Lookup_TransactionType lookup_TransactionType_Debit = new() { Name = "Debit", Ordinal = 0 };
+        Lookup_TransactionType lookup_TransactionType_Credit = new() { Name = "Credit", Ordinal = 1 };
+
+        builder.Entity<Lookup_TransactionType>().HasData(lookup_TransactionType_Debit);
+        builder.Entity<Lookup_TransactionType>().HasData(lookup_TransactionType_Credit);
+
+        Lookup_RecurringTransactionFrequency lookup_Frequency_Yearly = new() { Name = "Annually", Ordinal = 0 };
+        Lookup_RecurringTransactionFrequency lookup_Frequency_Monthly = new() { Name ="Monthly", Ordinal= 1 };
+        Lookup_RecurringTransactionFrequency lookup_Frequency_Weekly = new () { Name = "Weekly", Ordinal = 2 };
+        Lookup_RecurringTransactionFrequency lookup_Frequency_XDays = new() { Name = "XDays", Ordinal = 3 };
+        Lookup_RecurringTransactionFrequency lookup_Frequency_XWeekYDayOfWeek = new () { Name = "XWeekYDayOfWeek", Ordinal = 4 };
+        Lookup_RecurringTransactionFrequency lookup_Frequency_Irregular = new() { Name = "Irregular", Ordinal = 5 };
+        Lookup_RecurringTransactionFrequency lookup_Frequency_Unknown = new() { Name ="Unknown", Ordinal = 6 };
+
+        builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_Yearly);
+        builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_Monthly);
+        builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_Weekly);
+        builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_XDays);
+        builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_XWeekYDayOfWeek);
+        builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_Irregular);
+        builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_Unknown);
+
         int month = DateTime.UtcNow.Month + 1;
         int year = DateTime.UtcNow.Year;
 
@@ -148,9 +159,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Amount = -10.81M,
             TransactionGroupId = TransactionGroup_AllBills.Id,
             NextDueDate = new DateTime(year, month, 15),
-            Frequency = MR_Enum.Regularity.Monthly,
+            FrequencyLookupId = lookup_Frequency_Monthly.Id,
             FrequencyValue = 15,
-            TransactionType = MR_Enum.TransactionType.Debit,
+            TransactionTypeLookupId = lookup_TransactionType_Debit.Id,
         };
 
         builder.Entity<RecurringTransaction>().HasData(recTran_AdobePhotoshop);
@@ -169,9 +180,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Amount = -16.79M,
             TransactionGroupId = TransactionGroup_AllBills.Id,
             NextDueDate = new DateTime(year, month, 18),
-            Frequency = MR_Enum.Regularity.Monthly,
+            FrequencyLookupId = lookup_Frequency_Monthly.Id,
             FrequencyValue = 18,
-            TransactionType = MR_Enum.TransactionType.Debit
+            TransactionTypeLookupId = lookup_TransactionType_Debit.Id,
         };
 
         Link_Category_RecurringTransaction rectTran2 = new()
@@ -190,9 +201,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Amount = 150M,
             TransactionGroupId = null,
             NextDueDate = new DateTime(year, month, 18),
-            Frequency = MR_Enum.Regularity.Monthly,
+            FrequencyLookupId = lookup_Frequency_Monthly.Id,
             FrequencyValue = 18,
-            TransactionType = MR_Enum.TransactionType.Credit
+            TransactionTypeLookupId = lookup_TransactionType_Credit.Id,
         }); ;
 
         builder.Entity<RecurringTransaction>().HasData(new RecurringTransaction()
@@ -201,10 +212,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Amount = 1343.72M,
             TransactionGroupId = null,
             NextDueDate = new DateTime(year, month, 27),
-            Frequency = MR_Enum.Regularity.XWeekYDayOfWeek,
+            FrequencyLookupId = lookup_Frequency_XWeekYDayOfWeek.Id,
             FrequencyValue = 4,
             DayOfWeekValue = DayOfWeek.Wednesday,
-            TransactionType = MR_Enum.TransactionType.Credit
+            TransactionTypeLookupId = lookup_TransactionType_Credit.Id,
         });
 
         decimal currentBalance = 0M;
@@ -223,7 +234,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Name = "payday",
             TransactionPendingUTC = new DateTime(year, month - 1, 25),
             TransactionClearedUTC = new DateTime(year, month - 1, 25),
-            TransactionType = MR_Enum.TransactionType.Credit,
+            TransactionTypeLookupId = lookup_TransactionType_Credit.Id,
         };
 
         builder.Entity<Transaction>().HasData(transIncomeSSDI);
@@ -240,7 +251,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             CreatedById = adminUser.Id,
             Name = "Adobe Photoshop",
             RecurringTransactionId = recTran_AdobePhotoshop.Id,
-            TransactionType = MR_Enum.TransactionType.Debit,
+            TransactionTypeLookupId = lookup_TransactionType_Debit.Id,
         };
 
         builder.Entity<Transaction>().HasData(trans2);

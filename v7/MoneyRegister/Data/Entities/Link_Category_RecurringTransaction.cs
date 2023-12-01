@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace MoneyRegister.Data.Entities;
+﻿namespace MoneyRegister.Data.Entities;
 
 public class Link_Category_RecurringTransaction
 {

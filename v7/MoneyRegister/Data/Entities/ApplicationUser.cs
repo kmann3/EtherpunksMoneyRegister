@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MoneyRegister.Data.Entities;
 

@@ -23,7 +23,8 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
     [JsonIgnore]
     public List<Category> Categories { get; } = new();
-    public MR_Enum.Regularity Frequency { get; set; } = MR_Enum.Regularity.Unknown;
+    public Lookup_RecurringTransactionFrequency FrequencyLookup { get; set; }
+    public Guid FrequencyLookupId { get; set; }
     [NotMapped]
     public string FrequencyString
     {
@@ -31,29 +32,34 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
         {
             try
             {
-                switch (Frequency)
+                switch (FrequencyLookup.Name)
                 {
-                    case MR_Enum.Regularity.Annually:
+                    case "Yearly":
                         return "Annually";
-                    case MR_Enum.Regularity.Monthly:
+                    case "Monthly":
                         return $"{FrequencyValue.ToString().Ordinalize()} of the month";
-                    case MR_Enum.Regularity.Nonregular:
-                        return "Nonregular frequency";
-                    case MR_Enum.Regularity.XDays:
-                        return $"Every {FrequencyValue} days";
-                    case MR_Enum.Regularity.XWeekYDayOfWeek:
-                        return $"Every {FrequencyValue.ToString().Ordinalize()} {DayOfWeekValue}";
-                    case MR_Enum.Regularity.Weekly:
+                    case "Weekly":
                         return $"Every {DayOfWeekValue}";
-                    case MR_Enum.Regularity.Unknown:
+                    case "Irregular":
+                        return "Irregular frequency";
+                    case "XDays":
+                        return $"Every {FrequencyValue} days";
+                        // TBI Day/Days - calculate
+                    case "XMonths":
+                        return $"Every {FrequencyValue} months";
+                    case "XWeekYDayOfWeek":
+                        return $"Every {FrequencyValue.ToString().Ordinalize()} {DayOfWeekValue}";
+
+                    case "Unknown":
                         return "Unknown";
                     default:
                         throw new NotImplementedException();
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 // Probably value in frequency is null but shouldn't be. This should only be hit when I messing with the DB manually and broke something
-                return "ERROR";
+                return $"ERROR: {ex}";
             }
         }
     }
@@ -64,7 +70,8 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     [JsonIgnore]
     public TransactionGroup? Group { get; set; }
     public Guid? TransactionGroupId { get; set; }
-    public MR_Enum.TransactionType TransactionType { get; set; } = MR_Enum.TransactionType.Debit;
+    public Lookup_TransactionType TransactionTypeLookup { get; set; }
+    public Guid TransactionTypeLookupId { get; set; }
     // TODO: What about when the date falls on a weekend?
     // TODO: What if we want to transfer from one account to another? TransactionType? Or Debit+Credit?
 

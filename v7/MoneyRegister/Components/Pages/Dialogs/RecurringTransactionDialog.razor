@@ -2,6 +2,7 @@
 @using Pages.Util
 @using System.Globalization
 @inject Data.Services.CategoryService MR_CategoryService
+@inject Data.Services.LookupService MR_LookupService
 @inject Data.Services.RecurringTransactionService MR_RecTranService
 @inject Data.Services.TransactionGroupService MR_TransactionGroupService
 @inject IDialogService DialogService
@@ -16,10 +17,10 @@
     <DialogContent>
         <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Name" Label="Name" tabindex="1" @ref="firstFocus" />
 
-        <MudSelect T="MR_Enum.TransactionType" Label="Type of transaction" @bind-Value="@RecurringTransactionDetails.TransactionType" tabindex="2" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
-            @foreach (MR_Enum.TransactionType entryType in Enum.GetValues(typeof(MR_Enum.TransactionType)))
+        <MudSelect T="Lookup_TransactionType" Label="Transaction Type" @bind-Value="@RecurringTransactionDetails.TransactionTypeLookup" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="2">
+            @foreach (var group in TransactionTypeList)
             {
-                <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
+                <MudSelectItem Value="@group">@group.Name</MudSelectItem>
             }
         </MudSelect>
         <MudNumericField T="decimal" @bind-Value="RecurringTransactionDetails.Amount" Immediate="false" Label="Amount" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="3" />
@@ -37,35 +38,36 @@
             <MudButton OnClick="NewCategoryDialog" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" />
         </div>
 
-        <MudSelect T="MR_Enum.Regularity" Label="Frequency" @bind-Value="@RecurringTransactionDetails.Frequency" tabindex="6" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
-            @foreach (MR_Enum.Regularity entryType in ((MR_Enum.Regularity[]) Enum.GetValues(typeof(MR_Enum.Regularity))).OrderBy(x => x.ToString()))
+        <MudSelect T="Lookup_RecurringTransactionFrequency" Label="Regularity" @bind-Value="@RecurringTransactionDetails.FrequencyLookup" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="6">
+            @foreach (var group in FrequencyList)
             {
-                <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
+                <MudSelectItem Value="@group">@group.Name</MudSelectItem>
             }
         </MudSelect>
 
-        @switch(RecurringTransactionDetails.Frequency)
+        @switch (RecurringTransactionDetails.FrequencyLookup.Name)
         {
-            case MR_Enum.Regularity.Annually:
+            case "Yearly":
                 <MudDatePicker Label="Select Date" @bind-Date="frequencyDate" DisableToolbar="true" tabindex="7" />
                 break;
-            case MR_Enum.Regularity.Monthly:
+            case "Monthly":
                 <MudDatePicker Label="Select Day" @bind-Date="frequencyDate" DisableToolbar="true" tabindex="7" />
                 break;
-            case MR_Enum.Regularity.Nonregular:
+            case "Weekly":
+                <MudSelect @bind-Value="@frequencyDayOfWeek" tabindex="7">
+                    @foreach (DayOfWeek entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
+                    {
+                        <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
+                    }
+                </MudSelect>
                 break;
-            case MR_Enum.Regularity.Unknown:
-                break;
-            case MR_Enum.Regularity.XDays:
+            case "XDays":
                 <MudNumericField @bind-Value="RecurringTransactionDetails.FrequencyValue" Label="Day Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="7" />
                 break;
-            case MR_Enum.Regularity.XWeeks:
-                <MudNumericField @bind-Value="RecurringTransactionDetails.FrequencyValue" Label="Week Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="7" />
-                break;
-            case MR_Enum.Regularity.XMonths:
+            case "XMonths":
                 <MudNumericField @bind-Value="RecurringTransactionDetails.FrequencyValue" Label="Month Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="7" />
                 break;
-            case MR_Enum.Regularity.XWeekYDayOfWeek:
+            case "XWeekYDayOfWeek":
                 <MudNumericField @bind-Value="RecurringTransactionDetails.FrequencyValue" Label="Week" Variant="Variant.Text" Min="0" Max="100000" tabindex="7" />
                 <MudSelect @bind-Value="@frequencyDayOfWeek" tabindex="8">
                     @foreach (DayOfWeek entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
@@ -74,17 +76,11 @@
                     }
                 </MudSelect>
                 break;
-            case MR_Enum.Regularity.Weekly:
-                <MudSelect @bind-Value="@frequencyDayOfWeek" tabindex="7">
-                    @foreach (DayOfWeek entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
-                    {
-                        <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
-                    }
-                </MudSelect>
+            case "Irregular":
+            case "Unknown":
                 break;
             default:
-                <p>ERROR?</p>
-                break;
+                throw new NotImplementedException();
         }
 
         <MudDatePicker @ref="_nextDueDatePicker" Label="Next Due Date" Editable="true" @bind-Date="RecurringTransactionDetails.NextDueDate" tabindex="9" PickerVariant="PickerVariant.Dialog">
@@ -124,6 +120,8 @@
     MudDatePicker _nextDueDatePicker;
     List<Category> categories { get; set; } = new();
     List<TransactionGroup> transactionGroups = new();
+    List<Lookup_TransactionType> TransactionTypeList = new();
+    List<Lookup_RecurringTransactionFrequency> FrequencyList = new();
 
     private DateTime? frequencyDate;
     private DayOfWeek frequencyDayOfWeek;
@@ -136,6 +134,8 @@
     {
         categories = await MR_CategoryService.GetAllCategoriesAsync();
         transactionGroups = await MR_TransactionGroupService.GetAllTransactionGroupsAsync();
+        TransactionTypeList = await MR_LookupService.GetLookup_TransactionTypesAsync();
+        FrequencyList = await MR_LookupService.GetLookup_RecurringTransactionFrequenciesAsync();
         ResetSelectedCategories();
 
         // Assigning some values so we don't end up with an accidental null later
@@ -191,56 +191,56 @@
 
     private async void Save()
     {
-        switch(RecurringTransactionDetails.Frequency)
-        {
-            case MR_Enum.Regularity.Annually:
-                RecurringTransactionDetails.FrequencyDateValue = frequencyDate;
-                RecurringTransactionDetails.FrequencyValue = null;
-                RecurringTransactionDetails.DayOfWeekValue = null;
-                break;
-            case MR_Enum.Regularity.Monthly:
-                RecurringTransactionDetails.FrequencyDateValue = null;
-                RecurringTransactionDetails.FrequencyValue = frequencyDate!.Value.Day;
-                RecurringTransactionDetails.DayOfWeekValue = null;
-                break;
-            case MR_Enum.Regularity.Nonregular:
-                RecurringTransactionDetails.FrequencyDateValue = null;
-                RecurringTransactionDetails.FrequencyValue = null;
-                RecurringTransactionDetails.DayOfWeekValue = null;
-                break;
-            case MR_Enum.Regularity.Unknown:
-                RecurringTransactionDetails.FrequencyDateValue = null;
-                RecurringTransactionDetails.FrequencyValue = null;
-                RecurringTransactionDetails.DayOfWeekValue = null;
-                break;
-            case MR_Enum.Regularity.XDays:
-                RecurringTransactionDetails.FrequencyDateValue = null;
-                //RecurringTransactionDetails.FrequencyValue = null; // Assigned from component
-                RecurringTransactionDetails.DayOfWeekValue = null;
-                break;
-            case MR_Enum.Regularity.XWeeks:
-                RecurringTransactionDetails.FrequencyDateValue = null;
-                //RecurringTransactionDetails.FrequencyValue = null; // Assigned from component
-                RecurringTransactionDetails.DayOfWeekValue = null;
-                break;
-            case MR_Enum.Regularity.XMonths:
-                RecurringTransactionDetails.FrequencyDateValue = null;
-                //RecurringTransactionDetails.FrequencyValue = null; // Assigned from component
-                RecurringTransactionDetails.DayOfWeekValue = null;
-                break;
-            case MR_Enum.Regularity.XWeekYDayOfWeek:
-                RecurringTransactionDetails.FrequencyDateValue = null;
-                //RecurringTransactionDetails.FrequencyValue = ; // Assigned from component
-                RecurringTransactionDetails.DayOfWeekValue = frequencyDayOfWeek;
-                break;
-            case MR_Enum.Regularity.Weekly:
-                RecurringTransactionDetails.FrequencyDateValue = null;
-                RecurringTransactionDetails.FrequencyValue = null;
-                RecurringTransactionDetails.DayOfWeekValue = frequencyDayOfWeek;
-                break;
-            default:
-                throw new NotImplementedException();
-        }
+        // switch(RecurringTransactionDetails.Frequency)
+        // {
+        //     case MR_Enum.Regularity.Annually:
+        //         RecurringTransactionDetails.FrequencyDateValue = frequencyDate;
+        //         RecurringTransactionDetails.FrequencyValue = null;
+        //         RecurringTransactionDetails.DayOfWeekValue = null;
+        //         break;
+        //     case MR_Enum.Regularity.Monthly:
+        //         RecurringTransactionDetails.FrequencyDateValue = null;
+        //         RecurringTransactionDetails.FrequencyValue = frequencyDate!.Value.Day;
+        //         RecurringTransactionDetails.DayOfWeekValue = null;
+        //         break;
+        //     case MR_Enum.Regularity.Nonregular:
+        //         RecurringTransactionDetails.FrequencyDateValue = null;
+        //         RecurringTransactionDetails.FrequencyValue = null;
+        //         RecurringTransactionDetails.DayOfWeekValue = null;
+        //         break;
+        //     case MR_Enum.Regularity.Unknown:
+        //         RecurringTransactionDetails.FrequencyDateValue = null;
+        //         RecurringTransactionDetails.FrequencyValue = null;
+        //         RecurringTransactionDetails.DayOfWeekValue = null;
+        //         break;
+        //     case MR_Enum.Regularity.XDays:
+        //         RecurringTransactionDetails.FrequencyDateValue = null;
+        //         //RecurringTransactionDetails.FrequencyValue = null; // Assigned from component
+        //         RecurringTransactionDetails.DayOfWeekValue = null;
+        //         break;
+        //     case MR_Enum.Regularity.XWeeks:
+        //         RecurringTransactionDetails.FrequencyDateValue = null;
+        //         //RecurringTransactionDetails.FrequencyValue = null; // Assigned from component
+        //         RecurringTransactionDetails.DayOfWeekValue = null;
+        //         break;
+        //     case MR_Enum.Regularity.XMonths:
+        //         RecurringTransactionDetails.FrequencyDateValue = null;
+        //         //RecurringTransactionDetails.FrequencyValue = null; // Assigned from component
+        //         RecurringTransactionDetails.DayOfWeekValue = null;
+        //         break;
+        //     case MR_Enum.Regularity.XWeekYDayOfWeek:
+        //         RecurringTransactionDetails.FrequencyDateValue = null;
+        //         //RecurringTransactionDetails.FrequencyValue = ; // Assigned from component
+        //         RecurringTransactionDetails.DayOfWeekValue = frequencyDayOfWeek;
+        //         break;
+        //     case MR_Enum.Regularity.Weekly:
+        //         RecurringTransactionDetails.FrequencyDateValue = null;
+        //         RecurringTransactionDetails.FrequencyValue = null;
+        //         RecurringTransactionDetails.DayOfWeekValue = frequencyDayOfWeek;
+        //         break;
+        //     default:
+        //         throw new NotImplementedException();
+        // }
 
         if (IsNew) await MR_RecTranService.CreateRecurringTransactionAsync(RecurringTransactionDetails);
         else await MR_RecTranService.UpdateRecurringTransactionAsync(RecurringTransactionDetails);

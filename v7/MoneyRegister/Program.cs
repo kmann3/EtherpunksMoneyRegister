@@ -60,6 +60,7 @@ public class Program
         builder.Services.AddScoped<BackupService>();
         builder.Services.AddScoped<CategoryService>();
         builder.Services.AddScoped<DashboardService>();
+        builder.Services.AddScoped<LookupService>();
         builder.Services.AddScoped<RecurringTransactionService>();
         builder.Services.AddScoped<TransactionGroupService>();
 

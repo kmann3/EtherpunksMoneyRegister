@@ -11,7 +11,9 @@ public class RecurringTransactionService(ApplicationDbContext context)
         return await _context.RecurringTransactions
             .Include(x => x.Group)
             .Include(x => x.Categories)
-            .OrderBy(x => x.TransactionType).ThenBy(x => x.Name)
+            .Include(x => x.FrequencyLookup)
+            .Include(x => x.TransactionTypeLookup)
+            .OrderBy(x => x.TransactionTypeLookup.Name).ThenBy(x => x.Name)
             .ToListAsync();
     }
 

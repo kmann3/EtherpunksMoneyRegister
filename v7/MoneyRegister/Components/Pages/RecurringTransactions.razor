@@ -27,10 +27,17 @@ else
         </ToolBarContent>
         <Columns>
             <PropertyColumn Property="x => x!.Name" />
-            <PropertyColumn Property="x => x!.TransactionType" />
+            <TemplateColumn Title="Transaction Type">
+                <CellTemplate>
+                    @if(context.Item.TransactionTypeLookup.Name != null)
+                    {
+                        @context.Item.TransactionTypeLookup.Name
+                    }
+                </CellTemplate>
+            </TemplateColumn>
             <TemplateColumn Title="Bill Group">
                 <CellTemplate>
-                    @if(context.Item.Group != null)
+                    @if (context.Item.Group != null)
                     {
                         @context.Item.Group.Name
                     }

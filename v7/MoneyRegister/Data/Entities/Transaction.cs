@@ -21,7 +21,7 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
     public decimal Amount { get; set; } = 0M;
 
     [JsonIgnore]
-    public Account? Account { get; set; }
+    public Account Account { get; set; }
     public Guid AccountId { get; set; }
 
     [Display(Name = "Transaction Pending")]
@@ -78,8 +78,10 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
     [JsonIgnore]
     public RecurringTransaction? RecurringTransaction { get; set; }
     public Guid? RecurringTransactionId { get; set; }
+    [JsonIgnore]
 
-    public MR_Enum.TransactionType TransactionType { get; set; }
+    public Lookup_TransactionType TransactionTypeLookup { get; set; }
+    public Guid TransactionTypeLookupId { get; set; }
 
     public int Compare(Transaction? x, Transaction? y)
     {
