@@ -70,8 +70,12 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     [JsonIgnore]
     public TransactionGroup? Group { get; set; }
     public Guid? TransactionGroupId { get; set; }
+    [JsonIgnore]
     public Lookup_TransactionType TransactionTypeLookup { get; set; }
     public Guid TransactionTypeLookupId { get; set; }
+
+    [JsonIgnore]
+    public List<Transaction> PreviousTransactions { get; set; }
     // TODO: What about when the date falls on a weekend?
     // TODO: What if we want to transfer from one account to another? TransactionType? Or Debit+Credit?
 
