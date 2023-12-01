@@ -1,0 +1,258 @@
+﻿@page "/rtdetails/{Id:guid}"
+@using Data.Entities
+@using Pages.Util
+@using System.Globalization
+@inject Data.Services.CategoryService MR_CategoryService
+@inject Data.Services.LookupService MR_LookupService
+@inject Data.Services.RecurringTransactionService MR_RecTranService
+@inject Data.Services.TransactionGroupService MR_TransactionGroupService
+@inject IDialogService DialogService
+@inject NavigationManager NavManager
+
+<PageTitle>Recurring Transaction Details - recurringTransaction.Name</PageTitle>
+@if (recurringTransaction == null)
+{
+<p><em>Loading...</em></p>
+}
+else {
+<MudTextField T="string" @bind-Value="@recurringTransaction.Name" Label="Name" tabindex="1" @ref="firstFocus" />
+
+<MudSelect T="Lookup_TransactionType" Label="Transaction Type" @bind-Value="@recurringTransaction.TransactionTypeLookup" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="2">
+    @foreach (var group in TransactionTypeList)
+    {
+        <MudSelectItem Value="@group">@group.Name</MudSelectItem>
+    }
+</MudSelect>
+<MudNumericField T="decimal" @bind-Value="recurringTransaction.Amount" Immediate="false" Label="Amount" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="3" />
+<MudTextField T="string" @bind-Value="@recurringTransaction.Notes" Label="Notes" AutoGrow tabindex="4" />
+
+<div class="d-flex">
+    <MudSelect T="Category" Label="Categories" @bind-SelectedValues="selectedCategories" tabindex="5"
+               AdornmentIcon="@Icons.Material.Filled.Search" AnchorOrigin="Origin.BottomCenter" MultiSelection="true" Variant="Variant.Outlined"
+               MultiSelectionTextFunc="@(new Func<List<string>, string>(GetSelectedItemsText))">
+        @foreach (var item in categories)
+        {
+            <MudSelectItem T="Category" Value="@item">@item.Name</MudSelectItem>
+        }
+    </MudSelect>
+    <MudButton OnClick="NewCategoryDialog" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" />
+</div>
+
+<MudSelect T="Lookup_RecurringTransactionFrequency" Label="Regularity" @bind-Value="@recurringTransaction.FrequencyLookup" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="6">
+    @foreach (var group in FrequencyList)
+    {
+        <MudSelectItem Value="@group">@group.Name</MudSelectItem>
+    }
+</MudSelect>
+
+@switch (recurringTransaction.FrequencyLookup.Name)
+{
+    case "Yearly":
+        <MudDatePicker Label="Select Date" @bind-Date="frequencyDate" DisableToolbar="true" tabindex="7" />
+        break;
+    case "Monthly":
+        <MudDatePicker Label="Select Day" @bind-Date="frequencyDate" DisableToolbar="true" tabindex="7" />
+        break;
+    case "Weekly":
+        <MudSelect @bind-Value="@frequencyDayOfWeek" tabindex="7">
+            @foreach (DayOfWeek entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
+            {
+                <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
+            }
+        </MudSelect>
+        break;
+    case "XDays":
+        <MudNumericField @bind-Value="recurringTransaction.FrequencyValue" Label="Day Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="7" />
+        break;
+    case "XMonths":
+        <MudNumericField @bind-Value="recurringTransaction.FrequencyValue" Label="Month Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="7" />
+        break;
+    case "XWeekYDayOfWeek":
+        <MudNumericField @bind-Value="recurringTransaction.FrequencyValue" Label="Week" Variant="Variant.Text" Min="0" Max="100000" tabindex="7" />
+        <MudSelect @bind-Value="@frequencyDayOfWeek" tabindex="8">
+            @foreach (DayOfWeek entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
+            {
+                <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
+            }
+        </MudSelect>
+        break;
+    case "Irregular":
+    case "Unknown":
+        break;
+    default:
+        throw new NotImplementedException();
+}
+
+<MudDatePicker @ref="_nextDueDatePicker" Label="Next Due Date" Editable="true" @bind-Date="recurringTransaction.NextDueDate" tabindex="9" PickerVariant="PickerVariant.Dialog">
+    <PickerActions>
+        <MudButton Class="mr-auto align-self-start" OnClick="@(() => _nextDueDatePicker.Clear())">Clear</MudButton>
+        <MudButton OnClick="@(() => _nextDueDatePicker.GoToDate(DateTime.UtcNow, true))">Today</MudButton>
+        <MudButton OnClick="@(() => _nextDueDatePicker.Close(false))">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="@(() => _nextDueDatePicker.Close())">Ok</MudButton>
+    </PickerActions>
+</MudDatePicker>
+<MudSelect T="TransactionGroup" Label="Transaction Group" @bind-Value="@recurringTransaction.Group" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="10">
+    <MudSelectItem T="TransactionGroup" Value="@(null)">None</MudSelectItem>
+    @foreach (var group in transactionGroups)
+    {
+        <MudSelectItem Value="@group">@group.Name</MudSelectItem>
+    }
+</MudSelect>
+
+    <MudDataGrid Items="@recurringTransaction.PreviousTransactions" T="Data.Entities.Transaction"
+                 Filterable="false" SortMode="@SortMode.None" Groupable="false" Style="width: 700px;"
+                 RowClick="@OnRowClick">
+        <Columns>
+            <PropertyColumn Property="x => x!.Name" />
+            <PropertyColumn Property="x => x!.Amount" Format="C" />
+            <PropertyColumn Property="x => x!.TransactionPendingLocalTime" Title="Pending" Format="d" />
+            <PropertyColumn Property="x => x!.TransactionClearedLocalTime" Title="Cleared" Format="d" />
+            <PropertyColumn Property="x => x!.Notes" />
+            <TemplateColumn Title="Attachments">
+                <CellTemplate>
+                    @if (context.Item.Files.Count() > 0)
+                    {
+                        
+                    }
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+    </MudDataGrid>
+
+}
+@code {
+    [Parameter] public Guid Id { get; set; }
+    MudDatePicker _nextDueDatePicker;
+    List<Category> categories { get; set; } = new();
+    List<TransactionGroup> transactionGroups = new();
+    List<Lookup_TransactionType> TransactionTypeList = new();
+    List<Lookup_RecurringTransactionFrequency> FrequencyList = new();
+
+    private DateTime? frequencyDate;
+    private DayOfWeek frequencyDayOfWeek;
+
+    private IEnumerable<Category> selectedCategories = new HashSet<Category>();
+
+    private MudTextField<string> firstFocus;
+
+    private RecurringTransaction recurringTransaction { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        recurringTransaction = await MR_RecTranService.GetRecurringTransactionAsync(Id);
+        categories = await MR_CategoryService.GetAllCategoriesAsync();
+        transactionGroups = await MR_TransactionGroupService.GetAllTransactionGroupsAsync();
+        TransactionTypeList = await MR_LookupService.GetLookup_TransactionTypesAsync();
+        FrequencyList = await MR_LookupService.GetLookup_RecurringTransactionFrequenciesAsync();
+        ResetSelectedCategories();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await firstFocus.FocusAsync();
+        }
+    }
+
+    private string GetSelectedItemsText(List<string> selectedValues)
+    {
+        return $"{selectedValues.Count} tag{(selectedValues.Count != 1 ? "s" : "")}";
+    }
+
+    private void ResetSelectedCategories()
+    {
+        HashSet<Category> t = new HashSet<Category>();
+        if (recurringTransaction.Categories.Count() == 0) return;
+        foreach (var item in recurringTransaction.Categories)
+        {
+            t.Add(item);
+        }
+
+        selectedCategories = t;
+    }
+
+    private async Task NewCategoryDialog()
+    {
+        ResetSelectedCategories();
+
+        var result = await DialogUtil.ShowCategoryDialogAsync(DialogService, true, new Category());
+
+        if (!result.Canceled)
+        {
+            var catData = result.Data as Category;
+            categories.Add(catData!);
+            recurringTransaction.Categories.Add(catData!);
+            ResetSelectedCategories();
+        }
+    }
+
+    private async void Save()
+    {
+        switch (recurringTransaction.FrequencyLookup.Name)
+        {
+            case "Yearly":
+                recurringTransaction.FrequencyDateValue = frequencyDate;
+                recurringTransaction.FrequencyValue = null;
+                recurringTransaction.DayOfWeekValue = null;
+                break;
+            case "Monthly":
+                recurringTransaction.FrequencyDateValue = null;
+                recurringTransaction.FrequencyValue = frequencyDate!.Value.Day;
+                recurringTransaction.DayOfWeekValue = null;
+                break;
+            case "Weekly":
+                recurringTransaction.FrequencyDateValue = null;
+                recurringTransaction.FrequencyValue = null;
+                recurringTransaction.DayOfWeekValue = frequencyDayOfWeek;
+                break;
+            case "XDays":
+                recurringTransaction.FrequencyDateValue = null;
+                //recurringTransaction.FrequencyValue = null; // Assigned from component
+                recurringTransaction.DayOfWeekValue = null;
+                break;
+            case "XMonths":
+                recurringTransaction.FrequencyDateValue = null;
+                //recurringTransaction.FrequencyValue = null; // Assigned from component
+                recurringTransaction.DayOfWeekValue = null;
+                break;
+            case "XWeekYDayOfWeek":
+                recurringTransaction.FrequencyDateValue = null;
+                //recurringTransaction.FrequencyValue = ; // Assigned from component
+                recurringTransaction.DayOfWeekValue = frequencyDayOfWeek;
+                break;
+            case "Irregular":
+                recurringTransaction.FrequencyDateValue = null;
+                recurringTransaction.FrequencyValue = null;
+                recurringTransaction.DayOfWeekValue = null;
+                break;
+            case "Unknown":
+                recurringTransaction.FrequencyDateValue = null;
+                recurringTransaction.FrequencyValue = null;
+                recurringTransaction.DayOfWeekValue = null;
+                break;
+            default:
+                throw new NotImplementedException();
+        }
+
+        await MR_RecTranService.UpdateRecurringTransactionAsync(recurringTransaction);
+
+        // Display item is saved
+    }
+    private async Task Delete()
+    {
+        var result = await DialogUtil.ShowConfirmDialogAsync(DialogService, "Delete", "Delete", $"Are you sure you want to delete the recurring transaction: '{recurringTransaction.Name}'?", Color.Error);
+        if (result.Canceled) return;
+
+        recurringTransaction.DeletedOnUTC = DateTime.UtcNow;
+        await MR_RecTranService.DeleteRecurringTransactionAsync(recurringTransaction);
+
+        // Display item is deleted.
+    }
+
+    private void OnRowClick(DataGridRowClickEventArgs<Data.Entities.Transaction> item)
+    {
+        throw new NotImplementedException();
+        //NavManager.NavigateTo($"/account/{item.Item.Id}");
+    }
+}
