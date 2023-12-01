@@ -6,6 +6,7 @@
 @inject Data.Services.RecurringTransactionService MR_RecTranService
 @inject Data.Services.TransactionGroupService MR_TransactionGroupService
 @inject IDialogService DialogService
+@inject NavigationManager NavManager
 
 <MudDialog>
     <TitleContent>
@@ -103,8 +104,9 @@
         @if (!IsNew)
         {
             <MudButton Color="Color.Error" OnClick="Delete">Delete</MudButton>
-        }
-    
+            <MudButton Color="Color.Info" OnClick="GoToTransactionHistory">Show all (@RecurringTransactionDetails.PreviousTransactions.Count()) Transactions</MudButton>
+        }   
+        
         <MudButton OnClick="Cancel">Cancel</MudButton>
         <MudButton Color="Color.Warning" OnClick="Save">Save</MudButton>
     </DialogActions>
@@ -191,56 +193,51 @@
 
     private async void Save()
     {
-        // switch(RecurringTransactionDetails.Frequency)
-        // {
-        //     case MR_Enum.Regularity.Annually:
-        //         RecurringTransactionDetails.FrequencyDateValue = frequencyDate;
-        //         RecurringTransactionDetails.FrequencyValue = null;
-        //         RecurringTransactionDetails.DayOfWeekValue = null;
-        //         break;
-        //     case MR_Enum.Regularity.Monthly:
-        //         RecurringTransactionDetails.FrequencyDateValue = null;
-        //         RecurringTransactionDetails.FrequencyValue = frequencyDate!.Value.Day;
-        //         RecurringTransactionDetails.DayOfWeekValue = null;
-        //         break;
-        //     case MR_Enum.Regularity.Nonregular:
-        //         RecurringTransactionDetails.FrequencyDateValue = null;
-        //         RecurringTransactionDetails.FrequencyValue = null;
-        //         RecurringTransactionDetails.DayOfWeekValue = null;
-        //         break;
-        //     case MR_Enum.Regularity.Unknown:
-        //         RecurringTransactionDetails.FrequencyDateValue = null;
-        //         RecurringTransactionDetails.FrequencyValue = null;
-        //         RecurringTransactionDetails.DayOfWeekValue = null;
-        //         break;
-        //     case MR_Enum.Regularity.XDays:
-        //         RecurringTransactionDetails.FrequencyDateValue = null;
-        //         //RecurringTransactionDetails.FrequencyValue = null; // Assigned from component
-        //         RecurringTransactionDetails.DayOfWeekValue = null;
-        //         break;
-        //     case MR_Enum.Regularity.XWeeks:
-        //         RecurringTransactionDetails.FrequencyDateValue = null;
-        //         //RecurringTransactionDetails.FrequencyValue = null; // Assigned from component
-        //         RecurringTransactionDetails.DayOfWeekValue = null;
-        //         break;
-        //     case MR_Enum.Regularity.XMonths:
-        //         RecurringTransactionDetails.FrequencyDateValue = null;
-        //         //RecurringTransactionDetails.FrequencyValue = null; // Assigned from component
-        //         RecurringTransactionDetails.DayOfWeekValue = null;
-        //         break;
-        //     case MR_Enum.Regularity.XWeekYDayOfWeek:
-        //         RecurringTransactionDetails.FrequencyDateValue = null;
-        //         //RecurringTransactionDetails.FrequencyValue = ; // Assigned from component
-        //         RecurringTransactionDetails.DayOfWeekValue = frequencyDayOfWeek;
-        //         break;
-        //     case MR_Enum.Regularity.Weekly:
-        //         RecurringTransactionDetails.FrequencyDateValue = null;
-        //         RecurringTransactionDetails.FrequencyValue = null;
-        //         RecurringTransactionDetails.DayOfWeekValue = frequencyDayOfWeek;
-        //         break;
-        //     default:
-        //         throw new NotImplementedException();
-        // }
+        switch (RecurringTransactionDetails.FrequencyLookup.Name)
+        {
+            case "Yearly":
+                RecurringTransactionDetails.FrequencyDateValue = frequencyDate;
+                RecurringTransactionDetails.FrequencyValue = null;
+                RecurringTransactionDetails.DayOfWeekValue = null;
+                break;
+            case "Monthly":
+                RecurringTransactionDetails.FrequencyDateValue = null;
+                RecurringTransactionDetails.FrequencyValue = frequencyDate!.Value.Day;
+                RecurringTransactionDetails.DayOfWeekValue = null;
+                break;
+            case "Weekly":
+                RecurringTransactionDetails.FrequencyDateValue = null;
+                RecurringTransactionDetails.FrequencyValue = null;
+                RecurringTransactionDetails.DayOfWeekValue = frequencyDayOfWeek;
+                break;
+            case "XDays":
+                RecurringTransactionDetails.FrequencyDateValue = null;
+                //RecurringTransactionDetails.FrequencyValue = null; // Assigned from component
+                RecurringTransactionDetails.DayOfWeekValue = null;
+                break;
+            case "XMonths":
+                RecurringTransactionDetails.FrequencyDateValue = null;
+                //RecurringTransactionDetails.FrequencyValue = null; // Assigned from component
+                RecurringTransactionDetails.DayOfWeekValue = null;
+                break;
+            case "XWeekYDayOfWeek":
+                RecurringTransactionDetails.FrequencyDateValue = null;
+                //RecurringTransactionDetails.FrequencyValue = ; // Assigned from component
+                RecurringTransactionDetails.DayOfWeekValue = frequencyDayOfWeek;
+                break;
+            case "Irregular":
+                RecurringTransactionDetails.FrequencyDateValue = null;
+                RecurringTransactionDetails.FrequencyValue = null;
+                RecurringTransactionDetails.DayOfWeekValue = null;
+                break;
+            case "Unknown":
+                RecurringTransactionDetails.FrequencyDateValue = null;
+                RecurringTransactionDetails.FrequencyValue = null;
+                RecurringTransactionDetails.DayOfWeekValue = null;
+                break;
+            default:
+                throw new NotImplementedException();
+        }
 
         if (IsNew) await MR_RecTranService.CreateRecurringTransactionAsync(RecurringTransactionDetails);
         else await MR_RecTranService.UpdateRecurringTransactionAsync(RecurringTransactionDetails);
@@ -249,13 +246,16 @@
     }
     private async Task Delete()
     {
-        // POP UP A "are you very sure? This is going bye bye"
-
         var result = await DialogUtil.ShowConfirmDialogAsync(DialogService, "Delete", "Delete", $"Are you sure you want to delete the recurring transaction: '{RecurringTransactionDetails.Name}'?", Color.Error);
         if (result.Canceled) return;
 
         RecurringTransactionDetails.DeletedOnUTC = DateTime.UtcNow;
         await MR_RecTranService.DeleteRecurringTransactionAsync(RecurringTransactionDetails);
         MudDialog.Close(DialogResult.Ok(RecurringTransactionDetails));
+    }
+
+    private async Task GoToTransactionHistory()
+    {
+        NavManager.NavigateTo($"/rtdetails/{RecurringTransactionDetails.Id}");
     }
 }
