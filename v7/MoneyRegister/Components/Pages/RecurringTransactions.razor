@@ -2,6 +2,7 @@
 @using Data.Entities
 @using Pages.Util
 
+@inject Data.Services.LookupService MR_LookupService
 @inject Data.Services.RecurringTransactionService MR_RecTranService
 @inject IDialogService DialogService
 
@@ -73,10 +74,18 @@ else
 
 @code {
     private List<Data.Entities.RecurringTransaction> recurringTransactions;
+    private Data.Entities.Lookup_RecurringTransactionFrequency unknownRecurringTransactionFrequency;
+    private Data.Entities.Lookup_TransactionType debitRecurringTransaction;
 
     protected override async Task OnInitializedAsync()
     {
         recurringTransactions = await MR_RecTranService.GetAllRecurringTransactionsAsync();
+
+        var lookup_RecurringTransactionFrequencies = await MR_LookupService.GetLookup_RecurringTransactionFrequenciesAsync();
+        var lookup_TransactionTypes = await MR_LookupService.GetLookup_TransactionTypesAsync();
+
+        unknownRecurringTransactionFrequency = lookup_RecurringTransactionFrequencies.Where(x => x.Name == "Unknown").Single();
+        debitRecurringTransaction = lookup_TransactionTypes.Where(x => x.Name == "Debit").Single();
     }
 
     private async void OnRowClick(DataGridRowClickEventArgs<Data.Entities.RecurringTransaction> item)
@@ -105,7 +114,14 @@ else
 
     private async Task AddRecurringTransaction()
     {
-        var result = await DialogUtil.ShowAccountDialogAsync(DialogService, true, new RecurringTransaction());
+        RecurringTransaction newRecurringTransaction = new();
+        newRecurringTransaction.FrequencyLookup = unknownRecurringTransactionFrequency;
+        newRecurringTransaction.FrequencyLookupId = unknownRecurringTransactionFrequency.Id;
+
+        newRecurringTransaction.TransactionTypeLookup = debitRecurringTransaction;
+        newRecurringTransaction.TransactionTypeLookupId = debitRecurringTransaction.Id;
+
+        var result = await DialogUtil.ShowAccountDialogAsync(DialogService, true, newRecurringTransaction);
         if (!result.Canceled)
         {
             RecurringTransaction newItem = result.Data as RecurringTransaction ?? throw new NullReferenceException("RecurringTransaction Data returned null. This shouldn't happen.");

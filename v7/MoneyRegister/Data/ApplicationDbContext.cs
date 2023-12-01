@@ -1,3 +1,4 @@
+using Humanizer;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MoneyRegister.Data.Entities;
@@ -107,14 +108,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         };
 
         Category billsCategory = new() { Name = "bills" };
-        Category fastfoodCategory = new() { Name = "fast-food" };
+        Category fastFoodCategory = new() { Name = "fast-food" };
         Category gasCategory = new() { Name = "gas" };
         Category groceriesCategory = new() { Name = "groceries" };
         Category medicationCategory = new() { Name = "medications" };
         Category streamingCategory = new() { Name = "streaming" };
 
         builder.Entity<Category>().HasData(billsCategory);
-        builder.Entity<Category>().HasData(fastfoodCategory);
+        builder.Entity<Category>().HasData(fastFoodCategory);
         builder.Entity<Category>().HasData(gasCategory);
         builder.Entity<Category>().HasData(groceriesCategory);
         builder.Entity<Category>().HasData(medicationCategory);
@@ -142,8 +143,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_Irregular);
         builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_Unknown);
 
-        int month = DateTime.UtcNow.Month + 1;
-        int year = DateTime.UtcNow.Year;
+        DateTime nextMonth = DateTime.UtcNow.AddMonths(1);
+        DateTime currentMonth = DateTime.UtcNow;
+
+        int month = nextMonth.Month;
+        int year = nextMonth.Year;
 
 
         TransactionGroup TransactionGroup_AllBills = new()
@@ -211,7 +215,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Name = "Payday",
             Amount = 1343.72M,
             TransactionGroupId = null,
-            NextDueDate = new DateTime(year, month, 27),
+            NextDueDate = new DateTime(currentMonth.AddMonths(-1).Year, currentMonth.AddMonths(-1).Month, 27),
             FrequencyLookupId = lookup_Frequency_XWeekYDayOfWeek.Id,
             FrequencyValue = 4,
             DayOfWeekValue = DayOfWeek.Wednesday,
@@ -232,8 +236,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             Balance = 1998M,
             CreatedById = adminUser.Id,
             Name = "payday",
-            TransactionPendingUTC = new DateTime(year, month - 1, 25),
-            TransactionClearedUTC = new DateTime(year, month - 1, 25),
+            TransactionPendingUTC = new DateTime(currentMonth.AddMonths(-1).Year, currentMonth.AddMonths(-1).Month, 25),
+            TransactionClearedUTC = new DateTime(currentMonth.AddMonths(-1).Year, currentMonth.AddMonths(-1).Month, 25),
             TransactionTypeLookupId = lookup_TransactionType_Credit.Id,
         };
 
