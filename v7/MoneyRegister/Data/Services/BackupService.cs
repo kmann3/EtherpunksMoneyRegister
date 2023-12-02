@@ -32,8 +32,8 @@ public class BackupService(ApplicationDbContext context)
         List<Transaction> transactionList = await _context.Transactions.ToListAsync();
         List<TransactionGroup> transactionGroupList = await _context.TransactionGroups.ToListAsync();
         List<ApplicationUser> userList = await _context.ApplicationUsers.ToListAsync();
-        //List<Link_Category_Transaction> link_category_TransactionList = await _context.Link_Categories_Transactions.ToListAsync();
-        //List<Link_Category_RecurringTransaction> link_category_RecurringTransactionList = await _context.Link_Category_RecurringTransactions.ToListAsync();
+        List<Link_Category_Transaction> link_category_TransactionList = await _context.Link_Categories_Transactions.ToListAsync();
+        List<Link_Category_RecurringTransaction> link_category_RecurringTransactionList = await _context.Link_Category_RecurringTransactions.ToListAsync();
         List<Lookup_RecurringTransactionFrequency> lookup_RecurringTransactionFrequencyList = await _context.Lookup_RecurringTransactionFrequencies.ToListAsync();
         List<Lookup_TransactionType> lookup_TransactionTypeList = await _context.Lookup_TransactionTypes.ToListAsync();
 
@@ -65,11 +65,11 @@ public class BackupService(ApplicationDbContext context)
             jsonString = JsonSerializer.Serialize(userList, options);
             File.WriteAllText($@"{fileName}/{usersJsonFileName}", jsonString);
 
-            //jsonString = JsonSerializer.Serialize(link_category_TransactionList, options);
-            //File.WriteAllText($@"{fileName}/{link_category_transactionFileName}", jsonString);
+            jsonString = JsonSerializer.Serialize(link_category_TransactionList, options);
+            File.WriteAllText($@"{fileName}/{link_category_transactionFileName}", jsonString);
 
-            //jsonString = JsonSerializer.Serialize(link_category_RecurringTransactionList, options);
-            //File.WriteAllText($@"{fileName}/{link_category_recurringTransactionFileName}", jsonString);
+            jsonString = JsonSerializer.Serialize(link_category_RecurringTransactionList, options);
+            File.WriteAllText($@"{fileName}/{link_category_recurringTransactionFileName}", jsonString);
 
             jsonString = JsonSerializer.Serialize(lookup_RecurringTransactionFrequencyList, options);
             File.WriteAllText($@"{fileName}/{lookup_RecurringTransactionFrequencyFileName}", jsonString);
@@ -107,12 +107,12 @@ public class BackupService(ApplicationDbContext context)
             if (!File.Exists($"restore/{lookup_RecurringTransactionFrequencyFileName}")) throw new FileNotFoundException($"Json file not found: restore/{lookup_RecurringTransactionFrequencyFileName}");
             if (!File.Exists($"restore/{lookup_TransactionTypeFileName}")) throw new FileNotFoundException($"Json file not found: restore/{lookup_TransactionTypeFileName}");
 
-            //if (!File.Exists($"restore/{link_category_transactionFileName}")) throw new FileNotFoundException($"Json file not found: restore/{link_category_transactionFileName}");
+            if (!File.Exists($"restore/{link_category_transactionFileName}")) throw new FileNotFoundException($"Json file not found: restore/{link_category_transactionFileName}");
 
-            //if (!File.Exists($"restore/{link_category_recurringTransactionFileName}")) throw new FileNotFoundException($"Json file not found: restore/{link_category_recurringTransactionFileName}");
+            if (!File.Exists($"restore/{link_category_recurringTransactionFileName}")) throw new FileNotFoundException($"Json file not found: restore/{link_category_recurringTransactionFileName}");
 
-            //_context.RemoveRange(await _context.Link_Categories_Transactions.ToListAsync());
-            //_context.RemoveRange(await _context.Link_Category_RecurringTransactions.ToListAsync());
+            _context.RemoveRange(await _context.Link_Categories_Transactions.ToListAsync());
+            _context.RemoveRange(await _context.Link_Category_RecurringTransactions.ToListAsync());
             _context.RemoveRange(await _context.Accounts.ToListAsync());
             _context.RemoveRange(await _context.Categories.ToListAsync());
             _context.RemoveRange(await _context.Files.ToListAsync());
@@ -188,13 +188,13 @@ public class BackupService(ApplicationDbContext context)
 
             Console.WriteLine("Transaction Files restored");
 
-            //jsonString = await File.ReadAllTextAsync($"restore/{link_category_transactionFileName}");
-            //List<Link_Category_Transaction> link_category_Transaction = JsonSerializer.Deserialize<List<Link_Category_Transaction>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{link_category_transactionFileName}");
-            //await _context.Link_Categories_Transactions.AddRangeAsync(link_category_Transaction);
+            jsonString = await File.ReadAllTextAsync($"restore/{link_category_transactionFileName}");
+            List<Link_Category_Transaction> link_category_Transaction = JsonSerializer.Deserialize<List<Link_Category_Transaction>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{link_category_transactionFileName}");
+            await _context.Link_Categories_Transactions.AddRangeAsync(link_category_Transaction);
 
-            //jsonString = await File.ReadAllTextAsync($"restore/{link_category_recurringTransactionFileName}");
-            //List<Link_Category_RecurringTransaction> link_Category_RecurringTransactions = JsonSerializer.Deserialize<List<Link_Category_RecurringTransaction>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{link_category_recurringTransactionFileName}");
-            //await _context.Link_Category_RecurringTransactions.AddRangeAsync(link_Category_RecurringTransactions);
+            jsonString = await File.ReadAllTextAsync($"restore/{link_category_recurringTransactionFileName}");
+            List<Link_Category_RecurringTransaction> link_Category_RecurringTransactions = JsonSerializer.Deserialize<List<Link_Category_RecurringTransaction>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{link_category_recurringTransactionFileName}");
+            await _context.Link_Category_RecurringTransactions.AddRangeAsync(link_Category_RecurringTransactions);
 
             await _context.SaveChangesAsync();
 
