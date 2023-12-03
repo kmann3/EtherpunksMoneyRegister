@@ -15,6 +15,8 @@ v1-v-whatever are simply varying things I'm toying with. They aren't incremental
 * Export/Import: Test: file data, lookups, and link tables
 * Polish RecurringTransactionDetails. I don't like how it looks.
 * Menu adjust so you see where you are / Nav
+* Categories/Tags: Details page for editing and getting an overview of their use
+
 <hr />
 
 * Encrypting important things. This is a later thing because I'm still manually tweaking things in the database to test and it's simply easier to see mistakes currently.
