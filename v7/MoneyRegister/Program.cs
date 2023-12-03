@@ -62,6 +62,7 @@ public class Program
         builder.Services.AddScoped<DashboardService>();
         builder.Services.AddScoped<LookupService>();
         builder.Services.AddScoped<RecurringTransactionService>();
+        builder.Services.AddScoped<TransactionService>();
         builder.Services.AddScoped<TransactionGroupService>();
 
         builder.Services.AddScoped<TestService>();
