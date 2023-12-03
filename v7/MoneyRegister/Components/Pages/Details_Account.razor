@@ -65,7 +65,14 @@
                         }
                     </CellTemplate>
                 </TemplateColumn>
-                <PropertyColumn Property="x => x.Balance" Format="C" />
+                <TemplateColumn Title="Balance">
+                    <CellTemplate>
+                        @if (context.Item.TransactionClearedLocalTime != null)
+                        {
+                            <text>@context.Item.Balance.ToString("C")</text>
+                        }
+                    </CellTemplate>
+                </TemplateColumn>
                 <TemplateColumn CellClass="d-flex justify-end" Filterable="false">
                     <CellTemplate>
                         <MudStack Row>
