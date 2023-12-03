@@ -1,4 +1,4 @@
-﻿@page "/rtdetails/{Id:guid}"
+﻿@page "/editRecurringTransaction/{Id:guid}"
 @using Data.Entities
 @using Pages.Util
 @using System.Globalization
@@ -112,7 +112,10 @@ else {
                 <CellTemplate>
                     @if (context.Item.Files.Count() > 0)
                     {
-                        
+                        foreach(var file in context.Item.Files)
+                        {
+                            <text>FileHere;</text>
+                        }
                     }
                 </CellTemplate>
             </TemplateColumn>
@@ -252,6 +255,7 @@ else {
 
     private void OnRowClick(DataGridRowClickEventArgs<Data.Entities.Transaction> item)
     {
+        // TBI: Implement Transaction Details
         throw new NotImplementedException();
         //NavManager.NavigateTo($"/account/{item.Item.Id}");
     }
