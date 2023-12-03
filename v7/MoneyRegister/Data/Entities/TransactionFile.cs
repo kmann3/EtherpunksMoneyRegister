@@ -20,6 +20,8 @@ public class TransactionFile : BasicTable<TransactionFile>, IEntityTypeConfigura
 
     public string Notes { get; set; } = string.Empty;
 
+    // Consider a lookup for types of files such as bills, contracts, warranties, etc
+
     public override void Configure(EntityTypeBuilder<TransactionFile> builder)
     {
         builder.HasIndex(k => k.Name).IsUnique(true);
