@@ -10,6 +10,13 @@ v1-v-whatever are simply varying things I'm toying with. They aren't incremental
 
 ## TBI
 
+* RecurringTransactionDetails: Handle file data / ability to download
+* Files: Consider a lookup for types of files such as bills, contracts, warranties, etc
+* Export/Import: Test: file data, lookups, and link tables
+* Polish RecurringTransactionDetails. I don't like how it looks.
+* Menu adjust so you see where you are / Nav
+<hr />
+
 * Encrypting important things. This is a later thing because I'm still manually tweaking things in the database to test and it's simply easier to see mistakes currently.
-* Globalization
+* Globalization / Locatlization
 * Background service to run bill processing on if something is late?
