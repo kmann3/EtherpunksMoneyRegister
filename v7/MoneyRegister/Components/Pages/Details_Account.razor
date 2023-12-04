@@ -2,6 +2,7 @@
 @using Data.Services
 @using Data.Entities
 @inject Data.Services.AccountService MR_AccountService
+@inject Data.Services.TransactionService MR_TransactionService
 @inject Data.Services.TestService MR_TestService
 
 @if(accountDetails == null)
@@ -212,14 +213,14 @@
 
     private async Task SetTransactionToPending(Transaction item)
     {
-        // item.TransactionPendingUTC = DateTime.UtcNow;
-        // await MMR_TransactionService.UpdateTransactionAsync(accountDetails!, item);
+        item.TransactionPendingUTC = DateTime.UtcNow;
+        await MR_TransactionService.UpdateTransactionAsync(accountDetails!, item);
     }
 
     private async Task SetTransactionToCleared(Transaction item)
     {
-        // item.TransactionClearedUTC = DateTime.UtcNow;
-        // await MMR_TransactionService.UpdateTransactionAsync(accountDetails!, item);
+        item.TransactionClearedUTC = DateTime.UtcNow;
+        await MR_TransactionService.UpdateTransactionAsync(accountDetails!, item);
     }
 
     private async Task RecalculateBalances()

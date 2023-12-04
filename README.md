@@ -16,7 +16,9 @@ v1-v-whatever are simply varying things I'm toying with. They aren't incremental
 * Polish RecurringTransactionDetails. I don't like how it looks.
 * Menu adjust so you see where you are / Nav
 * Categories/Tags: Details page for editing and getting an overview of their use
-
+* Unit Testing
+* Hard deletes or soft deletes?
+* Logging: Should there be a history table which talks about all db changes? This might allow for hard deletes while preserving information
 <hr />
 
 * Encrypting important things. This is a later thing because I'm still manually tweaking things in the database to test and it's simply easier to see mistakes currently.

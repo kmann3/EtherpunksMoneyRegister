@@ -8,7 +8,7 @@ public class DialogUtil
 {
     public static async Task<DialogResult> ShowAccountDialogAsync(IDialogService dialogService, bool isNew, RecurringTransaction recurringTransaction)
     {
-        var parameters = new DialogParameters<RecurringTransactionDialog>
+        var parameters = new DialogParameters<EditRecurringTransactionDialog>
         {
             { x => x.IsNew, isNew },
             { x => x.RecurringTransactionDetails, recurringTransaction }
@@ -19,7 +19,7 @@ public class DialogUtil
             CloseOnEscapeKey = true,
         };
 
-        var dialog = await dialogService.ShowAsync<RecurringTransactionDialog>(isNew ? "New Recurring Transaction" : "Edit Recurring Transaction", parameters, options);
+        var dialog = await dialogService.ShowAsync<EditRecurringTransactionDialog>(isNew ? "New Recurring Transaction" : "Edit Recurring Transaction", parameters, options);
         return await dialog.Result;
     }
 
