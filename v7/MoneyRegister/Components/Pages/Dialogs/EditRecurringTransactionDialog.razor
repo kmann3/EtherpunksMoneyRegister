@@ -11,8 +11,16 @@
 <MudDialog>
     <TitleContent>
         <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3 mb-n1" />
-            Edit - @RecurringTransactionDetails.Name
+            @if (IsNew)
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
+                <text>New Recurring Transaction</text>
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3 mb-n1" />
+                <text>Edit - @RecurringTransactionDetails.Name</text>
+            }
         </MudText>
     </TitleContent>
     <DialogContent>
