@@ -1,5 +1,64 @@
-﻿<h3>TransactionDialog</h3>
+﻿@using Data.Entities
+@using Pages.Util
+@using System.Globalization
+@inject Data.Services.CategoryService MR_CategoryService
+@inject Data.Services.LookupService MR_LookupService
+@inject Data.Services.TransactionService MR_TranService
+@inject Data.Services.TransactionGroupService MR_TransactionGroupService
+@inject IDialogService DialogService
+@inject NavigationManager NavManager
+
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            @if (IsNew)
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
+                <text>New Recurring Transaction</text>
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3 mb-n1" />
+                <text>Edit - @TransactionDetails.Name</text>
+            }
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField T="string" @bind-Value="@TransactionDetails.Name" Label="Name" tabindex="1" @ref="firstFocus" />
+    </DialogContent>
+</MudDialog>
 
 @code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
+    [Parameter] public Transaction TransactionDetails { get; set; } = new();
+    [Parameter] public bool IsNew { get; set; }
+
+    MudDatePicker _nextDueDatePicker;
+    List<Category> categories { get; set; } = new();
+    List<TransactionGroup> transactionGroups = new();
+    List<Lookup_TransactionType> TransactionTypeList = new();
+
+    private DateTime? frequencyDate;
+    private DayOfWeek frequencyDayOfWeek;
+
+    private IEnumerable<Category> selectedCategories = new HashSet<Category>();
+
+    private MudTextField<string> firstFocus;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await MR_CategoryService.GetAllCategoriesAsync();
+        transactionGroups = await MR_TransactionGroupService.GetAllTransactionGroupsAsync();
+        TransactionTypeList = await MR_LookupService.GetLookup_TransactionTypesAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await firstFocus.FocusAsync();
+        }
+    }
 }
