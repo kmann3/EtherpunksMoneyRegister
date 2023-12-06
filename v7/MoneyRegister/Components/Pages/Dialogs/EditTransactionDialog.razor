@@ -1,6 +1,7 @@
 ﻿@using Data.Entities
 @using Pages.Util
 @using System.Globalization
+@inject Data.Services.AccountService MR_AccountService
 @inject Data.Services.CategoryService MR_CategoryService
 @inject Data.Services.LookupService MR_LookupService
 @inject Data.Services.TransactionService MR_TranService
@@ -26,6 +27,40 @@
     </TitleContent>
     <DialogContent>
         <MudTextField T="string" @bind-Value="@TransactionDetails.Name" Label="Name" tabindex="1" @ref="firstFocus" />
+
+        <MudNumericField T="decimal" @bind-Value="TransactionDetails.Amount" Immediate="false" Label="Amount" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="3" />
+
+        <div class="d-flex">
+            <MudSelect T="Category" Label="Categories" @bind-SelectedValues="selectedCategories" tabindex="5"
+                       AdornmentIcon="@Icons.Material.Filled.Search" AnchorOrigin="Origin.BottomCenter" MultiSelection="true" Variant="Variant.Outlined"
+                       MultiSelectionTextFunc="@(new Func<List<string>, string>(GetSelectedItemsText))">
+                @foreach (var item in categories)
+                {
+                    <MudSelectItem T="Category" Value="@item">@item.Name</MudSelectItem>
+                }
+            </MudSelect>
+            <MudButton OnClick="NewCategoryDialog" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" />
+        </div>
+
+        <MudDatePicker @ref="_pendingDate" Label="Pending Date" Editable="true" @bind-Date="TransactionDetails.TransactionPendingLocalTime" tabindex="9" PickerVariant="PickerVariant.Dialog">
+            <PickerActions>
+                <MudButton Class="mr-auto align-self-start" OnClick="@(() => _pendingDate.Clear())">Clear</MudButton>
+                <MudButton OnClick="@(() => _pendingDate.GoToDate(DateTime.UtcNow, true))">Today</MudButton>
+                <MudButton OnClick="@(() => _pendingDate.Close(false))">Cancel</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@(() => _pendingDate.Close())">Ok</MudButton>
+            </PickerActions>
+        </MudDatePicker>
+
+        <MudDatePicker @ref="_clearedDate" Label="Cleared Date" Editable="true" @bind-Date="TransactionDetails.TransactionClearedLocalTime" tabindex="9" PickerVariant="PickerVariant.Dialog">
+            <PickerActions>
+                <MudButton Class="mr-auto align-self-start" OnClick="@(() => _clearedDate.Clear())">Clear</MudButton>
+                <MudButton OnClick="@(() => _clearedDate.GoToDate(DateTime.UtcNow, true))">Today</MudButton>
+                <MudButton OnClick="@(() => _clearedDate.Close(false))">Cancel</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@(() => _clearedDate.Close())">Ok</MudButton>
+            </PickerActions>
+        </MudDatePicker>
+
+        <MudTextField T="string" @bind-Value="@TransactionDetails.Notes" Label="Notes" AutoGrow tabindex="4" />
     </DialogContent>
 </MudDialog>
 
@@ -34,8 +69,12 @@
 
     [Parameter] public Transaction TransactionDetails { get; set; } = new();
     [Parameter] public bool IsNew { get; set; }
+    [Parameter] public List<Category> CategoryList { get; set; }
+    [Parameter] public List<Account> AccountList { get; set; }
 
-    MudDatePicker _nextDueDatePicker;
+    MudDatePicker _pendingDate;
+    MudDatePicker _clearedDate;
+    List<Data.Entities.Account> accounts { get; set; } = new();
     List<Category> categories { get; set; } = new();
     List<TransactionGroup> transactionGroups = new();
     List<Lookup_TransactionType> TransactionTypeList = new();
@@ -49,6 +88,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        accounts = await MR_AccountService.GetAllAccountsAsync();
         categories = await MR_CategoryService.GetAllCategoriesAsync();
         transactionGroups = await MR_TransactionGroupService.GetAllTransactionGroupsAsync();
         TransactionTypeList = await MR_LookupService.GetLookup_TransactionTypesAsync();
@@ -59,6 +99,38 @@
         if (firstRender)
         {
             await firstFocus.FocusAsync();
+        }
+    }
+
+    private string GetSelectedItemsText(List<string> selectedValues)
+    {
+        return $"{selectedValues.Count} tag{(selectedValues.Count != 1 ? "s" : "")}";
+    }
+
+    private void ResetSelectedCategories()
+    {
+        HashSet<Category> t = new HashSet<Category>();
+        if (TransactionDetails.Categories.Count() == 0) return;
+        foreach (var item in TransactionDetails.Categories)
+        {
+            t.Add(item);
+        }
+
+        selectedCategories = t;
+    }
+
+    private async Task NewCategoryDialog()
+    {
+        ResetSelectedCategories();
+
+        var result = await DialogUtil.ShowCategoryDialogAsync(DialogService, true, new Category());
+
+        if (!result.Canceled)
+        {
+            var catData = result.Data as Category;
+            categories.Add(catData!);
+            TransactionDetails.Categories.Add(catData!);
+            ResetSelectedCategories();
         }
     }
 }

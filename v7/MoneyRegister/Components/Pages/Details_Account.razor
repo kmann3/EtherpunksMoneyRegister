@@ -1,9 +1,12 @@
 ﻿@page "/account/{Id:guid}"
 @using Data.Services
 @using Data.Entities
+@using Pages.Util
 @inject Data.Services.AccountService MR_AccountService
+@inject Data.Services.LookupService MR_LookupService
 @inject Data.Services.TransactionService MR_TransactionService
 @inject Data.Services.TestService MR_TestService
+@inject IDialogService DialogService
 
 @if(accountDetails == null)
 {
@@ -129,24 +132,22 @@
 
     private async Task OnRowClick(DataGridRowClickEventArgs<Transaction> args)
     {
-        // decimal oldAmount = args.Item.Amount;
-        // DateTime? oldTransactionClearedUTC = args.Item.TransactionClearedUTC;
-        // var result = await DialogUtil.ShowTransactionDialog(DialogService, false, args.Item, accounts, categories);
+        DateTime? oldTransactionClearedUTC = args.Item.TransactionClearedUTC;
+        var result = await DialogUtil.ShowTransactionDialog(DialogService, false, args.Item);
 
-        // if (!result.Canceled)
-        // {
-        //     Transaction modifiedTransaction = result.Data as Transaction;
-        //     if (modifiedTransaction.DeletedOnUTC.HasValue)
-        //     {
-        //         await MMR_TransactionService.DeleteTransactionAsync(accountDetails, modifiedTransaction);
-        //         //args.RowIndex
-        //         accountDetails.Transactions.Remove(args.Item);
-        //     }
-        //     else
-        //     {
-        //         await MMR_TransactionService.UpdateTransactionAsync(accountDetails, modifiedTransaction);
-        //     }
-        // }
+        if (!result.Canceled)
+        {
+            Transaction modifiedTransaction = result.Data as Transaction;
+            if (modifiedTransaction.DeletedOnUTC.HasValue)
+            {
+                await MR_TransactionService.DeleteTransactionAsync(accountDetails, modifiedTransaction);
+                accountDetails.Transactions.Remove(args.Item);
+            }
+            else
+            {
+                await MR_TransactionService.UpdateTransactionAsync(accountDetails, modifiedTransaction);
+            }
+        }
     }
 
     private string GetCategoryLink(Guid id)

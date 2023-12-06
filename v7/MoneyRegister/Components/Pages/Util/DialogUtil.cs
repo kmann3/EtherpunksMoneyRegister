@@ -55,4 +55,21 @@ public class DialogUtil
 
         return await dialog.Result;
     }
+
+    public static async Task<DialogResult> ShowTransactionDialog(IDialogService dialogService, bool isNew, Transaction transaction)
+    {
+        var parameters = new DialogParameters<EditTransactionDialog>
+        {
+            { x => x.TransactionDetails, transaction },
+            { x => x.IsNew, isNew },
+        };
+
+        DialogOptions options = new()
+        {
+            CloseOnEscapeKey = true,
+        };
+
+        var dialog = await dialogService.ShowAsync<EditTransactionDialog>("", parameters, options);
+        return await dialog.Result;
+    }
 }
