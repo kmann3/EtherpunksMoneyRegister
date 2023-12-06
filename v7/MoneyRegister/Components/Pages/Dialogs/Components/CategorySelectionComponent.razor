@@ -1,0 +1,80 @@
+﻿@using System.Globalization
+@using Pages.Dialogs.Components
+@using Data.Entities
+@inject Data.Services.CategoryService MR_CategoryService
+@inject IDialogService DialogService
+
+
+<div class="d-flex">
+    <MudSelect T="Category" Label="Categories" @bind-SelectedValues="selectedCategories" tabindex="5"
+               AdornmentIcon="@Icons.Material.Filled.Search" AnchorOrigin="Origin.BottomCenter" MultiSelection="true" Variant="Variant.Outlined"
+               MultiSelectionTextFunc="@(new Func<List<string>, string>(GetSelectedItemsText))">
+        @foreach (var item in categories)
+        {
+            <MudSelectItem T="Category" Value="@item">@item.Name</MudSelectItem>
+        }
+    </MudSelect>
+    <MudButton OnClick="NewCategoryDialog" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" />
+</div>
+
+@code {
+    [Parameter] public List<Category> value
+    {
+        get => _value;
+        set
+        {
+            if (value == _value)
+                return;
+
+            _value = value;
+            if (ValueChanged.HasDelegate)
+            {
+                ValueChanged.InvokeAsync(_value);
+            }
+        }
+    }
+
+    [Parameter] public int Index { get; set; } = 0;
+    [Parameter] public EventCallback<List<Category>> ValueChanged { get; set; }
+
+    private List<Category> _value;
+
+    private List<Category> categories { get; set; }
+    private IEnumerable<Category> selectedCategories = new HashSet<Category>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await MR_CategoryService.GetAllCategoriesAsync();
+    }
+
+    private string GetSelectedItemsText(List<string> selectedValues)
+    {
+        return $"{selectedValues.Count} tag{(selectedValues.Count != 1 ? "s" : "")}";
+    }
+
+    private void ResetSelectedCategories()
+    {
+        HashSet<Category> t = new HashSet<Category>();
+        if (value.Count() == 0) return;
+        foreach (var item in value)
+        {
+            t.Add(item);
+        }
+
+        selectedCategories = t;
+    }
+    private async Task NewCategoryDialog()
+    {
+        ResetSelectedCategories();
+
+        var result = await DialogUtil.ShowCategoryDialogAsync(DialogService, true, new Category());
+
+        if (!result.Canceled)
+        {
+            var catData = result.Data as Category;
+            categories.Add(catData!);
+            value.Add(catData!);
+            ResetSelectedCategories();
+        }
+    }
+}

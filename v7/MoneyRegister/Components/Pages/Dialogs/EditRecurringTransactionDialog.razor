@@ -1,6 +1,6 @@
 ﻿@using Data.Entities
-@using Pages.Util
 @using System.Globalization
+@using Pages.Dialogs.Components
 @inject Data.Services.CategoryService MR_CategoryService
 @inject Data.Services.LookupService MR_LookupService
 @inject Data.Services.RecurringTransactionService MR_RecTranService
@@ -25,14 +25,8 @@
     </TitleContent>
     <DialogContent>
         <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Name" Label="Name" tabindex="1" @ref="firstFocus" />
-
-        <MudSelect T="Lookup_TransactionType" Label="Transaction Type" @bind-Value="@RecurringTransactionDetails.TransactionTypeLookup" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="2">
-            @foreach (var group in TransactionTypeList)
-            {
-                <MudSelectItem Value="@group">@group.Name</MudSelectItem>
-            }
-        </MudSelect>
-        <MudNumericField T="decimal" @bind-Value="RecurringTransactionDetails.Amount" Immediate="false" Label="Amount" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="3" />
+        <TransactionTypeSelectionComponent @bind-Value="RecurringTransactionDetails.TransactionTypeLookup" Index="2" />
+        <CurrencyAmountComponent @bind-Value="RecurringTransactionDetails.Amount" @bind-Value:event="ValueChanged" Index="3" />
         <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Notes" Label="Notes" AutoGrow tabindex="4" />
 
         <div class="d-flex">
@@ -130,7 +124,6 @@
     MudDatePicker _nextDueDatePicker;
     List<Category> categories { get; set; } = new();
     List<TransactionGroup> transactionGroups = new();
-    List<Lookup_TransactionType> TransactionTypeList = new();
     List<Lookup_RecurringTransactionFrequency> FrequencyList = new();
 
     private DateTime? frequencyDate;
@@ -144,7 +137,6 @@
     {
         categories = await MR_CategoryService.GetAllCategoriesAsync();
         transactionGroups = await MR_TransactionGroupService.GetAllTransactionGroupsAsync();
-        TransactionTypeList = await MR_LookupService.GetLookup_TransactionTypesAsync();
         FrequencyList = await MR_LookupService.GetLookup_RecurringTransactionFrequenciesAsync();
         ResetSelectedCategories();
 
