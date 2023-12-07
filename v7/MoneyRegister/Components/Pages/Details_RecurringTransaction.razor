@@ -196,42 +196,42 @@ else {
             case "Yearly":
                 recurringTransaction.FrequencyDateValue = frequencyDate;
                 recurringTransaction.FrequencyValue = null;
-                recurringTransaction.DayOfWeekValue = null;
+                recurringTransaction.FrequencyDayOfWeekValue = null;
                 break;
             case "Monthly":
                 recurringTransaction.FrequencyDateValue = null;
                 recurringTransaction.FrequencyValue = frequencyDate!.Value.Day;
-                recurringTransaction.DayOfWeekValue = null;
+                recurringTransaction.FrequencyDayOfWeekValue = null;
                 break;
             case "Weekly":
                 recurringTransaction.FrequencyDateValue = null;
                 recurringTransaction.FrequencyValue = null;
-                recurringTransaction.DayOfWeekValue = frequencyDayOfWeek;
+                recurringTransaction.FrequencyDayOfWeekValue = frequencyDayOfWeek;
                 break;
             case "XDays":
                 recurringTransaction.FrequencyDateValue = null;
                 //recurringTransaction.FrequencyValue = null; // Assigned from component
-                recurringTransaction.DayOfWeekValue = null;
+                recurringTransaction.FrequencyDayOfWeekValue = null;
                 break;
             case "XMonths":
                 recurringTransaction.FrequencyDateValue = null;
                 //recurringTransaction.FrequencyValue = null; // Assigned from component
-                recurringTransaction.DayOfWeekValue = null;
+                recurringTransaction.FrequencyDayOfWeekValue = null;
                 break;
             case "XWeekYDayOfWeek":
                 recurringTransaction.FrequencyDateValue = null;
                 //recurringTransaction.FrequencyValue = ; // Assigned from component
-                recurringTransaction.DayOfWeekValue = frequencyDayOfWeek;
+                recurringTransaction.FrequencyDayOfWeekValue = frequencyDayOfWeek;
                 break;
             case "Irregular":
                 recurringTransaction.FrequencyDateValue = null;
                 recurringTransaction.FrequencyValue = null;
-                recurringTransaction.DayOfWeekValue = null;
+                recurringTransaction.FrequencyDayOfWeekValue = null;
                 break;
             case "Unknown":
                 recurringTransaction.FrequencyDateValue = null;
                 recurringTransaction.FrequencyValue = null;
-                recurringTransaction.DayOfWeekValue = null;
+                recurringTransaction.FrequencyDayOfWeekValue = null;
                 break;
             default:
                 throw new NotImplementedException();

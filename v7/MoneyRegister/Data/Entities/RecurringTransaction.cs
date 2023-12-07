@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
 using Humanizer;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace MoneyRegister.Data.Entities;
 
@@ -39,16 +40,16 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
                     case "Monthly":
                         return $"{FrequencyValue.ToString().Ordinalize()} of the month";
                     case "Weekly":
-                        return $"Every {DayOfWeekValue}";
+                        return $"Every {FrequencyDayOfWeekValue}";
                     case "Irregular":
                         return "Irregular frequency";
                     case "XDays":
                         return $"Every {FrequencyValue} days";
-                        // TBI Day/Days - calculate
+                    // TBI Day/Days - calculate
                     case "XMonths":
                         return $"Every {FrequencyValue} months";
                     case "XWeekYDayOfWeek":
-                        return $"Every {FrequencyValue.ToString().Ordinalize()} {DayOfWeekValue}";
+                        return $"Every {FrequencyValue.ToString().Ordinalize()} {FrequencyDayOfWeekValue}";
 
                     case "Unknown":
                         return "Unknown";
@@ -65,7 +66,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     }
 
     public int? FrequencyValue { get; set; } = null;
-    public DayOfWeek? DayOfWeekValue { get; set; } = null;
+    public DayOfWeek? FrequencyDayOfWeekValue { get; set; } = null;
     public DateTime? FrequencyDateValue { get; set; } = null;
     [JsonIgnore]
     public TransactionGroup? Group { get; set; }
