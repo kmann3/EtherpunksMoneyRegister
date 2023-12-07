@@ -22,7 +22,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     [JsonIgnore]
     public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
     [JsonIgnore]
-    public List<Category> Categories { get; } = new();
+    public List<Category> Categories { get; set; } = new();
     public Lookup_RecurringTransactionFrequency FrequencyLookup { get; set; }
     public Guid FrequencyLookupId { get; set; }
     [NotMapped]

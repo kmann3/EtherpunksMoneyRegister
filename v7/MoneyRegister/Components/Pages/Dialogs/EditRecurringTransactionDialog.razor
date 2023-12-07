@@ -247,7 +247,8 @@
                 throw new NotImplementedException();
         }
 
-        // Categories do not update. Going to need to compare categories and selectedCatagories to see if they differ and if they do, save.
+        RecurringTransactionDetails.Categories = selectedCategories.ToList();
+
         if (IsNew) await MR_RecTranService.CreateRecurringTransactionAsync(RecurringTransactionDetails);
         else await MR_RecTranService.UpdateRecurringTransactionAsync(RecurringTransactionDetails);
 
