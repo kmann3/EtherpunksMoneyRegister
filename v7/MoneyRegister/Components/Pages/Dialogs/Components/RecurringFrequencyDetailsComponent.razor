@@ -1,0 +1,91 @@
+﻿@inject Data.Services.LookupService MR_LookupService
+
+@if(Value.FrequencyLookup == null)
+{
+    <pre>Loading...</pre>
+}
+else {
+    <MudSelect T="Lookup_RecurringTransactionFrequency" Label="Regularity" @bind-Value="Value.FrequencyLookup" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="@Index">
+    @foreach (var group in FrequencyList)
+    {
+        <MudSelectItem Value="@group">@group.Name</MudSelectItem>
+    }
+</MudSelect>
+    @switch (Value.FrequencyLookup.Name)
+{
+    case "Yearly":
+            <MudDatePicker Label="Select Date" @bind-Date="Value.FrequencyDateValue" DisableToolbar="true" tabindex="@SecondIndex" />
+        break;
+    case "Monthly":
+            <MudDatePicker Label="Select Day" @bind-Date="Value.FrequencyDateValue" DisableToolbar="true" tabindex="@SecondIndex" />
+        break;
+    case "Weekly":
+            <MudSelect @bind-Value="Value.FrequencyDayOfWeekValue" tabindex="@SecondIndex">
+            @foreach (DayOfWeek? entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
+            {
+                <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
+            }
+        </MudSelect>
+        break;
+    case "XDays":
+            <MudNumericField @bind-Value="Value.FrequencyValue" Label="Day Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="@SecondIndex" />
+        break;
+    case "XMonths":
+            <MudNumericField @bind-Value="Value.FrequencyValue" Label="Month Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="@SecondIndex" />
+        break;
+    case "XWeekYDayOfWeek":
+            <MudNumericField @bind-Value="Value.FrequencyValue" Label="Week" Variant="Variant.Text" Min="0" Max="100000" tabindex="@SecondIndex" />
+            <MudSelect @bind-Value="Value.FrequencyDayOfWeekValue" tabindex="@ThirdIndex">
+            @foreach (DayOfWeek? entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
+            {
+                <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
+            }
+        </MudSelect>
+        break;
+    case "Irregular":
+    case "Unknown":
+        break;
+    default:
+        throw new NotImplementedException();
+}
+}
+@code {
+    [Parameter] public RecurringTransaction Value
+    {
+        get
+        {
+            return _value;
+        }
+        set
+        {
+            if (value == _value) return;
+
+            if (ValueChanged.HasDelegate)
+            {
+                ValueChanged.InvokeAsync(_value);
+            }
+        }
+    }
+
+    [Parameter] public int Index { get; set; } = 0;
+    [Parameter] public EventCallback<RecurringTransaction> ValueChanged { get; set; }
+
+    private RecurringTransaction _value;
+
+    private int SecondIndex { get; set; }
+    private int ThirdIndex { get; set; }
+
+    List<Lookup_RecurringTransactionFrequency> FrequencyList = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        FrequencyList = await MR_LookupService.GetLookup_RecurringTransactionFrequenciesAsync();
+
+        SecondIndex = Index + 1;
+        ThirdIndex = Index + 2;
+
+        Value.FrequencyDateValue ??= DateTime.Now;
+        Value.FrequencyValue ??= 1;
+        Value.FrequencyDayOfWeekValue ??= DayOfWeek.Monday;
+    }
+}

@@ -218,7 +218,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             NextDueDate = new DateTime(currentMonth.AddMonths(-1).Year, currentMonth.AddMonths(-1).Month, 27),
             FrequencyLookupId = lookup_Frequency_XWeekYDayOfWeek.Id,
             FrequencyValue = 4,
-            DayOfWeekValue = DayOfWeek.Wednesday,
+            FrequencyDayOfWeekValue = DayOfWeek.Wednesday,
             TransactionTypeLookupId = lookup_TransactionType_Credit.Id,
         });
 

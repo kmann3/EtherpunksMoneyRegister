@@ -11,7 +11,7 @@ using MoneyRegister.Data;
 namespace MoneyRegister.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231201161947_000-init")]
+    [Migration("20231207161425_000-init")]
     partial class _000init
     {
         /// <inheritdoc />
@@ -218,13 +218,13 @@ namespace MoneyRegister.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6a67e8c9-6d0f-41af-a196-8070d988309a"),
+                            Id = new Guid("d7d75c03-e873-4f05-b5d3-fbe35be4f4a8"),
                             AccountNumber = "",
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(696),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8128),
                             CurrentBalance = 1987.19m,
                             InterestRate = 0m,
-                            LastBalancedUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(701),
+                            LastBalancedUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8134),
                             LoginUrl = "",
                             Name = "Cash",
                             Notes = "",
@@ -320,8 +320,8 @@ namespace MoneyRegister.Data.Migrations
                         {
                             Id = "00000000-0000-0000-0000-000000000000",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "84c2ee9c-e16f-4306-b17f-ea919f3b66e1",
-                            CreatedOn = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(576),
+                            ConcurrencyStamp = "d635eae7-18d8-479e-a5f6-bbd73640645c",
+                            CreatedOn = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(7959),
                             Email = "",
                             EmailConfirmed = false,
                             FirstName = "admin",
@@ -330,7 +330,7 @@ namespace MoneyRegister.Data.Migrations
                             LocalTimeZone = "Central Standard Time",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e0f29e5e-3b8a-4e2d-8778-b66fd4d3d332",
+                            SecurityStamp = "8bf15fd6-51c7-43ad-b12e-b848b562e2ec",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -372,44 +372,44 @@ namespace MoneyRegister.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ec24a4db-b68f-4936-9d91-8e94a09f1a3f"),
+                            Id = new Guid("5a6c2d2e-baab-4c64-ae85-c7e318761613"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(730),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8148),
                             Name = "bills"
                         },
                         new
                         {
-                            Id = new Guid("d4e97b90-c058-42d3-af82-aca9a60af09f"),
+                            Id = new Guid("c896dcc7-ea19-4777-810c-35306165138b"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(731),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8150),
                             Name = "fast-food"
                         },
                         new
                         {
-                            Id = new Guid("73d50616-9f52-4fd4-8ec9-7c2bd8fe6516"),
+                            Id = new Guid("b6fc9263-d9fd-40bc-9391-f3b603f7f3c3"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(733),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8152),
                             Name = "gas"
                         },
                         new
                         {
-                            Id = new Guid("273ed63f-0d0b-45d6-b9e1-7827256c7010"),
+                            Id = new Guid("291eee07-9aca-4257-a567-3844c39041dc"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(735),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8154),
                             Name = "groceries"
                         },
                         new
                         {
-                            Id = new Guid("5d70254a-0cde-4fcd-98f9-9c3807d753ec"),
+                            Id = new Guid("078d95ef-4465-41bb-b6c6-9d184d51ef3a"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(736),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8156),
                             Name = "medications"
                         },
                         new
                         {
-                            Id = new Guid("4275c8f3-b9e1-4aa3-ad94-6b569f93a926"),
+                            Id = new Guid("0ced9ac4-6b55-42c1-ae7f-303b026cfd45"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(737),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8158),
                             Name = "streaming"
                         });
                 });
@@ -431,13 +431,13 @@ namespace MoneyRegister.Data.Migrations
                     b.HasData(
                         new
                         {
-                            CategoryId = new Guid("ec24a4db-b68f-4936-9d91-8e94a09f1a3f"),
-                            RecurringTransactionId = new Guid("3c14a96a-7fd7-4a71-8f01-d15f7034e963")
+                            CategoryId = new Guid("5a6c2d2e-baab-4c64-ae85-c7e318761613"),
+                            RecurringTransactionId = new Guid("11b74f76-8047-451e-9cc6-8067951ca2ae")
                         },
                         new
                         {
-                            CategoryId = new Guid("ec24a4db-b68f-4936-9d91-8e94a09f1a3f"),
-                            RecurringTransactionId = new Guid("0baa9159-bbca-4d46-b85f-57375e89220e")
+                            CategoryId = new Guid("5a6c2d2e-baab-4c64-ae85-c7e318761613"),
+                            RecurringTransactionId = new Guid("c6580499-9953-4883-9c44-8eacd73459b5")
                         });
                 });
 
@@ -458,8 +458,8 @@ namespace MoneyRegister.Data.Migrations
                     b.HasData(
                         new
                         {
-                            CategoryId = new Guid("ec24a4db-b68f-4936-9d91-8e94a09f1a3f"),
-                            TransactionId = new Guid("a0cde662-854f-4fc1-9214-409bacf2dc92")
+                            CategoryId = new Guid("5a6c2d2e-baab-4c64-ae85-c7e318761613"),
+                            TransactionId = new Guid("70989e28-cf1b-47f5-8d06-b46200a937b2")
                         });
                 });
 
@@ -509,63 +509,63 @@ namespace MoneyRegister.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a00c227d-8bc0-47e5-b6b2-0225f4e54850"),
+                            Id = new Guid("56443260-6d7e-490a-934d-0b38bbafa1ab"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(858),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8305),
                             DisplayString = "",
                             Name = "Annually",
                             Ordinal = 0
                         },
                         new
                         {
-                            Id = new Guid("76754778-ed9e-430c-9392-65b7ef1059a5"),
+                            Id = new Guid("415d159b-0ee5-4c3d-a3c4-1f23eda20ef1"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(860),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8307),
                             DisplayString = "",
                             Name = "Monthly",
                             Ordinal = 1
                         },
                         new
                         {
-                            Id = new Guid("f9f2b4c1-5ba1-4ddc-aaed-c4547c44103c"),
+                            Id = new Guid("9db655f1-5725-4aa9-b1f3-bbeabe5c662d"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(862),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8309),
                             DisplayString = "",
                             Name = "Weekly",
                             Ordinal = 2
                         },
                         new
                         {
-                            Id = new Guid("50f745a0-e121-4daa-8d5e-b8f4be13e6cd"),
+                            Id = new Guid("948e156e-cae5-436d-9e6e-76f22cc24045"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(863),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8311),
                             DisplayString = "",
                             Name = "XDays",
                             Ordinal = 3
                         },
                         new
                         {
-                            Id = new Guid("e7b28e74-2c54-4762-a56e-2bc9eeee116b"),
+                            Id = new Guid("9b05d0fb-08d4-4fb7-ad6b-a781bd44b30b"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(864),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8312),
                             DisplayString = "",
                             Name = "XWeekYDayOfWeek",
                             Ordinal = 4
                         },
                         new
                         {
-                            Id = new Guid("a35a2506-d8a8-436a-bd7f-968a5ea6a456"),
+                            Id = new Guid("a7352980-7451-4003-98b7-49672bd5c22c"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(866),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8313),
                             DisplayString = "",
                             Name = "Irregular",
                             Ordinal = 5
                         },
                         new
                         {
-                            Id = new Guid("a73bfbb0-57fe-4b6d-8892-249aa81ccf4d"),
+                            Id = new Guid("a7b25bc7-bc16-41b0-9181-6847af74a835"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(868),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8315),
                             DisplayString = "",
                             Name = "Unknown",
                             Ordinal = 6
@@ -618,18 +618,18 @@ namespace MoneyRegister.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a8e221db-cf66-424b-86a5-bfcd36caed62"),
+                            Id = new Guid("cddf9538-4dc8-4950-bcb5-4aa80d0f52c1"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(822),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8265),
                             DisplayString = "",
                             Name = "Debit",
                             Ordinal = 0
                         },
                         new
                         {
-                            Id = new Guid("97defd4b-74fb-4229-bf70-9b073ecd54f2"),
+                            Id = new Guid("9a11cf23-fc72-43a6-a84c-e7b6951bf139"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(824),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8269),
                             DisplayString = "",
                             Name = "Credit",
                             Ordinal = 1
@@ -653,9 +653,6 @@ namespace MoneyRegister.Data.Migrations
                     b.Property<DateTime>("CreatedOnUTC")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("DayOfWeekValue")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("DeletedById")
                         .HasColumnType("TEXT");
 
@@ -664,6 +661,9 @@ namespace MoneyRegister.Data.Migrations
 
                     b.Property<DateTime?>("FrequencyDateValue")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("FrequencyDayOfWeekValue")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("FrequencyLookupId")
                         .HasColumnType("TEXT");
@@ -707,58 +707,58 @@ namespace MoneyRegister.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3c14a96a-7fd7-4a71-8f01-d15f7034e963"),
+                            Id = new Guid("11b74f76-8047-451e-9cc6-8067951ca2ae"),
                             Amount = -10.81m,
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(1038),
-                            FrequencyLookupId = new Guid("76754778-ed9e-430c-9392-65b7ef1059a5"),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8505),
+                            FrequencyLookupId = new Guid("415d159b-0ee5-4c3d-a3c4-1f23eda20ef1"),
                             FrequencyValue = 15,
                             Name = "Adobe Photoshop",
                             NextDueDate = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "",
-                            TransactionGroupId = new Guid("4d4ea16d-b01e-484e-aea7-7d1aa4e7dab3"),
-                            TransactionTypeLookupId = new Guid("a8e221db-cf66-424b-86a5-bfcd36caed62")
+                            TransactionGroupId = new Guid("cc8e4562-7234-4b74-8f0f-ffa45fde9c0b"),
+                            TransactionTypeLookupId = new Guid("cddf9538-4dc8-4950-bcb5-4aa80d0f52c1")
                         },
                         new
                         {
-                            Id = new Guid("0baa9159-bbca-4d46-b85f-57375e89220e"),
+                            Id = new Guid("c6580499-9953-4883-9c44-8eacd73459b5"),
                             Amount = -16.79m,
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(1094),
-                            FrequencyLookupId = new Guid("76754778-ed9e-430c-9392-65b7ef1059a5"),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8566),
+                            FrequencyLookupId = new Guid("415d159b-0ee5-4c3d-a3c4-1f23eda20ef1"),
                             FrequencyValue = 18,
                             Name = "Allstate Apartment Insurance",
                             NextDueDate = new DateTime(2024, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "",
-                            TransactionGroupId = new Guid("4d4ea16d-b01e-484e-aea7-7d1aa4e7dab3"),
-                            TransactionTypeLookupId = new Guid("a8e221db-cf66-424b-86a5-bfcd36caed62")
+                            TransactionGroupId = new Guid("cc8e4562-7234-4b74-8f0f-ffa45fde9c0b"),
+                            TransactionTypeLookupId = new Guid("cddf9538-4dc8-4950-bcb5-4aa80d0f52c1")
                         },
                         new
                         {
-                            Id = new Guid("04fd684f-15cd-407a-a331-2f5eaa41dbd3"),
+                            Id = new Guid("09893aa6-90e1-4949-8ead-10fa2da1ad55"),
                             Amount = 150m,
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(1133),
-                            FrequencyLookupId = new Guid("76754778-ed9e-430c-9392-65b7ef1059a5"),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8614),
+                            FrequencyLookupId = new Guid("415d159b-0ee5-4c3d-a3c4-1f23eda20ef1"),
                             FrequencyValue = 18,
                             Name = "Test",
                             NextDueDate = new DateTime(2024, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "",
-                            TransactionTypeLookupId = new Guid("97defd4b-74fb-4229-bf70-9b073ecd54f2")
+                            TransactionTypeLookupId = new Guid("9a11cf23-fc72-43a6-a84c-e7b6951bf139")
                         },
                         new
                         {
-                            Id = new Guid("e63f1c84-4eff-468c-b210-d3cac4bb900b"),
+                            Id = new Guid("13eccc08-d856-4bbe-9c15-5f1ca9889c45"),
                             Amount = 1343.72m,
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(1146),
-                            DayOfWeekValue = 3,
-                            FrequencyLookupId = new Guid("e7b28e74-2c54-4762-a56e-2bc9eeee116b"),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8632),
+                            FrequencyDayOfWeekValue = 3,
+                            FrequencyLookupId = new Guid("9b05d0fb-08d4-4fb7-ad6b-a781bd44b30b"),
                             FrequencyValue = 4,
                             Name = "Payday",
-                            NextDueDate = new DateTime(2024, 1, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NextDueDate = new DateTime(2023, 11, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "",
-                            TransactionTypeLookupId = new Guid("97defd4b-74fb-4229-bf70-9b073ecd54f2")
+                            TransactionTypeLookupId = new Guid("9a11cf23-fc72-43a6-a84c-e7b6951bf139")
                         });
                 });
 
@@ -831,30 +831,30 @@ namespace MoneyRegister.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d5bae77d-5e7d-4682-a668-72c4afecf991"),
-                            AccountId = new Guid("6a67e8c9-6d0f-41af-a196-8070d988309a"),
+                            Id = new Guid("fa71a04c-8e7e-4e60-b7c7-d25edf0df597"),
+                            AccountId = new Guid("d7d75c03-e873-4f05-b5d3-fbe35be4f4a8"),
                             Amount = 1998m,
                             Balance = 1998m,
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(1161),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8655),
                             Name = "payday",
                             Notes = "",
-                            TransactionClearedUTC = new DateTime(2024, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TransactionPendingUTC = new DateTime(2024, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TransactionTypeLookupId = new Guid("97defd4b-74fb-4229-bf70-9b073ecd54f2")
+                            TransactionClearedUTC = new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TransactionPendingUTC = new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TransactionTypeLookupId = new Guid("9a11cf23-fc72-43a6-a84c-e7b6951bf139")
                         },
                         new
                         {
-                            Id = new Guid("a0cde662-854f-4fc1-9214-409bacf2dc92"),
-                            AccountId = new Guid("6a67e8c9-6d0f-41af-a196-8070d988309a"),
+                            Id = new Guid("70989e28-cf1b-47f5-8d06-b46200a937b2"),
+                            AccountId = new Guid("d7d75c03-e873-4f05-b5d3-fbe35be4f4a8"),
                             Amount = -10.81m,
                             Balance = 1987.19m,
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(1187),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8693),
                             Name = "Adobe Photoshop",
                             Notes = "",
-                            RecurringTransactionId = new Guid("3c14a96a-7fd7-4a71-8f01-d15f7034e963"),
-                            TransactionTypeLookupId = new Guid("a8e221db-cf66-424b-86a5-bfcd36caed62")
+                            RecurringTransactionId = new Guid("11b74f76-8047-451e-9cc6-8067951ca2ae"),
+                            TransactionTypeLookupId = new Guid("cddf9538-4dc8-4950-bcb5-4aa80d0f52c1")
                         });
                 });
 
@@ -886,6 +886,10 @@ namespace MoneyRegister.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("TEXT")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("TransactionId")
                         .HasColumnType("TEXT");
@@ -943,9 +947,9 @@ namespace MoneyRegister.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4d4ea16d-b01e-484e-aea7-7d1aa4e7dab3"),
+                            Id = new Guid("cc8e4562-7234-4b74-8f0f-ffa45fde9c0b"),
                             CreatedById = "00000000-0000-0000-0000-000000000000",
-                            CreatedOnUTC = new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(971),
+                            CreatedOnUTC = new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8474),
                             Name = "All Regular Bills"
                         });
                 });
@@ -1157,7 +1161,7 @@ namespace MoneyRegister.Data.Migrations
                         .HasForeignKey("DeletedById");
 
                     b.HasOne("MoneyRegister.Data.Entities.RecurringTransaction", "RecurringTransaction")
-                        .WithMany()
+                        .WithMany("PreviousTransactions")
                         .HasForeignKey("RecurringTransactionId");
 
                     b.HasOne("MoneyRegister.Data.Entities.Lookup_TransactionType", "TransactionTypeLookup")
@@ -1246,6 +1250,8 @@ namespace MoneyRegister.Data.Migrations
             modelBuilder.Entity("MoneyRegister.Data.Entities.RecurringTransaction", b =>
                 {
                     b.Navigation("Link_Category_RecurringTransactions");
+
+                    b.Navigation("PreviousTransactions");
                 });
 
             modelBuilder.Entity("MoneyRegister.Data.Entities.Transaction", b =>

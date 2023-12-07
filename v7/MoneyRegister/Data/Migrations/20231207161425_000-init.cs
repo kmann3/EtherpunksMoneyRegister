@@ -322,7 +322,7 @@ namespace MoneyRegister.Data.Migrations
                     Notes = table.Column<string>(type: "TEXT", nullable: false),
                     FrequencyLookupId = table.Column<Guid>(type: "TEXT", nullable: false),
                     FrequencyValue = table.Column<int>(type: "INTEGER", nullable: true),
-                    DayOfWeekValue = table.Column<int>(type: "INTEGER", nullable: true),
+                    FrequencyDayOfWeekValue = table.Column<int>(type: "INTEGER", nullable: true),
                     FrequencyDateValue = table.Column<DateTime>(type: "TEXT", nullable: true),
                     TransactionGroupId = table.Column<Guid>(type: "TEXT", nullable: true),
                     TransactionTypeLookupId = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -448,6 +448,7 @@ namespace MoneyRegister.Data.Migrations
                     Name = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
                     Data = table.Column<byte[]>(type: "BLOB", nullable: false),
                     TransactionId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Notes = table.Column<string>(type: "TEXT", nullable: false),
                     DeletedOnUTC = table.Column<DateTime>(type: "TEXT", nullable: true),
                     DeletedById = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedOnUTC = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -502,24 +503,24 @@ namespace MoneyRegister.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedOn", "Email", "EmailConfirmed", "FirstName", "IsDisabled", "LastName", "LocalTimeZone", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "00000000-0000-0000-0000-000000000000", 0, "84c2ee9c-e16f-4306-b17f-ea919f3b66e1", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(576), "", false, "admin", false, "admin", "Central Standard Time", false, null, null, null, null, null, false, "e0f29e5e-3b8a-4e2d-8778-b66fd4d3d332", false, "Admin" });
+                values: new object[] { "00000000-0000-0000-0000-000000000000", 0, "d635eae7-18d8-479e-a5f6-bbd73640645c", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(7959), "", false, "admin", false, "admin", "Central Standard Time", false, null, null, null, null, null, false, "8bf15fd6-51c7-43ad-b12e-b848b562e2ec", false, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Accounts",
                 columns: new[] { "Id", "AccountNumber", "CreatedById", "CreatedOnUTC", "CurrentBalance", "DeletedById", "DeletedOnUTC", "InterestRate", "LastBalancedUTC", "LoginUrl", "Name", "Notes", "OutstandingBalance", "OutstandingItemCount", "StartingBalance" },
-                values: new object[] { new Guid("6a67e8c9-6d0f-41af-a196-8070d988309a"), "", "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(696), 1987.19m, null, null, 0m, new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(701), "", "Cash", "", -10.81m, 1, 200m });
+                values: new object[] { new Guid("d7d75c03-e873-4f05-b5d3-fbe35be4f4a8"), "", "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8128), 1987.19m, null, null, 0m, new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8134), "", "Cash", "", -10.81m, 1, 200m });
 
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "CreatedById", "CreatedOnUTC", "DeletedById", "DeletedOnUTC", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("273ed63f-0d0b-45d6-b9e1-7827256c7010"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(735), null, null, "groceries" },
-                    { new Guid("4275c8f3-b9e1-4aa3-ad94-6b569f93a926"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(737), null, null, "streaming" },
-                    { new Guid("5d70254a-0cde-4fcd-98f9-9c3807d753ec"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(736), null, null, "medications" },
-                    { new Guid("73d50616-9f52-4fd4-8ec9-7c2bd8fe6516"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(733), null, null, "gas" },
-                    { new Guid("d4e97b90-c058-42d3-af82-aca9a60af09f"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(731), null, null, "fast-food" },
-                    { new Guid("ec24a4db-b68f-4936-9d91-8e94a09f1a3f"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(730), null, null, "bills" }
+                    { new Guid("078d95ef-4465-41bb-b6c6-9d184d51ef3a"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8156), null, null, "medications" },
+                    { new Guid("0ced9ac4-6b55-42c1-ae7f-303b026cfd45"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8158), null, null, "streaming" },
+                    { new Guid("291eee07-9aca-4257-a567-3844c39041dc"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8154), null, null, "groceries" },
+                    { new Guid("5a6c2d2e-baab-4c64-ae85-c7e318761613"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8148), null, null, "bills" },
+                    { new Guid("b6fc9263-d9fd-40bc-9391-f3b603f7f3c3"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8152), null, null, "gas" },
+                    { new Guid("c896dcc7-ea19-4777-810c-35306165138b"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8150), null, null, "fast-food" }
                 });
 
             migrationBuilder.InsertData(
@@ -527,13 +528,13 @@ namespace MoneyRegister.Data.Migrations
                 columns: new[] { "Id", "CreatedById", "CreatedOnUTC", "DeletedById", "DeletedOnUTC", "DisplayString", "Name", "Ordinal" },
                 values: new object[,]
                 {
-                    { new Guid("50f745a0-e121-4daa-8d5e-b8f4be13e6cd"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(863), null, null, "", "XDays", 3 },
-                    { new Guid("76754778-ed9e-430c-9392-65b7ef1059a5"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(860), null, null, "", "Monthly", 1 },
-                    { new Guid("a00c227d-8bc0-47e5-b6b2-0225f4e54850"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(858), null, null, "", "Annually", 0 },
-                    { new Guid("a35a2506-d8a8-436a-bd7f-968a5ea6a456"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(866), null, null, "", "Irregular", 5 },
-                    { new Guid("a73bfbb0-57fe-4b6d-8892-249aa81ccf4d"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(868), null, null, "", "Unknown", 6 },
-                    { new Guid("e7b28e74-2c54-4762-a56e-2bc9eeee116b"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(864), null, null, "", "XWeekYDayOfWeek", 4 },
-                    { new Guid("f9f2b4c1-5ba1-4ddc-aaed-c4547c44103c"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(862), null, null, "", "Weekly", 2 }
+                    { new Guid("415d159b-0ee5-4c3d-a3c4-1f23eda20ef1"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8307), null, null, "", "Monthly", 1 },
+                    { new Guid("56443260-6d7e-490a-934d-0b38bbafa1ab"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8305), null, null, "", "Annually", 0 },
+                    { new Guid("948e156e-cae5-436d-9e6e-76f22cc24045"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8311), null, null, "", "XDays", 3 },
+                    { new Guid("9b05d0fb-08d4-4fb7-ad6b-a781bd44b30b"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8312), null, null, "", "XWeekYDayOfWeek", 4 },
+                    { new Guid("9db655f1-5725-4aa9-b1f3-bbeabe5c662d"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8309), null, null, "", "Weekly", 2 },
+                    { new Guid("a7352980-7451-4003-98b7-49672bd5c22c"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8313), null, null, "", "Irregular", 5 },
+                    { new Guid("a7b25bc7-bc16-41b0-9181-6847af74a835"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8315), null, null, "", "Unknown", 6 }
                 });
 
             migrationBuilder.InsertData(
@@ -541,49 +542,49 @@ namespace MoneyRegister.Data.Migrations
                 columns: new[] { "Id", "CreatedById", "CreatedOnUTC", "DeletedById", "DeletedOnUTC", "DisplayString", "Name", "Ordinal" },
                 values: new object[,]
                 {
-                    { new Guid("97defd4b-74fb-4229-bf70-9b073ecd54f2"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(824), null, null, "", "Credit", 1 },
-                    { new Guid("a8e221db-cf66-424b-86a5-bfcd36caed62"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(822), null, null, "", "Debit", 0 }
+                    { new Guid("9a11cf23-fc72-43a6-a84c-e7b6951bf139"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8269), null, null, "", "Credit", 1 },
+                    { new Guid("cddf9538-4dc8-4950-bcb5-4aa80d0f52c1"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8265), null, null, "", "Debit", 0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "TransactionGroups",
                 columns: new[] { "Id", "CreatedById", "CreatedOnUTC", "DeletedById", "DeletedOnUTC", "Name" },
-                values: new object[] { new Guid("4d4ea16d-b01e-484e-aea7-7d1aa4e7dab3"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(971), null, null, "All Regular Bills" });
+                values: new object[] { new Guid("cc8e4562-7234-4b74-8f0f-ffa45fde9c0b"), "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8474), null, null, "All Regular Bills" });
 
             migrationBuilder.InsertData(
                 table: "RecurringTransactions",
-                columns: new[] { "Id", "Amount", "CreatedById", "CreatedOnUTC", "DayOfWeekValue", "DeletedById", "DeletedOnUTC", "FrequencyDateValue", "FrequencyLookupId", "FrequencyValue", "Name", "NextDueDate", "Notes", "TransactionGroupId", "TransactionTypeLookupId" },
+                columns: new[] { "Id", "Amount", "CreatedById", "CreatedOnUTC", "DeletedById", "DeletedOnUTC", "FrequencyDateValue", "FrequencyDayOfWeekValue", "FrequencyLookupId", "FrequencyValue", "Name", "NextDueDate", "Notes", "TransactionGroupId", "TransactionTypeLookupId" },
                 values: new object[,]
                 {
-                    { new Guid("04fd684f-15cd-407a-a331-2f5eaa41dbd3"), 150m, "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(1133), null, null, null, null, new Guid("76754778-ed9e-430c-9392-65b7ef1059a5"), 18, "Test", new DateTime(2024, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "", null, new Guid("97defd4b-74fb-4229-bf70-9b073ecd54f2") },
-                    { new Guid("0baa9159-bbca-4d46-b85f-57375e89220e"), -16.79m, "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(1094), null, null, null, null, new Guid("76754778-ed9e-430c-9392-65b7ef1059a5"), 18, "Allstate Apartment Insurance", new DateTime(2024, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "", new Guid("4d4ea16d-b01e-484e-aea7-7d1aa4e7dab3"), new Guid("a8e221db-cf66-424b-86a5-bfcd36caed62") },
-                    { new Guid("3c14a96a-7fd7-4a71-8f01-d15f7034e963"), -10.81m, "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(1038), null, null, null, null, new Guid("76754778-ed9e-430c-9392-65b7ef1059a5"), 15, "Adobe Photoshop", new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "", new Guid("4d4ea16d-b01e-484e-aea7-7d1aa4e7dab3"), new Guid("a8e221db-cf66-424b-86a5-bfcd36caed62") },
-                    { new Guid("e63f1c84-4eff-468c-b210-d3cac4bb900b"), 1343.72m, "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(1146), 3, null, null, null, new Guid("e7b28e74-2c54-4762-a56e-2bc9eeee116b"), 4, "Payday", new DateTime(2024, 1, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), "", null, new Guid("97defd4b-74fb-4229-bf70-9b073ecd54f2") }
+                    { new Guid("09893aa6-90e1-4949-8ead-10fa2da1ad55"), 150m, "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8614), null, null, null, null, new Guid("415d159b-0ee5-4c3d-a3c4-1f23eda20ef1"), 18, "Test", new DateTime(2024, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "", null, new Guid("9a11cf23-fc72-43a6-a84c-e7b6951bf139") },
+                    { new Guid("11b74f76-8047-451e-9cc6-8067951ca2ae"), -10.81m, "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8505), null, null, null, null, new Guid("415d159b-0ee5-4c3d-a3c4-1f23eda20ef1"), 15, "Adobe Photoshop", new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "", new Guid("cc8e4562-7234-4b74-8f0f-ffa45fde9c0b"), new Guid("cddf9538-4dc8-4950-bcb5-4aa80d0f52c1") },
+                    { new Guid("13eccc08-d856-4bbe-9c15-5f1ca9889c45"), 1343.72m, "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8632), null, null, null, 3, new Guid("9b05d0fb-08d4-4fb7-ad6b-a781bd44b30b"), 4, "Payday", new DateTime(2023, 11, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), "", null, new Guid("9a11cf23-fc72-43a6-a84c-e7b6951bf139") },
+                    { new Guid("c6580499-9953-4883-9c44-8eacd73459b5"), -16.79m, "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8566), null, null, null, null, new Guid("415d159b-0ee5-4c3d-a3c4-1f23eda20ef1"), 18, "Allstate Apartment Insurance", new DateTime(2024, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "", new Guid("cc8e4562-7234-4b74-8f0f-ffa45fde9c0b"), new Guid("cddf9538-4dc8-4950-bcb5-4aa80d0f52c1") }
                 });
 
             migrationBuilder.InsertData(
                 table: "Transactions",
                 columns: new[] { "Id", "AccountId", "Amount", "Balance", "CreatedById", "CreatedOnUTC", "DeletedById", "DeletedOnUTC", "Name", "Notes", "RecurringTransactionId", "TransactionClearedUTC", "TransactionPendingUTC", "TransactionTypeLookupId" },
-                values: new object[] { new Guid("d5bae77d-5e7d-4682-a668-72c4afecf991"), new Guid("6a67e8c9-6d0f-41af-a196-8070d988309a"), 1998m, 1998m, "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(1161), null, null, "payday", "", null, new DateTime(2024, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("97defd4b-74fb-4229-bf70-9b073ecd54f2") });
+                values: new object[] { new Guid("fa71a04c-8e7e-4e60-b7c7-d25edf0df597"), new Guid("d7d75c03-e873-4f05-b5d3-fbe35be4f4a8"), 1998m, 1998m, "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8655), null, null, "payday", "", null, new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("9a11cf23-fc72-43a6-a84c-e7b6951bf139") });
 
             migrationBuilder.InsertData(
                 table: "Link_Category_RecurringTransactions",
                 columns: new[] { "CategoryId", "RecurringTransactionId" },
                 values: new object[,]
                 {
-                    { new Guid("ec24a4db-b68f-4936-9d91-8e94a09f1a3f"), new Guid("0baa9159-bbca-4d46-b85f-57375e89220e") },
-                    { new Guid("ec24a4db-b68f-4936-9d91-8e94a09f1a3f"), new Guid("3c14a96a-7fd7-4a71-8f01-d15f7034e963") }
+                    { new Guid("5a6c2d2e-baab-4c64-ae85-c7e318761613"), new Guid("11b74f76-8047-451e-9cc6-8067951ca2ae") },
+                    { new Guid("5a6c2d2e-baab-4c64-ae85-c7e318761613"), new Guid("c6580499-9953-4883-9c44-8eacd73459b5") }
                 });
 
             migrationBuilder.InsertData(
                 table: "Transactions",
                 columns: new[] { "Id", "AccountId", "Amount", "Balance", "CreatedById", "CreatedOnUTC", "DeletedById", "DeletedOnUTC", "Name", "Notes", "RecurringTransactionId", "TransactionClearedUTC", "TransactionPendingUTC", "TransactionTypeLookupId" },
-                values: new object[] { new Guid("a0cde662-854f-4fc1-9214-409bacf2dc92"), new Guid("6a67e8c9-6d0f-41af-a196-8070d988309a"), -10.81m, 1987.19m, "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 1, 16, 19, 46, 803, DateTimeKind.Utc).AddTicks(1187), null, null, "Adobe Photoshop", "", new Guid("3c14a96a-7fd7-4a71-8f01-d15f7034e963"), null, null, new Guid("a8e221db-cf66-424b-86a5-bfcd36caed62") });
+                values: new object[] { new Guid("70989e28-cf1b-47f5-8d06-b46200a937b2"), new Guid("d7d75c03-e873-4f05-b5d3-fbe35be4f4a8"), -10.81m, 1987.19m, "00000000-0000-0000-0000-000000000000", new DateTime(2023, 12, 7, 16, 14, 24, 464, DateTimeKind.Utc).AddTicks(8693), null, null, "Adobe Photoshop", "", new Guid("11b74f76-8047-451e-9cc6-8067951ca2ae"), null, null, new Guid("cddf9538-4dc8-4950-bcb5-4aa80d0f52c1") });
 
             migrationBuilder.InsertData(
                 table: "Link_Categories_Transactions",
                 columns: new[] { "CategoryId", "TransactionId" },
-                values: new object[] { new Guid("ec24a4db-b68f-4936-9d91-8e94a09f1a3f"), new Guid("a0cde662-854f-4fc1-9214-409bacf2dc92") });
+                values: new object[] { new Guid("5a6c2d2e-baab-4c64-ae85-c7e318761613"), new Guid("70989e28-cf1b-47f5-8d06-b46200a937b2") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_CreatedById",
