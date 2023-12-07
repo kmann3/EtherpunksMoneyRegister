@@ -10,6 +10,7 @@ v1-v-whatever are simply varying things I'm toying with. They aren't incremental
 
 ## TBI
 
+* Fix category selection in recurring transaction and transactions.
 * RecurringTransactionDetails: Handle file data / ability to download
 * Files: Consider a lookup for types of files such as bills, contracts, warranties, etc
 * Export/Import: Test: file data, lookups, and link tables
