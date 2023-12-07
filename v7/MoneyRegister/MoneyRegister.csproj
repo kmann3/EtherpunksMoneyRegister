@@ -22,8 +22,4 @@
     <PackageReference Include="MudBlazor" Version="6.11.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Components\Pages\Dialogs\Components\" />
-  </ItemGroup>
-
 </Project>

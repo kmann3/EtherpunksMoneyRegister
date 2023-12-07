@@ -35,17 +35,7 @@
         <MudNumericField T="decimal" @bind-Value="RecurringTransactionDetails.Amount" Immediate="false" Label="Amount" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="3" />
         <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Notes" Label="Notes" AutoGrow tabindex="4" />
 
-        <div class="d-flex">
-            <MudSelect T="Category" Label="Categories" @bind-SelectedValues="selectedCategories" tabindex="5"
-                       AdornmentIcon="@Icons.Material.Filled.Search" AnchorOrigin="Origin.BottomCenter" MultiSelection="true" Variant="Variant.Outlined"
-                       MultiSelectionTextFunc="@(new Func<List<string>, string>(GetSelectedItemsText))">
-                @foreach (var item in categories)
-                {
-                    <MudSelectItem T="Category" Value="@item">@item.Name</MudSelectItem>
-                }
-            </MudSelect>
-            <MudButton OnClick="NewCategoryDialog" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" />
-        </div>
+        <CategorySelectionComponent @bind-Value="RecurringTransactionDetails.Categories" @bind-Value:event="ValueChanged" Index="5" />
 
         <MudSelect T="Lookup_RecurringTransactionFrequency" Label="Regularity" @bind-Value="@RecurringTransactionDetails.FrequencyLookup" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="6">
             @foreach (var group in FrequencyList)
@@ -128,7 +118,6 @@
     [Parameter] public bool IsNew { get; set; }
 
     MudDatePicker _nextDueDatePicker;
-    List<Category> categories { get; set; } = new();
     List<TransactionGroup> transactionGroups = new();
     List<Lookup_TransactionType> TransactionTypeList = new();
     List<Lookup_RecurringTransactionFrequency> FrequencyList = new();
@@ -136,17 +125,13 @@
     private DateTime? frequencyDate;
     private DayOfWeek frequencyDayOfWeek;
 
-    private IEnumerable<Category> selectedCategories = new HashSet<Category>();
-
     private MudTextField<string> firstFocus;
 
     protected override async Task OnInitializedAsync()
     {
-        categories = await MR_CategoryService.GetAllCategoriesAsync();
         transactionGroups = await MR_TransactionGroupService.GetAllTransactionGroupsAsync();
         TransactionTypeList = await MR_LookupService.GetLookup_TransactionTypesAsync();
         FrequencyList = await MR_LookupService.GetLookup_RecurringTransactionFrequenciesAsync();
-        ResetSelectedCategories();
 
         // Assigning some values so we don't end up with an accidental null later
         // Before saving we sanity check the values and assign nulls where needed
@@ -160,37 +145,6 @@
         if (firstRender)
         {
             await firstFocus.FocusAsync();
-        }
-    }
-
-    private string GetSelectedItemsText(List<string> selectedValues)
-    {
-        return $"{selectedValues.Count} tag{(selectedValues.Count != 1 ? "s" : "")}";
-    }
-
-    private void ResetSelectedCategories()
-    {
-        HashSet<Category> t = new HashSet<Category>();
-        if (RecurringTransactionDetails.Categories.Count() == 0) return;
-        foreach (var item in RecurringTransactionDetails.Categories)
-        {
-            t.Add(item);
-        }
-
-        selectedCategories = t;
-    }
-    private async Task NewCategoryDialog()
-    {
-        ResetSelectedCategories();
-
-        var result = await DialogUtil.ShowCategoryDialogAsync(DialogService, true, new Category());
-
-        if (!result.Canceled)
-        {
-            var catData = result.Data as Category;
-            categories.Add(catData!);
-            RecurringTransactionDetails.Categories.Add(catData!);
-            ResetSelectedCategories();
         }
     }
 
@@ -247,7 +201,7 @@
                 throw new NotImplementedException();
         }
 
-        RecurringTransactionDetails.Categories = selectedCategories.ToList();
+        //RecurringTransactionDetails.Categories = selectedCategories.ToList();
 
         if (IsNew) await MR_RecTranService.CreateRecurringTransactionAsync(RecurringTransactionDetails);
         else await MR_RecTranService.UpdateRecurringTransactionAsync(RecurringTransactionDetails);

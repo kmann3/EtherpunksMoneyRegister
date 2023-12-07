@@ -1,0 +1,105 @@
+﻿@using System.Globalization
+@using Pages.Dialogs.Components
+@using Data.Entities
+@inject Data.Services.CategoryService MR_CategoryService
+@inject IDialogService DialogService
+
+
+<div class="d-flex">
+    <MudSelect T="Category" Label="Categories" tabindex="5" @bind-SelectedValues="selectedCategories"
+               AdornmentIcon="@Icons.Material.Filled.Search" AnchorOrigin="Origin.BottomCenter" MultiSelection="true" Variant="Variant.Outlined"
+               MultiSelectionTextFunc="@(new Func<List<string>, string>(GetSelectedItemsText))">
+        @foreach (var item in categories)
+        {
+            <MudSelectItem T="Category" Value="@item">@item.Name</MudSelectItem>
+        }
+    </MudSelect>
+    <MudButton OnClick="NewCategoryDialog" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" />
+</div>
+
+@code {
+    [Parameter]
+    public List<Category> Value
+    {
+        get
+        {
+            return selectedCategories.ToList();
+        }
+        set
+        {
+            if (value == _value)
+                return;
+
+            _value = value;
+            if (ValueChanged.HasDelegate)
+            {
+                ValueChanged.InvokeAsync(_value);
+            }
+        }
+    }
+
+    [Parameter] public int Index { get; set; } = 0;
+    [Parameter] public EventCallback<List<Category>> ValueChanged { get; set; }
+
+    private List<Category> _value;
+
+    private List<Category> categories { get; set; }
+    private IEnumerable<Category> selectedCategories
+    {
+        get
+        {
+            return _selectedCategories.ToList();
+        }
+        set
+        {
+            HashSet<Category> set = new HashSet<Category>();
+            if (value == null) return;
+            foreach (var item in value)
+            {
+                set.Add(item);
+            }
+
+            _selectedCategories = set;
+            Value = _selectedCategories.ToList();
+        }
+    }
+
+    private HashSet<Category> _selectedCategories = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await MR_CategoryService.GetAllCategoriesAsync();
+        PresetCategories();
+    }
+
+    private string GetSelectedItemsText(List<string> selectedValues)
+    {
+        return $"{selectedValues.Count} tag{(selectedValues.Count != 1 ? "s" : "")}";
+    }
+
+    private void PresetCategories()
+    {
+        HashSet<Category> set = new HashSet<Category>();
+        if (_value == null || _value.Count() == 0) return;
+        foreach (var item in _value)
+        {
+            set.Add(item);
+        }
+
+        selectedCategories = set;
+    }
+    private async Task NewCategoryDialog()
+    {
+        PresetCategories();
+
+        var result = await DialogUtil.ShowCategoryDialogAsync(DialogService, true, new Category());
+
+        if (!result.Canceled)
+        {
+            var catData = result.Data as Category;
+            categories.Add(catData!);
+            Value.Add(catData!);
+            PresetCategories();
+        }
+    }
+}
