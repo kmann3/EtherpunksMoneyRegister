@@ -56,6 +56,19 @@ public class DialogUtil
         return await dialog.Result;
     }
 
+    public static async Task<DialogResult> ShowReserveTransactionDialog(IDialogService dialogService)
+    {
+        var parameters = new DialogParameters<ReserveTransactionDialog> { };
+
+        DialogOptions options = new()
+        {
+            CloseOnEscapeKey = true,
+        };
+
+        var dialog = await dialogService.ShowAsync<ReserveTransactionDialog>("Select Transactions To Reserve", parameters, options);
+        return await dialog.Result;
+    }
+
     public static async Task<DialogResult> ShowTransactionDialog(IDialogService dialogService, bool isNew, Transaction transaction)
     {
         var parameters = new DialogParameters<EditTransactionDialog>

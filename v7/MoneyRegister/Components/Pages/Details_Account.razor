@@ -156,15 +156,16 @@
 
     private async Task ReserveBills()
     {
-        // var result = await DialogUtil.ShowBillGroupSelectDialog(DialogService, allBillGroupsList, allUngroupedBillsList);
+        var result = await DialogUtil.ShowReserveTransactionDialog(DialogService);
 
-        // if (!result.Canceled)
-        // {
-        //     List<Bill> selectedBillList = result.Data as List<Bill>;
+        if (!result.Canceled)
+        {
+            var selectedBillList = (List<RecurringTransaction>)result.Data;
 
-        //     await MMR_BillService.ReserveBillsAsync(selectedBillList!, accountDetails!);
-        //     accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
-        // }
+            throw new NotImplementedException();
+            // await MR_BillService.ReserveBillsAsync(selectedBillList!, accountDetails!);
+            // accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
+        }
     }
 
     private async Task AddNewDebit()

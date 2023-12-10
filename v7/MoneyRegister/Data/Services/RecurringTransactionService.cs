@@ -33,35 +33,49 @@ public class RecurringTransactionService(ApplicationDbContext context)
 
     public async Task CreateRecurringTransactionAsync(RecurringTransaction recurringTransaction)
     {
-        recurringTransaction.Amount = VerifySignage(recurringTransaction);
         _context.RecurringTransactions.Add(recurringTransaction);
         await _context.SaveChangesAsync();
     }
 
     public async Task DeleteRecurringTransactionAsync(RecurringTransaction recurringTransaction)
     {
-        recurringTransaction.Amount = VerifySignage(recurringTransaction);
         _context.RecurringTransactions.Remove(recurringTransaction);
         await _context.SaveChangesAsync();
     }
 
     public async Task UpdateRecurringTransactionAsync(RecurringTransaction recurringTransaction)
     {
-        recurringTransaction.Amount = VerifySignage(recurringTransaction);
         _context.Attach(recurringTransaction);
         await _context.SaveChangesAsync();
     }
 
-    private static decimal VerifySignage(RecurringTransaction recurringTransaction)
+    public async Task ReserveTransactionsAsync(List<RecurringTransaction> transactionsToReserve, Account accountToReserveFrom)
     {
-        switch(recurringTransaction.TransactionTypeLookup.Name)
+        foreach (var bill in transactionsToReserve)
         {
-            case "Debit":
-                return -Math.Abs(recurringTransaction.Amount);
-            case "Credit":
-                return Math.Abs(recurringTransaction.Amount);
-            default:
-                throw new NotImplementedException();
+            Transaction reserveTransaction = new()
+            {
+                Name = bill.Name,
+                Amount = bill.Amount,
+                Account = accountToReserveFrom,
+                Categories = bill.Categories,
+            };
+
+            accountToReserveFrom.CurrentBalance += bill.Amount;
+            accountToReserveFrom.OutstandingBalance += bill.Amount;
+            accountToReserveFrom.OutstandingItemCount++;
+            reserveTransaction.Balance = accountToReserveFrom.CurrentBalance;
+
+            if (bill.NextDueDate != null)
+            {
+                reserveTransaction.Notes = $"Expected due date: {bill.NextDueDate.Value.ToShortDateString()}";
+            }
+
+            bill.BumpNextDueDate();
+
+            _context.Transactions.Add(reserveTransaction);
         }
+
+        await _context.SaveChangesAsync();
     }
 }
