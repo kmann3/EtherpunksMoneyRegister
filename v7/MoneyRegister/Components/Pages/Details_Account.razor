@@ -169,46 +169,52 @@
 
     private async Task AddNewDebit()
     {
-        // Transaction newTransaction = new();
-        // newTransaction.Account = accountDetails!;
-        // newTransaction.AccountId = Id;
-        // newTransaction.TransactionPendingUTC = DateTime.UtcNow;
-        // newTransaction.TransactionType = Transaction.EntryType.Debit;
-        // newTransaction.Categories = new List<Category>();
+        var debitTypeLookup = (await MR_LookupService.GetLookup_TransactionTypesAsync()).Where(x => x.Name == "Debit").Single();
 
-        // var result = await DialogUtil.ShowTransactionDialog(DialogService, true, newTransaction, accounts, categories);
+        Transaction newTransaction = new();
+        newTransaction.Account = accountDetails!;
+        newTransaction.AccountId = Id;
+        newTransaction.TransactionPendingUTC = DateTime.UtcNow;
+        newTransaction.TransactionClearedUTC = DateTime.UtcNow;
+        newTransaction.TransactionTypeLookup = debitTypeLookup;
+        newTransaction.TransactionTypeLookupId = debitTypeLookup.Id;
+        newTransaction.Categories = new List<Category>();
 
-        // if (!result.Canceled)
-        // {
-        //     newTransaction = (Transaction)result.Data;
+        var result = await DialogUtil.ShowTransactionDialog(DialogService, true, newTransaction);
 
-        //     await MMR_TransactionService.CreateNewTransactionAsync(accountDetails!, newTransaction);
-        //     accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
-        // }
+        if (!result.Canceled)
+        {
+            newTransaction = (Transaction)result.Data;
+
+            await MR_TransactionService.CreateNewTransactionAsync(accountDetails, newTransaction);
+            accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
+        }
     }
 
     private async Task AddNewCredit()
     {
-        // Transaction newTransaction = new();
-        // newTransaction.TransactionPendingUTC = DateTime.UtcNow;
-        // newTransaction.TransactionClearedUTC = DateTime.UtcNow;
-        // newTransaction.TransactionType = Transaction.EntryType.Credit;
+        var creditTypeLookup = (await MR_LookupService.GetLookup_TransactionTypesAsync()).Where(x => x.Name == "Credit").Single();
 
-        // newTransaction.Account = accountDetails!;
-        // newTransaction.AccountId = Id;
-        // newTransaction.TransactionPendingUTC = DateTime.UtcNow;
-        // newTransaction.Categories = new List<Category>();
+        Transaction newTransaction = new();
+        newTransaction.TransactionPendingUTC = DateTime.UtcNow;
+        newTransaction.TransactionClearedUTC = DateTime.UtcNow;
+        newTransaction.TransactionTypeLookup = creditTypeLookup;
+        newTransaction.TransactionTypeLookupId = creditTypeLookup.Id;
 
-        // var result = await DialogUtil.ShowTransactionDialog(DialogService, true, newTransaction, accounts, categories);
+        newTransaction.Account = accountDetails!;
+        newTransaction.AccountId = Id;
+        newTransaction.TransactionPendingUTC = DateTime.UtcNow;
+        newTransaction.Categories = new List<Category>();
 
-        // if (!result.Canceled)
-        // {
+        var result = await DialogUtil.ShowTransactionDialog(DialogService, true, newTransaction);
 
-        //     newTransaction = result.Data as Transaction;
+        if (!result.Canceled)
+        {
+            newTransaction = (Transaction)result.Data;
 
-        //     await MMR_TransactionService.CreateNewTransactionAsync(accountDetails!, newTransaction!);
-        //     accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
-        // }
+            await MR_TransactionService.CreateNewTransactionAsync(accountDetails, newTransaction);
+            accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
+        }
     }
 
     private async Task SetTransactionToPending(Transaction item)
@@ -225,14 +231,14 @@
 
     private async Task RecalculateBalances()
     {
-        //await MMR_AccountService.RecalculateAccountAsync(accountDetails!);
+        await MR_AccountService.RecalculateAccountAsync(accountDetails!);
     }
 
     private async Task DeleteTransaction(Transaction item)
     {
-        // item.DeletedOnUTC = DateTime.UtcNow;
-        // await MMR_TransactionService.DeleteTransactionAsync(accountDetails, item);
-        // accountDetails.Transactions.Remove(item);
+        item.DeletedOnUTC = DateTime.UtcNow;
+        await MR_TransactionService.DeleteTransactionAsync(accountDetails, item);
+        accountDetails.Transactions.Remove(item);
     }
 
     private async Task TestAction()

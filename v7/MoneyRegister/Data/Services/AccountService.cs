@@ -62,4 +62,31 @@ public class AccountService(ApplicationDbContext context)
 
         return returnData;
     }
+
+    public async Task RecalculateAccountAsync(Account account)
+    {
+        var accountTransactions = _context.Transactions.Where(x => x.AccountId == account.Id).ToList();
+
+        decimal balance = account.StartingBalance;
+        int outstandingCount = 0;
+        decimal outstandingBalance = 0M;
+
+        foreach (var transaction in accountTransactions.OrderBy(x => x.CreatedOnUTC))
+        {
+            transaction.Balance = balance + transaction.Amount;
+            balance = transaction.Balance;
+
+            if (transaction.TransactionClearedUTC == null)
+            {
+                outstandingCount++;
+                outstandingBalance += transaction.Amount;
+            }
+        }
+
+        account.CurrentBalance = balance;
+        account.OutstandingBalance = outstandingBalance;
+        account.OutstandingItemCount = outstandingCount;
+
+        await _context.SaveChangesAsync();
+    }
 }
