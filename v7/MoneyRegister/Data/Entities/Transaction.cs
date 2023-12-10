@@ -18,7 +18,27 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
     public string LiteralTransactionText = string.Empty;
 
     [Precision(18, 2)]
-    public decimal Amount { get; set; } = 0M;
+    public decimal Amount
+    {
+        get => _amount;
+        set
+        {
+            switch (this.TransactionTypeLookup.Name)
+            {
+                case "Credit":
+                    _amount = Math.Abs(value);
+                    break;
+                case "Debit":
+                    _amount = -Math.Abs(value);
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+    }
+
+    [JsonIgnore]
+    private decimal _amount = 0M;
 
     [JsonIgnore]
     public Account Account { get; set; }
