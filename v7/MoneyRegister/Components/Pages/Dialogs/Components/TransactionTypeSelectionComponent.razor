@@ -1,0 +1,42 @@
+﻿@inject Data.Services.LookupService MR_LookupService
+
+<MudSelect @bind-Value="@Value" Label="@Label" tabindex="@Index">
+    @foreach (var entryType in transactionTypeList)
+    {
+        <MudSelectItem Value="@entryType">@entryType.Name</MudSelectItem>
+    }
+</MudSelect>
+
+@code {
+    [Parameter]
+    public Lookup_TransactionType Value
+    {
+        get
+        {
+            return _value;
+        }
+        set
+        {
+            if (value == _value) return;
+            _value = value;
+
+            if (ValueChanged.HasDelegate)
+            {
+                ValueChanged.InvokeAsync(_value);
+            }
+        }
+    }
+
+    [Parameter] public int Index { get; set; } = 0;
+    [Parameter] public EventCallback<Lookup_TransactionType> ValueChanged { get; set; }
+    [Parameter] public string Label { get; set; }
+
+    private Lookup_TransactionType _value;
+
+    List<Lookup_TransactionType> transactionTypeList = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        transactionTypeList = await MR_LookupService.GetLookup_TransactionTypesAsync();
+    }
+}
