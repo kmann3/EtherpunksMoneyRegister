@@ -32,21 +32,12 @@
                 <MudSelectItem Value="@group">@group.Name</MudSelectItem>
             }
         </MudSelect>
-        <MudNumericField T="decimal" @bind-Value="RecurringTransactionDetails.Amount" Immediate="false" Label="Amount" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="3" />
+        <AmountComponent @bind-Value="RecurringTransactionDetails.Amount" @bind-Value:event="ValueChanged" Index="3" Label="Amount" />
         <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Notes" Label="Notes" AutoGrow tabindex="4" />
 
         <CategorySelectionComponent @bind-Value="RecurringTransactionDetails.Categories" @bind-Value:event="ValueChanged" Index="5" />
-
         <RecurringFrequencyDetailsComponent @bind-Value="RecurringTransactionDetails" @bind-Value:event="ValueChanged" Index="7" />
-
-        <MudDatePicker @ref="_nextDueDatePicker" Label="Next Due Date" Editable="true" @bind-Date="RecurringTransactionDetails.NextDueDate" tabindex="9" PickerVariant="PickerVariant.Dialog">
-            <PickerActions>
-                <MudButton Class="mr-auto align-self-start" OnClick="@(() => _nextDueDatePicker.Clear())">Clear</MudButton>
-                <MudButton OnClick="@(() => _nextDueDatePicker.GoToDate(DateTime.UtcNow, true))">Today</MudButton>
-                <MudButton OnClick="@(() => _nextDueDatePicker.Close(false))">Cancel</MudButton>
-                <MudButton Color="Color.Primary" OnClick="@(() => _nextDueDatePicker.Close())">Ok</MudButton>
-            </PickerActions>
-        </MudDatePicker>
+        <DatePickerComponent @bind-Value="RecurringTransactionDetails.NextDueDate" @bind-Value:event="ValueChanged" Index="9" Label="Next Due Date" />
         <MudSelect T="TransactionGroup" Label="Transaction Group" @bind-Value="@RecurringTransactionDetails.Group" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="10">
             <MudSelectItem T="TransactionGroup" Value="@(null)">None</MudSelectItem>
             @foreach (var group in transactionGroups)

@@ -33,19 +33,35 @@ public class RecurringTransactionService(ApplicationDbContext context)
 
     public async Task CreateRecurringTransactionAsync(RecurringTransaction recurringTransaction)
     {
+        recurringTransaction.Amount = VerifySignage(recurringTransaction);
         _context.RecurringTransactions.Add(recurringTransaction);
         await _context.SaveChangesAsync();
     }
 
     public async Task DeleteRecurringTransactionAsync(RecurringTransaction recurringTransaction)
     {
+        recurringTransaction.Amount = VerifySignage(recurringTransaction);
         _context.RecurringTransactions.Remove(recurringTransaction);
         await _context.SaveChangesAsync();
     }
 
     public async Task UpdateRecurringTransactionAsync(RecurringTransaction recurringTransaction)
     {
+        recurringTransaction.Amount = VerifySignage(recurringTransaction);
         _context.Attach(recurringTransaction);
         await _context.SaveChangesAsync();
+    }
+
+    private static decimal VerifySignage(RecurringTransaction recurringTransaction)
+    {
+        switch(recurringTransaction.TransactionTypeLookup.Name)
+        {
+            case "Debit":
+                return -Math.Abs(recurringTransaction.Amount);
+            case "Credit":
+                return Math.Abs(recurringTransaction.Amount);
+            default:
+                throw new NotImplementedException();
+        }
     }
 }

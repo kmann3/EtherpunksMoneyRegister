@@ -6,7 +6,7 @@
 
 
 <div class="d-flex">
-    <MudSelect T="Category" Label="Categories" tabindex="5" @bind-SelectedValues="selectedCategories"
+    <MudSelect T="Category" Label="@Label" tabindex="5" @bind-SelectedValues="selectedCategories"
                AdornmentIcon="@Icons.Material.Filled.Search" AnchorOrigin="Origin.BottomCenter" MultiSelection="true" Variant="Variant.Outlined"
                MultiSelectionTextFunc="@(new Func<List<string>, string>(GetSelectedItemsText))">
         @foreach (var item in categories)
@@ -40,6 +40,7 @@
 
     [Parameter] public int Index { get; set; } = 0;
     [Parameter] public EventCallback<List<Category>> ValueChanged { get; set; }
+    [Parameter] public string Label { get; set; }
 
     private List<Category> _value;
 
