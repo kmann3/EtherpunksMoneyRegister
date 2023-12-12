@@ -12,6 +12,5 @@ public class TestService(ApplicationDbContext context)
 
         _context.Categories.Remove(firstTransaction);
         await _context.SaveChangesAsync();
-
     }
 }

@@ -8,15 +8,19 @@ public class Lookup_TransactionType : BasicTable<Lookup_TransactionType>, IEntit
 {
     public int Ordinal { get; set; } = 0;
     public string DisplayString { get; set; } = string.Empty;
+
     [JsonIgnore]
     public List<RecurringTransaction> RecurringTransactions { get; set; }
+
     [JsonIgnore]
     public List<Transaction> Transactions { get; set; }
+
     public enum LookupTypeEnum
     {
         TransactionType,
         RecurringTransactionFrequency
     }
+
     public override void Configure(EntityTypeBuilder<Lookup_TransactionType> builder)
     {
         builder.HasIndex(k => k.Name).IsUnique(true);

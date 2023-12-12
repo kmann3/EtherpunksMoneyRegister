@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyRegister.Data.Entities;
+
 namespace MoneyRegister.Data.Services;
 
 public class TransactionService(ApplicationDbContext context)
@@ -8,16 +9,17 @@ public class TransactionService(ApplicationDbContext context)
 
     public async Task CreateNewTransactionAsync(Account account, Transaction transaction)
     {
-
         //Make sure the amounts are positive/ negative accordingly.
         switch (transaction.TransactionTypeLookup.Name)
         {
             case "Credit":
                 transaction.Amount = (Math.Abs(transaction.Amount));
                 break;
+
             case "Debit":
                 transaction.Amount = -(Math.Abs(transaction.Amount));
                 break;
+
             default:
                 throw new Exception($"Unknown transaction type: {transaction.TransactionTypeLookup.Name}");
         }
@@ -100,7 +102,6 @@ public class TransactionService(ApplicationDbContext context)
             .Where(x => x.DeletedOnUTC == null)
             .Where(x => x.Id != transaction.Id)
             .ToListAsync();
-
 
             foreach (var item in itemsToUpdate)
             {

@@ -23,6 +23,7 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
 
     [JsonIgnore]
     public Account Account { get; set; }
+
     public Guid AccountId { get; set; }
 
     [Display(Name = "Transaction Pending")]
@@ -71,18 +72,21 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
 
     [JsonIgnore]
     public List<Link_Category_Transaction> Link_Category_Transactions { get; } = new List<Link_Category_Transaction>();
+
     [JsonIgnore]
     public List<Category> Categories { get; set; } = new();
-    [JsonIgnore]
 
+    [JsonIgnore]
     public List<TransactionFile> Files { get; set; } = new();
 
     [JsonIgnore]
     public RecurringTransaction? RecurringTransaction { get; set; }
-    public Guid? RecurringTransactionId { get; set; }
-    [JsonIgnore]
 
+    public Guid? RecurringTransactionId { get; set; }
+
+    [JsonIgnore]
     public Lookup_TransactionType TransactionTypeLookup { get; set; }
+
     public Guid TransactionTypeLookupId { get; set; }
 
     public int Compare(Transaction? x, Transaction? y)
@@ -137,8 +141,8 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
 
     public override void Configure(EntityTypeBuilder<Transaction> builder)
     {
-
     }
+
     public void VerifySignage()
     {
         this.Amount = this.TransactionTypeLookup.Name switch

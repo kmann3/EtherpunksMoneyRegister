@@ -17,7 +17,6 @@ public class ApplicationUser : IdentityUser, IEntityTypeConfiguration<Applicatio
 
     public string LastName { get; set; } = string.Empty;
 
-
     public string LocalTimeZone { get; set; } = "Central Standard Time";
     public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
@@ -28,6 +27,5 @@ public class ApplicationUser : IdentityUser, IEntityTypeConfiguration<Applicatio
 
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {
-
     }
 }

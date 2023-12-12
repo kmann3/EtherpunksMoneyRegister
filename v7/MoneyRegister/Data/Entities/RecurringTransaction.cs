@@ -17,14 +17,18 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     [DataType(DataType.Currency)]
     [Precision(18, 2)]
     public decimal Amount { get; set; }
+
     public string Notes { get; set; } = string.Empty;
 
     [JsonIgnore]
     public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
+
     [JsonIgnore]
     public List<Category> Categories { get; set; } = new();
+
     public Lookup_RecurringTransactionFrequency FrequencyLookup { get; set; }
     public Guid FrequencyLookupId { get; set; }
+
     [NotMapped]
     public string FrequencyString
     {
@@ -36,22 +40,28 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
                 {
                     case "Yearly":
                         return "Annually";
+
                     case "Monthly":
                         return $"{FrequencyValue.ToString().Ordinalize()} of the month";
+
                     case "Weekly":
                         return $"Every {FrequencyDayOfWeekValue}";
+
                     case "Irregular":
                         return "Irregular frequency";
+
                     case "XDays":
                         return $"Every {FrequencyValue} days";
                     // TBI Day/Days - calculate
                     case "XMonths":
                         return $"Every {FrequencyValue} months";
+
                     case "XWeekYDayOfWeek":
                         return $"Every {FrequencyValue.ToString().Ordinalize()} {FrequencyDayOfWeekValue}";
 
                     case "Unknown":
                         return "Unknown";
+
                     default:
                         throw new NotImplementedException();
                 }
@@ -67,15 +77,20 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     public int? FrequencyValue { get; set; } = null;
     public DayOfWeek? FrequencyDayOfWeekValue { get; set; } = null;
     public DateTime? FrequencyDateValue { get; set; } = null;
+
     [JsonIgnore]
     public TransactionGroup? Group { get; set; }
+
     public Guid? TransactionGroupId { get; set; }
+
     [JsonIgnore]
     public Lookup_TransactionType TransactionTypeLookup { get; set; }
+
     public Guid TransactionTypeLookupId { get; set; }
 
     [JsonIgnore]
     public List<Transaction> PreviousTransactions { get; set; }
+
     // TODO: What about when the date falls on a weekend?
     // TODO: What if we want to transfer from one account to another? TransactionType? Or Debit+Credit?
 
@@ -93,25 +108,32 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
             case "Yearly":
                 this.NextDueDate = this.NextDueDate.Value.AddYears(1);
                 break;
+
             case "Monthly":
                 this.NextDueDate = this.NextDueDate.Value.AddMonths(1);
                 break;
+
             case "Weekly":
                 this.NextDueDate = this.NextDueDate.Value.AddDays(7);
                 break;
+
             case "XDays":
                 this.NextDueDate = this.NextDueDate.Value.AddDays(this.FrequencyValue ?? throw new Exception($"Missing Frequency Value for Recurring Transaction: {this}"));
                 break;
+
             case "XMonths":
                 this.NextDueDate = this.NextDueDate.Value.AddMonths(this.FrequencyValue ?? throw new Exception($"Missing Frequency Value for Recurring Transaction: {this}"));
                 break;
+
             case "XWeekYDayOfWeek":
                 this.NextDueDate = this.NextDueDate.Value.AddMonths(1);
                 this.NextDueDate = DayOccurrence(this.NextDueDate.Value.Year, this.NextDueDate.Value.Month, this.FrequencyDayOfWeekValue ?? throw new Exception($"Missing FrequencyDayOfWeekValue in {this}"), this.FrequencyValue ?? throw new Exception($"Missing Frequency Value in {this}"));
                 break;
+
             case "Irregular":
             case "Unknown":
                 break;
+
             default:
                 throw new Exception($"Unknown Lookup value: {this.FrequencyLookup}");
         }
@@ -125,6 +147,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
 
         return first.AddDays(7 * (occurrenceNumber - 1));
     }
+
     public void VerifySignage()
     {
         this.Amount = this.TransactionTypeLookup.Name switch

@@ -14,8 +14,10 @@ public class TransactionFile : BasicTable<TransactionFile>, IEntityTypeConfigura
     /// The Filename will have the Id so it can match accordingly.
     /// </summary>
     public byte[] Data { get; set; } = [];
+
     [JsonIgnore]
     public Transaction Transaction { get; set; }
+
     public Guid TransactionId { get; set; }
 
     public string Notes { get; set; } = string.Empty;

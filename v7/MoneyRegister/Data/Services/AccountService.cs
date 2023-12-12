@@ -1,4 +1,5 @@
 ﻿namespace MoneyRegister.Data.Services;
+
 using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 

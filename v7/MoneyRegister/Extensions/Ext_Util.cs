@@ -25,11 +25,11 @@ public static class Ext_Util
     {
         return date.AddDays((dayOfWeek < date.DayOfWeek ? 7 : 0) + dayOfWeek - date.DayOfWeek);
     }
+
     public static DateTime GetNthWeekofMonth(DateTime date, int nthWeek, DayOfWeek dayOfWeek)
     {
         // Let's sanitize this just in case a DateTime.Now was passed - let's reset this to the first of the month.
         date = new DateTime(date.Year, date.Month, 1);
         return date.Next(dayOfWeek).AddDays((nthWeek - 1) * 7);
     }
-
 }

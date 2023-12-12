@@ -23,6 +23,7 @@ public abstract class BasicTable<T> : IEntityTypeConfiguration<T> where T : clas
 
     [JsonIgnore]
     public ApplicationUser? DeletedBy { get; set; } = null;
+
     public string? DeletedById { get; set; } = null;
 
     [Required]
@@ -30,6 +31,7 @@ public abstract class BasicTable<T> : IEntityTypeConfiguration<T> where T : clas
 
     [JsonIgnore]
     public ApplicationUser? CreatedBy { get; set; }
+
     [Required]
     public string? CreatedById { get; set; } = Guid.Empty.ToString();
 

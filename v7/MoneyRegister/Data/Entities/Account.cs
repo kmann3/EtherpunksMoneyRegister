@@ -14,15 +14,9 @@ public class Account : BasicTable<Account>, IEntityTypeConfiguration<Account>
     public decimal StartingBalance { get; set; } = 0M;
 
     [Precision(18, 2)]
-    /// <summary>
-    /// Pre-calculate balance; This is to help speed up dashboard views
-    /// </summary>
     public decimal CurrentBalance { get; set; } = 0M;
 
     [Precision(18, 2)]
-    /// <summary>
-    /// Pre-calculated outstanding balance; This is to help speed up dashboard views
-    /// </summary>
     public decimal OutstandingBalance { get; set; } = 0M;
 
     /// <summary>
@@ -48,6 +42,7 @@ public class Account : BasicTable<Account>, IEntityTypeConfiguration<Account>
     public string LoginUrl { get; set; } = String.Empty;
 
     public DateTime LastBalancedUTC { get; set; } = DateTime.MinValue;
+
     [NotMapped]
     [JsonIgnore]
     public DateTime LastBalancedLocalTime
@@ -64,10 +59,10 @@ public class Account : BasicTable<Account>, IEntityTypeConfiguration<Account>
 
     [JsonIgnore]
     public List<Transaction> Transactions { get; set; } = new();
+
     // TODO: Account Types? Liability, Assets?
 
     public override void Configure(EntityTypeBuilder<Account> builder)
     {
-
     }
 }

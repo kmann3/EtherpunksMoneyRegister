@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyRegister.Data.Entities;
+
 namespace MoneyRegister.Data.Services;
 
 public class RecurringTransactionService(ApplicationDbContext context)

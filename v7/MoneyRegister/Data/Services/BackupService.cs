@@ -43,7 +43,6 @@ public class BackupService(ApplicationDbContext context)
         Directory.CreateDirectory(fileName);
         try
         {
-
             jsonString = JsonSerializer.Serialize(accountList, options);
             File.WriteAllText($@"{fileName}/{accountsJsonFileName}", jsonString);
 
@@ -123,7 +122,6 @@ public class BackupService(ApplicationDbContext context)
             _context.RemoveRange(await _context.Lookup_RecurringTransactionFrequencies.ToListAsync());
             _context.RemoveRange(await _context.Lookup_TransactionTypes.ToListAsync());
 
-
             Console.WriteLine("Database purged");
 
             await _context.SaveChangesAsync();
@@ -197,7 +195,6 @@ public class BackupService(ApplicationDbContext context)
             await _context.Link_Category_RecurringTransactions.AddRangeAsync(link_Category_RecurringTransactions);
 
             await _context.SaveChangesAsync();
-
         }
         catch (Exception ex)
         {

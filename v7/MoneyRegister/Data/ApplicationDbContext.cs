@@ -59,7 +59,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         //if(Directory.Exists(fakeDirectory))
         //{
-
         //    if (!File.Exists($"{fakeDirectory}/{BackupService.accountsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.accountsJsonFileName}");
         //    if (!File.Exists($"{fakeDirectory}/{BackupService.categoriesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.categoriesJsonFileName}");
         //    //if (!File.Exists($"{fakeDirectory}/{BackupService.filesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.filesJsonFileName}");
@@ -147,7 +146,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         int month = nextMonth.Month;
         int year = nextMonth.Year;
-
 
         TransactionGroup TransactionGroup_AllBills = new()
         {
@@ -275,6 +273,5 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
             builder.Entity<TEntity>().HasData(account);
         }
-
     }
 }
