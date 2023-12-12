@@ -1,0 +1,69 @@
+﻿<div class="d-flex">
+    <MudFileUpload T="IReadOnlyList<IBrowserFile>" FilesChanged="UploadFiles" tabindex="6">
+        <ButtonTemplate>
+            <MudButton HtmlTag="label"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.PhotoCamera"
+                       for="@context">
+                Upload Files
+            </MudButton>
+        </ButtonTemplate>
+    </MudFileUpload>
+    @if (files != null)
+    {
+        <MudList>
+            @foreach (var file in _value)
+            {
+                <MudListItem Icon="@Icons.Material.Filled.AttachFile">
+                    @file.Name <code>@ByteSizeLib.ByteSize.FromBytes(@file.Data.Length).ToString() - @file.Notes</code>
+                </MudListItem>
+            }
+        </MudList>
+    }
+</div>
+@code {
+    [Parameter]
+    public List<MoneyRegister.Data.Entities.TransactionFile> Value
+    {
+        get
+        {
+            return _value;
+        }
+        set
+        {
+            if (value == _value) return;
+            _value = value;
+
+            if (ValueChanged.HasDelegate)
+            {
+                ValueChanged.InvokeAsync(_value);
+            }
+        }
+    }
+
+    [Parameter] public int Index { get; set; } = 0;
+    [Parameter] public EventCallback<List<MoneyRegister.Data.Entities.TransactionFile>> ValueChanged { get; set; }
+    [Parameter] public string Label { get; set; }
+    private IList<IBrowserFile> files = new List<IBrowserFile>();
+
+    private List<MoneyRegister.Data.Entities.TransactionFile> _value;
+
+    private async Task UploadFiles(IReadOnlyList<IBrowserFile> files)
+    {
+        foreach (var file in files)
+        {
+            this.files.Add(file);
+
+            TransactionFile newFile = new();
+            newFile.Name = file.Name;
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.OpenReadStream().CopyToAsync(memoryStream);
+                newFile.Data = memoryStream.ToArray();
+            }
+
+            this.Value.Add(newFile);
+        }
+    }
+}

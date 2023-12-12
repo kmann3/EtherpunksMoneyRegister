@@ -1,12 +1,11 @@
 ﻿<MudDatePicker @ref="_datePicker" Label="@Label" Editable="true" @bind-Date="Value" tabindex="@Index" PickerVariant="PickerVariant.Dialog">
     <PickerActions>
-        <MudButton Class="mr-auto align-self-start" OnClick="@(() => _datePicker.Clear())">Clear</MudButton>
-        <MudButton OnClick="@(() => _datePicker.GoToDate(DateTime.UtcNow, true))">Today</MudButton>
         <MudButton OnClick="@(() => _datePicker.Close(false))">Cancel</MudButton>
         <MudButton Color="Color.Primary" OnClick="@(() => _datePicker.Close())">Ok</MudButton>
     </PickerActions>
 </MudDatePicker>
-
+<MudButton OnClick="@(() => _datePicker.GoToDate(DateTime.UtcNow, true))">Today</MudButton>
+<MudButton OnClick="@(() => _datePicker.Clear())" Class="mr-auto align-self-start">Clear</MudButton>
 @code {
     [Parameter]
     public DateTime? Value
@@ -33,8 +32,4 @@
 
     private DateTime? _value;
     MudDatePicker _datePicker;
-
-    protected override async Task OnInitializedAsync()
-    {
-    }
 }
