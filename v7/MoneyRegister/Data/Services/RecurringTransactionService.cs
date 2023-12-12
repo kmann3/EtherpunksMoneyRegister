@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MoneyRegister.Components.Pages;
 using MoneyRegister.Data.Entities;
 namespace MoneyRegister.Data.Services;
 

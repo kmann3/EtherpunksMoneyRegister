@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MoneyRegister.Components.Pages;
 using MoneyRegister.Data.Entities;
-using System.Reflection.Metadata;
 namespace MoneyRegister.Data.Services;
 
 public class TransactionService(ApplicationDbContext context)

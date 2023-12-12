@@ -19,7 +19,7 @@ public class CategoryService(ApplicationDbContext context)
 
     public async Task<List<Category>> GetAllCategoriesAsync()
     {
-        if(_categories.Count == 0)
+        if (_categories.Count == 0)
         {
             _categories = await _context.Categories.OrderBy(x => x.Name).ToListAsync();
         }

@@ -10,14 +10,14 @@ public class AccountService(ApplicationDbContext context)
 
     public async Task<List<Account>> GetAllAccountsAsync()
     {
-        if(_accounts.Count == 0)
+        if (_accounts.Count == 0)
         {
             _accounts = await _context.Accounts.OrderBy(x => x.Name).ToListAsync();
         }
         return _accounts;
     }
 
-    public async Task <Account> GetAccountDetailsAsync(Guid accountId)
+    public async Task<Account> GetAccountDetailsAsync(Guid accountId)
     {
         var data = await _context.Accounts
             .Include(x => x.Transactions)
@@ -38,21 +38,22 @@ public class AccountService(ApplicationDbContext context)
         Account returnData = data.Account;
         returnData.Transactions = data.Transactions;
 
-        foreach(var transaction in data.Transactions)
+        foreach (var transaction in data.Transactions)
         {
             //await _context.Entry(transaction).Collection(x => x.Categories).LoadAsync();
             Console.Write(transaction.Name + "--");
-            if(transaction.Categories.Count > 0)
+            if (transaction.Categories.Count > 0)
             {
                 Console.WriteLine("Has it: " + transaction.Categories.First().Name);
             }
-            if(transaction.Categories.Count > 0)
+            if (transaction.Categories.Count > 0)
             {
-                foreach(var cat  in transaction.Categories)
+                foreach (var cat in transaction.Categories)
                 {
                     Console.Write(cat.Name + ":");
                 }
-            } else
+            }
+            else
             {
                 Console.Write("none");
             }

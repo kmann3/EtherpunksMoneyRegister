@@ -11,7 +11,7 @@ public class TransactionGroupService(ApplicationDbContext context)
 
     public async Task<List<TransactionGroup>> GetAllTransactionGroupsAsync()
     {
-        if(_transactionGroups.Count == 0)
+        if (_transactionGroups.Count == 0)
         {
             _transactionGroups = await _context.TransactionGroups.OrderBy(x => x.Name).ToListAsync();
         }

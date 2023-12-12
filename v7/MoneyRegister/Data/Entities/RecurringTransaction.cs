@@ -1,11 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Humanizer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
-using Humanizer;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MoneyRegister.Components.Pages;
+using System.Text.Json.Serialization;
 
 namespace MoneyRegister.Data.Entities;
 
@@ -18,7 +16,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
 
     [DataType(DataType.Currency)]
     [Precision(18, 2)]
-    public decimal Amount{ get; set; }
+    public decimal Amount { get; set; }
     public string Notes { get; set; } = string.Empty;
 
     [JsonIgnore]

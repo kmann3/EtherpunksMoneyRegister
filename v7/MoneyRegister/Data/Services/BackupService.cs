@@ -122,7 +122,7 @@ public class BackupService(ApplicationDbContext context)
             _context.RemoveRange(await _context.ApplicationUsers.ToListAsync());
             _context.RemoveRange(await _context.Lookup_RecurringTransactionFrequencies.ToListAsync());
             _context.RemoveRange(await _context.Lookup_TransactionTypes.ToListAsync());
-            
+
 
             Console.WriteLine("Database purged");
 
@@ -198,7 +198,8 @@ public class BackupService(ApplicationDbContext context)
 
             await _context.SaveChangesAsync();
 
-        } catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             Console.WriteLine(ex.ToString());
         }
@@ -206,6 +207,6 @@ public class BackupService(ApplicationDbContext context)
         {
             File.Delete(fileName);
             Directory.Delete("restore", true);
-        }        
+        }
     }
 }

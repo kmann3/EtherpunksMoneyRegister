@@ -1,4 +1,3 @@
-using Humanizer;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MoneyRegister.Data.Entities;
@@ -128,12 +127,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<Lookup_TransactionType>().HasData(lookup_TransactionType_Credit);
 
         Lookup_RecurringTransactionFrequency lookup_Frequency_Yearly = new() { Name = "Annually", Ordinal = 0 };
-        Lookup_RecurringTransactionFrequency lookup_Frequency_Monthly = new() { Name ="Monthly", Ordinal= 1 };
-        Lookup_RecurringTransactionFrequency lookup_Frequency_Weekly = new () { Name = "Weekly", Ordinal = 2 };
+        Lookup_RecurringTransactionFrequency lookup_Frequency_Monthly = new() { Name = "Monthly", Ordinal = 1 };
+        Lookup_RecurringTransactionFrequency lookup_Frequency_Weekly = new() { Name = "Weekly", Ordinal = 2 };
         Lookup_RecurringTransactionFrequency lookup_Frequency_XDays = new() { Name = "XDays", Ordinal = 3 };
-        Lookup_RecurringTransactionFrequency lookup_Frequency_XWeekYDayOfWeek = new () { Name = "XWeekYDayOfWeek", Ordinal = 4 };
+        Lookup_RecurringTransactionFrequency lookup_Frequency_XWeekYDayOfWeek = new() { Name = "XWeekYDayOfWeek", Ordinal = 4 };
         Lookup_RecurringTransactionFrequency lookup_Frequency_Irregular = new() { Name = "Irregular", Ordinal = 5 };
-        Lookup_RecurringTransactionFrequency lookup_Frequency_Unknown = new() { Name ="Unknown", Ordinal = 6 };
+        Lookup_RecurringTransactionFrequency lookup_Frequency_Unknown = new() { Name = "Unknown", Ordinal = 6 };
 
         builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_Yearly);
         builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_Monthly);
@@ -260,7 +259,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         builder.Entity<Transaction>().HasData(trans2);
 
-        builder.Entity<Link_Category_Transaction>().HasData(new Link_Category_Transaction() { CategoryId = billsCategory.Id, TransactionId = trans2.Id});
+        builder.Entity<Link_Category_Transaction>().HasData(new Link_Category_Transaction() { CategoryId = billsCategory.Id, TransactionId = trans2.Id });
 
         account_Cash.CurrentBalance = currentBalance;
         account_Cash.OutstandingBalance = outstandingBalance;

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MoneyRegister.Data.Entities;
 
@@ -23,7 +23,7 @@ public class ApplicationUser : IdentityUser, IEntityTypeConfiguration<Applicatio
 
     //[JsonIgnore]
     //public List<Transaction> Transactions { get; set; } = new();
-    
+
     // CURRENCY?
 
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)

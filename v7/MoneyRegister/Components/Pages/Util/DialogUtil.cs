@@ -1,6 +1,6 @@
-﻿using MudBlazor;
+﻿using MoneyRegister.Components.Pages.Dialogs;
 using MoneyRegister.Data.Entities;
-using MoneyRegister.Components.Pages.Dialogs;
+using MudBlazor;
 
 namespace MoneyRegister.Components.Pages.Util;
 
