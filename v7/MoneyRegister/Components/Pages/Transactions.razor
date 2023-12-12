@@ -3,7 +3,6 @@
 @using Data.Entities
 @inject Data.Services.AccountService MR_AccountService
 @inject Data.Services.LookupService MR_LookupService
-@inject Data.Services.RecurringTransactionService MR_RecTranService
 @inject Data.Services.TransactionService MR_TransactionService
 @inject Data.Services.TestService MR_TestService
 @inject IDialogService DialogService
@@ -163,7 +162,7 @@
         {
             var selectedBillList = (List<RecurringTransaction>)result.Data;
 
-            await MR_RecTranService.ReserveTransactionsAsync(selectedBillList, accountDetails);
+            await MR_TransactionService.ReserveTransactionsAsync(selectedBillList, accountDetails);
             accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
             this.StateHasChanged();
         }

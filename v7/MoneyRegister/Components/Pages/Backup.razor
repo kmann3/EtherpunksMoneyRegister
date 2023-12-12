@@ -32,11 +32,7 @@
     }
 </script>
 @code {
-    protected override async Task OnInitializedAsync()
-    {
-
-    }
-
+    
     private async Task BackupData()
     {
         string fileName = await MR_BackupService.CreateBackupJsonAsync();

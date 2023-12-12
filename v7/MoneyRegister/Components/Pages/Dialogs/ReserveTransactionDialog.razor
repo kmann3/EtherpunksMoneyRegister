@@ -34,9 +34,9 @@
         recurringTransactionList = await MR_ReccuringTranService.GetReserveTransactionListAsync();
         var groupList = recurringTransactionList.Where(x => x.Group != null).Select(x => x.Group).Distinct();
 
-        foreach (var group in groupList.OrderBy(x => x.Name))
+        foreach (var group in groupList.OrderBy(x => x!.Name))
         {
-            TreeItemData rootItem = new TreeItemData(group.Name);
+            TreeItemData rootItem = new TreeItemData(group!.Name);
             rootItem.Tag = group;
 
             foreach (var recTran in group.RecurringTransactions.OrderBy(x => x.Name))

@@ -119,4 +119,34 @@ public class TransactionService(ApplicationDbContext context)
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task ReserveTransactionsAsync(List<RecurringTransaction> transactionsToReserve, Account accountToReserveFrom)
+    {
+        foreach (var bill in transactionsToReserve)
+        {
+            Transaction reserveTransaction = new()
+            {
+                Name = bill.Name,
+                Amount = bill.Amount,
+                Account = accountToReserveFrom,
+                Categories = bill.Categories,
+            };
+
+            accountToReserveFrom.CurrentBalance += bill.Amount;
+            accountToReserveFrom.OutstandingBalance += bill.Amount;
+            accountToReserveFrom.OutstandingItemCount++;
+            reserveTransaction.Balance = accountToReserveFrom.CurrentBalance;
+
+            if (bill.NextDueDate != null)
+            {
+                reserveTransaction.Notes = $"Expected due date: {bill.NextDueDate.Value.ToShortDateString()}";
+            }
+
+            bill.BumpNextDueDate();
+
+            _context.Transactions.Add(reserveTransaction);
+        }
+
+        await _context.SaveChangesAsync();
+    }
 }
