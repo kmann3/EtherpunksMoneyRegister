@@ -137,7 +137,7 @@
 
         if (!result.Canceled)
         {
-            Transaction modifiedTransaction = result.Data as Transaction;
+            Transaction modifiedTransaction = (Transaction)result.Data;
             if (modifiedTransaction.DeletedOnUTC.HasValue)
             {
                 await MR_TransactionService.DeleteTransactionAsync(accountDetails, modifiedTransaction);
