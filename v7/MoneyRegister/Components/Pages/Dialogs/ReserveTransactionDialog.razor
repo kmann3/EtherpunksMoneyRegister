@@ -1,6 +1,121 @@
 ﻿@inject IDialogService DialogService
-<h3>ReserveTransactionDialog</h3>
+@inject Data.Services.RecurringTransactionService MR_ReccuringTranService
+
+<MudDialog>
+    <DialogContent>
+        <MudContainer Style="max-height: 300px; overflow-y: scroll">
+            <MudTreeView Items="@treeItems">
+                <ItemTemplate>
+                    <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems">
+                        <Content>
+                            <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild" />
+                            <MudCheckBox T="bool?" Checked="@(context.HasPartialChildSelection() ? null : context.IsChecked)" CheckedChanged="@((e) => CheckedChanged(context))"></MudCheckBox>
+                            <MudText>@context.Text</MudText>
+                        </Content>
+                    </MudTreeViewItem>
+                </ItemTemplate>
+            </MudTreeView>
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="ReserveTransaction">Reserve</MudButton>
+    </DialogActions>
+</MudDialog>
 
 @code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
+    private HashSet<TreeItemData> treeItems { get; set; } = new HashSet<TreeItemData>();
+    private List<RecurringTransaction> recurringTransactionList = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        recurringTransactionList = await MR_ReccuringTranService.GetReserveTransactionListAsync();
+        var groupList = recurringTransactionList.Where(x => x.Group != null).Select(x => x.Group).Distinct();
+
+        foreach (var group in groupList.OrderBy(x => x.Name))
+        {
+            TreeItemData rootItem = new TreeItemData(group.Name);
+            rootItem.Tag = group;
+
+            foreach (var recTran in group.RecurringTransactions.OrderBy(x => x.Name))
+            {
+                string displayText = recTran.Name;
+                if (recTran.NextDueDate != null)
+                {
+                    displayText += $" (Due: {recTran.NextDueDate.Value.ToShortDateString()})";
+                }
+                TreeItemData childItem = new TreeItemData(displayText);
+                childItem.Tag = recTran;
+
+                rootItem.AddChild(childItem);
+            }
+
+            treeItems.Add(rootItem);
+        }
+
+        TreeItemData ungroupedRoot = new TreeItemData("Ungrouped Bills");
+        ungroupedRoot.Tag = null;
+
+        foreach (var recTran in recurringTransactionList.Where(x => x.Group == null).OrderBy(x => x.Name))
+        {
+            string displayText = recTran.Name;
+            if (recTran.NextDueDate != null)
+            {
+                displayText += $" (Due: {recTran.NextDueDate.Value.ToShortDateString()})";
+            }
+            TreeItemData ungroupedChild = new TreeItemData(displayText);
+            ungroupedChild.Tag = recTran;
+
+            ungroupedRoot.AddChild(ungroupedChild);
+        }
+
+        treeItems.Add(ungroupedRoot);
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private void ReserveTransaction()
+    {
+        List<RecurringTransaction> reservationList = new();
+        foreach (var rootItem in treeItems)
+        {
+            if (rootItem.TreeItems.Count == 0) continue;
+            foreach (var childItem in rootItem.TreeItems)
+            {
+                if (!childItem.IsChecked || childItem.Tag == null) continue;
+
+                if (childItem.Tag is RecurringTransaction recTran)
+                {
+                    reservationList.Add(recTran);
+                }
+            }
+        }
+
+        MudDialog.Close(DialogResult.Ok(reservationList));
+    }
+
+    /// <summary>
+    /// Literally copied from MudBlazor
+    /// https://www.mudblazor.com/components/treeview#custom-checkbox-behavior
+    /// </summary>
+    /// <param name="item"></param>
+    protected void CheckedChanged(TreeItemData item)
+    {
+        item.IsChecked = !item.IsChecked;
+        // checked status on any child items should mirror this parent item
+        if (item.HasChild)
+        {
+            foreach (TreeItemData child in item.TreeItems)
+            {
+                child.IsChecked = item.IsChecked;
+            }
+        }
+        // if there's a parent and all children are checked/unchecked, parent should match
+        if (item.Parent != null)
+        {
+            item.Parent.IsChecked = !item.Parent.TreeItems.Any(i => !i.IsChecked);
+        }
+    }
 }

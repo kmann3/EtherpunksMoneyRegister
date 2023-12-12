@@ -3,6 +3,7 @@
 @using Data.Entities
 @inject Data.Services.AccountService MR_AccountService
 @inject Data.Services.LookupService MR_LookupService
+@inject Data.Services.RecurringTransactionService MR_RecTranService
 @inject Data.Services.TransactionService MR_TransactionService
 @inject Data.Services.TestService MR_TestService
 @inject IDialogService DialogService
@@ -40,7 +41,7 @@
                      RowClick="@OnRowClick" RowStyleFunc="@_rowStyleFunc">
             <!-- Button here to add a transaction via dialog -->
             <ToolBarContent>
-                <MudButton Color="Color.Primary" OnClick="TestAction">Test Action: Delete Transaction</MudButton>
+                <!--<MudButton Color="Color.Primary" OnClick="TestAction">Test Action: Delete Transaction</MudButton>-->
                 <MudButton Color="Color.Primary" OnClick="AddNewDebit">Add Debit</MudButton>
                 <MudButton Color="Color.Primary" OnClick="AddNewCredit">Add Credit</MudButton>
                 <MudButton Color="Color.Primary" OnClick="ReserveBills">Reserve Bills</MudButton>
@@ -162,9 +163,9 @@
         {
             var selectedBillList = (List<RecurringTransaction>)result.Data;
 
-            throw new NotImplementedException();
-            // await MR_BillService.ReserveBillsAsync(selectedBillList!, accountDetails!);
-            // accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
+            await MR_RecTranService.ReserveTransactionsAsync(selectedBillList, accountDetails);
+            accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
+            this.StateHasChanged();
         }
     }
 

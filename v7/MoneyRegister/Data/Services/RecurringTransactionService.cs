@@ -31,20 +31,33 @@ public class RecurringTransactionService(ApplicationDbContext context)
             .SingleAsync();
     }
 
+    public async Task<List<RecurringTransaction>> GetReserveTransactionListAsync()
+    {
+        return await _context.RecurringTransactions
+            .Include(x => x.Group)
+            .Include(x => x.Categories)
+            .Include(x => x.FrequencyLookup)
+            .Include(x => x.TransactionTypeLookup)
+            .ToListAsync();
+    }
+
     public async Task CreateRecurringTransactionAsync(RecurringTransaction recurringTransaction)
     {
+        recurringTransaction.VerifySignage();
         _context.RecurringTransactions.Add(recurringTransaction);
         await _context.SaveChangesAsync();
     }
 
     public async Task DeleteRecurringTransactionAsync(RecurringTransaction recurringTransaction)
     {
+        recurringTransaction.VerifySignage();
         _context.RecurringTransactions.Remove(recurringTransaction);
         await _context.SaveChangesAsync();
     }
 
     public async Task UpdateRecurringTransactionAsync(RecurringTransaction recurringTransaction)
     {
+        recurringTransaction.VerifySignage();
         _context.Attach(recurringTransaction);
         await _context.SaveChangesAsync();
     }

@@ -43,6 +43,15 @@
         <!-- Display attachments - delete attachments - add attachments -->
 
     </DialogContent>
+    <DialogActions>
+        @if (!IsNew)
+        {
+            <MudButton Color="Color.Error" OnClick="Delete">Delete</MudButton>
+        }
+
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Warning" OnClick="Save">Save</MudButton>
+    </DialogActions>
 </MudDialog>
 
 @code {
@@ -109,5 +118,27 @@
             TransactionDetails.Categories.Add(catData!);
             ResetSelectedCategories();
         }
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private async void Save()
+    {
+        // if (IsNew) await MR_RecTranService.CreateRecurringTransactionAsync(RecurringTransactionDetails);
+        // else await MR_RecTranService.UpdateRecurringTransactionAsync(RecurringTransactionDetails);
+
+        // MudDialog.Close(DialogResult.Ok(RecurringTransactionDetails));
+    }
+    private async Task Delete()
+    {
+        // var result = await DialogUtil.ShowConfirmDialogAsync(DialogService, "Delete", "Delete", $"Are you sure you want to delete the recurring transaction: '{RecurringTransactionDetails.Name}'?", Color.Error);
+        // if (result.Canceled) return;
+
+        // RecurringTransactionDetails.DeletedOnUTC = DateTime.UtcNow;
+        // await MR_RecTranService.DeleteRecurringTransactionAsync(RecurringTransactionDetails);
+        // MudDialog.Close(DialogResult.Ok(RecurringTransactionDetails));
     }
 }

@@ -17,28 +17,9 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
     /// </summary>
     public string LiteralTransactionText = string.Empty;
 
+    [DataType(DataType.Currency)]
     [Precision(18, 2)]
-    public decimal Amount
-    {
-        get => _amount;
-        set
-        {
-            switch (this.TransactionTypeLookup.Name)
-            {
-                case "Credit":
-                    _amount = Math.Abs(value);
-                    break;
-                case "Debit":
-                    _amount = -Math.Abs(value);
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-    }
-
-    [JsonIgnore]
-    private decimal _amount = 0M;
+    public decimal Amount { get; set; }
 
     [JsonIgnore]
     public Account Account { get; set; }
@@ -157,5 +138,14 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
     public override void Configure(EntityTypeBuilder<Transaction> builder)
     {
 
+    }
+    public void VerifySignage()
+    {
+        this.Amount = this.TransactionTypeLookup.Name switch
+        {
+            "Credit" => Math.Abs(this.Amount),
+            "Debit" => -Math.Abs(this.Amount),
+            _ => throw new NotImplementedException(),
+        };
     }
 }

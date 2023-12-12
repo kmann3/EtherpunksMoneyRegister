@@ -18,27 +18,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
 
     [DataType(DataType.Currency)]
     [Precision(18, 2)]
-    public decimal Amount
-    {
-        get => _amount;
-        set
-        {
-            switch (this.TransactionTypeLookup.Name)
-            {
-                case "Credit":
-                    _amount = Math.Abs(value);
-                    break;
-                case "Debit":
-                    _amount = -Math.Abs(value);
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-    }
-
-    [JsonIgnore]
-    private decimal _amount = 0M;
+    public decimal Amount{ get; set; }
     public string Notes { get; set; } = string.Empty;
 
     [JsonIgnore]
@@ -146,5 +126,14 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
         DateTime first = start.AddDays((7 - ((int)start.DayOfWeek - (int)day)) % 7);
 
         return first.AddDays(7 * (occurrenceNumber - 1));
+    }
+    public void VerifySignage()
+    {
+        this.Amount = this.TransactionTypeLookup.Name switch
+        {
+            "Credit" => Math.Abs(this.Amount),
+            "Debit" => -Math.Abs(this.Amount),
+            _ => throw new NotImplementedException(),
+        };
     }
 }
