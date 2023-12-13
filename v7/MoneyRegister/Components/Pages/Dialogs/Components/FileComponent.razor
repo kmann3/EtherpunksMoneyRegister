@@ -1,4 +1,7 @@
-﻿<div class="d-flex">
+﻿@inject NavigationManager NavManager
+@inject IJSRuntime JS
+
+<div class="d-flex">
     <MudFileUpload T="IReadOnlyList<IBrowserFile>" FilesChanged="UploadFiles" tabindex="6">
         <ButtonTemplate>
             <MudButton HtmlTag="label"
@@ -15,13 +18,25 @@
         <MudList>
             @foreach (var file in _value)
             {
+
                 <MudListItem Icon="@Icons.Material.Filled.AttachFile">
-                    @file.Name <code>@ByteSizeLib.ByteSize.FromBytes(@file.Data.Length).ToString() - @file.Notes</code>
+                    <MudLink @onclick="@(e => DownloadFile(file.Id))"><code>@file.Name -  @ByteSizeLib.ByteSize.FromBytes(@file.Data.Length).ToString() - @file.Notes</code></MudLink>
                 </MudListItem>
             }
         </MudList>
     }
 </div>
+
+<script>
+    function jsSaveAsFile(filename, byteBase64) {
+        var link = document.createElement('a');
+        link.download = filename;
+        link.href = "data:application/octet-stream;base64," + byteBase64;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
 @code {
     [Parameter]
     public List<MoneyRegister.Data.Entities.TransactionFile> Value
@@ -65,5 +80,11 @@
 
             this.Value.Add(newFile);
         }
+    }
+
+    private async Task DownloadFile(Guid id)
+    {
+        TransactionFile file = this.Value.Where(x => x.Id == id).Single();
+        await JS.InvokeVoidAsync("jsSaveAsFile", file.Name, Convert.ToBase64String(file.Data));
     }
 }

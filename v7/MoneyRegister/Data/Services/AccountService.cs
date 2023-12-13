@@ -36,7 +36,9 @@ public class AccountService(ApplicationDbContext context)
     {
         var data = await _context.Accounts
             .Include(x => x.Transactions)
-            .ThenInclude(x => x.Categories)
+                .ThenInclude(x => x.Categories)
+            .Include(x => x.Transactions)
+                .ThenInclude(x => x.Files)
             .Where(x => x.Id == accountId)
             .Select(x => new
             {
