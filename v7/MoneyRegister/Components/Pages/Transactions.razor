@@ -97,6 +97,10 @@
 }
 
 @code {
+    // TBI: Implement ServerData so we don't end up loading 10 years worth of data
+    // https://stackoverflow.com/questions/77008207/use-mudblazor-muddatagrid-serverdata-to-load-paged-data-from-an-api
+
+
     [Parameter] public Guid Id { get; set; }
 
     private List<Account> accounts { get; set; }
