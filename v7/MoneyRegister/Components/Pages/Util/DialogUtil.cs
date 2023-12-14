@@ -11,7 +11,7 @@ public class DialogUtil
         var parameters = new DialogParameters<EditRecurringTransactionDialog>
         {
             { x => x.IsNew, isNew },
-            { x => x.RecurringTransactionDetails, recurringTransaction }
+            { x => x.RecurringTransactionDetails, recurringTransaction },
         };
 
         DialogOptions options = new()
@@ -22,13 +22,13 @@ public class DialogUtil
         var dialog = await dialogService.ShowAsync<EditRecurringTransactionDialog>(isNew ? "New Recurring Transaction" : "Edit Recurring Transaction", parameters, options);
         return await dialog.Result;
     }
-
+    
     public static async Task<DialogResult> ShowCategoryDialogAsync(IDialogService dialogService, bool isNew, Category category)
     {
         var parameters = new DialogParameters<CategoryDialog>
         {
             { x => x.CategoryDetails, category },
-            { x => x.IsNew, isNew }
+            { x => x.IsNew, isNew },
         };
 
         DialogOptions options = new()
@@ -46,7 +46,7 @@ public class DialogUtil
         {
             {x => x.ContentText, contentText},
             {x => x.ButtonText, buttonText },
-            {x => x.Color, color }
+            {x => x.Color, color },
         };
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
@@ -83,6 +83,22 @@ public class DialogUtil
         };
 
         var dialog = await dialogService.ShowAsync<EditTransactionDialog>("", parameters, options);
+        return await dialog.Result;
+    }
+        public static async Task<DialogResult> ShowTransactionFileDialog(IDialogService dialogService, bool isNew, TransactionFile file)
+    {
+        var parameters = new DialogParameters<TransactionFileDialog>
+        {
+            { x => x.IsNew, isNew },
+            { x => x.File, file },
+        };
+
+        DialogOptions options = new()
+        {
+            CloseOnEscapeKey = true,
+        };
+
+        var dialog = await dialogService.ShowAsync<TransactionFileDialog>(isNew ? "New File" : $"Edit File: {file.Name}", parameters, options);
         return await dialog.Result;
     }
 }

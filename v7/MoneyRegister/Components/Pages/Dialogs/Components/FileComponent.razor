@@ -1,31 +1,33 @@
 ﻿@inject NavigationManager NavManager
+@inject IDialogService DialogService
 @inject IJSRuntime JS
 
-<div class="d-flex">
-    <MudFileUpload T="IReadOnlyList<IBrowserFile>" FilesChanged="UploadFiles" tabindex="6">
-        <ButtonTemplate>
-            <MudButton HtmlTag="label"
-                       Variant="Variant.Filled"
-                       Color="Color.Primary"
-                       StartIcon="@Icons.Material.Filled.PhotoCamera"
-                       for="@context">
-                Upload Files
-            </MudButton>
-        </ButtonTemplate>
-    </MudFileUpload>
-    @if (files != null)
-    {
-        <MudList>
-            @foreach (var file in _value)
-            {
+    <MudGrid Spacing="0">
+        <MudItem xs="12">
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-2">
+                <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.CloudUpload" @onclick="@(e => CreateNewFile())">
+                    Upload File
+                </MudButton>
+            </MudPaper>
+        </MudItem>
 
-                <MudListItem Icon="@Icons.Material.Filled.AttachFile">
-                    <MudLink @onclick="@(e => DownloadFile(file.Id))"><code>@file.Name -  @ByteSizeLib.ByteSize.FromBytes(@file.Data.Length).ToString() - @file.Notes</code></MudLink>
-                </MudListItem>
-            }
-        </MudList>
+@if (Value != null && Value.Count > 0)
+{
+        
+    @foreach(var file in Value) 
+    {
+        <MudItem xs="3">
+            <MudPaper Class="d-flex align-left justify-left mud-width-full py-2"><MudButton Size="Size.Small" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Download" Color="Color.Info" @onclick="@(e => DownloadFile(file.Id))" /></MudPaper>
+        </MudItem>
+        <MudItem xs="6">
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-2"><MudLink @onclick="@(e => EditFile(file))">@file.Name -  @ByteSizeLib.ByteSize.FromBytes(@file.Data.Length).ToString()</MudLink></MudPaper>
+        </MudItem>
+        <MudItem xs="3">
+            <MudPaper Class="d-flex align-right justify-right mud-width-full py-2"><MudButton Size="Size.Small" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" @onclick="@(e => DeleteTransactionFile(file))" /></MudPaper>
+        </MudItem>
     }
-</div>
+}
+</MudGrid>
 
 <script>
     function jsSaveAsFile(filename, byteBase64) {
@@ -60,31 +62,48 @@
     [Parameter] public int Index { get; set; } = 0;
     [Parameter] public EventCallback<List<MoneyRegister.Data.Entities.TransactionFile>> ValueChanged { get; set; }
     [Parameter] public string Label { get; set; }
-    private IList<IBrowserFile> files = new List<IBrowserFile>();
 
     private List<MoneyRegister.Data.Entities.TransactionFile> _value;
-
-    private async Task UploadFiles(IReadOnlyList<IBrowserFile> files)
-    {
-        foreach (var file in files)
-        {
-            this.files.Add(file);
-
-            TransactionFile newFile = new();
-            newFile.Name = file.Name;
-            using (var memoryStream = new MemoryStream())
-            {
-                await file.OpenReadStream().CopyToAsync(memoryStream);
-                newFile.Data = memoryStream.ToArray();
-            }
-
-            this.Value.Add(newFile);
-        }
-    }
 
     private async Task DownloadFile(Guid id)
     {
         TransactionFile file = this.Value.Where(x => x.Id == id).Single();
         await JS.InvokeVoidAsync("jsSaveAsFile", file.Name, Convert.ToBase64String(file.Data));
+    }
+
+    private async Task DeleteTransactionFile(MoneyRegister.Data.Entities.TransactionFile file)
+    {
+        var result = await DialogUtil.ShowConfirmDialogAsync(DialogService, "Delete", "Delete", $"Are you sure you want to delete the attachment: '{file.Name}'?", Color.Error);
+        if (result.Canceled) return;
+
+        this.Value.Remove(file);
+    }
+
+    private async Task EditFile(TransactionFile file)
+    {
+        var result = await DialogUtil.ShowTransactionFileDialog(DialogService, false, file);
+
+        if (!result.Canceled)
+        {
+            TransactionFile returnData = (TransactionFile)result.Data;
+            if (returnData.DeletedOnUTC.HasValue || returnData.Data.Length == 0)
+            {
+                Value.Remove(returnData);
+            }
+        }
+    }
+
+    private async Task CreateNewFile()
+    {
+        var result = await DialogUtil.ShowTransactionFileDialog(DialogService, true, new TransactionFile());
+
+        if (!result.Canceled)
+        {
+            TransactionFile returnData = (TransactionFile)result.Data;
+            if (!returnData.DeletedOnUTC.HasValue || returnData.Data.Length > 0)
+            {
+                Value.Add(returnData);
+            }
+        }
     }
 }

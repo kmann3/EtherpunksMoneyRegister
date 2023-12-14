@@ -20,6 +20,8 @@ public class TransactionFile : BasicTable<TransactionFile>, IEntityTypeConfigura
 
     public Guid TransactionId { get; set; }
 
+    public string Filename { get; set; } = string.Empty;
+
     public string Notes { get; set; } = string.Empty;
 
     // Consider a lookup for types of files such as bills, contracts, warranties, etc

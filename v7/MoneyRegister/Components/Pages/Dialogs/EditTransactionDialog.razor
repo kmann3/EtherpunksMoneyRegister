@@ -135,7 +135,7 @@
     private async Task Delete()
     {
         var result = await DialogUtil.ShowConfirmDialogAsync(DialogService, "Delete", "Delete", $"Are you sure you want to delete the recurring transaction: '{TransactionDetails.Name}'?", Color.Error);
-         if (result.Canceled) return;
+        if (result.Canceled) return;
 
         TransactionDetails.DeletedOnUTC = DateTime.UtcNow;
         MudDialog.Close(DialogResult.Ok(TransactionDetails));

@@ -25,4 +25,7 @@ v1-v-whatever are simply varying things I'm toying with. They aren't incremental
 * Encrypting important things. This is a later thing because I'm still manually tweaking things in the database to test and it's simply easier to see mistakes currently.
 * Globalization / Locatlization
 * Background service to run bill processing on if something is late?
+
+<hr />
 * Do I need to copyright the code? Does it really matter?
+* Rename dialog files more appropriately. For example: EditTransactionDialog -> TransactionDialog | EdtTransactionFileDialog -> TransactionFileDialog

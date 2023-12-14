@@ -1,0 +1,143 @@
+﻿@inject NavigationManager NavManager
+@inject IDialogService DialogService
+@inject IJSRuntime JS
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            @if (IsNew)
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
+                <text>New Transaction File</text>
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3 mb-n1" />
+                <text>Edit - @File.Name</text>
+            }
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField T="string" @bind-Value="File.Name" Label="Name" tabindex="1" />
+        <MudTextField T="string" @bind-Value="File.Notes" Label="Notes" tabindex="2" />
+        <MudTextField T="string" @bind-Value="File.Filename" Label="Filename" tabindex="3" />
+        <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile" tabindex="4">
+            <ButtonTemplate>
+                <MudButton HtmlTag="label"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.CloudUpload"
+                           for="@context">
+                    Upload File
+                </MudButton>
+            </ButtonTemplate>
+        </MudFileUpload>
+
+        @if (@File.Data.Length > 0)
+        {
+            <MudGrid Spacing="0">
+                <MudItem xs="3">
+                <MudPaper Class="d-flex align-left justify-left mud-width-full py-2">
+                    <MudButton Size="Size.Small" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Download" Color="Color.Info" @onclick="@(e => DownloadFile())" />
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="6">
+                <MudPaper Class="d-flex align-center justify-center mud-width-full py-2">@File.Filename -  @ByteSizeLib.ByteSize.FromBytes(@File.Data.Length).ToString()</MudPaper>
+            </MudItem>
+            <MudItem xs="3">
+                <MudPaper Class="d-flex align-right justify-right mud-width-full py-2">
+                    <MudButton Size="Size.Small" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" @onclick="@(e => Delete())" />
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+        }
+    </DialogContent>
+    <DialogActions>
+        @if (!IsNew)
+        {
+            <MudButton Color="Color.Error" OnClick="Delete">Delete</MudButton>
+        }
+
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Warning" OnClick="Save">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+
+<script>
+    function jsSaveAsFile(filename, byteBase64) {
+        var link = document.createElement('a');
+        link.download = filename;
+        link.href = "data:application/octet-stream;base64," + byteBase64;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public MoneyRegister.Data.Entities.TransactionFile File { get; set; }
+    [Parameter] public bool IsNew { get; set; }
+
+    void Cancel() => MudDialog.Cancel();
+
+    private async Task UploadFile(IBrowserFile file)
+    {
+        if (File.Data.Length > 0)
+        {
+            var result = await DialogUtil.ShowConfirmDialogAsync(DialogService, "Overwrite", "Yes", $"This is going to overwrite the old file. Continue?", Color.Error);
+            if (result.Canceled) return;
+        }
+
+        if (String.IsNullOrWhiteSpace(File.Filename)) File.Filename = file.Name;
+        try
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                var type = file.ContentType;
+                await file.OpenReadStream(file.Size).CopyToAsync(memoryStream);
+                File.Data = memoryStream.ToArray();
+            }
+        } catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+
+        this.StateHasChanged();
+    }
+
+    private async Task DownloadFile()
+    {
+        await JS.InvokeVoidAsync("jsSaveAsFile", File.Name, Convert.ToBase64String(File.Data));
+    }
+
+    private async Task Delete()
+    {
+        var result = await DialogUtil.ShowConfirmDialogAsync(DialogService, "Delete", "Delete", $"This will delete the file: {File.Name}. Continue?", Color.Error);
+        if (result.Canceled) return;
+        File.DeletedOnUTC = DateTime.UtcNow;
+        MudDialog.Close(DialogResult.Ok(File));
+    }
+
+    private async Task Save()
+    {
+        if (File.Data.Length == 0)
+        {
+            var result = await DialogUtil.ShowConfirmDialogAsync(DialogService, "Missing File", "Yes", $"There is no attached file. This will not save and will be deleted. Are you sure?", Color.Error);
+            if (result.Canceled) return;
+            MudDialog.Cancel();
+            return;
+        }
+
+        if(String.IsNullOrWhiteSpace(File.Filename))
+        {
+            var result = await DialogUtil.ShowConfirmDialogAsync(DialogService, "Missing Filename", "Ok", $"Filename is required. Please enter one.", Color.Error);
+            return;
+        }
+
+        // Check to see if the file extension is reasonable. Otherwise in their future they are going to be confused why it's missing an extension and, perhaps, not know what to open it with.
+
+        MudDialog.Close(DialogResult.Ok(File));
+    }
+}
