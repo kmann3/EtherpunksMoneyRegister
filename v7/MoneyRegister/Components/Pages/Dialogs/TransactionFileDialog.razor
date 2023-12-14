@@ -138,7 +138,7 @@
 
         if (String.IsNullOrWhiteSpace(File.Name)) File.Name = File.Filename;
 
-        // Check to see if the file extension is reasonable. Otherwise in their future they are going to be confused why it's missing an extension and, perhaps, not know what to open it with.
+        // TBI: Check to see if the file extension is reasonable. Otherwise in their future they are going to be confused why it's missing an extension and, perhaps, not know what to open it with.
 
         MudDialog.Close(DialogResult.Ok(File));
     }
