@@ -62,13 +62,11 @@
     </DialogActions>
 </MudDialog>
 
-
-
 <script>
-    function jsSaveAsFile(filename, byteBase64) {
+    function jsSaveAsFile(filename, contentType, byteBase64) {
         var link = document.createElement('a');
         link.download = filename;
-        link.href = "data:application/octet-stream;base64," + byteBase64;
+        link.href = "data:" + contentType + ";base64," + byteBase64;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -95,7 +93,7 @@
         {
             using (var memoryStream = new MemoryStream())
             {
-                var type = file.ContentType;
+                File.ContentType = file.ContentType;
                 await file.OpenReadStream(file.Size).CopyToAsync(memoryStream);
                 File.Data = memoryStream.ToArray();
             }
@@ -109,7 +107,7 @@
 
     private async Task DownloadFile()
     {
-        await JS.InvokeVoidAsync("jsSaveAsFile", File.Name, Convert.ToBase64String(File.Data));
+        await JS.InvokeVoidAsync("jsSaveAsFile", File.Name, File.ContentType, Convert.ToBase64String(File.Data));
     }
 
     private async Task Delete()
