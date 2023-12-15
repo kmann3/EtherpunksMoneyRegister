@@ -8,7 +8,7 @@ public class DialogUtil
 {
     public static async Task<DialogResult> ShowAccountDialogAsync(IDialogService dialogService, bool isNew, RecurringTransaction recurringTransaction)
     {
-        var parameters = new DialogParameters<EditRecurringTransactionDialog>
+        var parameters = new DialogParameters<RecurringTransactionDialog>
         {
             { x => x.IsNew, isNew },
             { x => x.RecurringTransactionDetails, recurringTransaction },
@@ -19,7 +19,7 @@ public class DialogUtil
             CloseOnEscapeKey = true,
         };
 
-        var dialog = await dialogService.ShowAsync<EditRecurringTransactionDialog>(isNew ? "New Recurring Transaction" : "Edit Recurring Transaction", parameters, options);
+        var dialog = await dialogService.ShowAsync<RecurringTransactionDialog>(isNew ? "New Recurring Transaction" : "Edit Recurring Transaction", parameters, options);
         return await dialog.Result;
     }
     
@@ -71,7 +71,7 @@ public class DialogUtil
 
     public static async Task<DialogResult> ShowTransactionDialog(IDialogService dialogService, bool isNew, Transaction transaction)
     {
-        var parameters = new DialogParameters<EditTransactionDialog>
+        var parameters = new DialogParameters<TransactionDialog>
         {
             { x => x.TransactionDetails, transaction },
             { x => x.IsNew, isNew },
@@ -82,7 +82,7 @@ public class DialogUtil
             CloseOnEscapeKey = true,
         };
 
-        var dialog = await dialogService.ShowAsync<EditTransactionDialog>("", parameters, options);
+        var dialog = await dialogService.ShowAsync<TransactionDialog>("", parameters, options);
         return await dialog.Result;
     }
         public static async Task<DialogResult> ShowTransactionFileDialog(IDialogService dialogService, bool isNew, TransactionFile file)

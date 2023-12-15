@@ -1,6 +1,4 @@
-﻿@using Data.Entities
-@using System.Globalization
-@inject Data.Services.AccountService MR_AccountService
+﻿@inject Data.Services.AccountService MR_AccountService
 @inject Data.Services.CategoryService MR_CategoryService
 @inject Data.Services.LookupService MR_LookupService
 @inject Data.Services.TransactionService MR_TranService
@@ -67,9 +65,6 @@
     List<Category> categories { get; set; } = new();
     List<TransactionGroup> transactionGroups = new();
     List<Lookup_TransactionType> TransactionTypeList = new();
-
-    private DateTime? frequencyDate;
-    private DayOfWeek frequencyDayOfWeek;
 
     private IEnumerable<Category> selectedCategories = new HashSet<Category>();
 

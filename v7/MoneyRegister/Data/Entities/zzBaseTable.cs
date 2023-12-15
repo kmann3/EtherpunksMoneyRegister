@@ -11,12 +11,17 @@ namespace MoneyRegister.Data.Entities;
 /// File prefixed with zz to sink to the bottom.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public abstract class BasicTable<T> : IEntityTypeConfiguration<T> where T : class
+public abstract class BasicTable<T> : IEntityTypeConfiguration<T>
+    where T : class
 {
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.None), Column(Order = 1)]
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    [Column(Order = 1)]
     public Guid Id { get; set; } = Guid.NewGuid();
 
-    [Required, StringLength(255), Column(Order = 2)]
+    [Required]
+    [StringLength(255)]
+    [Column(Order = 2)]
     public string Name { get; set; } = string.Empty;
 
     public DateTime? DeletedOnUTC { get; set; } = null;

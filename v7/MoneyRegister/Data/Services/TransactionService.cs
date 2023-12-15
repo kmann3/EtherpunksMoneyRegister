@@ -105,15 +105,15 @@ public class TransactionService(ApplicationDbContext context)
 
             foreach (var item in itemsToUpdate)
             {
-                item.Balance -= (oldTransaction.Amount - transaction.Amount);
+                item.Balance -= oldTransaction.Amount - transaction.Amount;
             }
 
             if (!transaction.TransactionClearedUTC.HasValue)
             {
-                account.OutstandingBalance -= (oldTransaction.Amount - transaction.Amount);
+                account.OutstandingBalance -= oldTransaction.Amount - transaction.Amount;
             }
 
-            account.CurrentBalance -= (oldTransaction.Amount - transaction.Amount);
+            account.CurrentBalance -= oldTransaction.Amount - transaction.Amount;
 
             await _context.SaveChangesAsync();
         }

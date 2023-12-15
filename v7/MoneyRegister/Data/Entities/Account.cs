@@ -32,14 +32,14 @@ public class Account : BasicTable<Account>, IEntityTypeConfiguration<Account>
         }
     }
 
-    public string AccountNumber { get; set; } = String.Empty;
+    public string AccountNumber { get; set; } = string.Empty;
 
     [Precision(18, 2)]
     public decimal InterestRate { get; set; } = 0M;
 
-    public string Notes { get; set; } = String.Empty;
+    public string Notes { get; set; } = string.Empty;
 
-    public string LoginUrl { get; set; } = String.Empty;
+    public string LoginUrl { get; set; } = string.Empty;
 
     public DateTime LastBalancedUTC { get; set; } = DateTime.MinValue;
 

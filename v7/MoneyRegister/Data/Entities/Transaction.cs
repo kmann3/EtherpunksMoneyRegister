@@ -97,7 +97,7 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
         // If both have no transaction dates, then compare names.
         if ((x.TransactionPendingUTC == null && x.TransactionClearedUTC == null) && (y.TransactionPendingUTC == null && y.TransactionClearedUTC == null))
         {
-            return String.Compare(x.Name, y.Name, StringComparison.OrdinalIgnoreCase);
+            return string.Compare(x.Name, y.Name, StringComparison.OrdinalIgnoreCase);
         }
 
         // if BOTH have cleared dates then do a simple date.compare

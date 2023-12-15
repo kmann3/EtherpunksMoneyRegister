@@ -1,6 +1,4 @@
 ﻿@page "/account/{Id:guid}"
-@using Data.Services
-@using Data.Entities
 @inject Data.Services.AccountService MR_AccountService
 @inject Data.Services.LookupService MR_LookupService
 @inject Data.Services.TransactionService MR_TransactionService
@@ -114,7 +112,7 @@
            string reservedTransactionColor = "ff9933";
            string waitingClearanceTransactionColor = "ffff33";
 
-           if (x.TransactionPendingUTC == null && x.TransactionClearedUTC == null)
+           if (x!.TransactionPendingUTC == null && x.TransactionClearedUTC == null)
            {
                return $"background-color:#{reservedTransactionColor}";
            }

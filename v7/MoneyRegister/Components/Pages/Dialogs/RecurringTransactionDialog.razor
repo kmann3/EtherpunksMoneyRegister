@@ -1,6 +1,4 @@
-﻿@using Data.Entities
-@using Pages.Util
-@using System.Globalization
+﻿@using System.Globalization
 @inject Data.Services.CategoryService MR_CategoryService
 @inject Data.Services.LookupService MR_LookupService
 @inject Data.Services.RecurringTransactionService MR_RecTranService
@@ -70,8 +68,6 @@
 
     DayOfWeek test;
 
-    MudDatePicker _nextDueDatePicker;
-
     private MudTextField<string> firstFocus;
 
     protected override async Task OnInitializedAsync()
@@ -112,6 +108,6 @@
 
     private async Task GoToTransactionHistory()
     {
-        NavManager.NavigateTo($"/editRecurringTransaction/{RecurringTransactionDetails.Id}");
+        NavManager.NavigateTo($"/recurringTransaction/{RecurringTransactionDetails.Id}");
     }
 }
