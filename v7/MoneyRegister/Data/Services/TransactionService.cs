@@ -122,6 +122,7 @@ public class TransactionService(ApplicationDbContext context)
                 Amount = bill.Amount,
                 Account = accountToReserveFrom,
                 Categories = bill.Categories,
+                TransactionTypeLookup = bill.TransactionTypeLookup,
             };
 
             accountToReserveFrom.CurrentBalance += bill.Amount;
