@@ -1,0 +1,73 @@
+﻿@inject IDialogService DialogService
+@inject NavigationManager NavManager
+
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            @if (IsNew)
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
+                <text>New Account</text>
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3 mb-n1" />
+                <text>Edit - @AccountDetails.Name</text>
+            }
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField T="string" @bind-Value="@AccountDetails.Name" Label="Name" tabindex="1" @ref="firstFocus" />
+        <AmountComponent @bind-Value="AccountDetails.StartingBalance" @bind-Value:event="ValueChanged" Index="2" Label="Starting Balance" />
+        <!-- Account Number -->
+        <!-- Interest Rate -->
+        <!-- Notes -->
+        <!-- Login URL -->
+        <!-- Last Balanced -->
+    </DialogContent>
+    <DialogActions>
+        @if (!IsNew)
+        {
+            <MudButton Color="Color.Error" OnClick="Delete">Delete</MudButton>
+        }
+
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Warning" OnClick="Save">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public Account AccountDetails { get; set; } = new();
+    [Parameter] public bool IsNew { get; set; }
+
+    private MudTextField<string> firstFocus;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await firstFocus.FocusAsync();
+        }
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private void Save() => MudDialog.Close(DialogResult.Ok(AccountDetails));
+
+    private async Task Delete()
+    {
+        var result = await DialogUtil.ShowConfirmDialogAsync(DialogService, "Delete", "Delete", $"Are you sure you want to delete this account: '{AccountDetails.Name}'?", Color.Error);
+        if (result.Canceled) return;
+
+        AccountDetails.DeletedOnUTC = DateTime.UtcNow;
+        MudDialog.Close(DialogResult.Ok(AccountDetails));
+    }
+}
