@@ -23,7 +23,7 @@ public class DashboardService(ApplicationDbContext context)
             Name = x.Name,
             CurrentBalance = x.CurrentBalance,
             OutstandingSummary = x.OutstandingSummary,
-            LastBalanced = x.LastBalancedLocalTime
+            LastBalanced = x.LastBalancedLocalTime,
         }).ToListAsync();
     }
 }

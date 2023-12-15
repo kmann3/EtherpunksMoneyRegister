@@ -9,17 +9,17 @@ public class BackupService(ApplicationDbContext context)
 {
     private ApplicationDbContext _context = context;
 
-    public static string accountsJsonFileName = $"accounts.json";
-    public static string categoriesJsonFileName = $"categories.json";
-    public static string filesJsonFileName = $"files.json";
-    public static string recurringTransactionsJsonFileName = $"recurring_transactions.json";
-    public static string transactionsJsonFileName = $"transactions.json";
-    public static string transactionGroupsJsonFileName = $"transaction_groups.json";
-    public static string usersJsonFileName = $"users.json";
-    public static string link_category_transactionFileName = $"link_category_transaction.json";
-    public static string link_category_recurringTransactionFileName = $"link_category_recurringTransaction.json";
-    public static string lookup_RecurringTransactionFrequencyFileName = $"lookup_RecurringTransactionFrequency.json";
-    public static string lookup_TransactionTypeFileName = $"lookup_TransactionType.json";
+    private static string accountsJsonFileName = $"accounts.json";
+    private static string categoriesJsonFileName = $"categories.json";
+    private static string filesJsonFileName = $"files.json";
+    private static string recurringTransactionsJsonFileName = $"recurring_transactions.json";
+    private static string transactionsJsonFileName = $"transactions.json";
+    private static string transactionGroupsJsonFileName = $"transaction_groups.json";
+    private static string usersJsonFileName = $"users.json";
+    private static string link_category_transactionFileName = $"link_category_transaction.json";
+    private static string link_category_recurringTransactionFileName = $"link_category_recurringTransaction.json";
+    private static string lookup_RecurringTransactionFrequencyFileName = $"lookup_RecurringTransactionFrequency.json";
+    private static string lookup_TransactionTypeFileName = $"lookup_TransactionType.json";
 
     public async Task<string> CreateBackupJsonAsync()
     {

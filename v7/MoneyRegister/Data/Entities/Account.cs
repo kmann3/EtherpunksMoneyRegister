@@ -7,9 +7,6 @@ namespace MoneyRegister.Data.Entities;
 
 public class Account : BasicTable<Account>, IEntityTypeConfiguration<Account>
 {
-    //public Company Company { get; set; }
-    //public Guid CompanyId { get; set; }
-
     [Precision(18, 2)]
     public decimal StartingBalance { get; set; } = 0M;
 

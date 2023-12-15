@@ -89,7 +89,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             FirstName = "admin",
             LastName = "admin",
             CreatedOn = DateTime.UtcNow,
-            Id = Guid.Empty.ToString()
+            Id = Guid.Empty.ToString(),
         };
 
         builder.Entity<ApplicationUser>().HasData(adminUser);
@@ -102,7 +102,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             LastBalancedUTC = DateTime.UtcNow,
             StartingBalance = 200M,
             OutstandingItemCount = 2,
-            OutstandingBalance = -66.32M
+            OutstandingBalance = -66.32M,
         };
 
         Category billsCategory = new() { Name = "bills" };
@@ -147,18 +147,18 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         int month = nextMonth.Month;
         int year = nextMonth.Year;
 
-        TransactionGroup TransactionGroup_AllBills = new()
+        TransactionGroup transactionGroup_AllBills = new()
         {
-            Name = "All Regular Bills"
+            Name = "All Regular Bills",
         };
 
-        builder.Entity<TransactionGroup>().HasData(TransactionGroup_AllBills);
+        builder.Entity<TransactionGroup>().HasData(transactionGroup_AllBills);
 
         RecurringTransaction recTran_AdobePhotoshop = new()
         {
             Name = "Adobe Photoshop",
             Amount = -10.81M,
-            TransactionGroupId = TransactionGroup_AllBills.Id,
+            TransactionGroupId = transactionGroup_AllBills.Id,
             NextDueDate = new DateTime(year, month, 15),
             FrequencyLookupId = lookup_Frequency_Monthly.Id,
             FrequencyValue = 15,
@@ -179,7 +179,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
             Name = "Allstate Apartment Insurance",
             Amount = -16.79M,
-            TransactionGroupId = TransactionGroup_AllBills.Id,
+            TransactionGroupId = transactionGroup_AllBills.Id,
             NextDueDate = new DateTime(year, month, 18),
             FrequencyLookupId = lookup_Frequency_Monthly.Id,
             FrequencyValue = 18,
@@ -205,7 +205,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             FrequencyLookupId = lookup_Frequency_Monthly.Id,
             FrequencyValue = 18,
             TransactionTypeLookupId = lookup_TransactionType_Credit.Id,
-        }); ;
+        });
 
         builder.Entity<RecurringTransaction>().HasData(new RecurringTransaction()
         {

@@ -22,7 +22,7 @@ public class DialogUtil
         var dialog = await dialogService.ShowAsync<RecurringTransactionDialog>(isNew ? "New Recurring Transaction" : "Edit Recurring Transaction", parameters, options);
         return await dialog.Result;
     }
-    
+
     public static async Task<DialogResult> ShowCategoryDialogAsync(IDialogService dialogService, bool isNew, Category category)
     {
         var parameters = new DialogParameters<CategoryDialog>
@@ -44,9 +44,9 @@ public class DialogUtil
     {
         var parameters = new DialogParameters<ConfirmDialog>
         {
-            {x => x.ContentText, contentText},
-            {x => x.ButtonText, buttonText },
-            {x => x.Color, color },
+            { x => x.ContentText, contentText},
+            { x => x.ButtonText, buttonText },
+            { x => x.Color, color },
         };
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };

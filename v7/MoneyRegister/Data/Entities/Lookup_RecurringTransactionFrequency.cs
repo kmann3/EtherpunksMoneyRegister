@@ -12,12 +12,6 @@ public class Lookup_RecurringTransactionFrequency : BasicTable<Lookup_RecurringT
     [JsonIgnore]
     public List<RecurringTransaction> RecurringTransactions { get; set; }
 
-    public enum LookupTypeEnum
-    {
-        TransactionType,
-        RecurringTransactionFrequency
-    }
-
     public override void Configure(EntityTypeBuilder<Lookup_RecurringTransactionFrequency> builder)
     {
         builder.HasIndex(k => k.Name).IsUnique(true);
