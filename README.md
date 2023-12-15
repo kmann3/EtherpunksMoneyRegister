@@ -30,3 +30,4 @@ v1-v-whatever are simply varying things I'm toying with. They aren't incremental
 <hr />
 * Do I need to copyright the code? Does it really matter?
 * Rename dialog files more appropriately. For example: EditTransactionDialog -> TransactionDialog | EdtTransactionFileDialog -> TransactionFileDialog
+* Could use some help making the MudBlazor dark theme better. Less purple more blue/green. 
