@@ -36,35 +36,19 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
         {
             try
             {
-                switch (FrequencyLookup.Name)
+                return FrequencyLookup.Name switch
                 {
-                    case "Yearly":
-                        return "Annually";
-
-                    case "Monthly":
-                        return $"{FrequencyValue.ToString().Ordinalize()} of the month";
-
-                    case "Weekly":
-                        return $"Every {FrequencyDayOfWeekValue}";
-
-                    case "Irregular":
-                        return "Irregular frequency";
-
-                    case "XDays":
-                        return $"Every {FrequencyValue} days";
+                    "Yearly" => "Annually",
+                    "Monthly" => $"{FrequencyValue.ToString().Ordinalize()} of the month",
+                    "Weekly" => $"Every {FrequencyDayOfWeekValue}",
+                    "Irregular" => "Irregular frequency",
+                    "XDays" => $"Every {FrequencyValue} days",
                     // TBI Day/Days - calculate
-                    case "XMonths":
-                        return $"Every {FrequencyValue} months";
-
-                    case "XWeekYDayOfWeek":
-                        return $"Every {FrequencyValue.ToString().Ordinalize()} {FrequencyDayOfWeekValue}";
-
-                    case "Unknown":
-                        return "Unknown";
-
-                    default:
-                        throw new NotImplementedException();
-                }
+                    "XMonths" => $"Every {FrequencyValue} months",
+                    "XWeekYDayOfWeek" => $"Every {FrequencyValue.ToString().Ordinalize()} {FrequencyDayOfWeekValue}",
+                    "Unknown" => "Unknown",
+                    _ => throw new NotImplementedException(),
+                };
             }
             catch (Exception ex)
             {
@@ -142,7 +126,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     /// Source: https://stackoverflow.com/a/2827757/18217
     private static DateTime DayOccurrence(int year, int month, DayOfWeek day, int occurrenceNumber)
     {
-        DateTime start = new DateTime(year, month, 1);
+        DateTime start = new(year, month, 1);
         DateTime first = start.AddDays((7 - ((int)start.DayOfWeek - (int)day)) % 7);
 
         return first.AddDays(7 * (occurrenceNumber - 1));

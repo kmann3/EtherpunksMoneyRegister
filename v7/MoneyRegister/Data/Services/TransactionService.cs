@@ -5,25 +5,17 @@ namespace MoneyRegister.Data.Services;
 
 public class TransactionService(ApplicationDbContext context)
 {
-    private ApplicationDbContext _context = context;
+    private readonly ApplicationDbContext _context = context;
 
     public async Task CreateNewTransactionAsync(Account account, Transaction transaction)
     {
         //Make sure the amounts are positive/ negative accordingly.
-        switch (transaction.TransactionTypeLookup.Name)
+        transaction.Amount = transaction.TransactionTypeLookup.Name switch
         {
-            case "Credit":
-                transaction.Amount = (Math.Abs(transaction.Amount));
-                break;
-
-            case "Debit":
-                transaction.Amount = -(Math.Abs(transaction.Amount));
-                break;
-
-            default:
-                throw new Exception($"Unknown transaction type: {transaction.TransactionTypeLookup.Name}");
-        }
-
+            "Credit" => (Math.Abs(transaction.Amount)),
+            "Debit" => -(Math.Abs(transaction.Amount)),
+            _ => throw new Exception($"Unknown transaction type: {transaction.TransactionTypeLookup.Name}"),
+        };
         transaction.Balance = account.CurrentBalance + transaction.Amount;
         account.CurrentBalance = transaction.Balance;
         if (transaction.TransactionPendingUTC == null || transaction.TransactionClearedUTC == null)

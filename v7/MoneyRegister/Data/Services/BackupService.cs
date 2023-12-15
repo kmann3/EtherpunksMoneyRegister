@@ -7,19 +7,19 @@ namespace MoneyRegister.Data.Services;
 
 public class BackupService(ApplicationDbContext context)
 {
-    private ApplicationDbContext _context = context;
+    private readonly ApplicationDbContext _context = context;
 
-    private static string accountsJsonFileName = $"accounts.json";
-    private static string categoriesJsonFileName = $"categories.json";
-    private static string filesJsonFileName = $"files.json";
-    private static string recurringTransactionsJsonFileName = $"recurring_transactions.json";
-    private static string transactionsJsonFileName = $"transactions.json";
-    private static string transactionGroupsJsonFileName = $"transaction_groups.json";
-    private static string usersJsonFileName = $"users.json";
-    private static string link_category_transactionFileName = $"link_category_transaction.json";
-    private static string link_category_recurringTransactionFileName = $"link_category_recurringTransaction.json";
-    private static string lookup_RecurringTransactionFrequencyFileName = $"lookup_RecurringTransactionFrequency.json";
-    private static string lookup_TransactionTypeFileName = $"lookup_TransactionType.json";
+    private static readonly string accountsJsonFileName = $"accounts.json";
+    private static readonly string categoriesJsonFileName = $"categories.json";
+    private static readonly string filesJsonFileName = $"files.json";
+    private static readonly string recurringTransactionsJsonFileName = $"recurring_transactions.json";
+    private static readonly string transactionsJsonFileName = $"transactions.json";
+    private static readonly string transactionGroupsJsonFileName = $"transaction_groups.json";
+    private static readonly string usersJsonFileName = $"users.json";
+    private static readonly string link_category_transactionFileName = $"link_category_transaction.json";
+    private static readonly string link_category_recurringTransactionFileName = $"link_category_recurringTransaction.json";
+    private static readonly string lookup_RecurringTransactionFrequencyFileName = $"lookup_RecurringTransactionFrequency.json";
+    private static readonly string lookup_TransactionTypeFileName = $"lookup_TransactionType.json";
 
     public async Task<string> CreateBackupJsonAsync()
     {

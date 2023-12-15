@@ -8,9 +8,9 @@ namespace MoneyRegister.Data.Services;
 /// <param name="context"></param>
 public class AccountService(ApplicationDbContext context)
 {
-    private ApplicationDbContext _context = context;
+    private readonly ApplicationDbContext _context = context;
 
-    private List<Account> _accounts = new();
+    private List<Account> _accounts = [];
 
     /// <summary>
     /// Gets a list of all the accounts.
