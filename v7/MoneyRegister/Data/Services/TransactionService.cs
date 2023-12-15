@@ -66,7 +66,8 @@ public class TransactionService(ApplicationDbContext context)
         Transaction oldTransaction = (Transaction)_context.Entry(transaction!).OriginalValues.ToObject();
 
         // Check to see if outstanding balances need to change.
-        if (oldTransaction!.TransactionClearedUTC.HasValue && transaction.TransactionClearedUTC.HasValue)
+        // If it wasn't cleared then and it HAS cleared now - then we need to update outstanding balance.
+        if (!oldTransaction!.TransactionClearedUTC.HasValue && transaction.TransactionClearedUTC.HasValue)
         {
             // Item cleared
             account.OutstandingItemCount--;

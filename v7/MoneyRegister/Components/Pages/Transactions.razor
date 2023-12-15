@@ -24,18 +24,18 @@
 
     <p>
         <em>
-            <h5>Balance: @accountDetails.CurrentBalance</h5><br />
-            Outstanding Balance: @accountDetails.OutstandingBalance<br />
+            <h5>Balance: @accountDetails.CurrentBalance.ToString("N2")</h5><br />
+            Outstanding Balance: @accountDetails.OutstandingBalance.ToString("N2")<br />
             Outstanding Item Count: @accountDetails.OutstandingItemCount<br />
             Outstanding Summary: @accountDetails.OutstandingSummary<br />
             Notes: @accountDetails.Notes <br />
-            Starting Balance: @accountDetails.StartingBalance <br />
+            Starting Balance: @accountDetails.StartingBalance.ToString("N2") <br />
         </em>
         <MudDataGrid Items="@accountDetails.Transactions" T="Transaction"
                      Filterable="true" Groupable="false" Hover="true" Striped="true" Virtualize="true" Bordered="true" Dense="true"
                      FilterMode="@DataGridFilterMode.ColumnFilterRow"
                      SortMode="@SortMode.None"
-                     RowClick="@OnRowClick" RowStyleFunc="@_rowStyleFunc">
+                     RowClick="@OnRowClick">
             <!-- Button here to add a transaction via dialog -->
             <ToolBarContent>
                 <!--<MudButton Color="Color.Primary" OnClick="TestAction">Test Action: Delete Transaction</MudButton>-->
@@ -46,9 +46,9 @@
             </ToolBarContent>
             <Columns>
                 <PropertyColumn Property="x => x.Name" />
-                <PropertyColumn Property="x => x.Amount" />
-                <PropertyColumn Property="x => x.TransactionPendingLocalTime" Format="d" Title="Pending" />
-                <PropertyColumn Property="x => x.TransactionClearedLocalTime" Format="d" Title="Cleared" />
+                <PropertyColumn Property="x => x.Amount" Format="N2" />
+                <PropertyColumn Property="x => x.TransactionPendingLocalTime" Format="d" Title="Pending" CellStyleFunc="@_cellStylePendingFunc" />
+                <PropertyColumn Property="x => x.TransactionClearedLocalTime" Format="d" Title="Cleared" CellStyleFunc="@_cellStyleClearedFunc" />
                 <PropertyColumn Property="x => x.Notes" Title="Notes" />
                 <TemplateColumn Title="Categories">
                     <CellTemplate>
@@ -66,7 +66,7 @@
                         }
                     </CellTemplate>
                 </TemplateColumn>
-                <TemplateColumn Title="Balance">
+                <TemplateColumn Title="Balance" CellStyleFunc="@_cellStyleBalanceFunc">
                     <CellTemplate>
                         @if (context.Item.TransactionClearedLocalTime != null)
                         {
@@ -107,22 +107,45 @@
 
     private string selectedAccountName { get; set; }
 
-    private Func<Transaction?, int, string> _rowStyleFunc => (x, i) =>
-       {
-           string reservedTransactionColor = "ff9933";
-           string waitingClearanceTransactionColor = "ffff33";
+    private Func<Transaction?, string> _cellStylePendingFunc => x =>
+    {
+        string reservedTransactionColor = "E89C4B";
+        string waitingClearanceTransactionColor = "ffff33";
 
-           if (x!.TransactionPendingUTC == null && x.TransactionClearedUTC == null)
-           {
-               return $"background-color:#{reservedTransactionColor}";
-           }
-           else if (x.TransactionClearedUTC == null)
-           {
-               return $"background-color:#{waitingClearanceTransactionColor}";
-           }
+        if (x!.TransactionPendingUTC == null && x.TransactionClearedUTC == null)
+        {
+            return $"background-color:#{reservedTransactionColor}";
+        }
 
-           return "";
-       };
+        return "";
+    };
+
+    private Func<Transaction?, string> _cellStyleClearedFunc => x =>
+    {
+        string reservedTransactionColor = "E89C4B";
+        string waitingClearanceTransactionColor = "ffff33";
+
+        if (x!.TransactionPendingUTC == null && x.TransactionClearedUTC == null)
+        {
+            return $"background-color:#{reservedTransactionColor}";
+        } else if (x.TransactionClearedUTC == null)
+        {
+            return $"background-color:#{waitingClearanceTransactionColor}";
+        }
+
+        return "";
+    };
+private Func<Transaction?, string> _cellStyleBalanceFunc => x =>
+    {
+        string negativeBalanceColor = "D92619";
+
+        if (x!.Balance < 0)
+        {
+            return $"background-color:#{negativeBalanceColor}";
+        }
+
+        return "";
+    };
 
     protected override async Task OnInitializedAsync()
     {

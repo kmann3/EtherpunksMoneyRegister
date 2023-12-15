@@ -10,6 +10,7 @@ v1-v-whatever are simply varying things I'm toying with. They aren't incremental
 
 ## TBI
 
+* Edit Account Details dialog ( such as editing starting balance)
 * Form validationin pages. Currently there's only base sanity checking. Could help with UX if we displayed the problems as they progressed
 * Fix category selection in recurring transaction and transactions.
 * RecurringTransactionDetails: Handle file data / ability to download
