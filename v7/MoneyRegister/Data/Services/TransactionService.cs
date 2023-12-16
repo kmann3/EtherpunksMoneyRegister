@@ -123,6 +123,7 @@ public class TransactionService(ApplicationDbContext context)
                 Account = accountToReserveFrom,
                 Categories = bill.Categories,
                 TransactionTypeLookup = bill.TransactionTypeLookup,
+                RecurringTransaction = bill
             };
 
             accountToReserveFrom.CurrentBalance += bill.Amount;

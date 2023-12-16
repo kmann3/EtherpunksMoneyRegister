@@ -1,6 +1,13 @@
 ﻿@using System.Globalization
 
-<MudNumericField T="decimal" @bind-Value="Value" Immediate="false" Label="@Label" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="@Index" />
+@if (IsRequired)
+{
+    <MudNumericField T="decimal" @bind-Value="Value" Immediate="false" Label="@Label" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="@Index" Required="true" RequiredError="An amount is required" />
+}
+else
+{
+    <MudNumericField T="decimal" @bind-Value="Value" Immediate="false" Label="@Label" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="@Index" />
+}
 @code {
     [Parameter]
     public decimal Value
@@ -24,6 +31,7 @@
     [Parameter] public int Index { get; set; } = 0;
     [Parameter] public EventCallback<decimal> ValueChanged { get; set; }
     [Parameter] public string Label { get; set; }
+    [Parameter] public bool IsRequired { get; set; } = false;
 
     private decimal _value;
 

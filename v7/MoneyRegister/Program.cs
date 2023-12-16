@@ -6,6 +6,7 @@ using MoneyRegister.Components.Account;
 using MoneyRegister.Data;
 using MoneyRegister.Data.Entities;
 using MoneyRegister.Data.Services;
+using MudBlazor;
 using MudBlazor.Services;
 
 namespace MoneyRegister;
@@ -68,6 +69,19 @@ public class Program
         builder.Services.AddScoped<TestService>();
 
         builder.Services.AddMudServices();
+
+        builder.Services.AddMudServices(config =>
+        {
+            config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
+
+            config.SnackbarConfiguration.PreventDuplicates = false;
+            config.SnackbarConfiguration.NewestOnTop = false;
+            config.SnackbarConfiguration.ShowCloseIcon = true;
+            config.SnackbarConfiguration.VisibleStateDuration = 5000;
+            config.SnackbarConfiguration.HideTransitionDuration = 500;
+            config.SnackbarConfiguration.ShowTransitionDuration = 500;
+            config.SnackbarConfiguration.SnackbarVariant = Variant.Outlined;
+        });
 
         var app = builder.Build();
 

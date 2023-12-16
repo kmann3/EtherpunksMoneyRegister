@@ -83,6 +83,7 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
     public RecurringTransaction? RecurringTransaction { get; set; }
 
     public Guid? RecurringTransactionId { get; set; }
+    public DateTime? DueDate { get; set; } = null;
 
     [JsonIgnore]
     public Lookup_TransactionType TransactionTypeLookup { get; set; }

@@ -18,8 +18,8 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField T="string" @bind-Value="@AccountDetails.Name" Label="Name" tabindex="1" @ref="firstFocus" />
-        <AmountComponent @bind-Value="AccountDetails.StartingBalance" @bind-Value:event="ValueChanged" Index="2" Label="Starting Balance" />
+        <MudTextField T="string" @bind-Value="@AccountDetails.Name" Label="Name" tabindex="1" @ref="firstFocus" Required="true" RequiredError="An account name is required" />
+        <AmountComponent @bind-Value="AccountDetails.StartingBalance" @bind-Value:event="ValueChanged" Index="2" Label="Starting Balance" IsRequired="true" />
         <!-- Account Number -->
         <!-- Interest Rate -->
         <!-- Notes -->

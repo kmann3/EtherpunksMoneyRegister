@@ -4,6 +4,7 @@
 @inject Data.Services.TransactionService MR_TransactionService
 @inject Data.Services.TestService MR_TestService
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
 
 @if(accountDetails == null)
 {
@@ -89,6 +90,15 @@
                         </MudStack>
                     </CellTemplate>
                 </TemplateColumn>
+                <TemplateColumn Title="Files">
+                    <CellTemplate>
+                        @if (context.Item.Files.Count() > 0)
+                        {
+                            <text>@context.Item.Files.Count @(@context.Item.Files.Count == 1 ? "file" : "files")</text>
+                        }
+                    </CellTemplate>
+                </TemplateColumn>
+
             </Columns>
         </MudDataGrid>
     </p>
@@ -166,10 +176,12 @@
             {
                 await MR_TransactionService.DeleteTransactionAsync(accountDetails, modifiedTransaction);
                 accountDetails.Transactions.Remove(args.Item);
+                Snackbar.Add($"Item ({modifiedTransaction.Name}) has been deleted", Severity.Error);
             }
             else
             {
                 await MR_TransactionService.UpdateTransactionAsync(accountDetails, modifiedTransaction);
+                Snackbar.Add($"{modifiedTransaction.Name} has been updated.", Severity.Info);
             }
         }
     }
@@ -190,6 +202,7 @@
             await MR_TransactionService.ReserveTransactionsAsync(selectedBillList, accountDetails);
             accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
             this.StateHasChanged();
+            Snackbar.Add($"{selectedBillList.Count} transactions have been reserved.", Severity.Info);
         }
     }
 
@@ -214,6 +227,7 @@
 
             await MR_TransactionService.CreateNewTransactionAsync(accountDetails, newTransaction);
             accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
+            Snackbar.Add($"{newTransaction.Name} has been created.", Severity.Info);
         }
     }
 
@@ -240,6 +254,7 @@
 
             await MR_TransactionService.CreateNewTransactionAsync(accountDetails, newTransaction);
             accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
+            Snackbar.Add($"{newTransaction.Name} has been created.", Severity.Info);
         }
     }
 
@@ -247,17 +262,20 @@
     {
         item.TransactionPendingUTC = DateTime.UtcNow;
         await MR_TransactionService.UpdateTransactionAsync(accountDetails!, item);
+        Snackbar.Add($"{item.Name} has been marked as pending.", Severity.Info);
     }
 
     private async Task SetTransactionToCleared(Transaction item)
     {
         item.TransactionClearedUTC = DateTime.UtcNow;
         await MR_TransactionService.UpdateTransactionAsync(accountDetails!, item);
+        Snackbar.Add($"{item.Name} has been marked as cleared.", Severity.Info);
     }
 
     private async Task RecalculateBalances()
     {
         await MR_AccountService.RecalculateAccountAsync(accountDetails!);
+        Snackbar.Add($"{accountDetails.Name} account has been recalculated.", Severity.Info);
     }
 
     private async Task DeleteTransaction(Transaction item)
@@ -265,6 +283,7 @@
         item.DeletedOnUTC = DateTime.UtcNow;
         await MR_TransactionService.DeleteTransactionAsync(accountDetails, item);
         accountDetails.Transactions.Remove(item);
+        Snackbar.Add($"Item ({item.Name}) has been deleted", Severity.Error);
     }
 
     private async Task TestAction()

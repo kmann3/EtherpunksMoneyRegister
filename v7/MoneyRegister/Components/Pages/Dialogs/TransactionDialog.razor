@@ -26,7 +26,7 @@
         <TransactionTypeSelectionComponent @bind-Value="TransactionDetails.TransactionTypeLookup" @bind-Value:event="ValueChanged" Index="1" Label="Transaction Type" />
         <AccountSelectionComponent @bind-Value="TransactionDetails.Account" @bind-Value:event="ValueChanged" Index="2" Label="Account" />
 
-        <MudTextField T="string" @bind-Value="@TransactionDetails.Name" Label="Name" tabindex="3" @ref="firstFocus" />
+        <MudTextField T="string" @bind-Value="@TransactionDetails.Name" Label="Name" tabindex="3" @ref="firstFocus" Required="true" RequiredError="A name is required." />
         <AmountComponent @bind-Value="TransactionDetails.Amount" @bind-Value:event="ValueChanged" Index="4" Label="Amount" />
 
         <CategorySelectionComponent @bind-Value="TransactionDetails.Categories" @bind-Value:event="ValueChanged" Index="5" />
@@ -38,8 +38,12 @@
 
         <!-- Link to recurring transaction history -->
 
-        <!-- Display attachments - delete attachments - add attachments -->
         <FileComponent @bind-Value="TransactionDetails.Files" @bind-Value:event="ValueChanged" Index="9" Label="Files" />
+        @if(TransactionDetails.RecurringTransactionId != null) 
+        {
+            <text>For statistical purposes:</text>
+            <DatePickerComponent @bind-Value="TransactionDetails.DueDate" @bind-Value:event="ValueChanged" Index="7" Label="Expected Due Date" />
+        }
 
     </DialogContent>
     <DialogActions>
