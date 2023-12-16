@@ -21,8 +21,6 @@
             }
         </MudSelect>
     </MudItem>
-
-
     <p>
         <em>
             <h5>Balance: @accountDetails.CurrentBalance.ToString("N2")</h5><br />
@@ -33,12 +31,11 @@
             Starting Balance: @accountDetails.StartingBalance.ToString("N2") <br />
         </em>
         <MudButton Size="Size.Small" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Info" @onclick="@(e => EditAccount(@accountDetails))">Edit Account</MudButton>
-        <MudDataGrid Items="@accountDetails.Transactions" T="Transaction"
+        <MudDataGrid T="Transaction"
                      Filterable="true" Groupable="false" Hover="true" Striped="true" Virtualize="true" Bordered="true" Dense="true"
                      FilterMode="@DataGridFilterMode.ColumnFilterRow"
                      SortMode="@SortMode.None"
-                     RowClick="@OnRowClick">
-            <!-- Button here to add a transaction via dialog -->
+                     ServerData="LoadGridData" RowClick="@OnRowClick" @ref="_dataGrid">
             <ToolBarContent>
                 <MudButton Color="Color.Primary" OnClick="AddNewDebit">Add Debit</MudButton>
                 <MudButton Color="Color.Primary" OnClick="AddNewCredit">Add Credit</MudButton>
@@ -100,6 +97,9 @@
                 </TemplateColumn>
 
             </Columns>
+            <PagerContent>
+                <MudDataGridPager T="Transaction" />
+            </PagerContent>
         </MudDataGrid>
     </p>
 }
@@ -116,6 +116,8 @@
     private Account accountDetails;
 
     private string selectedAccountName { get; set; }
+    private MudDataGrid<Transaction>? _dataGrid;
+    private Data.DataGridDTO.GridDataRequestDto _requestDto = new();
 
     private Func<Transaction?, string> _cellStylePendingFunc => x =>
     {
@@ -162,6 +164,20 @@
         accountDetails = await MR_AccountService.GetAccountDetailsAsync(Id);
         accounts = new List<Account>();
         accounts.Add(accountDetails);
+        _requestDto.AccountId = accountDetails.Id;
+    }
+
+    private async Task<GridData<Transaction>> LoadGridData(GridState<Transaction> state)
+    {
+        _requestDto.Page = state.Page;
+        _requestDto.PageSize = state.PageSize;
+
+        Data.DataGridDTO.TransactionListDto response = await MR_TransactionService.GetTransactionsByPageAsync(_requestDto);
+        return new GridData<Transaction>()
+        {
+            Items = response.Items,
+            TotalItems = response.ItemTotalCount
+        };
     }
 
     private async Task OnRowClick(DataGridRowClickEventArgs<Transaction> args)
@@ -200,8 +216,7 @@
             var selectedBillList = (List<RecurringTransaction>)result.Data;
 
             await MR_TransactionService.ReserveTransactionsAsync(selectedBillList, accountDetails);
-            accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
-            this.StateHasChanged();
+            await _dataGrid.ReloadServerData();
             Snackbar.Add($"{selectedBillList.Count} transactions have been reserved.", Severity.Info);
         }
     }
@@ -226,7 +241,7 @@
             newTransaction = (Transaction)result.Data;
 
             await MR_TransactionService.CreateNewTransactionAsync(accountDetails, newTransaction);
-            accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
+            await _dataGrid.ReloadServerData();
             Snackbar.Add($"{newTransaction.Name} has been created.", Severity.Info);
         }
     }
@@ -253,7 +268,7 @@
             newTransaction = (Transaction)result.Data;
 
             await MR_TransactionService.CreateNewTransactionAsync(accountDetails, newTransaction);
-            accountDetails.Transactions = accountDetails.Transactions.OrderByDescending(x => x.CreatedOnUTC).ToList();
+            await _dataGrid.ReloadServerData();
             Snackbar.Add($"{newTransaction.Name} has been created.", Severity.Info);
         }
     }
@@ -262,6 +277,7 @@
     {
         item.TransactionPendingUTC = DateTime.UtcNow;
         await MR_TransactionService.UpdateTransactionAsync(accountDetails!, item);
+        await _dataGrid.ReloadServerData();
         Snackbar.Add($"{item.Name} has been marked as pending.", Severity.Info);
     }
 
@@ -269,12 +285,14 @@
     {
         item.TransactionClearedUTC = DateTime.UtcNow;
         await MR_TransactionService.UpdateTransactionAsync(accountDetails!, item);
+        await _dataGrid.ReloadServerData();
         Snackbar.Add($"{item.Name} has been marked as cleared.", Severity.Info);
     }
 
     private async Task RecalculateBalances()
     {
         await MR_AccountService.RecalculateAccountAsync(accountDetails!);
+        await _dataGrid.ReloadServerData();
         Snackbar.Add($"{accountDetails.Name} account has been recalculated.", Severity.Info);
     }
 
@@ -282,13 +300,8 @@
     {
         item.DeletedOnUTC = DateTime.UtcNow;
         await MR_TransactionService.DeleteTransactionAsync(accountDetails, item);
-        accountDetails.Transactions.Remove(item);
+        await _dataGrid.ReloadServerData();
         Snackbar.Add($"Item ({item.Name}) has been deleted", Severity.Error);
-    }
-
-    private async Task TestAction()
-    {
-        await MR_TestService.DoThing();        
     }
 
     private async Task EditAccount(Account account)
@@ -298,6 +311,7 @@
         if(oldBal != account.StartingBalance)
         {
             await MR_AccountService.RecalculateAccountAsync(accountDetails!);
+            await _dataGrid.ReloadServerData();
         }
     }
 }

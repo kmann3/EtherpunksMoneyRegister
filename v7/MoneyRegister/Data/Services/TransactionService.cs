@@ -1,11 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.Identity.Client;
 using MoneyRegister.Data.Entities;
+using System.Collections.Immutable;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MoneyRegister.Data.Services;
 
 public class TransactionService(ApplicationDbContext context)
 {
     private readonly ApplicationDbContext _context = context;
+
+    private List<Transaction> _transactions = new();
 
     public async Task CreateNewTransactionAsync(Account account, Transaction transaction)
     {
@@ -56,6 +62,35 @@ public class TransactionService(ApplicationDbContext context)
         _context.Remove(transaction);
 
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<DataGridDTO.TransactionListDto> GetTransactionsByPageAsync(DataGridDTO.GridDataRequestDto request)
+    {
+        if(_transactions.Count == 0)
+        {
+            // By loading the most important bits now into memory, which really shouldn't be *too* much this allows us to pre-sort them and save time.
+            _transactions = await _context.Transactions
+                .Include(x => x.Categories)
+                .Where(x => x.AccountId == request.AccountId && x.DeletedOnUTC == null).ToListAsync();
+
+            _transactions.Sort(new Transaction());
+        }
+
+        DataGridDTO.TransactionListDto returnData = new();
+        returnData.ItemTotalCount = _transactions.Count();
+        returnData.Items = _transactions
+            .Skip(request.PageSize * request.Page)
+            .Take(request.PageSize)
+            .ToList();
+
+        foreach(var item in returnData.Items)
+        {
+            // We manually load files each time so we don't load every single attachment saved into memory
+            // Probably should really consider *only* loading attachments when it's time to load the transaction itself?
+            await _context.Entry(item).Collection(x => x.Files).LoadAsync();
+        }
+
+        return returnData;
     }
 
     public async Task UpdateTransactionAsync(Account account, Transaction transaction)
