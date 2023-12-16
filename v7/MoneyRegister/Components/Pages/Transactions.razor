@@ -34,7 +34,7 @@
         <MudDataGrid T="Transaction"
                      Filterable="true" Groupable="false" Hover="true" Striped="true" Virtualize="true" Bordered="true" Dense="true"
                      FilterMode="@DataGridFilterMode.ColumnFilterRow"
-                     SortMode="@SortMode.None"
+                     SortMode="@SortMode.None" RowsPerPage="15"
                      ServerData="LoadGridData" RowClick="@OnRowClick" @ref="_dataGrid">
             <ToolBarContent>
                 <MudButton Color="Color.Primary" OnClick="AddNewDebit">Add Debit</MudButton>
