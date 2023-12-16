@@ -91,7 +91,7 @@ else
         // https://www.mudblazor.com/components/dialog#passing-data
 
         // categories?
-        var result = await DialogUtil.ShowAccountDialogAsync(DialogService, false, item.Item);
+        var result = await DialogUtil.ShowRecurringTransactionDialogAsync(DialogService, false, item.Item);
         if(!result.Canceled)
         {
             RecurringTransaction newItem = result.Data as RecurringTransaction ?? throw new NullReferenceException("RecurringTransaction Data returned null. This shouldn't happen.");
@@ -118,7 +118,7 @@ else
         newRecurringTransaction.TransactionTypeLookup = debitRecurringTransaction;
         newRecurringTransaction.TransactionTypeLookupId = debitRecurringTransaction.Id;
 
-        var result = await DialogUtil.ShowAccountDialogAsync(DialogService, true, newRecurringTransaction);
+        var result = await DialogUtil.ShowRecurringTransactionDialogAsync(DialogService, true, newRecurringTransaction);
         if (!result.Canceled)
         {
             RecurringTransaction newItem = result.Data as RecurringTransaction ?? throw new NullReferenceException("RecurringTransaction Data returned null. This shouldn't happen.");

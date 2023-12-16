@@ -31,6 +31,7 @@
             Notes: @accountDetails.Notes <br />
             Starting Balance: @accountDetails.StartingBalance.ToString("N2") <br />
         </em>
+        <MudButton Size="Size.Small" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Info" @onclick="@(e => EditAccount(@accountDetails))">Edit Account</MudButton>
         <MudDataGrid Items="@accountDetails.Transactions" T="Transaction"
                      Filterable="true" Groupable="false" Hover="true" Striped="true" Virtualize="true" Bordered="true" Dense="true"
                      FilterMode="@DataGridFilterMode.ColumnFilterRow"
@@ -269,5 +270,15 @@
     private async Task TestAction()
     {
         await MR_TestService.DoThing();        
+    }
+
+    private async Task EditAccount(Account account)
+    {
+        decimal oldBal = account.StartingBalance;
+        var result = await DialogUtil.ShowAccountDialogAsync(DialogService, false, accountDetails);
+        if(oldBal != account.StartingBalance)
+        {
+            await MR_AccountService.RecalculateAccountAsync(accountDetails!);
+        }
     }
 }

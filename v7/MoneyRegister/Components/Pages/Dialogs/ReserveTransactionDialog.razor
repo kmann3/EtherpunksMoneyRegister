@@ -2,6 +2,9 @@
 @inject Data.Services.RecurringTransactionService MR_ReccuringTranService
 
 <MudDialog>
+    <TitleContent>
+        <text>Select Transaction to Reserve</text>
+    </TitleContent>
     <DialogContent>
         <MudContainer Style="max-height: 300px; overflow-y: scroll">
             <MudTreeView Items="@treeItems">

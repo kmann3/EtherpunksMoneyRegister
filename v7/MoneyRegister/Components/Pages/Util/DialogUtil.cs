@@ -6,12 +6,12 @@ namespace MoneyRegister.Components.Pages.Util;
 
 public class DialogUtil
 {
-    public static async Task<DialogResult> ShowAccountDialogAsync(IDialogService dialogService, bool isNew, RecurringTransaction recurringTransaction)
+    public static async Task<DialogResult> ShowAccountDialogAsync(IDialogService dialogService, bool isNew, Data.Entities.Account account)
     {
-        var parameters = new DialogParameters<RecurringTransactionDialog>
+        var parameters = new DialogParameters<AccountDialog>
         {
             { x => x.IsNew, isNew },
-            { x => x.RecurringTransactionDetails, recurringTransaction },
+            { x => x.AccountDetails, account },
         };
 
         DialogOptions options = new()
@@ -19,7 +19,7 @@ public class DialogUtil
             CloseOnEscapeKey = true,
         };
 
-        var dialog = await dialogService.ShowAsync<RecurringTransactionDialog>(isNew ? "New Recurring Transaction" : "Edit Recurring Transaction", parameters, options);
+        var dialog = await dialogService.ShowAsync<AccountDialog>("Account Dialog", parameters, options);
         return await dialog.Result;
     }
 
@@ -36,7 +36,7 @@ public class DialogUtil
             CloseOnEscapeKey = true,
         };
 
-        var dialog = await dialogService.ShowAsync<CategoryDialog>(isNew ? "New Category" : "Edit Category", parameters, options);
+        var dialog = await dialogService.ShowAsync<CategoryDialog>("Category Dialog", parameters, options);
         return await dialog.Result;
     }
 
@@ -55,6 +55,22 @@ public class DialogUtil
 
         return await dialog.Result;
     }
+    public static async Task<DialogResult> ShowRecurringTransactionDialogAsync(IDialogService dialogService, bool isNew, RecurringTransaction recurringTransaction)
+    {
+        var parameters = new DialogParameters<RecurringTransactionDialog>
+        {
+            { x => x.IsNew, isNew },
+            { x => x.RecurringTransactionDetails, recurringTransaction },
+        };
+
+        DialogOptions options = new()
+        {
+            CloseOnEscapeKey = true,
+        };
+
+        var dialog = await dialogService.ShowAsync<RecurringTransactionDialog>("Recurring Transaction Dialog", parameters, options);
+        return await dialog.Result;
+    }
 
     public static async Task<DialogResult> ShowReserveTransactionDialog(IDialogService dialogService)
     {
@@ -65,7 +81,7 @@ public class DialogUtil
             CloseOnEscapeKey = true,
         };
 
-        var dialog = await dialogService.ShowAsync<ReserveTransactionDialog>("Select Transactions To Reserve", parameters, options);
+        var dialog = await dialogService.ShowAsync<ReserveTransactionDialog>("Select Transactions to Reserve", parameters, options);
         return await dialog.Result;
     }
 
@@ -82,7 +98,7 @@ public class DialogUtil
             CloseOnEscapeKey = true,
         };
 
-        var dialog = await dialogService.ShowAsync<TransactionDialog>("", parameters, options);
+        var dialog = await dialogService.ShowAsync<TransactionDialog>("Transaction Dialog", parameters, options);
         return await dialog.Result;
     }
         public static async Task<DialogResult> ShowTransactionFileDialog(IDialogService dialogService, bool isNew, TransactionFile file)
@@ -98,7 +114,7 @@ public class DialogUtil
             CloseOnEscapeKey = true,
         };
 
-        var dialog = await dialogService.ShowAsync<TransactionFileDialog>(isNew ? "New File" : $"Edit File: {file.Name}", parameters, options);
+        var dialog = await dialogService.ShowAsync<TransactionFileDialog>("Transaction File Dialog", parameters, options);
         return await dialog.Result;
     }
 }
