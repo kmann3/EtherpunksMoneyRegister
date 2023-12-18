@@ -26,6 +26,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     [JsonIgnore]
     public List<Category> Categories { get; set; } = new();
 
+    [JsonIgnore]
     public Lookup_RecurringTransactionFrequency FrequencyLookup { get; set; }
     public Guid FrequencyLookupId { get; set; }
 
