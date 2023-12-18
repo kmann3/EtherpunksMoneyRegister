@@ -86,6 +86,14 @@ else {
     {
         FrequencyList = await MR_LookupService.GetLookup_RecurringTransactionFrequenciesAsync();
 
+        if(_value.FrequencyLookup == null)
+        {
+            // Let's assign a default
+            _value.FrequencyLookup = FrequencyList.Where(x => x.Name == "Unknown").Single();
+            _value.FrequencyLookupId = FrequencyList.Where(x => x.Name == "Unknown").Single().Id;
+            
+        }
+
         SecondIndex = Index + 1;
         ThirdIndex = Index + 2;
 

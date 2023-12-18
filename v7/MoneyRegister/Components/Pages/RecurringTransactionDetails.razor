@@ -14,10 +14,33 @@
 <p><em>Loading...</em></p>
 }
 else {
-    <MudSwitch @bind-Checked="isEditModeActive" Color="Color.Warning" ThumbIcon="@Icons.Material.Filled.Edit">Edit</MudSwitch>
-    @if(isEditModeActive) {
+    <h2>@recurringTransaction.Name</h2>
+<MudDataGrid Items="@recurringTransaction.PreviousTransactions" T="Data.Entities.Transaction"
+                Filterable="false" SortMode="@SortMode.None" Groupable="false" Style="width: 700px;"
+                RowClick="@OnRowClick">
+    <Columns>
+        <PropertyColumn Property="x => x!.Name" />
+        <PropertyColumn Property="x => x!.Amount" Format="C" />
+        <PropertyColumn Property="x => x!.TransactionPendingLocalTime" Title="Pending" Format="d" />
+        <PropertyColumn Property="x => x!.TransactionClearedLocalTime" Title="Cleared" Format="d" />
+        <PropertyColumn Property="x => x!.DueDate" Title="Due Date" Format="d" />
+        <PropertyColumn Property="x => x!.Notes" />
+        <TemplateColumn Title="Attachments">
+            <CellTemplate>
+                @if (context.Item.Files.Count() > 0)
+                {
+                    foreach(var file in context.Item.Files)
+                    {
+                        <text>@file.Name -  @ByteSizeLib.ByteSize.FromBytes(@file.Data.Length).ToString()</text><br />
+                    }
+                }
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>
+<MudChart ChartType="ChartType.Line" ChartSeries="@Series" @bind-SelectedIndex="Index" XAxisLabels="@XAxisLabels" ChartOptions="@_options" Width="100%" Height="350px"></MudChart>
+<hr />
 <MudTextField T="string" @bind-Value="@recurringTransaction.Name" Label="Name" tabindex="1" />
-
 <MudSelect T="Lookup_TransactionType" Label="Transaction Type" @bind-Value="@recurringTransaction.TransactionTypeLookup" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="2">
     @foreach (var group in TransactionTypeList)
     {
@@ -93,44 +116,15 @@ else {
     </PickerActions>
 </MudDatePicker>
 <MudSelect T="TransactionGroup" Label="Transaction Group" @bind-Value="@recurringTransaction.Group" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="10">
-    <MudSelectItem T="TransactionGroup" Value="@(null)">None</MudSelectItem>
-    @foreach (var group in transactionGroups)
-    {
-        <MudSelectItem Value="@group">@group.Name</MudSelectItem>
-    }
-        </MudSelect>
-    } else
-    {
-        <text>
-            Name: @recurringTransaction.Name<br />
-            Type: @recurringTransaction.TransactionTypeLookup.Name<br />
-            <MudChart ChartType="ChartType.Line" ChartSeries="@Series" @bind-SelectedIndex="Index" XAxisLabels="@XAxisLabels" ChartOptions="@_options" Width="100%" Height="350px"></MudChart>
-        </text>
-    }
+<MudSelectItem T="TransactionGroup" Value="@(null)">None</MudSelectItem>
+@foreach (var group in transactionGroups)
+{
+    <MudSelectItem Value="@group">@group.Name</MudSelectItem>
+}
+</MudSelect>
 
-    <MudDataGrid Items="@recurringTransaction.PreviousTransactions" T="Data.Entities.Transaction"
-                 Filterable="false" SortMode="@SortMode.None" Groupable="false" Style="width: 700px;"
-                 RowClick="@OnRowClick">
-        <Columns>
-            <PropertyColumn Property="x => x!.Name" />
-            <PropertyColumn Property="x => x!.Amount" Format="C" />
-            <PropertyColumn Property="x => x!.TransactionPendingLocalTime" Title="Pending" Format="d" />
-            <PropertyColumn Property="x => x!.TransactionClearedLocalTime" Title="Cleared" Format="d" />
-            <PropertyColumn Property="x => x!.DueDate" Title="Due Date" Format="d" />
-            <PropertyColumn Property="x => x!.Notes" />
-            <TemplateColumn Title="Attachments">
-                <CellTemplate>
-                    @if (context.Item.Files.Count() > 0)
-                    {
-                        foreach(var file in context.Item.Files)
-                        {
-                            <text>@file.Name -  @ByteSizeLib.ByteSize.FromBytes(@file.Data.Length).ToString()</text><br />
-                        }
-                    }
-                </CellTemplate>
-            </TemplateColumn>
-        </Columns>
-    </MudDataGrid>
+<MudButton Color="Color.Error" OnClick="Delete">Delete</MudButton>
+<MudButton Color="Color.Warning" OnClick="Save">Save</MudButton>
 
 }
 
@@ -148,8 +142,6 @@ else {
     private IEnumerable<Category> selectedCategories = new HashSet<Category>();
 
     private RecurringTransaction recurringTransaction { get; set; }
-
-    private bool isEditModeActive { get; set; } = false;
 
     public List<ChartSeries> Series = new();
     public string[] XAxisLabels = [];

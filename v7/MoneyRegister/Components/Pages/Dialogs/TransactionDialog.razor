@@ -37,16 +37,32 @@
         <MudTextField T="string" @bind-Value="@TransactionDetails.Notes" Label="Notes" AutoGrow tabindex="8" />
 
         <!-- Link to recurring transaction history -->
-        <FileComponent @bind-Value="TransactionDetails.Files" @bind-Value:event="ValueChanged" Index="9" Label="Files" />
-        <text>For statistical purposes:</text>
+        <MudTooltip>
+            <ChildContent>
+                <FileComponent @bind-Value="TransactionDetails.Files" @bind-Value:event="ValueChanged" Index="9" Label="Files" />
+            </ChildContent>
+            <TooltipContent>
+                <MudText Typo="Typo.h6">Associated files</MudText>
+                <MudText Typo="Typo.body2">Save your billing statements, contracts, or agreements. You never know when this will be useful.</MudText>
+            </TooltipContent>
+        </MudTooltip>   
+        
+        <text><br />For statistical purposes:<br /></text>
+
         <RecurringTransactionComponent @bind-Value="TransactionDetails.RecurringTransaction" @bind-Value:event="ValueChanged" Index="10" />
+        
         @if(TransactionDetails.RecurringTransaction != null) 
         {
-            <DatePickerComponent @bind-Value="TransactionDetails.DueDate" @bind-Value:event="ValueChanged" Index="11" Label="Expected Due Date" />
+            <MudTooltip>
+                <ChildContent>
+                    <DatePickerComponent @bind-Value="TransactionDetails.DueDate" @bind-Value:event="ValueChanged" Index="11" Label="Expected Due Date" />
+                </ChildContent>
+                <TooltipContent>
+                    <MudText Typo="Typo.h6">Expected Due Date</MudText>
+                    <MudText Typo="Typo.body2">This is used to keep a track record of due dates to check for shifts over time. Perhaps you think it's monthly but it's really every 30 days - causing it to slowly shift over time.</MudText>
+                </TooltipContent>
+            </MudTooltip>           
         }
-
-        <!-- Create a Convert To RecurringTransactionButton-->
-
     </DialogContent>
     <DialogActions>
         @if (!IsNew)
@@ -129,8 +145,27 @@
         MudDialog.Cancel();
     }
 
-    private void Save()
+    private async Task Save()
     {
+        if(TransactionDetails.RecurringTransaction != null && TransactionDetails.RecurringTransaction.Name == "New")
+        {
+            RecurringTransaction newRT = TransactionDetails.RecurringTransaction;
+            newRT.Name = TransactionDetails.Name;
+            newRT.Amount = TransactionDetails.Amount;
+            newRT.TransactionTypeLookup = TransactionDetails.TransactionTypeLookup;
+            var result = await DialogUtil.ShowRecurringTransactionDialogAsync(DialogService, true, newRT);
+            if (!result.Canceled)
+            {
+                RecurringTransaction newItem = result.Data as RecurringTransaction ?? throw new NullReferenceException("RecurringTransaction Data returned null. This shouldn't happen.");
+                TransactionDetails.RecurringTransaction = newItem;
+            } else
+            {
+                // We probably don't want to close. We might want to ask the user how they would like to proceed?
+                return;
+                //throw new NotImplementedException("User cancelled conversion to Recurring Transaction?");
+            }
+        }
+
         MudDialog.Close(DialogResult.Ok(TransactionDetails));
     }
     private async Task Delete()

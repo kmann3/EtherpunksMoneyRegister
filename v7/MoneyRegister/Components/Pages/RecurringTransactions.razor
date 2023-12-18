@@ -2,6 +2,7 @@
 @inject Data.Services.LookupService MR_LookupService
 @inject Data.Services.RecurringTransactionService MR_RecTranService
 @inject IDialogService DialogService
+@inject NavigationManager NavManager
 
 <PageTitle>Mann's Money Management - Recurring Transactions</PageTitle>
 
@@ -76,7 +77,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        recurringTransactions = await MR_RecTranService.GetAllRecurringTransactionsAsync();
+        recurringTransactions = (await MR_RecTranService.GetAllRecurringTransactionsAsync()).OrderBy(x => x.TransactionTypeLookup.Name).ThenBy(x => x.Name).ToList();
 
         var lookup_RecurringTransactionFrequencies = await MR_LookupService.GetLookup_RecurringTransactionFrequenciesAsync();
         var lookup_TransactionTypes = await MR_LookupService.GetLookup_TransactionTypesAsync();
@@ -87,26 +88,7 @@ else
 
     private async void OnRowClick(DataGridRowClickEventArgs<Data.Entities.RecurringTransaction> item)
     {
-        // Use Dialog
-        // https://www.mudblazor.com/components/dialog#passing-data
-
-        // categories?
-        var result = await DialogUtil.ShowRecurringTransactionDialogAsync(DialogService, false, item.Item);
-        if(!result.Canceled)
-        {
-            RecurringTransaction newItem = result.Data as RecurringTransaction ?? throw new NullReferenceException("RecurringTransaction Data returned null. This shouldn't happen.");
-            if(newItem!.DeletedOnUTC.HasValue)
-            {
-                // remove it from the list
-                recurringTransactions.Remove(item.Item);
-
-            } else
-            {
-                // Update it
-            }
-        }
-
-        this.StateHasChanged();
+        NavManager.NavigateTo($"/recurringTransaction/{item.Item.Id}");
     }
 
     private async Task AddRecurringTransaction()
@@ -122,8 +104,6 @@ else
         if (!result.Canceled)
         {
             RecurringTransaction newItem = result.Data as RecurringTransaction ?? throw new NullReferenceException("RecurringTransaction Data returned null. This shouldn't happen.");
-            // Add the item
-
             recurringTransactions.Add(newItem);
         }
 
