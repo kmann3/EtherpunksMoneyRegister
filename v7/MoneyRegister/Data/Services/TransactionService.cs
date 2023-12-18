@@ -11,8 +11,6 @@ public class TransactionService(ApplicationDbContext context)
 {
     private readonly ApplicationDbContext _context = context;
 
-    private List<Transaction> _transactions = new();
-
     public async Task CreateNewTransactionAsync(Account account, Transaction transaction)
     {
         //Make sure the amounts are positive/ negative accordingly.
@@ -66,18 +64,15 @@ public class TransactionService(ApplicationDbContext context)
 
     public async Task<DataGridDTO.TransactionListDto> GetTransactionsByPageAsync(DataGridDTO.GridDataRequestDto request)
     {
-        if(_transactions.Count == 0)
-        {
-            // By loading the most important bits now into memory, which really shouldn't be *too* much this allows us to pre-sort them and save time.
-            _transactions = await _context.Transactions
-                .Include(x => x.Categories)
-                .Where(x => x.AccountId == request.AccountId && x.DeletedOnUTC == null).ToListAsync();
+        // By loading the most important bits now into memory, which really shouldn't be *too* much this allows us to pre-sort them and save time.
+        var _transactions = await _context.Transactions
+            .Include(x => x.Categories)
+            .Where(x => x.AccountId == request.AccountId && x.DeletedOnUTC == null).ToListAsync();
 
-            _transactions.Sort(new Transaction());
-        }
+        _transactions.Sort(new Transaction());
 
         DataGridDTO.TransactionListDto returnData = new();
-        returnData.ItemTotalCount = _transactions.Count();
+        returnData.ItemTotalCount = _transactions.Count;
         returnData.Items = _transactions
             .Skip(request.PageSize * request.Page)
             .Take(request.PageSize)

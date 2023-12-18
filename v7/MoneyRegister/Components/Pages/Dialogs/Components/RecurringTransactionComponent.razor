@@ -1,0 +1,43 @@
+﻿@inject Data.Services.RecurringTransactionService MR_RecurringTransactionService
+<!-- Separate credit versus debit? -->
+<MudSelect T="RecurringTransaction" @bind-Value="@Value" tabindex="@Index" Label="Select recurring transaction">
+    <MudSelectItem T="RecurringTransaction" Value="@((RecurringTransaction) null)">None</MudSelectItem>
+    @foreach(var item in recurringTransactionsList)
+    {
+        <MudSelectItem T="RecurringTransaction" Value="@item">@item.Name</MudSelectItem>
+    }
+</MudSelect>
+
+@code {
+    [Parameter]
+    public RecurringTransaction Value
+    {
+        get
+        {
+            return _value;
+        }
+        set
+        {
+            if (value == _value) return;
+            _value = value;
+
+            if (ValueChanged.HasDelegate)
+            {
+                ValueChanged.InvokeAsync(_value);
+            }
+        }
+    }
+
+    [Parameter] public int Index { get; set; } = 0;
+    [Parameter] public EventCallback<RecurringTransaction> ValueChanged { get; set; }
+    [Parameter] public bool IsRequired { get; set; } = false;
+
+    private RecurringTransaction _value;
+
+    private List<RecurringTransaction> recurringTransactionsList = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        recurringTransactionsList = await MR_RecurringTransactionService.GetAllRecurringTransactionsAsync();
+    }
+}

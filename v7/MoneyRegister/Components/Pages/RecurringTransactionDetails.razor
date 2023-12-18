@@ -5,6 +5,7 @@
 @inject Data.Services.RecurringTransactionService MR_RecTranService
 @inject Data.Services.TransactionGroupService MR_TransactionGroupService
 @inject IDialogService DialogService
+@inject IJSRuntime JS
 @inject NavigationManager NavManager
 
 <PageTitle>Recurring Transaction Details - recurringTransaction.Name</PageTitle>
@@ -13,7 +14,9 @@
 <p><em>Loading...</em></p>
 }
 else {
-<MudTextField T="string" @bind-Value="@recurringTransaction.Name" Label="Name" tabindex="1" @ref="firstFocus" />
+    <MudSwitch @bind-Checked="isEditModeActive" Color="Color.Warning" ThumbIcon="@Icons.Material.Filled.Edit">Edit</MudSwitch>
+    @if(isEditModeActive) {
+<MudTextField T="string" @bind-Value="@recurringTransaction.Name" Label="Name" tabindex="1" />
 
 <MudSelect T="Lookup_TransactionType" Label="Transaction Type" @bind-Value="@recurringTransaction.TransactionTypeLookup" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="2">
     @foreach (var group in TransactionTypeList)
@@ -95,7 +98,15 @@ else {
     {
         <MudSelectItem Value="@group">@group.Name</MudSelectItem>
     }
-</MudSelect>
+        </MudSelect>
+    } else
+    {
+        <text>
+            Name: @recurringTransaction.Name<br />
+            Type: @recurringTransaction.TransactionTypeLookup.Name<br />
+            <MudChart ChartType="ChartType.Line" ChartSeries="@Series" @bind-SelectedIndex="Index" XAxisLabels="@XAxisLabels" ChartOptions="@_options" Width="100%" Height="350px"></MudChart>
+        </text>
+    }
 
     <MudDataGrid Items="@recurringTransaction.PreviousTransactions" T="Data.Entities.Transaction"
                  Filterable="false" SortMode="@SortMode.None" Groupable="false" Style="width: 700px;"
@@ -105,6 +116,7 @@ else {
             <PropertyColumn Property="x => x!.Amount" Format="C" />
             <PropertyColumn Property="x => x!.TransactionPendingLocalTime" Title="Pending" Format="d" />
             <PropertyColumn Property="x => x!.TransactionClearedLocalTime" Title="Cleared" Format="d" />
+            <PropertyColumn Property="x => x!.DueDate" Title="Due Date" Format="d" />
             <PropertyColumn Property="x => x!.Notes" />
             <TemplateColumn Title="Attachments">
                 <CellTemplate>
@@ -112,7 +124,7 @@ else {
                     {
                         foreach(var file in context.Item.Files)
                         {
-                            <text>FileHere;</text>
+                            <text>@file.Name -  @ByteSizeLib.ByteSize.FromBytes(@file.Data.Length).ToString()</text><br />
                         }
                     }
                 </CellTemplate>
@@ -121,6 +133,7 @@ else {
     </MudDataGrid>
 
 }
+
 @code {
     [Parameter] public Guid Id { get; set; }
     MudDatePicker _nextDueDatePicker;
@@ -134,9 +147,14 @@ else {
 
     private IEnumerable<Category> selectedCategories = new HashSet<Category>();
 
-    private MudTextField<string> firstFocus;
-
     private RecurringTransaction recurringTransaction { get; set; }
+
+    private bool isEditModeActive { get; set; } = false;
+
+    public List<ChartSeries> Series = new();
+    public string[] XAxisLabels = [];
+    private int Index = -1; //default value cannot be 0 -> first selectedindex is 0
+    private readonly ChartOptions _options = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -146,14 +164,26 @@ else {
         TransactionTypeList = await MR_LookupService.GetLookup_TransactionTypesAsync();
         FrequencyList = await MR_LookupService.GetLookup_RecurringTransactionFrequenciesAsync();
         ResetSelectedCategories();
-    }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
+        _options.YAxisTicks = 10;
+
+        ChartSeries newSeries = new();
+        newSeries.Name = "Cost";
+        List<double> arrayList = new();
+        List<string> xAxisLabelList = new();
+        foreach(var pt in recurringTransaction.PreviousTransactions)
         {
-            await firstFocus.FocusAsync();
+            arrayList.Add(Math.Abs((double)pt.Amount));
+            xAxisLabelList.Add(pt.TransactionClearedUTC.Value.ToShortDateString());
         }
+        XAxisLabels = xAxisLabelList.ToArray();
+        newSeries.Data = arrayList.ToArray();
+
+        Series = new List<ChartSeries>();
+        Series.Add(newSeries);
+
+        recurringTransaction.PreviousTransactions = recurringTransaction.PreviousTransactions.OrderByDescending(x => x.TransactionClearedUTC).ThenByDescending(x => x.CreatedOnUTC).ToList();
+        StateHasChanged();
     }
 
     private string GetSelectedItemsText(List<string> selectedValues)
@@ -251,10 +281,9 @@ else {
         // Display item is deleted.
     }
 
-    private void OnRowClick(DataGridRowClickEventArgs<Data.Entities.Transaction> item)
+    private async void OnRowClick(DataGridRowClickEventArgs<Data.Entities.Transaction> item)
     {
-        // TBI: Implement Transaction Details
-        throw new NotImplementedException();
-        //NavManager.NavigateTo($"/account/{item.Item.Id}");
+        var result = await DialogUtil.ShowTransactionDialog(DialogService, false, item.Item);
+        if (result.Canceled) return;
     }
 }

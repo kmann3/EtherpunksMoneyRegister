@@ -37,13 +37,15 @@
         <MudTextField T="string" @bind-Value="@TransactionDetails.Notes" Label="Notes" AutoGrow tabindex="8" />
 
         <!-- Link to recurring transaction history -->
-
         <FileComponent @bind-Value="TransactionDetails.Files" @bind-Value:event="ValueChanged" Index="9" Label="Files" />
-        @if(TransactionDetails.RecurringTransactionId != null) 
+        <text>For statistical purposes:</text>
+        <RecurringTransactionComponent @bind-Value="TransactionDetails.RecurringTransaction" @bind-Value:event="ValueChanged" Index="10" />
+        @if(TransactionDetails.RecurringTransaction != null) 
         {
-            <text>For statistical purposes:</text>
-            <DatePickerComponent @bind-Value="TransactionDetails.DueDate" @bind-Value:event="ValueChanged" Index="7" Label="Expected Due Date" />
+            <DatePickerComponent @bind-Value="TransactionDetails.DueDate" @bind-Value:event="ValueChanged" Index="11" Label="Expected Due Date" />
         }
+
+        <!-- Create a Convert To RecurringTransactionButton-->
 
     </DialogContent>
     <DialogActions>

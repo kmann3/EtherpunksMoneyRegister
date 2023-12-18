@@ -27,6 +27,7 @@ public class RecurringTransactionService(ApplicationDbContext context)
                 .Include(x => x.FrequencyLookup)
                 .Include(x => x.TransactionTypeLookup)
                 .Include(x => x.PreviousTransactions)
+                    .ThenInclude(x => x.Files)
             .Where(x => x.Id == id)
             .SingleAsync();
     }
