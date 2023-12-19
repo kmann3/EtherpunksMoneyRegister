@@ -12,10 +12,8 @@ public class RecurringTransactionService(ApplicationDbContext context)
         return await _context.RecurringTransactions
             .Include(x => x.Group)
             .Include(x => x.Categories)
-            .Include(x => x.FrequencyLookup)
-            .Include(x => x.TransactionTypeLookup)
             .Include(x => x.PreviousTransactions) // TBI: This might be a bad idea since we only use it for a count. Ideally we should just pull the count. Will need to make a custom class for this though.
-            .OrderBy(x => x.TransactionTypeLookup.Name).ThenBy(x => x.Name)
+            .OrderBy(x => x.TransactionType).ThenBy(x => x.Name)
             .ToListAsync();
     }
 
@@ -24,8 +22,6 @@ public class RecurringTransactionService(ApplicationDbContext context)
         return await _context.RecurringTransactions
                 .Include(x => x.Group)
                 .Include(x => x.Categories)
-                .Include(x => x.FrequencyLookup)
-                .Include(x => x.TransactionTypeLookup)
                 .Include(x => x.PreviousTransactions)
                     .ThenInclude(x => x.Files)
             .Where(x => x.Id == id)
@@ -37,8 +33,6 @@ public class RecurringTransactionService(ApplicationDbContext context)
         return await _context.RecurringTransactions
             .Include(x => x.Group)
             .Include(x => x.Categories)
-            .Include(x => x.FrequencyLookup)
-            .Include(x => x.TransactionTypeLookup)
             .ToListAsync();
     }
 

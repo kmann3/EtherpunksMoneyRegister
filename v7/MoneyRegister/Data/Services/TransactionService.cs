@@ -13,13 +13,7 @@ public class TransactionService(ApplicationDbContext context)
 
     public async Task CreateNewTransactionAsync(Account account, Transaction transaction)
     {
-        //Make sure the amounts are positive/ negative accordingly.
-        transaction.Amount = transaction.TransactionTypeLookup.Name switch
-        {
-            "Credit" => (Math.Abs(transaction.Amount)),
-            "Debit" => -(Math.Abs(transaction.Amount)),
-            _ => throw new Exception($"Unknown transaction type: {transaction.TransactionTypeLookup.Name}"),
-        };
+        transaction.VerifySignage();
         transaction.Balance = account.CurrentBalance + transaction.Amount;
         account.CurrentBalance = transaction.Balance;
         if (transaction.TransactionPendingUTC == null || transaction.TransactionClearedUTC == null)
@@ -94,6 +88,7 @@ public class TransactionService(ApplicationDbContext context)
         ArgumentNullException.ThrowIfNull(transaction);
 
         Transaction oldTransaction = (Transaction)_context.Entry(transaction!).OriginalValues.ToObject();
+        transaction.VerifySignage();
 
         // Check to see if outstanding balances need to change.
         // If it wasn't cleared then and it HAS cleared now - then we need to update outstanding balance.
@@ -152,9 +147,11 @@ public class TransactionService(ApplicationDbContext context)
                 Amount = bill.Amount,
                 Account = accountToReserveFrom,
                 Categories = bill.Categories,
-                TransactionTypeLookup = bill.TransactionTypeLookup,
+                TransactionType = bill.TransactionType,
                 RecurringTransaction = bill
             };
+
+            reserveTransaction.VerifySignage();
 
             accountToReserveFrom.CurrentBalance += bill.Amount;
             accountToReserveFrom.OutstandingBalance += bill.Amount;

@@ -1,5 +1,4 @@
 ﻿@page "/recurringTransaction"
-@inject Data.Services.LookupService MR_LookupService
 @inject Data.Services.RecurringTransactionService MR_RecTranService
 @inject IDialogService DialogService
 @inject NavigationManager NavManager
@@ -26,14 +25,7 @@ else
         </ToolBarContent>
         <Columns>
             <PropertyColumn Property="x => x!.Name" />
-            <TemplateColumn Title="Transaction Type">
-                <CellTemplate>
-                    @if(context.Item.TransactionTypeLookup.Name != null)
-                    {
-                        @context.Item.TransactionTypeLookup.Name
-                    }
-                </CellTemplate>
-            </TemplateColumn>
+            <PropertyColumn Property="x => x!.TransactionType" />
             <TemplateColumn Title="Bill Group">
                 <CellTemplate>
                     @if (context.Item.Group != null)
@@ -42,7 +34,7 @@ else
                     }
                 </CellTemplate>
             </TemplateColumn>
-            <PropertyColumn Property="x => x.FrequencyString" />
+            <PropertyColumn Property="x => x.RecurringFrequencyTypeString" />
             <PropertyColumn Property="x => x.NextDueDate" Title="Next Due" >
                 <CellTemplate>
                     @context.Item.NextDueDate?.ToString("d")
@@ -72,18 +64,9 @@ else
 
 @code {
     private List<Data.Entities.RecurringTransaction> recurringTransactions;
-    private Data.Entities.Lookup_RecurringTransactionFrequency unknownRecurringTransactionFrequency;
-    private Data.Entities.Lookup_TransactionType debitRecurringTransaction;
-
     protected override async Task OnInitializedAsync()
     {
-        recurringTransactions = (await MR_RecTranService.GetAllRecurringTransactionsAsync()).OrderBy(x => x.TransactionTypeLookup.Name).ThenBy(x => x.Name).ToList();
-
-        var lookup_RecurringTransactionFrequencies = await MR_LookupService.GetLookup_RecurringTransactionFrequenciesAsync();
-        var lookup_TransactionTypes = await MR_LookupService.GetLookup_TransactionTypesAsync();
-
-        unknownRecurringTransactionFrequency = lookup_RecurringTransactionFrequencies.Where(x => x.Name == "Unknown").Single();
-        debitRecurringTransaction = lookup_TransactionTypes.Where(x => x.Name == "Debit").Single();
+        recurringTransactions = (await MR_RecTranService.GetAllRecurringTransactionsAsync()).OrderBy(x => x.TransactionType).ThenBy(x => x.Name).ToList();
     }
 
     private async void OnRowClick(DataGridRowClickEventArgs<Data.Entities.RecurringTransaction> item)
@@ -94,11 +77,8 @@ else
     private async Task AddRecurringTransaction()
     {
         RecurringTransaction newRecurringTransaction = new();
-        newRecurringTransaction.FrequencyLookup = unknownRecurringTransactionFrequency;
-        newRecurringTransaction.FrequencyLookupId = unknownRecurringTransactionFrequency.Id;
-
-        newRecurringTransaction.TransactionTypeLookup = debitRecurringTransaction;
-        newRecurringTransaction.TransactionTypeLookupId = debitRecurringTransaction.Id;
+        newRecurringTransaction.RecurringFrequencyType = Data.Entities.Base.Enums.RecurringFrequencyType.Unknown;
+        newRecurringTransaction.TransactionType = Data.Entities.Base.Enums.TransactionType.Debit;
 
         var result = await DialogUtil.ShowRecurringTransactionDialogAsync(DialogService, true, newRecurringTransaction);
         if (!result.Canceled)

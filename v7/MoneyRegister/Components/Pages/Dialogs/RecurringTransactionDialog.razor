@@ -1,6 +1,5 @@
 ﻿@using System.Globalization
 @inject Data.Services.CategoryService MR_CategoryService
-@inject Data.Services.LookupService MR_LookupService
 @inject Data.Services.RecurringTransactionService MR_RecTranService
 @inject Data.Services.TransactionGroupService MR_TransactionGroupService
 @inject IDialogService DialogService
@@ -24,12 +23,7 @@
     <DialogContent>
         <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Name" Label="Name" tabindex="1" @ref="firstFocus" />
 
-        <MudSelect T="Lookup_TransactionType" Label="Transaction Type" @bind-Value="@RecurringTransactionDetails.TransactionTypeLookup" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="2">
-            @foreach (var group in TransactionTypeList)
-            {
-                <MudSelectItem Value="@group">@group.Name</MudSelectItem>
-            }
-        </MudSelect>
+        <TransactionTypeSelectionComponent @bind-Value="@RecurringTransactionDetails.TransactionType" @bind-Value:event="ValueChanged" Index="2" />
         <AmountComponent @bind-Value="RecurringTransactionDetails.Amount" @bind-Value:event="ValueChanged" Index="3" Label="Amount" />
         <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Notes" Label="Notes" AutoGrow tabindex="4" />
 
@@ -64,14 +58,12 @@
     [Parameter] public bool IsNew { get; set; }
 
     List<TransactionGroup> transactionGroups = new();
-    List<Lookup_TransactionType> TransactionTypeList = new();
 
     private MudTextField<string> firstFocus;
 
     protected override async Task OnInitializedAsync()
     {
         transactionGroups = await MR_TransactionGroupService.GetAllTransactionGroupsAsync();
-        TransactionTypeList = await MR_LookupService.GetLookup_TransactionTypesAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

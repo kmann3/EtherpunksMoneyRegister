@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace MoneyRegister.Data.Entities;
+namespace MoneyRegister.Data.Entities.Base;
 
 /// <summary>
 /// Table base that nearly all tables should inherit.

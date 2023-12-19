@@ -1,6 +1,5 @@
 ﻿@page "/account/{Id:guid}"
 @inject Data.Services.AccountService MR_AccountService
-@inject Data.Services.LookupService MR_LookupService
 @inject Data.Services.TransactionService MR_TransactionService
 @inject Data.Services.TestService MR_TestService
 @inject IDialogService DialogService
@@ -223,15 +222,12 @@
 
     private async Task AddNewDebit()
     {
-        var debitTypeLookup = (await MR_LookupService.GetLookup_TransactionTypesAsync()).Where(x => x.Name == "Debit").Single();
-
         Transaction newTransaction = new();
         newTransaction.Account = accountDetails!;
         newTransaction.AccountId = Id;
         newTransaction.TransactionPendingUTC = DateTime.UtcNow;
         newTransaction.TransactionClearedUTC = DateTime.UtcNow;
-        newTransaction.TransactionTypeLookup = debitTypeLookup;
-        newTransaction.TransactionTypeLookupId = debitTypeLookup.Id;
+        newTransaction.TransactionType = Enums.TransactionType.Debit;
         newTransaction.Categories = new List<Category>();
 
         var result = await DialogUtil.ShowTransactionDialog(DialogService, true, newTransaction);
@@ -248,14 +244,10 @@
 
     private async Task AddNewCredit()
     {
-        var creditTypeLookup = (await MR_LookupService.GetLookup_TransactionTypesAsync()).Where(x => x.Name == "Credit").Single();
-
         Transaction newTransaction = new();
         newTransaction.TransactionPendingUTC = DateTime.UtcNow;
         newTransaction.TransactionClearedUTC = DateTime.UtcNow;
-        newTransaction.TransactionTypeLookup = creditTypeLookup;
-        newTransaction.TransactionTypeLookupId = creditTypeLookup.Id;
-
+        newTransaction.TransactionType = Enums.TransactionType.Credit;
         newTransaction.Account = accountDetails!;
         newTransaction.AccountId = Id;
         newTransaction.TransactionPendingUTC = DateTime.UtcNow;

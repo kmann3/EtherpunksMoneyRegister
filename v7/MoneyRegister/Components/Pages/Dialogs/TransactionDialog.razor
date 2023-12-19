@@ -1,6 +1,5 @@
 ﻿@inject Data.Services.AccountService MR_AccountService
 @inject Data.Services.CategoryService MR_CategoryService
-@inject Data.Services.LookupService MR_LookupService
 @inject Data.Services.TransactionService MR_TranService
 @inject Data.Services.TransactionGroupService MR_TransactionGroupService
 @inject IDialogService DialogService
@@ -23,7 +22,7 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <TransactionTypeSelectionComponent @bind-Value="TransactionDetails.TransactionTypeLookup" @bind-Value:event="ValueChanged" Index="1" Label="Transaction Type" />
+        <TransactionTypeSelectionComponent @bind-Value="TransactionDetails.TransactionType" @bind-Value:event="ValueChanged" Index="1" Label="Transaction Type" />
         <AccountSelectionComponent @bind-Value="TransactionDetails.Account" @bind-Value:event="ValueChanged" Index="2" Label="Account" />
 
         <MudTextField T="string" @bind-Value="@TransactionDetails.Name" Label="Name" tabindex="3" @ref="firstFocus" Required="true" RequiredError="A name is required." />
@@ -86,7 +85,6 @@
     List<Data.Entities.Account> accounts { get; set; } = new();
     List<Category> categories { get; set; } = new();
     List<TransactionGroup> transactionGroups = new();
-    List<Lookup_TransactionType> TransactionTypeList = new();
 
     private IEnumerable<Category> selectedCategories = new HashSet<Category>();
 
@@ -97,7 +95,6 @@
         accounts = await MR_AccountService.GetAllAccountsAsync();
         categories = await MR_CategoryService.GetAllCategoriesAsync();
         transactionGroups = await MR_TransactionGroupService.GetAllTransactionGroupsAsync();
-        TransactionTypeList = await MR_LookupService.GetLookup_TransactionTypesAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -152,7 +149,7 @@
             RecurringTransaction newRT = TransactionDetails.RecurringTransaction;
             newRT.Name = TransactionDetails.Name;
             newRT.Amount = TransactionDetails.Amount;
-            newRT.TransactionTypeLookup = TransactionDetails.TransactionTypeLookup;
+            newRT.TransactionType = TransactionDetails.TransactionType;
             var result = await DialogUtil.ShowRecurringTransactionDialogAsync(DialogService, true, newRT);
             if (!result.Canceled)
             {

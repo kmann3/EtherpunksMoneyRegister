@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MoneyRegister.Data.Entities.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -85,10 +86,7 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
     public Guid? RecurringTransactionId { get; set; }
     public DateTime? DueDate { get; set; } = null;
 
-    [JsonIgnore]
-    public Lookup_TransactionType TransactionTypeLookup { get; set; }
-
-    public Guid TransactionTypeLookupId { get; set; }
+    public Enums.TransactionType TransactionType { get; set; }
 
     public int Compare(Transaction? x, Transaction? y)
     {
@@ -135,7 +133,7 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
 
         // if we end up here, throw an exception. Clearly I missed an area.
 
-        throw new NotImplementedException();
+        throw new Exception("Fell through all sort conditions and didn't match any.");
     }
 
     // TBI: Implement file attachments (e.g. pictures of receipts)
@@ -146,11 +144,11 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
 
     public void VerifySignage()
     {
-        this.Amount = this.TransactionTypeLookup.Name switch
+        Amount = TransactionType switch
         {
-            "Credit" => Math.Abs(this.Amount),
-            "Debit" => -Math.Abs(this.Amount),
-            _ => throw new NotImplementedException(),
+            Enums.TransactionType.Credit => Math.Abs(Amount),
+            Enums.TransactionType.Debit => -Math.Abs(Amount),
+            _ => throw new Exception($"Unknown case: {TransactionType}"),
         };
     }
 }

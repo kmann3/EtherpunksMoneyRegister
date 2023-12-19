@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MoneyRegister.Data.Entities;
+using MoneyRegister.Data.Entities.Base;
+using MoneyRegister.Data.Services;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text.Json;
 
 namespace MoneyRegister.Data;
@@ -12,8 +15,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<TransactionFile> Files { get; set; }
-    public DbSet<Lookup_RecurringTransactionFrequency> Lookup_RecurringTransactionFrequencies { get; set; }
-    public DbSet<Lookup_TransactionType> Lookup_TransactionTypes { get; set; }
     public DbSet<RecurringTransaction> RecurringTransactions { get; set; }
     public DbSet<TransactionGroup> TransactionGroups { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
@@ -25,8 +26,23 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        //builder.Entity<Link_Category_Transaction>().HasKey(x => new { x.CategoryId, x.TransactionId });
-        //builder.Entity<Link_Category_RecurringTransaction>().HasKey(x => new { x.CategoryId, x.RecurringTransactionId });
+        builder.Entity<Transaction>()
+            .Property(x => x.TransactionType)
+            .HasConversion(
+            v => v.ToString(),
+            v => (Enums.TransactionType)Enum.Parse(typeof(Enums.TransactionType), v));
+
+        builder.Entity<RecurringTransaction>()
+            .Property(x => x.TransactionType)
+            .HasConversion(
+            v => v.ToString(),
+            v => (Enums.TransactionType)Enum.Parse(typeof(Enums.TransactionType), v));
+
+        builder.Entity<RecurringTransaction>()
+            .Property(x => x.RecurringFrequencyType)
+            .HasConversion(
+            v => v.ToString(),
+            v => (Enums.RecurringFrequencyType)Enum.Parse(typeof(Enums.RecurringFrequencyType), v));
 
         builder.Entity<Category>()
             .HasMany(x => x.RecurringTransactions)
@@ -55,30 +71,34 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     private void SeedDatabase(ModelBuilder builder)
     {
-        //string fakeDirectory = @"D:\src\fake_data\mmr";
+        string fakeDirectory = @"D:\src\fake_data\mmr";
+        bool doFakeLoad = false;
 
-        //if(Directory.Exists(fakeDirectory))
-        //{
-        //    if (!File.Exists($"{fakeDirectory}/{BackupService.accountsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.accountsJsonFileName}");
-        //    if (!File.Exists($"{fakeDirectory}/{BackupService.categoriesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.categoriesJsonFileName}");
-        //    //if (!File.Exists($"{fakeDirectory}/{BackupService.filesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.filesJsonFileName}");
-        //    if (!File.Exists($"{fakeDirectory}/{BackupService.recurringTransactionsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.recurringTransactionsJsonFileName}");
-        //    if (!File.Exists($"{fakeDirectory}/{BackupService.transactionsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.transactionsJsonFileName}");
-        //    if (!File.Exists($"{fakeDirectory}/{BackupService.transactionGroupsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.transactionGroupsJsonFileName}");
-        //    if (!File.Exists($"{fakeDirectory}/{BackupService.usersJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.usersJsonFileName}");
+        if(Directory.Exists(fakeDirectory) && doFakeLoad)
+        {
+            if (!File.Exists($"{fakeDirectory}/{BackupService.AccountsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.AccountsJsonFileName}");
+            if (!File.Exists($"{fakeDirectory}/{BackupService.CategoriesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.CategoriesJsonFileName}");
+            if (!File.Exists($"{fakeDirectory}/{BackupService.FilesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.FilesJsonFileName}");
+            if (!File.Exists($"{fakeDirectory}/{BackupService.RecurringTransactionsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.RecurringTransactionsJsonFileName}");
+            if (!File.Exists($"{fakeDirectory}/{BackupService.TransactionsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.TransactionsJsonFileName}");
+            if (!File.Exists($"{fakeDirectory}/{BackupService.TransactionGroupsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.TransactionGroupsJsonFileName}");
+            if (!File.Exists($"{fakeDirectory}/{BackupService.UsersJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.UsersJsonFileName}");
 
-        //    string jsonString = string.Empty;
-        //    var options = new JsonSerializerOptions { WriteIndented = true };
+            string jsonString = string.Empty;
+            var options = new JsonSerializerOptions { WriteIndented = true };
 
-        //    FillDbType<ApplicationUser>($"{fakeDirectory}/{BackupService.usersJsonFileName}", builder, options);
-        //    FillDbType<Account>($"{fakeDirectory}/{BackupService.accountsJsonFileName}", builder, options);
-        //    FillDbType<Category>($"{fakeDirectory}/{BackupService.categoriesJsonFileName}", builder, options);
-        //    FillDbType<RecurringTransaction>($"{fakeDirectory}/{BackupService.recurringTransactionsJsonFileName}", builder, options);
-        //    FillDbType<TransactionGroup>($"{fakeDirectory}/{BackupService.transactionGroupsJsonFileName}", builder, options);
-        //    FillDbType<Transaction>($"{fakeDirectory}/{BackupService.transactionsJsonFileName}", builder, options);
+            FillDbType<Category>($"{fakeDirectory}/{BackupService.CategoriesJsonFileName}", builder, options);
+            FillDbType<ApplicationUser>($"{fakeDirectory}/{BackupService.UsersJsonFileName}", builder, options);
+            FillDbType<Account>($"{fakeDirectory}/{BackupService.AccountsJsonFileName}", builder, options);
+            FillDbType<TransactionGroup>($"{fakeDirectory}/{BackupService.TransactionGroupsJsonFileName}", builder, options);
+            FillDbType<RecurringTransaction>($"{fakeDirectory}/{BackupService.RecurringTransactionsJsonFileName}", builder, options);
+            FillDbType<Transaction>($"{fakeDirectory}/{BackupService.TransactionsJsonFileName}", builder, options);
+            FillDbType<Link_Category_Transaction>($"{fakeDirectory}/{BackupService.Link_category_transactionFileName}", builder, options);
+            FillDbType<Link_Category_RecurringTransaction>($"{fakeDirectory}/{BackupService.Link_category_recurringTransactionFileName}", builder, options);
+            FillDbType<TransactionFile>($"{fakeDirectory}/{BackupService.FilesJsonFileName}", builder, options);
 
-        //    return;
-        //}
+            return;
+        }
 
         // If there is no fake data or data to restore from (probably private stuff), then use some test examples.
 
@@ -96,11 +116,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         Account account_Cash = new()
         {
-            Name = "Cash",
+            Name = "Neches FCU",
             CreatedById = adminUser.Id,
             CurrentBalance = 68.68M,
             LastBalancedUTC = DateTime.UtcNow,
-            StartingBalance = 200M,
+            StartingBalance = 2111.84M,
             OutstandingItemCount = 2,
             OutstandingBalance = -66.32M,
         };
@@ -119,28 +139,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<Category>().HasData(medicationCategory);
         builder.Entity<Category>().HasData(streamingCategory);
 
-        Lookup_TransactionType lookup_TransactionType_Debit = new() { Name = "Debit", Ordinal = 0 };
-        Lookup_TransactionType lookup_TransactionType_Credit = new() { Name = "Credit", Ordinal = 1 };
-
-        builder.Entity<Lookup_TransactionType>().HasData(lookup_TransactionType_Debit);
-        builder.Entity<Lookup_TransactionType>().HasData(lookup_TransactionType_Credit);
-
-        Lookup_RecurringTransactionFrequency lookup_Frequency_Yearly = new() { Name = "Annually", Ordinal = 0 };
-        Lookup_RecurringTransactionFrequency lookup_Frequency_Monthly = new() { Name = "Monthly", Ordinal = 1 };
-        Lookup_RecurringTransactionFrequency lookup_Frequency_Weekly = new() { Name = "Weekly", Ordinal = 2 };
-        Lookup_RecurringTransactionFrequency lookup_Frequency_XDays = new() { Name = "XDays", Ordinal = 3 };
-        Lookup_RecurringTransactionFrequency lookup_Frequency_XWeekYDayOfWeek = new() { Name = "XWeekYDayOfWeek", Ordinal = 4 };
-        Lookup_RecurringTransactionFrequency lookup_Frequency_Irregular = new() { Name = "Irregular", Ordinal = 5 };
-        Lookup_RecurringTransactionFrequency lookup_Frequency_Unknown = new() { Name = "Unknown", Ordinal = 6 };
-
-        builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_Yearly);
-        builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_Monthly);
-        builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_Weekly);
-        builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_XDays);
-        builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_XWeekYDayOfWeek);
-        builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_Irregular);
-        builder.Entity<Lookup_RecurringTransactionFrequency>().HasData(lookup_Frequency_Unknown);
-
         DateTime nextMonth = DateTime.UtcNow.AddMonths(1);
         DateTime currentMonth = DateTime.UtcNow;
 
@@ -158,106 +156,366 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
             Name = "Adobe Photoshop",
             Amount = -10.81M,
-            TransactionGroupId = transactionGroup_AllBills.Id,
             NextDueDate = new DateTime(year, month, 15),
-            FrequencyLookupId = lookup_Frequency_Monthly.Id,
-            FrequencyValue = 15,
-            TransactionTypeLookupId = lookup_TransactionType_Debit.Id,
+            RecurringFrequencyType = Enums.RecurringFrequencyType.Monthly,
+            FrequencyDateValue = new DateTime(2023, 1, 15),
+            //FrequencyValue = 15,
+            TransactionGroupId = transactionGroup_AllBills.Id,
+            TransactionType = Enums.TransactionType.Debit,
         };
 
-        builder.Entity<RecurringTransaction>().HasData(recTran_AdobePhotoshop);
-
-        Link_Category_RecurringTransaction recTran1 = new()
-        {
-            CategoryId = billsCategory.Id,
-            RecurringTransactionId = recTran_AdobePhotoshop.Id,
-        };
-
-        builder.Entity<Link_Category_RecurringTransaction>().HasData(recTran1);
+        AddRecTran(builder, recTran_AdobePhotoshop, billsCategory.Id);
 
         RecurringTransaction recTran_Allstate = new()
         {
             Name = "Allstate Apartment Insurance",
             Amount = -16.79M,
-            TransactionGroupId = transactionGroup_AllBills.Id,
             NextDueDate = new DateTime(year, month, 18),
-            FrequencyLookupId = lookup_Frequency_Monthly.Id,
-            FrequencyValue = 18,
-            TransactionTypeLookupId = lookup_TransactionType_Debit.Id,
+            RecurringFrequencyType = Enums.RecurringFrequencyType.Monthly,
+            FrequencyDateValue = new DateTime(2023, 1, 18),
+            //FrequencyValue = 18,
+            TransactionGroupId = transactionGroup_AllBills.Id,
+            TransactionType = Enums.TransactionType.Debit,
         };
 
-        Link_Category_RecurringTransaction rectTran2 = new()
+        AddRecTran(builder, recTran_Allstate, billsCategory.Id);
+
+        RecurringTransaction recTran_AppleiCloud = new()
         {
-            CategoryId = billsCategory.Id,
-            RecurringTransactionId = recTran_Allstate.Id,
+            Name = "Apple iCloud",
+            Amount = -2.99M,
+            NextDueDate = new DateTime(year, month, 23),
+            RecurringFrequencyType = Enums.RecurringFrequencyType.Monthly,
+            FrequencyDateValue = new DateTime(2023, 1, 23),
+            //FrequencyValue = 23,
+            TransactionGroupId = transactionGroup_AllBills.Id,
+            TransactionType = Enums.TransactionType.Debit,
         };
 
-        builder.Entity<Link_Category_RecurringTransaction>().HasData(rectTran2);
+        AddRecTran(builder, recTran_AppleiCloud, billsCategory.Id);
 
-        builder.Entity<RecurringTransaction>().HasData(recTran_Allstate);
+        RecurringTransaction recTran_AppleServices = new()
+        {
+            Name = "Apple Services",
+            Amount = -27.92M,
+            NextDueDate = new DateTime(year, month, 1),
+            RecurringFrequencyType = Enums.RecurringFrequencyType.Monthly,
+            FrequencyDateValue = new DateTime(2023, 1, 1),
+            //FrequencyValue = 1,
+            TransactionGroupId = transactionGroup_AllBills.Id,
+            TransactionType = Enums.TransactionType.Debit,
+        };
+
+        AddRecTran(builder, recTran_AppleServices, billsCategory.Id);
+
+        RecurringTransaction recTran_ATT = new()
+        {
+            Name = "AT&T",
+            Amount = -80.72M,
+            NextDueDate = new DateTime(year, month, 28),
+            RecurringFrequencyType = Enums.RecurringFrequencyType.Monthly,
+            FrequencyDateValue = new DateTime(2023, 1, 28),
+            //FrequencyValue = 28,
+            TransactionGroupId = transactionGroup_AllBills.Id,
+            TransactionType = Enums.TransactionType.Debit,
+        };
+
+        AddRecTran(builder, recTran_ATT, billsCategory.Id);
+
+        RecurringTransaction recTran_CarLoan = new()
+        {
+            Name = "Explorer",
+            Amount = -719.52M,
+            NextDueDate = new DateTime(year, month, 18),
+            RecurringFrequencyType = Enums.RecurringFrequencyType.Monthly,
+            FrequencyDateValue = new DateTime(2023, 1, 18),
+            //FrequencyValue = 18,
+            TransactionGroupId = transactionGroup_AllBills.Id,
+            TransactionType = Enums.TransactionType.Debit,
+        };
+
+        AddRecTran(builder, recTran_CarLoan, billsCategory.Id);
+
+        RecurringTransaction recTran_Y = new()
+        {
+            Name = "Fitness Your Way",
+            Amount = -36.81M,
+            NextDueDate = new DateTime(year, month, 9),
+            RecurringFrequencyType = Enums.RecurringFrequencyType.Monthly,
+            FrequencyDateValue = new DateTime(2023, 1, 9),
+            FrequencyValue = 9,
+            TransactionGroupId = transactionGroup_AllBills.Id,
+            TransactionType = Enums.TransactionType.Debit,
+        };
+
+        AddRecTran(builder, recTran_Y, billsCategory.Id);
+
+        RecurringTransaction recTran_Google = new()
+        {
+            Name = "Etherpunk",
+            Amount = -12.79M,
+            NextDueDate = new DateTime(year, month, 1),
+            RecurringFrequencyType = Enums.RecurringFrequencyType.Monthly,
+            FrequencyDateValue = new DateTime(2023, 1, 1),
+            //FrequencyValue = 1,
+            TransactionGroupId = transactionGroup_AllBills.Id,
+            TransactionType = Enums.TransactionType.Debit,
+        };
+
+        AddRecTran(builder, recTran_Google, billsCategory.Id);
+
+        RecurringTransaction recTran_Health = new()
+        {
+            Name = "Health Insurance",
+            Amount = -472.12M,
+            NextDueDate = new DateTime(year, month, 10),
+            RecurringFrequencyType = Enums.RecurringFrequencyType.Monthly,
+            FrequencyDateValue = new DateTime(2023, 1, 10),
+            //FrequencyValue = 10,
+            TransactionGroupId = transactionGroup_AllBills.Id,
+            TransactionType = Enums.TransactionType.Debit,
+        };
+
+        AddRecTran(builder, recTran_Health, billsCategory.Id);
+
+        RecurringTransaction recTran_PersonalLoan = new()
+        {
+            Name = "Personal Loan",
+            Amount = -83.36M,
+            NextDueDate = new DateTime(year, month, 5),
+            RecurringFrequencyType = Enums.RecurringFrequencyType.Monthly,
+            FrequencyDateValue = new DateTime(2023, 1, 5),
+            //FrequencyValue = 5,
+            TransactionGroupId = transactionGroup_AllBills.Id,
+            TransactionType = Enums.TransactionType.Debit,
+        };
+
+        AddRecTran(builder, recTran_PersonalLoan, billsCategory.Id);
+
+        RecurringTransaction recTran_Verizon = new()
+        {
+            Name = "Verizon",
+            Amount = -104.00M,
+            NextDueDate = new DateTime(year, month, 5),
+            RecurringFrequencyType = Enums.RecurringFrequencyType.Monthly,
+            FrequencyDateValue = new DateTime(2023, 1, 5),
+            //FrequencyValue = 5,
+            TransactionGroupId = transactionGroup_AllBills.Id,
+            TransactionType = Enums.TransactionType.Debit,
+        };
+
+        AddRecTran(builder, recTran_Verizon, billsCategory.Id);
+
+        RecurringTransaction recTran_Windows = new()
+        {
+            Name = "WF: Windows",
+            Amount = -150.00M,
+            NextDueDate = new DateTime(year, month, 5),
+            RecurringFrequencyType = Enums.RecurringFrequencyType.Monthly,
+            FrequencyDateValue = new DateTime(2023, 1, 5),
+            //FrequencyValue = 5,
+            TransactionGroupId = transactionGroup_AllBills.Id,
+            TransactionType = Enums.TransactionType.Debit,
+        };
+
+        AddRecTran(builder, recTran_Windows, billsCategory.Id);
+
+
+
+        //================
 
         builder.Entity<RecurringTransaction>().HasData(new RecurringTransaction()
         {
-            Name = "Test",
-            Amount = 150M,
+            Name = "Mom-CellPhone",
+            Amount = 175M,
             TransactionGroupId = null,
             NextDueDate = new DateTime(year, month, 18),
-            FrequencyLookupId = lookup_Frequency_Monthly.Id,
-            FrequencyValue = 18,
-            TransactionTypeLookupId = lookup_TransactionType_Credit.Id,
+            RecurringFrequencyType = Enums.RecurringFrequencyType.Monthly,
+            FrequencyDateValue = new DateTime(2023, 1, 18),
+            //FrequencyValue = 18,
+            TransactionType = Enums.TransactionType.Credit,
         });
 
         builder.Entity<RecurringTransaction>().HasData(new RecurringTransaction()
         {
             Name = "Payday",
-            Amount = 1343.72M,
+            Amount = 1998M,
             TransactionGroupId = null,
-            NextDueDate = new DateTime(currentMonth.AddMonths(-1).Year, currentMonth.AddMonths(-1).Month, 27),
-            FrequencyLookupId = lookup_Frequency_XWeekYDayOfWeek.Id,
+            NextDueDate = new DateTime(currentMonth.Year, currentMonth.Month, 27),
+            RecurringFrequencyType = Enums.RecurringFrequencyType.XWeekOnYDayOfWeek,
             FrequencyValue = 4,
             FrequencyDayOfWeekValue = DayOfWeek.Wednesday,
-            TransactionTypeLookupId = lookup_TransactionType_Credit.Id,
+            TransactionType = Enums.TransactionType.Credit,
         });
 
-        decimal currentBalance = 0M;
+        RecurringTransaction recTran_IncomeOPM = new()
+        {
+            Name = "OPM",
+            Amount = 378.27M,
+            TransactionGroupId = null,
+            NextDueDate = new DateTime(currentMonth.AddMonths(1).Year, currentMonth.AddMonths(1).Month, 1),
+            RecurringFrequencyType = Enums.RecurringFrequencyType.Monthly,
+            FrequencyDateValue = new DateTime(2023, 1, 1),
+            TransactionType = Enums.TransactionType.Credit,
+        };
+        builder.Entity<RecurringTransaction>().HasData(recTran_IncomeOPM);
+
+
+        decimal currentBalance = 2111.84M;
         decimal outstandingBalance = 0M;
         decimal transAmount = -0M;
         int outstandingItemsCount = 0;
 
-        transAmount = 1998M;
+        transAmount = recTran_PersonalLoan.Amount;
         currentBalance += transAmount;
-        Transaction transIncomeSSDI = new()
+        Transaction transPersonalLoad = new()
         {
-            AccountId = account_Cash.Id,
+            Name = recTran_PersonalLoan.Name,
             Amount = transAmount,
-            Balance = 1998M,
+            RecurringTransactionId = recTran_PersonalLoan.Id,
+            TransactionPendingUTC = new DateTime(2023, 11, 23),
+            TransactionClearedUTC = new DateTime(2023, 11, 23),
+            TransactionType = Enums.TransactionType.Debit,
             CreatedById = adminUser.Id,
-            Name = "payday",
-            TransactionPendingUTC = new DateTime(currentMonth.AddMonths(-1).Year, currentMonth.AddMonths(-1).Month, 25),
-            TransactionClearedUTC = new DateTime(currentMonth.AddMonths(-1).Year, currentMonth.AddMonths(-1).Month, 25),
-            TransactionTypeLookupId = lookup_TransactionType_Credit.Id,
-        };
-
-        builder.Entity<Transaction>().HasData(transIncomeSSDI);
-
-        transAmount = -recTran_AdobePhotoshop.Amount;
-        currentBalance -= transAmount;
-        outstandingBalance -= transAmount;
-        outstandingItemsCount++;
-        Transaction trans2 = new()
-        {
             AccountId = account_Cash.Id,
-            Amount = recTran_AdobePhotoshop.Amount,
             Balance = currentBalance,
-            CreatedById = adminUser.Id,
-            Name = "Adobe Photoshop",
-            RecurringTransactionId = recTran_AdobePhotoshop.Id,
-            TransactionTypeLookupId = lookup_TransactionType_Debit.Id,
+            CreatedOnUTC = new DateTime(2023, 11, 23),
         };
 
-        builder.Entity<Transaction>().HasData(trans2);
+        builder.Entity<Transaction>().HasData(transPersonalLoad);
+        builder.Entity<Link_Category_Transaction>().HasData(new Link_Category_Transaction() { CategoryId = billsCategory.Id, TransactionId = transPersonalLoad.Id });
 
-        builder.Entity<Link_Category_Transaction>().HasData(new Link_Category_Transaction() { CategoryId = billsCategory.Id, TransactionId = trans2.Id });
+        transAmount = recTran_Verizon.Amount;
+        currentBalance += transAmount;
+        Transaction transVerizon = new()
+        {
+            Name = recTran_Verizon.Name,
+            Amount = transAmount,
+            RecurringTransactionId = recTran_Verizon.Id,
+            TransactionPendingUTC = new DateTime(2023, 11, 23),
+            TransactionClearedUTC = new DateTime(2023, 11, 23),
+            TransactionType = Enums.TransactionType.Debit,
+            CreatedById = adminUser.Id,
+            AccountId = account_Cash.Id,
+            Balance = currentBalance,
+            CreatedOnUTC = new DateTime(2023, 11, 23),
+        };
+
+        builder.Entity<Transaction>().HasData(transVerizon);
+        builder.Entity<Link_Category_Transaction>().HasData(new Link_Category_Transaction() { CategoryId = billsCategory.Id, TransactionId = transVerizon.Id });
+
+        transAmount = -838.07M;
+        currentBalance += transAmount;
+        Transaction transCapitalOne = new()
+        {
+            Name = "Capital One",
+            Amount = transAmount,
+            RecurringTransactionId = null,
+            TransactionPendingUTC = null,
+            TransactionClearedUTC = new DateTime(2023, 11, 24),
+            TransactionType = Enums.TransactionType.Debit,
+            CreatedById = adminUser.Id,
+            AccountId = account_Cash.Id,
+            Balance = currentBalance,
+            CreatedOnUTC = new DateTime(2023, 11, 24),
+        };
+
+        builder.Entity<Transaction>().HasData(transCapitalOne);
+
+        transAmount = recTran_ATT.Amount;
+        currentBalance += transAmount;
+        Transaction transAttBill = new()
+        {
+            Name = recTran_ATT.Name,
+            Amount = transAmount,
+            RecurringTransactionId = recTran_ATT.Id,
+            TransactionPendingUTC = new DateTime(2023, 11, 24),
+            TransactionClearedUTC = new DateTime(2023, 11, 26),
+            TransactionType = Enums.TransactionType.Debit,
+            CreatedById = adminUser.Id,
+            AccountId = account_Cash.Id,
+            Balance = currentBalance,
+            CreatedOnUTC = new DateTime(2023, 11, 24),
+        };
+
+        builder.Entity<Transaction>().HasData(transAttBill);
+        builder.Entity<Link_Category_Transaction>().HasData(new Link_Category_Transaction() { CategoryId = billsCategory.Id, TransactionId = transAttBill.Id });
+
+        transAmount = recTran_Windows.Amount;
+        currentBalance += transAmount;
+        Transaction transWindowsBill = new()
+        {
+            Name = recTran_Windows.Name,
+            Amount = transAmount,
+            RecurringTransactionId = recTran_Windows.Id,
+            TransactionPendingUTC = new DateTime(2023, 11, 24),
+            TransactionClearedUTC = new DateTime(2023, 11, 28),
+            TransactionType = Enums.TransactionType.Debit,
+            CreatedById = adminUser.Id,
+            AccountId = account_Cash.Id,
+            Balance = currentBalance,
+            CreatedOnUTC = new DateTime(2023, 11, 24),
+        };
+
+        builder.Entity<Transaction>().HasData(transWindowsBill);
+        builder.Entity<Link_Category_Transaction>().HasData(new Link_Category_Transaction() { CategoryId = billsCategory.Id, TransactionId = transWindowsBill.Id });
+
+        transAmount = recTran_Health.Amount;
+        currentBalance += transAmount;
+        Transaction transHealthInsuranceBill = new()
+        {
+            Name = recTran_Health.Name,
+            Amount = transAmount,
+            RecurringTransactionId = recTran_Health.Id,
+            TransactionPendingUTC = new DateTime(2023, 11, 27),
+            TransactionClearedUTC = new DateTime(2023, 11, 29),
+            TransactionType = Enums.TransactionType.Debit,
+            CreatedById = adminUser.Id,
+            AccountId = account_Cash.Id,
+            Balance = currentBalance,
+            CreatedOnUTC = new DateTime(2023, 11, 29),
+        };
+
+        builder.Entity<Transaction>().HasData(transHealthInsuranceBill);
+        builder.Entity<Link_Category_Transaction>().HasData(new Link_Category_Transaction() { CategoryId = billsCategory.Id, TransactionId = transHealthInsuranceBill.Id });
+
+        transAmount = recTran_IncomeOPM.Amount;
+        currentBalance += transAmount;
+        Transaction transOPM = new()
+        {
+            Name = recTran_IncomeOPM.Name,
+            Amount = transAmount,
+            RecurringTransactionId = recTran_IncomeOPM.Id,
+            TransactionPendingUTC = null,
+            TransactionClearedUTC = new DateTime(2023, 11, 29),
+            TransactionType = Enums.TransactionType.Credit,
+            CreatedById = adminUser.Id,
+            AccountId = account_Cash.Id,
+            Balance = currentBalance,
+            CreatedOnUTC = new DateTime(2023, 11, 29),
+        };
+
+        builder.Entity<Transaction>().HasData(transOPM);
+        builder.Entity<Link_Category_Transaction>().HasData(new Link_Category_Transaction() { CategoryId = billsCategory.Id, TransactionId = transOPM.Id });
+
+        //transAmount = -recTran_AdobePhotoshop.Amount;
+        //currentBalance -= transAmount;
+        //outstandingBalance -= transAmount;
+        //outstandingItemsCount++;
+        //Transaction trans2 = new()
+        //{
+        //    AccountId = account_Cash.Id,
+        //    Amount = recTran_AdobePhotoshop.Amount,
+        //    Balance = currentBalance,
+        //    CreatedById = adminUser.Id,
+        //    Name = "Adobe Photoshop",
+        //    RecurringTransactionId = recTran_AdobePhotoshop.Id,
+        //    TransactionTypeLookupId = lookup_TransactionType_Debit.Id,
+        //};
+
+        //builder.Entity<Transaction>().HasData(trans2);
+
+        //builder.Entity<Link_Category_Transaction>().HasData(new Link_Category_Transaction() { CategoryId = billsCategory.Id, TransactionId = trans2.Id });
 
         account_Cash.CurrentBalance = currentBalance;
         account_Cash.OutstandingBalance = outstandingBalance;
@@ -273,5 +531,18 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
             builder.Entity<TEntity>().HasData(account);
         }
+    }
+
+    private void AddRecTran(ModelBuilder builder, RecurringTransaction recTran, Guid billId)
+    {
+        builder.Entity<RecurringTransaction>().HasData(recTran);
+
+        Link_Category_RecurringTransaction linkCatTran = new()
+        {
+            CategoryId = billId,
+            RecurringTransactionId = recTran.Id,
+        };
+
+        builder.Entity<Link_Category_RecurringTransaction>().HasData(linkCatTran);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MoneyRegister.Data.Entities.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 

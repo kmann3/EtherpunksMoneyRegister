@@ -18,8 +18,6 @@ public class BackupService(ApplicationDbContext context)
     public static readonly string UsersJsonFileName                             = $"users.json";
     public static readonly string Link_category_transactionFileName             = $"link_category_transaction.json";
     public static readonly string Link_category_recurringTransactionFileName    = $"link_category_recurringTransaction.json";
-    public static readonly string Lookup_RecurringTransactionFrequencyFileName  = $"lookup_RecurringTransactionFrequency.json";
-    public static readonly string Lookup_TransactionTypeFileName                = $"lookup_TransactionType.json";
 
     public async Task<string> CreateBackupJsonAsync()
     {
@@ -30,8 +28,6 @@ public class BackupService(ApplicationDbContext context)
         List<Category> categoryList = await _context.Categories.ToListAsync();
         List<Link_Category_Transaction> link_category_TransactionList = await _context.Link_Categories_Transactions.ToListAsync();
         List<Link_Category_RecurringTransaction> link_category_RecurringTransactionList = await _context.Link_Category_RecurringTransactions.ToListAsync();
-        List<Lookup_RecurringTransactionFrequency> lookup_RecurringTransactionFrequencyList = await _context.Lookup_RecurringTransactionFrequencies.ToListAsync();
-        List<Lookup_TransactionType> lookup_TransactionTypeList = await _context.Lookup_TransactionTypes.ToListAsync();
         List<RecurringTransaction> recurringTransactionList = await _context.RecurringTransactions.ToListAsync();
         List<Transaction> transactionList = await _context.Transactions.ToListAsync();
         List<TransactionFile> fileList = await _context.Files.ToListAsync();
@@ -70,12 +66,6 @@ public class BackupService(ApplicationDbContext context)
             jsonString = JsonSerializer.Serialize(link_category_RecurringTransactionList, options);
             File.WriteAllText($@"{fileName}/{Link_category_recurringTransactionFileName}", jsonString);
 
-            jsonString = JsonSerializer.Serialize(lookup_RecurringTransactionFrequencyList, options);
-            File.WriteAllText($@"{fileName}/{Lookup_RecurringTransactionFrequencyFileName}", jsonString);
-
-            jsonString = JsonSerializer.Serialize(lookup_TransactionTypeList, options);
-            File.WriteAllText($@"{fileName}/{Lookup_TransactionTypeFileName}", jsonString);
-
             ZipFile.CreateFromDirectory(fileName, fileName + ".zip");
         }
         finally
@@ -103,8 +93,6 @@ public class BackupService(ApplicationDbContext context)
             if (!File.Exists($"restore/{TransactionGroupsJsonFileName}")) throw new FileNotFoundException($"Json file not found: restore/{TransactionGroupsJsonFileName}");
             if (!File.Exists($"restore/{UsersJsonFileName}")) throw new FileNotFoundException($"Json file not found: restore/{UsersJsonFileName}");
             if (!File.Exists($"restore/{FilesJsonFileName}")) throw new FileNotFoundException($"Json file not found: restore/{FilesJsonFileName}");
-            if (!File.Exists($"restore/{Lookup_RecurringTransactionFrequencyFileName}")) throw new FileNotFoundException($"Json file not found: restore/{Lookup_RecurringTransactionFrequencyFileName}");
-            if (!File.Exists($"restore/{Lookup_TransactionTypeFileName}")) throw new FileNotFoundException($"Json file not found: restore/{Lookup_TransactionTypeFileName}");
 
             if (!File.Exists($"restore/{Link_category_transactionFileName}")) throw new FileNotFoundException($"Json file not found: restore/{Link_category_transactionFileName}");
 
@@ -119,8 +107,6 @@ public class BackupService(ApplicationDbContext context)
             _context.RemoveRange(await _context.Transactions.ToListAsync());
             _context.RemoveRange(await _context.TransactionGroups.ToListAsync());
             _context.RemoveRange(await _context.ApplicationUsers.ToListAsync());
-            _context.RemoveRange(await _context.Lookup_RecurringTransactionFrequencies.ToListAsync());
-            _context.RemoveRange(await _context.Lookup_TransactionTypes.ToListAsync());
 
             Console.WriteLine("Database purged");
 
@@ -135,18 +121,6 @@ public class BackupService(ApplicationDbContext context)
             jsonString = await File.ReadAllTextAsync($"restore/{UsersJsonFileName}");
             List<ApplicationUser> users = JsonSerializer.Deserialize<List<ApplicationUser>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{UsersJsonFileName}");
             await _context.ApplicationUsers.AddRangeAsync(users);
-
-            Console.WriteLine("Users restored");
-
-            jsonString = await File.ReadAllTextAsync($"restore/{Lookup_RecurringTransactionFrequencyFileName}");
-            List<Lookup_RecurringTransactionFrequency> recurringTransactionFrequencies = JsonSerializer.Deserialize<List<Lookup_RecurringTransactionFrequency>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{Lookup_RecurringTransactionFrequencyFileName}");
-            await _context.Lookup_RecurringTransactionFrequencies.AddRangeAsync(recurringTransactionFrequencies);
-
-            Console.WriteLine("Users restored");
-
-            jsonString = await File.ReadAllTextAsync($"restore/{Lookup_TransactionTypeFileName}");
-            List<Lookup_TransactionType> transactionTypes = JsonSerializer.Deserialize<List<Lookup_TransactionType>>(jsonString, options) ?? throw new Exception($"Empty file: restore/{Lookup_TransactionTypeFileName}");
-            await _context.Lookup_TransactionTypes.AddRangeAsync(transactionTypes);
 
             Console.WriteLine("Users restored");
 

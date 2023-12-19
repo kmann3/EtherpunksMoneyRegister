@@ -1,54 +1,56 @@
-﻿@inject Data.Services.LookupService MR_LookupService
-
-@if(Value == null)
+﻿@if(Value == null)
 {
     <pre>Loading...</pre>
 }
 else {
-    <MudSelect T="Lookup_RecurringTransactionFrequency" Label="Regularity" @bind-Value="Value.FrequencyLookup" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="@Index">
-    @foreach (var group in FrequencyList)
+    <MudSelect T="Enums.RecurringFrequencyType" Label="Regularity" @bind-Value="Value.RecurringFrequencyType" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="@Index">
+        @foreach (Enums.RecurringFrequencyType frequencyType in Enum.GetValues(typeof(Enums.RecurringFrequencyType)))
     {
-        <MudSelectItem Value="@group">@group.Name</MudSelectItem>
+            <MudSelectItem Value="@frequencyType">@frequencyType.ToString()</MudSelectItem>
     }
 </MudSelect>
-    @switch (Value.FrequencyLookup.Name)
+@switch (Value.RecurringFrequencyType)
 {
-    case "Yearly":
+        case Enums.RecurringFrequencyType.Unknown:
+            break;
+        case Enums.RecurringFrequencyType.Irregular:
+            break;
+        case Enums.RecurringFrequencyType.Yearly:
             <MudDatePicker Label="Select Date" @bind-Date="Value.FrequencyDateValue" DisableToolbar="true" tabindex="@SecondIndex" />
-        break;
-    case "Monthly":
+            break;
+        case Enums.RecurringFrequencyType.Monthly:
             <MudDatePicker Label="Select Day" @bind-Date="Value.FrequencyDateValue" DisableToolbar="true" tabindex="@SecondIndex" />
-        break;
-    case "Weekly":
+            break;
+        case Enums.RecurringFrequencyType.Weekly:
             <MudSelect @bind-Value="Value.FrequencyDayOfWeekValue" tabindex="@SecondIndex">
-            @foreach (DayOfWeek? entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
-            {
-                <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
-            }
-        </MudSelect>
-        break;
-    case "XDays":
+                @foreach (DayOfWeek? entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
+                {
+                    <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
+                }
+            </MudSelect>
+
+            break;
+        case Enums.RecurringFrequencyType.XDays:
             <MudNumericField @bind-Value="Value.FrequencyValue" Label="Day Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="@SecondIndex" />
-        break;
-    case "XMonths":
+            break;
+        case Enums.RecurringFrequencyType.XMonths:
             <MudNumericField @bind-Value="Value.FrequencyValue" Label="Month Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="@SecondIndex" />
-        break;
-    case "XWeekYDayOfWeek":
+            <MudDatePicker Label="Select Day" @bind-Date="Value.FrequencyDateValue" DisableToolbar="true" tabindex="@ThirdIndex" />
+            break;
+        case Enums.RecurringFrequencyType.XWeekOnYDayOfWeek:
             <MudNumericField @bind-Value="Value.FrequencyValue" Label="Week" Variant="Variant.Text" Min="0" Max="100000" tabindex="@SecondIndex" />
             <MudSelect @bind-Value="Value.FrequencyDayOfWeekValue" tabindex="@ThirdIndex">
-            @foreach (DayOfWeek? entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
-            {
-                <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
-            }
-        </MudSelect>
-        break;
-    case "Irregular":
-    case "Unknown":
-        break;
-    default:
-        throw new NotImplementedException();
+                @foreach (DayOfWeek? entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
+                {
+                    <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
+                }
+            </MudSelect>
+            break;
+        default:
+            throw new Exception($"Unknown Frequency Type: {Value.RecurringFrequencyType}");
 }
 }
+
 @code {
     /// <summary>
     /// We bind the whole thing because you can't bind multiple parameters - which is what we need here.
@@ -80,20 +82,8 @@ else {
     private int SecondIndex { get; set; }
     private int ThirdIndex { get; set; }
 
-    List<Lookup_RecurringTransactionFrequency> FrequencyList = new();
-
     protected override async Task OnInitializedAsync()
     {
-        FrequencyList = await MR_LookupService.GetLookup_RecurringTransactionFrequenciesAsync();
-
-        if(_value.FrequencyLookup == null)
-        {
-            // Let's assign a default
-            _value.FrequencyLookup = FrequencyList.Where(x => x.Name == "Unknown").Single();
-            _value.FrequencyLookupId = FrequencyList.Where(x => x.Name == "Unknown").Single().Id;
-            
-        }
-
         SecondIndex = Index + 1;
         ThirdIndex = Index + 2;
 

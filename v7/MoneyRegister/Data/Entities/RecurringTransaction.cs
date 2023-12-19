@@ -1,6 +1,7 @@
 ﻿using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MoneyRegister.Data.Entities.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -26,41 +27,53 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     [JsonIgnore]
     public List<Category> Categories { get; set; } = new();
 
-    [JsonIgnore]
-    public Lookup_RecurringTransactionFrequency FrequencyLookup { get; set; }
-    public Guid FrequencyLookupId { get; set; }
+    public Enums.RecurringFrequencyType RecurringFrequencyType { get; set; } = Enums.RecurringFrequencyType.Unknown;
 
+    /// <summary>
+    /// Test all of these.
+    /// </summary>
     [NotMapped]
-    public string FrequencyString
+    public string RecurringFrequencyTypeString
     {
         get
         {
-            try
+            return RecurringFrequencyType switch
             {
-                return FrequencyLookup.Name switch
-                {
-                    "Yearly" => "Annually",
-                    "Monthly" => $"{FrequencyValue.ToString().Ordinalize()} of the month",
-                    "Weekly" => $"Every {FrequencyDayOfWeekValue}",
-                    "Irregular" => "Irregular frequency",
-                    "XDays" => $"Every {FrequencyValue} days",
-                    // TBI Day/Days - calculate
-                    "XMonths" => $"Every {FrequencyValue} months",
-                    "XWeekYDayOfWeek" => $"Every {FrequencyValue.ToString().Ordinalize()} {FrequencyDayOfWeekValue}",
-                    "Unknown" => "Unknown",
-                    _ => throw new NotImplementedException(),
-                };
-            }
-            catch (Exception ex)
-            {
-                // Probably value in frequency is null but shouldn't be. This should only be hit when I messing with the DB manually and broke something
-                return $"ERROR: {ex}";
-            }
+                Enums.RecurringFrequencyType.Yearly             => $"Yearly on {FrequencyDateValue.ToString().Ordinalize()}", // TBI: I need to test this.
+                Enums.RecurringFrequencyType.Monthly            => $"{FrequencyDateValue!.Value.Day.ToString().Ordinalize()} of the month",
+                Enums.RecurringFrequencyType.Weekly             => $"Every {FrequencyDayOfWeekValue}",
+                Enums.RecurringFrequencyType.XMonths            => $"Every {FrequencyValue} month{(FrequencyValue == 1 ? "" : "s")} on the {FrequencyDateValue!.Value.Day.ToString().Ordinalize()}",
+                Enums.RecurringFrequencyType.XDays              => $"Every {FrequencyValue} day{(FrequencyValue == 1 ? "" : "s")}",
+                Enums.RecurringFrequencyType.XWeekOnYDayOfWeek  => $"Every {FrequencyValue.ToString().Ordinalize()} {FrequencyDayOfWeekValue}",
+                Enums.RecurringFrequencyType.Irregular          => $"Irregular",
+                Enums.RecurringFrequencyType.Unknown            => $"Unknown",
+                _ => throw new NotImplementedException()
+            };
         }
     }
 
+    /// <summary>
+    /// This is a number assigned for frequency calculations
+    /// Monthly: FrequencyValue is the day of the month
+    /// XMonths: FrequencyValue how many months to skip, such as every other month if given 2. FrequencyDateValue's DAY is used to know which day.
+    /// XDays: How many days to skip.
+    /// XWeekOnYDayOfWeek: FrequencyValue is used to know which week. DayOfWeek tells us which day.
+    /// </summary>
     public int? FrequencyValue { get; set; } = null;
+
+    /// <summary>
+    /// This is the day of week used for frequency calculations
+    /// Weekly: Day of week.
+    /// XWeekOnYDayOfWeek: DayOfWeek tells us which day. FrequencyValue is used to know which week. 
+    /// </summary>
     public DayOfWeek? FrequencyDayOfWeekValue { get; set; } = null;
+
+    /// <summary>
+    /// Date used for Frequency calculations. We use DateTime because that's what MudBlazor requires. For further information: https://github.com/MudBlazor/MudBlazor/issues/6178
+    /// Yearly: Day/month of the year is used. All other aspects of this datatype are ignored.
+    /// Monthly: Day of the month is used.
+    /// XMonths: XMonths: FrequencyDateValue's DAY is used to know which day. FrequencyValue how many months to skip, such as every other month if given 2. 
+    /// </summary>
     public DateTime? FrequencyDateValue { get; set; } = null;
 
     [JsonIgnore]
@@ -68,16 +81,11 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
 
     public Guid? TransactionGroupId { get; set; }
 
-    [JsonIgnore]
-    public Lookup_TransactionType TransactionTypeLookup { get; set; }
 
-    public Guid TransactionTypeLookupId { get; set; }
+    public Enums.TransactionType TransactionType { get; set; }
 
     [JsonIgnore]
     public List<Transaction> PreviousTransactions { get; set; }
-
-    // TODO: What about when the date falls on a weekend?
-    // TODO: What if we want to transfer from one account to another? TransactionType? Or Debit+Credit?
 
     public override void Configure(EntityTypeBuilder<RecurringTransaction> builder)
     {
@@ -86,41 +94,36 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
 
     public void BumpNextDueDate()
     {
+        // If we don't know a due date at all then we can't calculate the next one.
         if (this.NextDueDate == null) return;
 
-        switch (this.FrequencyLookup.Name)
+        switch (RecurringFrequencyType)
         {
-            case "Yearly":
-                this.NextDueDate = this.NextDueDate.Value.AddYears(1);
+            case Enums.RecurringFrequencyType.Unknown:
                 break;
-
-            case "Monthly":
-                this.NextDueDate = this.NextDueDate.Value.AddMonths(1);
+            case Enums.RecurringFrequencyType.Irregular:
                 break;
-
-            case "Weekly":
-                this.NextDueDate = this.NextDueDate.Value.AddDays(7);
+            case Enums.RecurringFrequencyType.Yearly:
+                NextDueDate = NextDueDate.Value.AddYears(1);
                 break;
-
-            case "XDays":
-                this.NextDueDate = this.NextDueDate.Value.AddDays(this.FrequencyValue ?? throw new Exception($"Missing Frequency Value for Recurring Transaction: {this}"));
+            case Enums.RecurringFrequencyType.Monthly:
+                NextDueDate = NextDueDate.Value.AddMonths(1);
                 break;
-
-            case "XMonths":
-                this.NextDueDate = this.NextDueDate.Value.AddMonths(this.FrequencyValue ?? throw new Exception($"Missing Frequency Value for Recurring Transaction: {this}"));
+            case Enums.RecurringFrequencyType.Weekly:
+                NextDueDate = NextDueDate.Value.AddDays(7);
                 break;
-
-            case "XWeekYDayOfWeek":
-                this.NextDueDate = this.NextDueDate.Value.AddMonths(1);
-                this.NextDueDate = DayOccurrence(this.NextDueDate.Value.Year, this.NextDueDate.Value.Month, this.FrequencyDayOfWeekValue ?? throw new Exception($"Missing FrequencyDayOfWeekValue in {this}"), this.FrequencyValue ?? throw new Exception($"Missing Frequency Value in {this}"));
+            case Enums.RecurringFrequencyType.XDays:
+                NextDueDate = NextDueDate.Value.AddDays(FrequencyValue ?? throw new Exception($"Missing Frequency Value for Recurring Transaction: {this}"));
                 break;
-
-            case "Irregular":
-            case "Unknown":
+            case Enums.RecurringFrequencyType.XMonths:
+                NextDueDate = NextDueDate.Value.AddMonths(FrequencyValue ?? throw new Exception($"Missing Frequency Value for Recurring Transaction: {this}"));
                 break;
-
+            case Enums.RecurringFrequencyType.XWeekOnYDayOfWeek:
+                NextDueDate = NextDueDate.Value.AddMonths(1);
+                NextDueDate = DayOccurrence(NextDueDate.Value.Year, NextDueDate.Value.Month, FrequencyDayOfWeekValue ?? throw new Exception($"Missing FrequencyDayOfWeekValue in {this}"), FrequencyValue ?? throw new Exception($"Missing Frequency Value in {this}"));
+                break;
             default:
-                throw new Exception($"Unknown Lookup value: {this.FrequencyLookup}");
+                break;
         }
     }
 
@@ -135,11 +138,11 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
 
     public void VerifySignage()
     {
-        this.Amount = this.TransactionTypeLookup.Name switch
+        Amount = TransactionType switch
         {
-            "Credit" => Math.Abs(this.Amount),
-            "Debit" => -Math.Abs(this.Amount),
-            _ => throw new NotImplementedException(),
+            Enums.TransactionType.Credit => Math.Abs(Amount),
+            Enums.TransactionType.Debit => -Math.Abs(Amount),
+            _ => throw new Exception($"Unknown case: {TransactionType}"),
         };
     }
 }

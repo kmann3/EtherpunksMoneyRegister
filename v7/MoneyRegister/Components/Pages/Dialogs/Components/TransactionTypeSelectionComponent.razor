@@ -1,15 +1,13 @@
-﻿@inject Data.Services.LookupService MR_LookupService
-
-<MudSelect @bind-Value="@Value" Label="@Label" tabindex="@Index">
-    @foreach (var entryType in transactionTypeList)
+﻿<MudSelect @bind-Value="@Value" Label="@Label" tabindex="@Index">
+    @foreach (Enums.TransactionType entryType in Enum.GetValues(typeof(Enums.TransactionType)))
     {
-        <MudSelectItem Value="@entryType">@entryType.Name</MudSelectItem>
+        <MudSelectItem Value="@entryType">@entryType.ToString()</MudSelectItem>
     }
 </MudSelect>
 
 @code {
     [Parameter]
-    public Lookup_TransactionType Value
+    public Enums.TransactionType Value
     {
         get
         {
@@ -28,15 +26,13 @@
     }
 
     [Parameter] public int Index { get; set; } = 0;
-    [Parameter] public EventCallback<Lookup_TransactionType> ValueChanged { get; set; }
+    [Parameter] public EventCallback<Enums.TransactionType> ValueChanged { get; set; }
     [Parameter] public string Label { get; set; }
 
-    private Lookup_TransactionType _value;
+    private Enums.TransactionType _value;
 
-    List<Lookup_TransactionType> transactionTypeList = new();
 
     protected override async Task OnInitializedAsync()
     {
-        transactionTypeList = await MR_LookupService.GetLookup_TransactionTypesAsync();
     }
 }

@@ -10,8 +10,6 @@ public class AccountService(ApplicationDbContext context)
 {
     private readonly ApplicationDbContext _context = context;
 
-    private List<Account> _accounts = [];
-
     /// <summary>
     /// Gets a list of all the accounts.
     /// This should be generally used for drop-downs.
@@ -19,12 +17,7 @@ public class AccountService(ApplicationDbContext context)
     /// <returns></returns>
     public async Task<List<Account>> GetAllAccountsAsync()
     {
-        if (_accounts.Count == 0)
-        {
-            _accounts = await _context.Accounts.OrderBy(x => x.Name).ToListAsync();
-        }
-
-        return _accounts;
+        return await _context.Accounts.OrderBy(x => x.Name).ToListAsync();
     }
 
     /// <summary>
