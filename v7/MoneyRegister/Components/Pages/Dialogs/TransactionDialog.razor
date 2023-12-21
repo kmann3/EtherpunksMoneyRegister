@@ -22,29 +22,40 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <TransactionTypeSelectionComponent @bind-Value="TransactionDetails.TransactionType" @bind-Value:event="ValueChanged" Index="1" Label="Transaction Type" />
-        <AccountSelectionComponent @bind-Value="TransactionDetails.Account" @bind-Value:event="ValueChanged" Index="2" Label="Account" />
+        <MudGrid>
+            <MudItem xs="4">
+                <TransactionTypeSelectionComponent @bind-Value="TransactionDetails.TransactionType" @bind-Value:event="ValueChanged" Index="1" Label="Transaction Type" />
+            </MudItem>
+            <MudItem xs="6">
+                <AccountSelectionComponent @bind-Value="TransactionDetails.Account" @bind-Value:event="ValueChanged" Index="2" Label="Account" />
+            </MudItem>
+        </MudGrid>
 
-        <MudTextField T="string" @bind-Value="@TransactionDetails.Name" Label="Name" tabindex="3" @ref="firstFocus" Required="true" RequiredError="A name is required." />
-        <AmountComponent @bind-Value="TransactionDetails.Amount" @bind-Value:event="ValueChanged" Index="4" Label="Amount" />
+        <MudGrid>
+            <MudItem xs="8">
+                <MudTextField T="string" @bind-Value="@TransactionDetails.Name" Label="Name" tabindex="3" @ref="firstFocus" Required="true" RequiredError="A name is required." />
+            </MudItem>
+            <MudItem xs="3">
+                <AmountComponent @bind-Value="TransactionDetails.Amount" @bind-Value:event="ValueChanged" Index="4" Label="Amount" />
+            </MudItem>
+        </MudGrid>
+
+        
 
         <CategorySelectionComponent @bind-Value="TransactionDetails.Categories" @bind-Value:event="ValueChanged" Index="5" />
 
-        <DatePickerComponent @bind-Value="TransactionDetails.TransactionPendingLocalTime" @bind-Value:event="ValueChanged" Index="6" Label="Pending" />
-        <DatePickerComponent @bind-Value="TransactionDetails.TransactionClearedLocalTime" @bind-Value:event="ValueChanged" Index="7" Label="Cleared" />
+        <MudGrid>
+            <MudItem xs="6">
+                <DatePickerComponent @bind-Value="TransactionDetails.TransactionPendingLocalTime" @bind-Value:event="ValueChanged" Index="6" Label="Pending" />
+            </MudItem>
+            <MudItem xs="6">
+                <DatePickerComponent @bind-Value="TransactionDetails.TransactionClearedLocalTime" @bind-Value:event="ValueChanged" Index="7" Label="Cleared" />
+            </MudItem>
+        </MudGrid>
 
         <MudTextField T="string" @bind-Value="@TransactionDetails.Notes" Label="Notes" AutoGrow tabindex="8" />
 
-        <!-- Link to recurring transaction history -->
-        <MudTooltip>
-            <ChildContent>
-                <FileComponent @bind-Value="TransactionDetails.Files" @bind-Value:event="ValueChanged" Index="9" Label="Files" />
-            </ChildContent>
-            <TooltipContent>
-                <MudText Typo="Typo.h6">Associated files</MudText>
-                <MudText Typo="Typo.body2">Save your billing statements, contracts, or agreements. You never know when this will be useful.</MudText>
-            </TooltipContent>
-        </MudTooltip>   
+        <FileComponent @bind-Value="TransactionDetails.Files" @bind-Value:event="ValueChanged" Index="9" Label="Files" />
         
         <text><br />For statistical purposes:<br /></text>
 
@@ -60,7 +71,7 @@
                     <MudText Typo="Typo.h6">Real Due Date</MudText>
                     <MudText Typo="Typo.body2">This is used to keep a track record of due dates to check for shifts over time. Perhaps you think it's monthly but it's really every 30 days - causing it to slowly shift over time.</MudText>
                 </TooltipContent>
-            </MudTooltip>           
+            </MudTooltip>
         }
     </DialogContent>
     <DialogActions>
