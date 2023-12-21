@@ -97,7 +97,8 @@
         {
             var catData = result.Data as Category;
             categories.Add(catData!);
-            Value.Add(catData!);
+            categories = categories.OrderBy(x => x.Name).ToList();
+            _value.Add(catData!);
             PresetCategories();
         }
     }

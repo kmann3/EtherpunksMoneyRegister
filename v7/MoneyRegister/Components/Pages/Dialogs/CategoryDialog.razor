@@ -22,7 +22,6 @@
     private async void Save()
     {
         CategoryDetails.Name = CategoryDetails.Name.Trim();
-        CategoryDetails = await MR_CategoryService.CreateCategoryAsync(CategoryDetails);
         MudDialog.Close(DialogResult.Ok(CategoryDetails));
     }
 

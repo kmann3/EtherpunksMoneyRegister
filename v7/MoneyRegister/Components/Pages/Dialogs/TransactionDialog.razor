@@ -48,7 +48,7 @@
         
         <text><br />For statistical purposes:<br /></text>
 
-        <RecurringTransactionComponent @bind-Value="TransactionDetails.RecurringTransaction" @bind-Value:event="ValueChanged" Index="10" />
+        <RecurringTransactionComponent @bind-Value="TransactionDetails.RecurringTransaction" @bind-Value:event="ValueChanged" Index="10" NewName="@TransactionDetails.Name" Amount="@TransactionDetails.Amount" TransactionType="@TransactionDetails.TransactionType" />
         
         @if(TransactionDetails.RecurringTransaction != null) 
         {

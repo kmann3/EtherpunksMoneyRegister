@@ -1,13 +1,16 @@
 ﻿@inject Data.Services.RecurringTransactionService MR_RecurringTransactionService
-<!-- Separate credit versus debit? -->
-<MudSelect T="RecurringTransaction" @bind-Value="@Value" tabindex="@Index" Label="Select recurring transaction">
-    <MudSelectItem T="RecurringTransaction" Value="@((RecurringTransaction) null)">None</MudSelectItem>
-    <MudSelectItem T="RecurringTransaction" Value="@newRT">&lt;New&gt;</MudSelectItem>
-    @foreach (var item in recurringTransactionsList.OrderBy(x => x.Name))
-    {
-        <MudSelectItem T="RecurringTransaction" Value="@item">@item.Name</MudSelectItem>
-    }
-</MudSelect>
+@inject IDialogService DialogService
+<div class="d-flex">
+    <MudSelect T="RecurringTransaction" @bind-Value="@Value" tabindex="@Index" Label="Select recurring transaction">
+        <MudSelectItem T="RecurringTransaction" Value="@((RecurringTransaction) null)">None</MudSelectItem>
+        @foreach (var item in recurringTransactionsList.OrderBy(x => x.Name))
+        {
+            <MudSelectItem T="RecurringTransaction" Value="@item">@item.Name</MudSelectItem>
+        }
+    </MudSelect>
+    <MudButton OnClick="NewRecurringTransactionDialog" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" />
+</div>
+
 
 @code {
     [Parameter]
@@ -30,19 +33,31 @@
     }
 
     [Parameter] public int Index { get; set; } = 0;
+    [Parameter] public string NewName { get; set; } = string.Empty;
+    [Parameter] public decimal Amount { get; set; } = 0M;
+    [Parameter] public Enums.TransactionType TransactionType { get; set; } = Enums.TransactionType.Debit;
     [Parameter] public EventCallback<RecurringTransaction> ValueChanged { get; set; }
     [Parameter] public bool IsRequired { get; set; } = false;
 
     private RecurringTransaction _value;
 
     private List<RecurringTransaction> recurringTransactionsList = new();
-    private RecurringTransaction newRT = new()
-        {
-            Name = "New"
-        };
 
     protected override async Task OnInitializedAsync()
     {
         recurringTransactionsList = await MR_RecurringTransactionService.GetAllRecurringTransactionsAsync();
+    }
+
+    private async Task NewRecurringTransactionDialog()
+    {
+        RecurringTransaction newRT = new()
+            {
+                Name = NewName,
+                Amount = Amount,
+                TransactionType = TransactionType,
+            };
+
+            recurringTransactionsList.Add(newRT);
+            Value = newRT;
     }
 }

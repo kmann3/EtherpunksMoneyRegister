@@ -30,13 +30,7 @@
         <CategorySelectionComponent @bind-Value="RecurringTransactionDetails.Categories" @bind-Value:event="ValueChanged" Index="5" />
         <RecurringFrequencyDetailsComponent @bind-Value="RecurringTransactionDetails" @bind-Value:event="ValueChanged" Index="7" />
         <DatePickerComponent @bind-Value="RecurringTransactionDetails.NextDueDate" @bind-Value:event="ValueChanged" Index="9" Label="Next Due Date" />
-        <MudSelect T="TransactionGroup" Label="Transaction Group" @bind-Value="@RecurringTransactionDetails.Group" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="10">
-            <MudSelectItem T="TransactionGroup" Value="@(null)">None</MudSelectItem>
-            @foreach (var group in transactionGroups)
-            {
-                <MudSelectItem Value="@group">@group.Name</MudSelectItem>
-            }
-        </MudSelect>
+        <TransactionGroupComponent @bind-Value="RecurringTransactionDetails.Group" @bind-Value:event="ValueChanged" Index="10" />
     </DialogContent>
     <DialogActions>
         @if (!IsNew)
@@ -60,7 +54,6 @@
     List<TransactionGroup> transactionGroups = new();
 
     private MudTextField<string> firstFocus;
-
     protected override async Task OnInitializedAsync()
     {
         transactionGroups = await MR_TransactionGroupService.GetAllTransactionGroupsAsync();

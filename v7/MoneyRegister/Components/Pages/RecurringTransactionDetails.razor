@@ -66,13 +66,7 @@ else {
         <MudButton Color="Color.Primary" OnClick="@(() => _nextDueDatePicker.Close())">Ok</MudButton>
     </PickerActions>
 </MudDatePicker>
-<MudSelect T="TransactionGroup" Label="Transaction Group" @bind-Value="@recurringTransaction.Group" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="10">
-<MudSelectItem T="TransactionGroup" Value="@(null)">None</MudSelectItem>
-@foreach (var group in transactionGroups)
-{
-    <MudSelectItem Value="@group">@group.Name</MudSelectItem>
-}
-</MudSelect>
+<TransactionGroupComponent @bind-Value="recurringTransaction.Group" @bind-Value:event="ValueChanged" Index="10" />
 
 <MudButton Color="Color.Error" OnClick="Delete">Delete</MudButton>
 <MudButton Color="Color.Warning" OnClick="Save">Save</MudButton>

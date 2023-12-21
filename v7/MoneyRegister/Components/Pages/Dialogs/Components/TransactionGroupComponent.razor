@@ -1,0 +1,63 @@
+﻿@using System.Globalization
+@inject Data.Services.TransactionGroupService MR_TransactionGroupService
+@inject IDialogService DialogService
+
+
+<div class="d-flex">
+    <MudSelect T="TransactionGroup" Label="Transaction Group" @bind-Value="@Value" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" tabindex="@Index">
+            <MudSelectItem T="TransactionGroup" Value="@(null)">None</MudSelectItem>
+            @foreach (var group in transactionGroupList)
+            {
+                <MudSelectItem Value="@group">@group.Name</MudSelectItem>
+            }
+        </MudSelect>
+    <MudButton OnClick="NewTransactionGroupDialog" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" />
+</div>
+
+@code {
+    [Parameter]
+    public TransactionGroup Value
+    {
+        get
+        {
+            return _value;
+        }
+        set
+        {
+            if (value == _value)
+                return;
+
+            _value = value;
+            if (ValueChanged.HasDelegate)
+            {
+                ValueChanged.InvokeAsync(_value);
+            }
+        }
+    }
+
+    [Parameter] public int Index { get; set; } = 0;
+    [Parameter] public EventCallback<TransactionGroup> ValueChanged { get; set; }
+    [Parameter] public string Label { get; set; }
+
+    private TransactionGroup _value;
+    private List<TransactionGroup> transactionGroupList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        transactionGroupList = await MR_TransactionGroupService.GetAllTransactionGroupsAsync();
+    }
+
+    
+    private async Task NewTransactionGroupDialog()
+    {
+        // var result = await DialogUtil.ShowCategoryDialogAsync(DialogService, true, new Category());
+
+        // if (!result.Canceled)
+        // {
+        //     var catData = result.Data as Category;
+        //     categories.Add(catData!);
+        //     Value.Add(catData!);
+        //     PresetCategories();
+        // }
+    }
+}
