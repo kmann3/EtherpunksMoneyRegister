@@ -56,15 +56,16 @@
         <FileComponent @bind-Value="TransactionDetails.Files" @bind-Value:event="ValueChanged" Index="9" Label="Files" />
         
         <text><br />For statistical purposes:<br /></text>
-        <MudTextField T="string" @bind-Value="@TransactionDetails.ConfirmationNumber" Label="Name" tabindex="10" />
+        <MudTextField T="string" @bind-Value="@TransactionDetails.ConfirmationNumber" Label="Confirmation Number" tabindex="10" />
+        <MudTextField T="string" @bind-Value="@TransactionDetails.LiteralTransactionText" Label="Bank Transaction Text" tabindex="11" />
 
-        <RecurringTransactionComponent @bind-Value="TransactionDetails.RecurringTransaction" @bind-Value:event="ValueChanged" Index="11" NewName="@TransactionDetails.Name" Amount="@TransactionDetails.Amount" TransactionType="@TransactionDetails.TransactionType" />
+        <RecurringTransactionComponent @bind-Value="TransactionDetails.RecurringTransaction" @bind-Value:event="ValueChanged" Index="12" NewName="@TransactionDetails.Name" Amount="@TransactionDetails.Amount" TransactionType="@TransactionDetails.TransactionType" />
         
         @if(TransactionDetails.RecurringTransaction != null) 
         {
             <MudTooltip>
                 <ChildContent>
-                    <DatePickerComponent @bind-Value="TransactionDetails.DueDate" @bind-Value:event="ValueChanged" Index="12" Label="Expected Due Date" />
+                    <DatePickerComponent @bind-Value="TransactionDetails.DueDate" @bind-Value:event="ValueChanged" Index="13" Label="Expected Due Date" />
                 </ChildContent>
                 <TooltipContent>
                     <MudText Typo="Typo.h6">Real Due Date</MudText>
