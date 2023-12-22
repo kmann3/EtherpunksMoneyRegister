@@ -10,6 +10,16 @@ public class AccountService(ApplicationDbContext context)
 {
     private readonly ApplicationDbContext _context = context;
 
+    public async Task<Account> CreateAccount(Account account)
+    {
+        if(account.StartingBalance != account.CurrentBalance) account.CurrentBalance = account.StartingBalance;
+        _context.Accounts.Add(account);
+        await _context.SaveChangesAsync();
+
+        return account;
+    }
+
+
     /// <summary>
     /// Gets a list of all the accounts.
     /// This should be generally used for drop-downs.
