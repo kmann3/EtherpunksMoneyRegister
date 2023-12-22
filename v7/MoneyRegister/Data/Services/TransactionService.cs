@@ -61,9 +61,13 @@ public class TransactionService(ApplicationDbContext context)
         // By loading the most important bits now into memory, which really shouldn't be *too* much this allows us to pre-sort them and save time.
         var _transactions = await _context.Transactions
             .Include(x => x.Categories)
-            .Where(x => x.AccountId == request.AccountId && x.DeletedOnUTC == null).ToListAsync();
+            .Where(x => x.AccountId == request.AccountId && x.DeletedOnUTC == null)
+            .OrderByDescending(x => x.TransactionClearedUTC == null && x.TransactionPendingUTC != null)
+            .ThenByDescending(x => x.TransactionPendingUTC == null && x.TransactionClearedUTC == null)
+            .ThenByDescending(x => x.CreatedOnUTC)
+            .ToListAsync();
 
-        _transactions.Sort(new Transaction());
+        //_transactions.Sort(new Transaction());
 
         DataGridDTO.TransactionListDto returnData = new();
         returnData.ItemTotalCount = _transactions.Count;
