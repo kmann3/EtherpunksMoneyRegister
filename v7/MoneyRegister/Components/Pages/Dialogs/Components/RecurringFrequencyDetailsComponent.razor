@@ -16,35 +16,62 @@ else {
         case Enums.RecurringFrequencyType.Irregular:
             break;
         case Enums.RecurringFrequencyType.Yearly:
-            <MudDatePicker Label="Select Date" @bind-Date="Value.FrequencyDateValue" DisableToolbar="true" tabindex="@SecondIndex" />
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudDatePicker Label="Select Date" @bind-Date="Value.FrequencyDateValue" DisableToolbar="true" tabindex="@SecondIndex" />
+                </MudItem>
+            </MudGrid>
             break;
         case Enums.RecurringFrequencyType.Monthly:
-            <MudDatePicker Label="Select Day" @bind-Date="Value.FrequencyDateValue" DisableToolbar="true" tabindex="@SecondIndex" />
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudDatePicker Label="Select Day" @bind-Date="Value.FrequencyDateValue" DisableToolbar="true" tabindex="@SecondIndex" />
+                </MudItem>
+            </MudGrid>
             break;
         case Enums.RecurringFrequencyType.Weekly:
-            <MudSelect @bind-Value="Value.FrequencyDayOfWeekValue" tabindex="@SecondIndex">
-                @foreach (DayOfWeek? entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
-                {
-                    <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
-                }
-            </MudSelect>
-
+            <MudGrid>
+                <MudItem xs="4">
+                    <MudSelect @bind-Value="Value.FrequencyDayOfWeekValue" tabindex="@SecondIndex">
+                        @foreach (DayOfWeek? entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
+                        {
+                            <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
             break;
         case Enums.RecurringFrequencyType.XDays:
-            <MudNumericField @bind-Value="Value.FrequencyValue" Label="Day Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="@SecondIndex" />
+            <MudGrid>
+                <MudItem xs="3">
+                    <MudNumericField @bind-Value="Value.FrequencyValue" Label="Day Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="@SecondIndex" />
+                </MudItem>
+            </MudGrid>
             break;
         case Enums.RecurringFrequencyType.XMonths:
-            <MudNumericField @bind-Value="Value.FrequencyValue" Label="Month Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="@SecondIndex" />
-            <MudDatePicker Label="Select Day" @bind-Date="Value.FrequencyDateValue" DisableToolbar="true" tabindex="@ThirdIndex" />
+            <MudGrid>
+                <MudItem xs="3">
+                    <MudNumericField @bind-Value="Value.FrequencyValue" Label="Month Count" Variant="Variant.Text" Min="0" Max="100000" tabindex="@SecondIndex" />
+                </MudItem>
+                <MudItem xs="8">
+                    <MudDatePicker Label="Select Day" @bind-Date="Value.FrequencyDateValue" DisableToolbar="true" tabindex="@ThirdIndex" />
+                </MudItem>
+            </MudGrid>
             break;
         case Enums.RecurringFrequencyType.XWeekOnYDayOfWeek:
-            <MudNumericField @bind-Value="Value.FrequencyValue" Label="Week" Variant="Variant.Text" Min="0" Max="100000" tabindex="@SecondIndex" />
-            <MudSelect @bind-Value="Value.FrequencyDayOfWeekValue" tabindex="@ThirdIndex">
-                @foreach (DayOfWeek? entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
-                {
-                    <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
-                }
-            </MudSelect>
+            <MudGrid>
+                <MudItem xs="3">
+                    <MudNumericField @bind-Value="Value.FrequencyValue" Label="Week" Variant="Variant.Text" Min="0" Max="100000" tabindex="@SecondIndex" />
+                </MudItem>
+                <MudItem xs="8">
+                    <MudSelect @bind-Value="Value.FrequencyDayOfWeekValue" tabindex="@ThirdIndex">
+                        @foreach (DayOfWeek? entryType in ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).OrderBy(x => (int)x))
+                        {
+                            <MudSelectItem Value="@entryType">@entryType</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
             break;
         default:
             throw new Exception($"Unknown Frequency Type: {Value.RecurringFrequencyType}");

@@ -21,16 +21,27 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Name" Label="Name" tabindex="1" @ref="firstFocus" />
+        <MudGrid>
+            <MudItem xs="8">
+                <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Name" Label="Name" tabindex="1" @ref="firstFocus" />
+            </MudItem>
+            <MudItem xs="3">
+                <AmountComponent @bind-Value="RecurringTransactionDetails.Amount" @bind-Value:event="ValueChanged" Index="3" Label="Amount" />
+            </MudItem>
+        </MudGrid>
 
         <TransactionTypeSelectionComponent @bind-Value="@RecurringTransactionDetails.TransactionType" @bind-Value:event="ValueChanged" Index="2" />
-        <AmountComponent @bind-Value="RecurringTransactionDetails.Amount" @bind-Value:event="ValueChanged" Index="3" Label="Amount" />
+        
         <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Notes" Label="Notes" AutoGrow tabindex="4" />
 
         <CategorySelectionComponent @bind-Value="RecurringTransactionDetails.Categories" @bind-Value:event="ValueChanged" Index="5" />
         <RecurringFrequencyDetailsComponent @bind-Value="RecurringTransactionDetails" @bind-Value:event="ValueChanged" Index="7" />
-        <DatePickerComponent @bind-Value="RecurringTransactionDetails.NextDueDate" @bind-Value:event="ValueChanged" Index="9" Label="Next Due Date" />
-        <TransactionGroupComponent @bind-Value="RecurringTransactionDetails.Group" @bind-Value:event="ValueChanged" Index="10" />
+        <MudGrid>
+            <MudItem xs="6">
+                <DatePickerComponent @bind-Value="RecurringTransactionDetails.NextDueDate" @bind-Value:event="ValueChanged" Index="9" Label="Next Due Date" />
+            </MudItem>
+        </MudGrid>
+        <TransactionGroupComponent @bind-Value="RecurringTransactionDetails.Group" @bind-Value:event="ValueChanged" Index="10" />        
     </DialogContent>
     <DialogActions>
         @if (!IsNew)
