@@ -52,7 +52,10 @@ public class AccountService(ApplicationDbContext context)
         int outstandingCount = 0;
         decimal outstandingBalance = 0M;
 
-        foreach (var transaction in accountTransactions.OrderBy(x => x.CreatedOnUTC))
+        accountTransactions = accountTransactions.OrderBy(x => x.CreatedOnUTC).ToList();
+
+
+        foreach (var transaction in accountTransactions)
         {
             transaction.Balance = balance + transaction.Amount;
             balance = transaction.Balance;
