@@ -1,5 +1,8 @@
 ﻿@page "/"
+@inject Data.Services.AccountService MR_AccountService
 @inject Data.Services.DashboardService MR_DashboardService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
 @inject NavigationManager NavManager
 
 <PageTitle>Mann's Money Management - Dashboard</PageTitle>
@@ -19,6 +22,9 @@ else
     <MudDataGrid Items="@dashboardList" T="DashboardService.DashboardItem"
                  Filterable="false" SortMode="@SortMode.None" Groupable="false" Style="width: 700px;"
                  RowClick="@OnRowClick">
+        <ToolBarContent>
+            <MudButton Color="Color.Primary" OnClick="NewAccount">New Account</MudButton>
+        </ToolBarContent>
         <Columns>
             <PropertyColumn Property="x => x!.Name" />
             <PropertyColumn Property="x => x!.CurrentBalance" Format="C" />
@@ -34,16 +40,32 @@ else
     protected override async Task OnInitializedAsync()
     {
         // TODO: We should check to see if a bill is due or a paycheck was supposed to arrive.
-
-        dashboardList = await MR_DashboardService.GetDashboardItemsAsync();
-        if (dashboardList != null)
-        {
-            dashboardList = dashboardList.OrderBy(x => x.Name).ToList();
-        }
+        LoadGrid();
     }
 
     private void OnRowClick(DataGridRowClickEventArgs<DashboardService.DashboardItem> item)
     {
         NavManager.NavigateTo($"/account/{item.Item.Id}");
+    }
+
+    private async Task NewAccount()
+    {
+        var result = await DialogUtil.ShowAccountDialogAsync(DialogService, true, new Account());
+
+        if(!result.Canceled)
+        {
+            Account newAccount = (Account)result.Data;
+            await MR_AccountService.CreateAccount(newAccount);
+            Snackbar.Add($"{newAccount.Name} has been created.", Severity.Info);
+        }
+    }
+
+    private async Task LoadGrid()
+    {
+        dashboardList = await MR_DashboardService.GetDashboardItemsAsync();
+        if (dashboardList != null)
+        {
+            dashboardList = dashboardList.OrderBy(x => x.Name).ToList();
+        }
     }
 }
