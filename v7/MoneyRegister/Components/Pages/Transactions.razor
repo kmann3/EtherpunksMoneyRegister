@@ -23,6 +23,7 @@
     <p>
         <em>
             <h5>Balance: @accountDetails.CurrentBalance.ToString("N2")</h5><br />
+            <h5>Expected Balance: @expectedBalance.ToString("N2")</h5>
             Outstanding Balance: @accountDetails.OutstandingBalance.ToString("N2")<br />
             Outstanding Item Count: @accountDetails.OutstandingItemCount<br />
             Outstanding Summary: @accountDetails.OutstandingSummary<br />
@@ -118,6 +119,8 @@
     private MudDataGrid<Transaction>? _dataGrid;
     private Data.DataGridDTO.GridDataRequestDto _requestDto = new();
 
+    private decimal expectedBalance = 0M;
+
     private Func<Transaction?, string> _cellStylePendingFunc => x =>
     {
         string reservedTransactionColor = "E89C4B";
@@ -164,6 +167,7 @@
         accounts = new List<Account>();
         accounts.Add(accountDetails);
         _requestDto.AccountId = accountDetails.Id;
+        expectedBalance = accountDetails.CurrentBalance - accountDetails.OutstandingBalance;
     }
 
     private async Task<GridData<Transaction>> LoadGridData(GridState<Transaction> state)
