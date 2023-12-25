@@ -74,7 +74,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         string fakeDirectory = @"D:\src\fake_data\mmr";
         bool doFakeLoad = false;
 
-        if(Directory.Exists(fakeDirectory) && doFakeLoad)
+        if (Directory.Exists(fakeDirectory) && doFakeLoad)
         {
             if (!File.Exists($"{fakeDirectory}/{BackupService.AccountsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.AccountsJsonFileName}");
             if (!File.Exists($"{fakeDirectory}/{BackupService.CategoriesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.CategoriesJsonFileName}");
@@ -113,46 +113,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         };
 
         builder.Entity<ApplicationUser>().HasData(adminUser);
-
-        Account account_CU = new()
-        {
-            Name = "Generic Credit Union",
-            CreatedById = adminUser.Id,
-            CurrentBalance = 68.68M,
-            LastBalancedUTC = DateTime.UtcNow,
-            StartingBalance = 134M,
-            OutstandingItemCount = 0,
-            OutstandingBalance = 0M,
-        };
-
-        Category billsCategory = new() { Name = "bills" };
-        Category fastFoodCategory = new() { Name = "fast-food" };
-        Category gasCategory = new() { Name = "gas" };
-        Category groceriesCategory = new() { Name = "groceries" };
-        Category medicationCategory = new() { Name = "medications" };
-        Category streamingCategory = new() { Name = "streaming" };
-
-        builder.Entity<Category>().HasData(billsCategory);
-        builder.Entity<Category>().HasData(fastFoodCategory);
-        builder.Entity<Category>().HasData(gasCategory);
-        builder.Entity<Category>().HasData(groceriesCategory);
-        builder.Entity<Category>().HasData(medicationCategory);
-        builder.Entity<Category>().HasData(streamingCategory);
-
-        DateTime nextMonth = DateTime.UtcNow.AddMonths(1);
-        DateTime currentMonth = DateTime.UtcNow;
-
-        int month = nextMonth.Month;
-        int year = nextMonth.Year;
-
-        TransactionGroup transactionGroup_AllBills = new()
-        {
-            Name = "All Regular Bills",
-        };
-
-        builder.Entity<TransactionGroup>().HasData(transactionGroup_AllBills);
-
-        builder.Entity<Account>().HasData(account_CU);
     }
 
     private static void FillDbType<TEntity>(string fileLocation, ModelBuilder builder, JsonSerializerOptions options) where TEntity : class
@@ -165,15 +125,18 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         }
     }
 
-    private void AddRecTran(ModelBuilder builder, RecurringTransaction recTran, Guid billId)
+    private void AddRecTran(ModelBuilder builder, RecurringTransaction recTran, Guid? billId)
     {
         builder.Entity<RecurringTransaction>().HasData(recTran);
 
+        if (billId == null) return;
+
         Link_Category_RecurringTransaction linkCatTran = new()
         {
-            CategoryId = billId,
+            CategoryId = billId.Value,
             RecurringTransactionId = recTran.Id,
         };
+
 
         builder.Entity<Link_Category_RecurringTransaction>().HasData(linkCatTran);
     }
