@@ -73,7 +73,7 @@ public class Transaction : BasicTable<Transaction>, IEntityTypeConfiguration<Tra
     /// This is the literal bank line - the one that's not shortened.
     /// Example: CA 408 536 6000 ADOBE / Withdrawal @ CA 408 536 6000 ADOBE *PHOTOGPHY PUSADOBE *PHOTOGPH Trace #70108
     /// </summary>
-    public string LiteralTransactionText = string.Empty;
+    public string BankTransactionText = string.Empty;
 
     public override void Configure(EntityTypeBuilder<Transaction> builder)
     {

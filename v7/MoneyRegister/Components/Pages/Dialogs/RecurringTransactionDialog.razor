@@ -33,9 +33,11 @@
         <TransactionTypeSelectionComponent @bind-Value="@RecurringTransactionDetails.TransactionType" @bind-Value:event="ValueChanged" Index="2" />
         
         <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.Notes" Label="Notes" AutoGrow tabindex="4" />
+        <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.BankTransactionText" Label="Bank Transaction Text" AutoGrow tabindex="5" />
+        <MudTextField T="string" @bind-Value="@RecurringTransactionDetails.BankTransactionRegEx" Label="Bank Transaction RegEx" AutoGrow tabindex="6" />
 
-        <CategorySelectionComponent @bind-Value="RecurringTransactionDetails.Categories" @bind-Value:event="ValueChanged" Index="5" />
-        <RecurringFrequencyDetailsComponent @bind-Value="RecurringTransactionDetails" @bind-Value:event="ValueChanged" Index="7" />
+        <CategorySelectionComponent @bind-Value="RecurringTransactionDetails.Categories" @bind-Value:event="ValueChanged" Index="7" />
+        <RecurringFrequencyDetailsComponent @bind-Value="RecurringTransactionDetails" @bind-Value:event="ValueChanged" Index="8" />
         <MudGrid>
             <MudItem xs="6">
                 <DatePickerComponent @bind-Value="RecurringTransactionDetails.NextDueDate" @bind-Value:event="ValueChanged" Index="9" Label="Next Due Date" />

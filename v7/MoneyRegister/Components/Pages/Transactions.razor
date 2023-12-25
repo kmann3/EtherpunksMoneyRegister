@@ -164,6 +164,13 @@
         accounts.Add(accountDetails);
         _requestDto.AccountId = accountDetails.Id;
         expectedBalance = accountDetails.CurrentBalance - accountDetails.OutstandingBalance;
+        StateHasChanged();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await OnInitializedAsync();
+        if(_dataGrid != null) await _dataGrid.ReloadServerData();
     }
 
     private async Task<GridData<Transaction>> LoadGridData(GridState<Transaction> state)

@@ -1,5 +1,5 @@
 ﻿@implements IDisposable
-@inject NavigationManager NavigationManager
+@inject NavigationManager NavManager
 @inject Data.Services.DashboardService MR_DashboardService
 
 <MudPaper Width="250px" Class="py-3" Elevation="0">
@@ -25,8 +25,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-        NavigationManager.LocationChanged += OnLocationChanged;
+        currentUrl = NavManager.ToBaseRelativePath(NavManager.Uri);
+        NavManager.LocationChanged += OnLocationChanged;
 
         dashboardList = await MR_DashboardService.GetDashboardItemsAsync();
         if (dashboardList != null)
@@ -37,13 +37,13 @@
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        currentUrl = NavManager.ToBaseRelativePath(e.Location);
         StateHasChanged();
     }
 
     public void Dispose()
     {
-        NavigationManager.LocationChanged -= OnLocationChanged;
+        NavManager.LocationChanged -= OnLocationChanged;
     }
 }
 

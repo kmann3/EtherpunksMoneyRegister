@@ -39,33 +39,28 @@ else {
 </MudDataGrid>
 <MudChart ChartType="ChartType.Line" ChartSeries="@Series" @bind-SelectedIndex="Index" XAxisLabels="@XAxisLabels" ChartOptions="@_options" Width="100%" Height="350px"></MudChart>
 <hr />
-<MudTextField T="string" @bind-Value="@recurringTransaction.Name" Label="Name" tabindex="1" />
+<MudGrid>
+    <MudItem xs="8">
+        <MudTextField T="string" @bind-Value="@recurringTransaction.Name" Label="Name" tabindex="1" />
+    </MudItem>
+    <MudItem xs="3">
+        <AmountComponent @bind-Value="recurringTransaction.Amount" @bind-Value:event="ValueChanged" Index="3" Label="Amount" />
+    </MudItem>
+</MudGrid>
 <TransactionTypeSelectionComponent @bind-Value="@recurringTransaction.TransactionType" @bind-Value:event="ValueChanged" Index="2" />
-<MudNumericField T="decimal" @bind-Value="recurringTransaction.Amount" Immediate="false" Label="Amount" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="3" />
 <MudTextField T="string" @bind-Value="@recurringTransaction.Notes" Label="Notes" AutoGrow tabindex="4" />
+<MudTextField T="string" @bind-Value="@recurringTransaction.BankTransactionText" Label="Bank Transaction Text" AutoGrow tabindex="5" />
+<MudTextField T="string" @bind-Value="@recurringTransaction.BankTransactionRegEx" Label="Bank Transaction RegEx" AutoGrow tabindex="6" />
 
-<div class="d-flex">
-    <MudSelect T="Category" Label="Categories" @bind-SelectedValues="selectedCategories" tabindex="5"
-               AdornmentIcon="@Icons.Material.Filled.Search" AnchorOrigin="Origin.BottomCenter" MultiSelection="true" Variant="Variant.Outlined"
-               MultiSelectionTextFunc="@(new Func<List<string>, string>(GetSelectedItemsText))">
-        @foreach (var item in categories)
-        {
-            <MudSelectItem T="Category" Value="@item">@item.Name</MudSelectItem>
-        }
-    </MudSelect>
-    <MudButton OnClick="NewCategoryDialog" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" />
-</div>
+<CategorySelectionComponent @bind-Value="recurringTransaction.Categories" @bind-Value:event="ValueChanged" Index="7" />
 
 <RecurringFrequencyDetailsComponent @bind-Value="recurringTransaction" @bind-Value:event="ValueChanged" Index="7" />
 
-<MudDatePicker @ref="_nextDueDatePicker" Label="Next Due Date" Editable="true" @bind-Date="recurringTransaction.NextDueDate" tabindex="9" PickerVariant="PickerVariant.Dialog">
-    <PickerActions>
-        <MudButton Class="mr-auto align-self-start" OnClick="@(() => _nextDueDatePicker.Clear())">Clear</MudButton>
-        <MudButton OnClick="@(() => _nextDueDatePicker.GoToDate(DateTime.UtcNow, true))">Today</MudButton>
-        <MudButton OnClick="@(() => _nextDueDatePicker.Close(false))">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="@(() => _nextDueDatePicker.Close())">Ok</MudButton>
-    </PickerActions>
-</MudDatePicker>
+<MudGrid>
+    <MudItem xs="6">
+        <DatePickerComponent @bind-Value="recurringTransaction.NextDueDate" @bind-Value:event="ValueChanged" Index="9" Label="Next Due Date" />
+    </MudItem>
+</MudGrid>
 <TransactionGroupComponent @bind-Value="recurringTransaction.Group" @bind-Value:event="ValueChanged" Index="10" />
 
 <MudButton Color="Color.Error" OnClick="Delete">Delete</MudButton>

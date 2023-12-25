@@ -57,7 +57,7 @@
         
         <text><br />For statistical purposes:<br /></text>
         <MudTextField T="string" @bind-Value="@TransactionDetails.ConfirmationNumber" Label="Confirmation Number" tabindex="10" />
-        <MudTextField T="string" @bind-Value="@TransactionDetails.LiteralTransactionText" Label="Bank Transaction Text" tabindex="11" />
+        <MudTextField T="string" @bind-Value="@TransactionDetails.BankTransactionText" Label="Bank Transaction Text" tabindex="11" />
 
         <RecurringTransactionComponent @bind-Value="TransactionDetails.RecurringTransaction" @bind-Value:event="ValueChanged" Index="12" NewName="@TransactionDetails.Name" Amount="@TransactionDetails.Amount" TransactionType="@TransactionDetails.TransactionType" />
         

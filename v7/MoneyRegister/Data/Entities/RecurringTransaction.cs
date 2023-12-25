@@ -21,6 +21,16 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
 
     public string Notes { get; set; } = string.Empty;
 
+    /// <summary>
+    /// This is the literal bank line - the one that's not shortened.
+    /// Example: CA 408 536 6000 ADOBE / Withdrawal @ CA 408 536 6000 ADOBE *PHOTOGPHY PUSADOBE *PHOTOGPH Trace #70108
+    /// </summary>
+    public string BankTransactionText { get; set; } = string.Empty;
+    /// <summary>
+    /// A regex match
+    /// </summary>
+    public string BankTransactionRegEx { get; set; } = string.Empty;
+
     [JsonIgnore]
     public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
 
@@ -39,7 +49,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
         {
             return RecurringFrequencyType switch
             {
-                Enums.RecurringFrequencyType.Yearly             => $"Yearly on {FrequencyDateValue.ToString().Ordinalize()}", // TBI: I need to test this.
+                Enums.RecurringFrequencyType.Yearly             => $"Yearly on {FrequencyDateValue!.Value:MMM} {FrequencyDateValue.Value.Day.ToString().Ordinalize()}", // TBI: I need to test this.
                 Enums.RecurringFrequencyType.Monthly            => $"{FrequencyDateValue!.Value.Day.ToString().Ordinalize()} of the month",
                 Enums.RecurringFrequencyType.Weekly             => $"Every {FrequencyDayOfWeekValue}",
                 Enums.RecurringFrequencyType.XMonths            => $"Every {FrequencyValue} month{(FrequencyValue == 1 ? "" : "s")} on the {FrequencyDateValue!.Value.Day.ToString().Ordinalize()}",
