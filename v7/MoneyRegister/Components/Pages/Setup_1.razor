@@ -1,0 +1,79 @@
+﻿@page "/setup"
+@inject Data.Services.AccountService MR_AccountService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+<h3>Setup</h3>
+
+<text>To begin - let's add some accounts:<br /></text>
+
+@if(accounts == null)
+{
+    <p><em>Loading...</em></p>
+} else
+{
+<MudDataGrid T="Account" Items="@accounts"
+                Filterable="true" Groupable="false" Hover="true" Striped="true" Virtualize="true" Bordered="true" Dense="true"
+                FilterMode="@DataGridFilterMode.ColumnFilterRow"
+                SortMode="@SortMode.None" RowsPerPage="15"
+                RowClick="@OnRowClick">
+    <ToolBarContent>
+        <MudButton Color="Color.Primary" OnClick="AddAccount">Add Account</MudButton>
+    </ToolBarContent>
+    <Columns>
+        <PropertyColumn Property="x => x.Name" />
+        <PropertyColumn Property="x => x.StartingBalance" Format="C" />
+        <PropertyColumn Property="x => x.AccountNumber" />
+        <PropertyColumn Property="x => x.Notes" Title="Notes" />
+    </Columns>
+</MudDataGrid>
+}
+
+
+@code {
+    private List<Account> accounts { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        accounts = await MR_AccountService.GetAllAccountsAsync();
+    }
+
+    private async Task AddAccount()
+    {
+        var result = await DialogUtil.ShowAccountDialogAsync(DialogService, true, new Account());
+
+        if(!result.Canceled)
+        {
+            var newAccount = (Account)result.Data;
+
+            MR_AccountService.CreateAccount(newAccount);
+            accounts.Add(newAccount);
+            accounts = accounts.OrderBy(x => x.Name).ToList();
+            Snackbar.Add($"{newAccount.Name} has been created.", Severity.Info);
+        }
+    }
+
+    private async Task OnRowClick(DataGridRowClickEventArgs<Account> args)
+    {
+        var result = await DialogUtil.ShowAccountDialogAsync(DialogService, true, args.Item);
+
+        if (!result.Canceled)
+        {
+            var account = (Account)result.Data;
+
+            if (account.DeletedOnUTC == null)
+            {
+                await MR_AccountService.UpdateAccountAsync(account);
+                accounts = accounts.OrderBy(x => x.Name).ToList();
+                Snackbar.Add($"{account.Name} has been updated.", Severity.Info);
+            } else
+            {
+                // Delete account
+
+                await MR_AccountService.DeleteAccountAsync(account);
+                accounts.Remove(account);
+                Snackbar.Add($"{account.Name} has been deleted.", Severity.Warning);
+            }
+        }
+    }
+}

@@ -67,5 +67,7 @@ else
         {
             dashboardList = dashboardList.OrderBy(x => x.Name).ToList();
         }
+
+        if (dashboardList!.Count == 0) NavManager.NavigateTo($"/setup");
     }
 }

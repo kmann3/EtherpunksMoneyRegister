@@ -10,14 +10,6 @@ public class AccountService(ApplicationDbContext context)
 {
     private readonly ApplicationDbContext _context = context;
 
-    public async Task GetAllNotifications()
-    {
-        // Calculate if we are LATE on a bill
-
-        // Calculate if we have an upcoming bill due - something in the next 15 days.
-
-    }
-
     public async Task<Account> CreateAccount(Account account)
     {
         if(account.StartingBalance != account.CurrentBalance) account.CurrentBalance = account.StartingBalance;
@@ -27,6 +19,11 @@ public class AccountService(ApplicationDbContext context)
         return account;
     }
 
+    public async Task DeleteAccountAsync(Account account)
+    {
+        _context.Accounts.Remove(account);
+        await _context.SaveChangesAsync();
+    }
 
     /// <summary>
     /// Gets a list of all the accounts.
@@ -89,6 +86,12 @@ public class AccountService(ApplicationDbContext context)
         account.OutstandingBalance = outstandingBalance;
         account.OutstandingItemCount = outstandingCount;
 
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAccountAsync(Account account)
+    {
+        _context.Attach(account);
         await _context.SaveChangesAsync();
     }
 }
