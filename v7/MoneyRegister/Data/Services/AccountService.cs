@@ -32,7 +32,10 @@ public class AccountService(ApplicationDbContext context)
     /// <returns></returns>
     public async Task<List<Account>> GetAllAccountsAsync()
     {
-        return await _context.Accounts.OrderBy(x => x.Name).ToListAsync();
+        List<Account> accounts = await _context.Accounts.OrderBy(x => x.Name).ToListAsync();
+
+        accounts ??= new List<Account>();
+        return accounts;
     }
 
     /// <summary>
