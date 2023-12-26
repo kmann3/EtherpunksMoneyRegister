@@ -5,7 +5,13 @@
 @inject NavigationManager NavManager
 @inject ISnackbar Snackbar
 
-<h3>Setup</h3>
+<PageTitle>Money Register - Setup Accounts</PageTitle>
+<h3>Setup - Accounts</h3>
+
+@if (accounts != null && accounts.Count > 0)
+{
+    <MudLink OnClick="((x => MoveOn()))">Go to Step 2 - Income &#8594;</MudLink><br />
+}
 
 <text>To begin - let's add some accounts:<br /></text>
 
@@ -27,11 +33,22 @@
         <PropertyColumn Property="x => x.StartingBalance" Format="C" />
         <PropertyColumn Property="x => x.AccountNumber" />
         <PropertyColumn Property="x => x.Notes" Title="Notes" />
+            <TemplateColumn CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudStack Row>
+                        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Error" OnClick="@(() => this.DeleteAccount(context.Item))">Delete</MudButton>
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
     </Columns>
 </MudDataGrid>
 }
 
-<MudLink OnClick="((x => MoveOn()))">Go to Step 2 - Income --></MudLink>
+@if (accounts != null && accounts.Count > 0)
+{
+    <MudLink OnClick="((x => MoveOn()))">Go to Step 2 - Income &#8594;</MudLink><br />
+}
+
 
 @code {
     private List<Account> accounts { get; set; } = null;
@@ -48,6 +65,7 @@
         if(!result.Canceled)
         {
             var newAccount = (Account)result.Data;
+            newAccount.LastBalancedUTC = DateTime.UtcNow;
 
             await MR_AccountService.CreateAccount(newAccount);
             accounts.Add(newAccount);
@@ -71,6 +89,7 @@
                 Snackbar.Add($"{account.Name} has been updated.", Severity.Info);
             } else
             {
+                account.LastBalancedUTC = DateTime.UtcNow;
                 await MR_AccountService.DeleteAccountAsync(account);
                 accounts.Remove(account);
                 Snackbar.Add($"{account.Name} has been deleted.", Severity.Warning);
@@ -83,11 +102,20 @@
         if(accounts.Count == 0)
         {
             // TBI: Check to see if they really meant to have zero accounts
-            
+
             throw new NotImplementedException("TBI: No accounts added. Add dialog to check if this is on purpose.");
         } else
         {
             NavManager.NavigateTo($"/setup_2");
         }
+    }
+
+    private async Task DeleteAccount(Account account)
+    {
+        await MR_AccountService.DeleteAccountAsync(account);
+        accounts.Remove(account);
+        accounts = accounts.OrderBy(x => x.Name).ToList();
+        Snackbar.Add($"{account.Name} has been deleted.", Severity.Warning);
+        
     }
 }
