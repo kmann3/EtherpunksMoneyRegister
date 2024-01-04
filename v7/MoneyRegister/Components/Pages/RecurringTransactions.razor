@@ -66,7 +66,7 @@ else
     private List<Data.Entities.RecurringTransaction> recurringTransactions;
     protected override async Task OnInitializedAsync()
     {
-        recurringTransactions = (await MR_RecTranService.GetAllRecurringTransactionsAsync()).OrderBy(x => x.TransactionType).ThenBy(x => x.Name).ToList();
+        recurringTransactions = (await MR_RecTranService.GetAllRecurringTransactionsAsync(null)).OrderBy(x => x.TransactionType).ThenBy(x => x.Name).ToList();
     }
 
     private async void OnRowClick(DataGridRowClickEventArgs<Data.Entities.RecurringTransaction> item)

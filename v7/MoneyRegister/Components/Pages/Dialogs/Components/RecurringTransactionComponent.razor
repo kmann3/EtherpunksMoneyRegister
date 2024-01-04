@@ -45,7 +45,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        recurringTransactionsList = await MR_RecurringTransactionService.GetAllRecurringTransactionsAsync();
+        recurringTransactionsList = await MR_RecurringTransactionService.GetAllRecurringTransactionsAsync(null);
     }
 
     private async Task NewRecurringTransactionDialog()

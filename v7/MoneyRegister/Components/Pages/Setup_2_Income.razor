@@ -1,9 +1,110 @@
 ﻿@page "/setup_2"
+@inject Data.Services.RecurringTransactionService MR_RecurringTransactionService
+@inject IDialogService DialogService
+@inject NavigationManager NavManager
+@inject ISnackbar Snackbar
 
-<h3>Setup</h3>
+<PageTitle>Money Register - Setup Income</PageTitle>
+<h3>Setup - Income</h3>
 
-<text>To begin - let's add some accounts:<br /></text>
+<text>Now let's add some accounts:<br /></text>
+@if (income != null && income.Count > 0)
+{
+    <MudLink OnClick="((x => MoveOn()))">Go to Step 3 - Bills &#8594;</MudLink><br />
+}
+
+<text>To begin - let's add some income:<br /></text>
+
+@if (income == null)
+{
+    <p><em>Loading...</em></p>
+} else
+{
+    <MudDataGrid T="RecurringTransaction" Items="@income"
+                 Filterable="true" Groupable="false" Hover="true" Striped="true" Virtualize="true" Bordered="true" Dense="true"
+                 FilterMode="@DataGridFilterMode.ColumnFilterRow"
+                 SortMode="@SortMode.None" RowsPerPage="15"
+                 RowClick="@OnRowClick">
+        <ToolBarContent>
+            <MudButton Color="Color.Primary" OnClick="AddIncome">Add Income</MudButton>
+        </ToolBarContent>
+        <Columns>
+            <PropertyColumn Property="x => x.Name" />
+            <PropertyColumn Property="x => x.Amount" Format="C" />
+            <PropertyColumn Property="x => x.FrequencyValue" />
+            <PropertyColumn Property="x => x.Notes" Title="Notes" />
+            <TemplateColumn CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudStack Row>
+                        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Error" OnClick="@(() => this.DeleteIncome(context.Item))">Delete</MudButton>
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+    </MudDataGrid>
+}
+
+@if (income != null && income.Count > 0)
+{
+    <MudLink OnClick="((x => MoveOn()))">Go to Step 3 - Bills &#8594;</MudLink><br />
+}
 
 @code {
+    private List<RecurringTransaction> income { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        income = await MR_RecurringTransactionService.GetAllRecurringTransactionsAsync(Enums.TransactionType.Credit);
+    }
+
+    private async Task OnRowClick(DataGridRowClickEventArgs<RecurringTransaction> args)
+    {
+        var result = await DialogUtil.ShowRecurringTransactionDialogAsync(DialogService, true, args.Item);
+
+        if (!result.Canceled)
+        {
+            var incomeItem = (RecurringTransaction)result.Data;
+
+            // if (incomeItem.DeletedOnUTC == null)
+            // {
+            //     await MR_AccountService.UpdateAccountAsync(account);
+            //     accounts = accounts.OrderBy(x => x.Name).ToList();
+            //     Snackbar.Add($"{account.Name} has been updated.", Severity.Info);
+            // }
+            // else
+            // {
+            //     account.LastBalancedUTC = DateTime.UtcNow;
+            //     await MR_AccountService.DeleteAccountAsync(account);
+            //     accounts.Remove(account);
+            //     Snackbar.Add($"{account.Name} has been deleted.", Severity.Warning);
+            // }
+        }
+    }
+
+    private void MoveOn()
+    {
+        if (income.Count == 0)
+        {
+            // TBI: Check to see if they really meant to have zero accounts
+
+            throw new NotImplementedException("TBI: No income added. Add dialog to check if this is on purpose.");
+        }
+        else
+        {
+            NavManager.NavigateTo($"/setup_3");
+        }
+    }
+
+    private async Task DeleteIncome(RecurringTransaction incomeItem)
+    {
+        // await MR_AccountService.DeleteAccountAsync(account);
+        // accounts.Remove(account);
+        // accounts = accounts.OrderBy(x => x.Name).ToList();
+        // Snackbar.Add($"{account.Name} has been deleted.", Severity.Warning);
+    }
+
+    private async Task AddIncome()
+    {
+        
+    }
 }

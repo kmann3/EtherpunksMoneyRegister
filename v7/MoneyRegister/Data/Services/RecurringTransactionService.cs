@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyRegister.Data.Entities;
+using MoneyRegister.Data.Entities.Base;
 
 namespace MoneyRegister.Data.Services;
 
@@ -7,14 +8,34 @@ public class RecurringTransactionService(ApplicationDbContext context)
 {
     private ApplicationDbContext _context = context;
 
-    public async Task<List<RecurringTransaction>> GetAllRecurringTransactionsAsync()
+    /// <summary>
+    /// Gets a list of all transaction types.
+    /// </summary>
+    /// <param name="transactionType">If null, returns everything. Otherwise returns the type requested.</param>
+    /// <returns></returns>
+    public async Task<List<RecurringTransaction>> GetAllRecurringTransactionsAsync(Enums.TransactionType? transactionType)
     {
-        return await _context.RecurringTransactions
-            .Include(x => x.Group)
-            .Include(x => x.Categories)
-            .Include(x => x.PreviousTransactions) // TBI: This might be a bad idea since we only use it for a count. Ideally we should just pull the count. Will need to make a custom class for this though.
-            .OrderBy(x => x.TransactionType).ThenBy(x => x.Name)
-            .ToListAsync();
+        List<RecurringTransaction> list;
+        if (transactionType == null)
+        {
+            list = await _context.RecurringTransactions
+                .Include(x => x.Group)
+                .Include(x => x.Categories)
+                .Include(x => x.PreviousTransactions) // TBI: This might be a bad idea since we only use it for a count. Ideally we should just pull the count. Will need to make a custom class for this though.
+                .OrderBy(x => x.TransactionType).ThenBy(x => x.Name)
+                .ToListAsync();
+        } else
+        {
+            list = await _context.RecurringTransactions
+                .Include(x => x.Group)
+                .Include(x => x.Categories)
+                .Include(x => x.PreviousTransactions) // TBI: This might be a bad idea since we only use it for a count. Ideally we should just pull the count. Will need to make a custom class for this though.
+                .Where(x => x.TransactionType == transactionType)
+                .OrderBy(x => x.TransactionType).ThenBy(x => x.Name)
+                .ToListAsync();
+        }
+
+        return list;
     }
 
     public async Task<RecurringTransaction> GetRecurringTransactionAsync(Guid id)
