@@ -431,7 +431,7 @@ namespace MoneyRegister.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedOn", "Email", "EmailConfirmed", "FirstName", "IsDisabled", "LastName", "LocalTimeZone", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "00000000-0000-0000-0000-000000000000", 0, "05c494a7-d016-4f7f-b39f-e760f8824749", new DateTime(2023, 12, 25, 15, 56, 49, 520, DateTimeKind.Utc).AddTicks(6512), "", false, "admin", false, "admin", "Central Standard Time", false, null, null, null, null, null, false, "7a97f546-fd29-4cba-b22b-585cf31cb366", false, "Admin" });
+                values: new object[] { "00000000-0000-0000-0000-000000000000", 0, "b476fc71-9a03-461a-baaf-132bca4da1a2", new DateTime(2024, 1, 14, 5, 43, 26, 334, DateTimeKind.Utc).AddTicks(8008), "", false, "admin", false, "admin", "Central Standard Time", false, null, null, null, null, null, false, "cb6be342-6cec-4dbc-8778-d65c9f473473", false, "Admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_CreatedById",

@@ -18,8 +18,8 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField T="string" @bind-Value="@AccountDetails.Name" Label="Name" tabindex="1" @ref="firstFocus" Required="true" RequiredError="An account name is required" />
-        <AmountComponent @bind-Value="AccountDetails.StartingBalance" @bind-Value:event="ValueChanged" Index="2" Label="Starting Balance" IsRequired="true" />
+        <MudTextField T="string" @bind-Value="@AccountDetails.Name" Label="Name" tabindex="1" @ref="firstFocus" Required="true" RequiredError="An account name is required" OnKeyUp="SubmitByKeyPress" />
+        <AmountComponent @bind-Value="AccountDetails.StartingBalance" @bind-Value:event="ValueChanged" Index="2" Label="Starting Balance" IsRequired="true" OnKeyUp="SubmitByKeyPress" />
         <!-- Account Number -->
         <!-- Interest Rate -->
         <!-- Notes -->
@@ -69,5 +69,13 @@
 
         AccountDetails.DeletedOnUTC = DateTime.UtcNow;
         MudDialog.Close(DialogResult.Ok(AccountDetails));
+    }
+
+    private void SubmitByKeyPress(KeyboardEventArgs args)
+    {
+        if (args.Code == "Enter" || args.Code == "NumpadEnter")
+        {
+            Save();
+        }
     }
 }

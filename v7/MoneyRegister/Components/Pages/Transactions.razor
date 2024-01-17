@@ -85,9 +85,9 @@
                 </TemplateColumn>
                 <TemplateColumn Title="Files">
                     <CellTemplate>
-                        @if (context.Item.FileCount > 0)
+                        @if (context.Item.Files.Count() > 0)
                         {
-                            <text>@context.Item.FileCount @(@context.Item.FileCount == 1 ? "file" : "files")</text>
+                            <text>@context.Item.Files.Count @(@context.Item.Files.Count == 1 ? "file" : "files")</text>
                         }
                     </CellTemplate>
                 </TemplateColumn>

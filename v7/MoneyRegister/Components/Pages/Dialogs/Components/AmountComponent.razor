@@ -2,11 +2,11 @@
 
 @if (IsRequired)
 {
-    <MudNumericField T="decimal" @bind-Value="Value" Immediate="false" Label="@Label" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="@Index" Required="true" RequiredError="An amount is required" />
+    <MudNumericField T="decimal" @bind-Value="Value" Immediate="false" Label="@Label" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="@Index" Required="true" RequiredError="An amount is required" OnKeyUp="KeyPressUp" />
 }
 else
 {
-    <MudNumericField T="decimal" @bind-Value="Value" Immediate="false" Label="@Label" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="@Index" />
+    <MudNumericField T="decimal" @bind-Value="Value" Immediate="false" Label="@Label" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-US")" HideSpinButtons="true" tabindex="@Index" OnKeyUp="KeyPressUp" />
 }
 @code {
     [Parameter]
@@ -32,10 +32,19 @@ else
     [Parameter] public EventCallback<decimal> ValueChanged { get; set; }
     [Parameter] public string Label { get; set; }
     [Parameter] public bool IsRequired { get; set; } = false;
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
 
     private decimal _value;
 
     protected override async Task OnInitializedAsync()
     {
+    }
+
+    public void KeyPressUp(KeyboardEventArgs args)
+    {
+        if (args.Code == "Enter" || args.Code == "NumpadEnter")
+        {
+            OnKeyUp.InvokeAsync(args);
+        }
     }
 }

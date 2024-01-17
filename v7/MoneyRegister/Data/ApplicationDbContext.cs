@@ -71,34 +71,34 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     private void SeedDatabase(ModelBuilder builder)
     {
-        string fakeDirectory = @"D:\src\fake_data\mmr";
-        bool doFakeLoad = false;
+        //string fakeDirectory = @"D:\src\fake_data\mmr";
+        //bool doFakeLoad = false;
 
-        if (Directory.Exists(fakeDirectory) && doFakeLoad)
-        {
-            if (!File.Exists($"{fakeDirectory}/{BackupService.AccountsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.AccountsJsonFileName}");
-            if (!File.Exists($"{fakeDirectory}/{BackupService.CategoriesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.CategoriesJsonFileName}");
-            if (!File.Exists($"{fakeDirectory}/{BackupService.FilesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.FilesJsonFileName}");
-            if (!File.Exists($"{fakeDirectory}/{BackupService.RecurringTransactionsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.RecurringTransactionsJsonFileName}");
-            if (!File.Exists($"{fakeDirectory}/{BackupService.TransactionsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.TransactionsJsonFileName}");
-            if (!File.Exists($"{fakeDirectory}/{BackupService.TransactionGroupsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.TransactionGroupsJsonFileName}");
-            if (!File.Exists($"{fakeDirectory}/{BackupService.UsersJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.UsersJsonFileName}");
+        //if (Directory.Exists(fakeDirectory) && doFakeLoad)
+        //{
+        //    if (!File.Exists($"{fakeDirectory}/{BackupService.AccountsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.AccountsJsonFileName}");
+        //    if (!File.Exists($"{fakeDirectory}/{BackupService.CategoriesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.CategoriesJsonFileName}");
+        //    if (!File.Exists($"{fakeDirectory}/{BackupService.FilesJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.FilesJsonFileName}");
+        //    if (!File.Exists($"{fakeDirectory}/{BackupService.RecurringTransactionsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.RecurringTransactionsJsonFileName}");
+        //    if (!File.Exists($"{fakeDirectory}/{BackupService.TransactionsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.TransactionsJsonFileName}");
+        //    if (!File.Exists($"{fakeDirectory}/{BackupService.TransactionGroupsJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.TransactionGroupsJsonFileName}");
+        //    if (!File.Exists($"{fakeDirectory}/{BackupService.UsersJsonFileName}")) throw new FileNotFoundException($"Json file not found: {BackupService.UsersJsonFileName}");
 
-            string jsonString = string.Empty;
-            var options = new JsonSerializerOptions { WriteIndented = true };
+        //    string jsonString = string.Empty;
+        //    var options = new JsonSerializerOptions { WriteIndented = true };
 
-            FillDbType<Category>($"{fakeDirectory}/{BackupService.CategoriesJsonFileName}", builder, options);
-            FillDbType<ApplicationUser>($"{fakeDirectory}/{BackupService.UsersJsonFileName}", builder, options);
-            FillDbType<Account>($"{fakeDirectory}/{BackupService.AccountsJsonFileName}", builder, options);
-            FillDbType<TransactionGroup>($"{fakeDirectory}/{BackupService.TransactionGroupsJsonFileName}", builder, options);
-            FillDbType<RecurringTransaction>($"{fakeDirectory}/{BackupService.RecurringTransactionsJsonFileName}", builder, options);
-            FillDbType<Transaction>($"{fakeDirectory}/{BackupService.TransactionsJsonFileName}", builder, options);
-            FillDbType<Link_Category_Transaction>($"{fakeDirectory}/{BackupService.Link_category_transactionFileName}", builder, options);
-            FillDbType<Link_Category_RecurringTransaction>($"{fakeDirectory}/{BackupService.Link_category_recurringTransactionFileName}", builder, options);
-            FillDbType<TransactionFile>($"{fakeDirectory}/{BackupService.FilesJsonFileName}", builder, options);
+        //    FillDbType<Category>($"{fakeDirectory}/{BackupService.CategoriesJsonFileName}", builder, options);
+        //    FillDbType<ApplicationUser>($"{fakeDirectory}/{BackupService.UsersJsonFileName}", builder, options);
+        //    FillDbType<Account>($"{fakeDirectory}/{BackupService.AccountsJsonFileName}", builder, options);
+        //    FillDbType<TransactionGroup>($"{fakeDirectory}/{BackupService.TransactionGroupsJsonFileName}", builder, options);
+        //    FillDbType<RecurringTransaction>($"{fakeDirectory}/{BackupService.RecurringTransactionsJsonFileName}", builder, options);
+        //    FillDbType<Transaction>($"{fakeDirectory}/{BackupService.TransactionsJsonFileName}", builder, options);
+        //    FillDbType<Link_Category_Transaction>($"{fakeDirectory}/{BackupService.Link_category_transactionFileName}", builder, options);
+        //    FillDbType<Link_Category_RecurringTransaction>($"{fakeDirectory}/{BackupService.Link_category_recurringTransactionFileName}", builder, options);
+        //    FillDbType<TransactionFile>($"{fakeDirectory}/{BackupService.FilesJsonFileName}", builder, options);
 
-            return;
-        }
+        //    return;
+        //}
 
         // If there is no fake data or data to restore from (probably private stuff), then use some test examples.
 

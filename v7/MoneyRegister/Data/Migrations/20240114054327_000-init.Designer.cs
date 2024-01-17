@@ -11,7 +11,7 @@ using MoneyRegister.Data;
 namespace MoneyRegister.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231225155650_000-init")]
+    [Migration("20240114054327_000-init")]
     partial class _000init
     {
         /// <inheritdoc />
@@ -302,8 +302,8 @@ namespace MoneyRegister.Data.Migrations
                         {
                             Id = "00000000-0000-0000-0000-000000000000",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "05c494a7-d016-4f7f-b39f-e760f8824749",
-                            CreatedOn = new DateTime(2023, 12, 25, 15, 56, 49, 520, DateTimeKind.Utc).AddTicks(6512),
+                            ConcurrencyStamp = "b476fc71-9a03-461a-baaf-132bca4da1a2",
+                            CreatedOn = new DateTime(2024, 1, 14, 5, 43, 26, 334, DateTimeKind.Utc).AddTicks(8008),
                             Email = "",
                             EmailConfirmed = false,
                             FirstName = "admin",
@@ -312,7 +312,7 @@ namespace MoneyRegister.Data.Migrations
                             LocalTimeZone = "Central Standard Time",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7a97f546-fd29-4cba-b22b-585cf31cb366",
+                            SecurityStamp = "cb6be342-6cec-4dbc-8778-d65c9f473473",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
