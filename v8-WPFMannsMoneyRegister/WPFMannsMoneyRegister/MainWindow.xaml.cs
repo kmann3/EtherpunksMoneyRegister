@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using System.Configuration;
+using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,11 +30,45 @@ namespace WPFMannsMoneyRegister
 
         public async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // Might still have to do Task.Run
+            await LoadData(sender, e);
+        }
+
+        private async void TransactionListUserControl_TransactionSelected(object sender, Data.Entities.Transaction e)
+        {
+            await transactionItem.LoadTransaction(e);
+        }
+
+        private void LoadSelectedDates(object sender, RoutedEventArgs e)
+        {
+            transactionList.UpdateTransactionsFromDates(Guid.Parse(transactionAccountComboBox.SelectedValue.ToString() ?? Guid.Empty.ToString()), startDatePicker.DisplayDate, endDatePicker.DisplayDate);
+        }
+
+        private async void LoadDatabaseButton_Click(object sender, RoutedEventArgs e)
+        {
+            //AppViewModel.LoadDatabase(@$"d:\src\3MMR.sqlite3");
+            //await LoadData(sender, e);
+        }
+
+        private async Task LoadData(object sender, RoutedEventArgs e)
+        {
+            // See if we have a specified location. If not, then fall back to the default file.
+            string db = ConfigurationManager.AppSettings["databaseLocation"] ?? "";
+            if(String.IsNullOrEmpty(db))
+            {
+                db = "";
+            } else if (!System.IO.File.Exists(db))
+            {
+                // File doesn't exist
+                throw new System.IO.FileNotFoundException(db);
+            }
+
+            AppViewModel.LoadDatabase(db);
             
+            // Might still have to do Task.Run
+
             var settings = await AppViewModel.GetAllSettingsAsync();
 
-            if(settings == null)
+            if (settings == null)
             {
                 // begin guided tour
                 throw new NotImplementedException();
@@ -58,36 +95,30 @@ namespace WPFMannsMoneyRegister
 
                 // Get a list of transactions for that account
                 LoadSelectedDates(sender, e);
-            } else
+            }
+            else
             {
                 // Let's do some sanity checks in the unlikely event someone was poking around in the database and broke stuff
-                if(settings.DefaultAccountId != Guid.Empty && (accounts.Count == 0))  throw new Exception("Default account assigned but no accounts found at all");
-                
+                if (settings.DefaultAccountId != Guid.Empty && (accounts.Count == 0)) throw new Exception("Default account assigned but no accounts found at all");
+
 
                 // Check to see if any accounts are available
                 if (accounts.Count == 1)
                 {
                     // If only one exists - make it the default. This shouldn't happen since the guide should resolve this but it's possible someone went poking into the database and fudged an ID by accident
+                    throw new NotImplementedException();
                 }
                 else if (accounts.Count > 1)
                 {
                     // If more than one exists - prompt to see which one they would like to be the default
+                    throw new NotImplementedException();
                 }
                 else
                 {
                     // If zero accounts exist - prompt to see if they want to go through a guided setup.
-                }                
+                    throw new NotImplementedException();
+                }
             }
-        }
-
-        private async void TransactionListUserControl_TransactionSelected(object sender, Data.Entities.Transaction e)
-        {
-            await transactionItem.LoadTransaction(e);
-        }
-
-        private void LoadSelectedDates(object sender, RoutedEventArgs e)
-        {
-            transactionList.UpdateTransactionsFromDates(Guid.Parse(transactionAccountComboBox.SelectedValue.ToString() ?? Guid.Empty.ToString()), startDatePicker.DisplayDate, endDatePicker.DisplayDate);
         }
     }
 }

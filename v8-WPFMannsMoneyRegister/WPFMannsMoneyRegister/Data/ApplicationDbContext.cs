@@ -20,9 +20,11 @@ class ApplicationDbContext : DbContext
     public DbSet<Settings> Settings { get; set; }
     public DbSet<TransactionGroup> TransactionGroups { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
+
+    public static string DatabaseLocation { get; set; } = "MMR.sqlite3";
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=MMR.sqlite3");
+        optionsBuilder.UseSqlite($"Data Source={DatabaseLocation}");
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -72,7 +74,6 @@ class ApplicationDbContext : DbContext
 
     private void SeedDatabase(ModelBuilder builder)
     {
-        
     }
 
     private static void FillDbType<TEntity>(string fileLocation, ModelBuilder builder, JsonSerializerOptions options) where TEntity : class

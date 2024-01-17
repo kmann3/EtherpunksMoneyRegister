@@ -17,6 +17,13 @@ public class AppViewModel
     {
     }
 
+    public static async void LoadDatabase(string fileName)
+    {
+        ApplicationDbContext.DatabaseLocation = fileName;
+        await _context.DisposeAsync(); // I don't know if I need to do this
+        _context = new();
+    }
+
     public static async Task<List<Entities.Account>> GetAllAccountsAsync()
     {
         var _accounts = await _context.Accounts

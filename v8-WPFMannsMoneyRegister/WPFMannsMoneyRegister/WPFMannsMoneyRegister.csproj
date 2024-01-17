@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="MMR.sqlite3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
