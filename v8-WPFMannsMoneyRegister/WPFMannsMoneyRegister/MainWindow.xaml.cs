@@ -31,15 +31,25 @@ namespace WPFMannsMoneyRegister
             
             var settings = await AppViewModel.GetAllSettingsAsync();
 
+            if(settings == null)
+            {
+                // begin guided tour
+                throw new NotImplementedException();
+            }
+
             startDatePicker.DisplayDate = DateTime.Now;
             startDatePicker.Text = DateTime.Now.ToString();
             endDatePicker.DisplayDate = DateTime.Now.AddDays(-settings.SearchDayCount);
             endDatePicker.Text = DateTime.Now.AddDays(-settings.SearchDayCount).ToString();
 
             // Get list of accounts and populate dropdown
-            if (settings.DefaultAccountId != Guid.Empty)
+            var accounts = await AppViewModel.GetAllAccountsAsync();
+            if (settings.DefaultAccountId != Guid.Empty && accounts.Count > 0)
             {
-                var accounts = await AppViewModel.GetAllAccountsAsync();
+                // Let's do some sanity checks in the unlikely event someone was poking around in the database and broke stuff
+                if (settings.DefaultAccountId != Guid.Empty && (accounts.Where(x => x.Id == settings.DefaultAccountId).Count() == 0)) throw new Exception("Default account not found in database. Possible corruption?");
+                if (settings.DefaultAccountId != Guid.Empty && (accounts.Where(x => x.Id == settings.DefaultAccountId).Count() > 1)) throw new Exception("Default account returned more than one account. Possible corruption?");
+
                 accounts = accounts.OrderBy(x => x.Name).ToList();
                 transactionAccountComboBox.ItemsSource = accounts;
                 transactionAccountComboBox.DisplayMemberPath = "Name";
@@ -50,14 +60,23 @@ namespace WPFMannsMoneyRegister
                 LoadSelectedDates(sender, e);
             } else
             {
+                // Let's do some sanity checks in the unlikely event someone was poking around in the database and broke stuff
+                if(settings.DefaultAccountId != Guid.Empty && (accounts.Count == 0))  throw new Exception("Default account assigned but no accounts found at all");
+                
+
                 // Check to see if any accounts are available
-
-                // If only one exists - make it the default. This shouldn't happen since the guide should resolve this but whatever.
-
-                // If more than one exists
-
-                // If zero accounts exist
-                throw new NotImplementedException("No accounts exist or a default is not selected");
+                if (accounts.Count == 1)
+                {
+                    // If only one exists - make it the default. This shouldn't happen since the guide should resolve this but it's possible someone went poking into the database and fudged an ID by accident
+                }
+                else if (accounts.Count > 1)
+                {
+                    // If more than one exists - prompt to see which one they would like to be the default
+                }
+                else
+                {
+                    // If zero accounts exist - prompt to see if they want to go through a guided setup.
+                }                
             }
         }
 

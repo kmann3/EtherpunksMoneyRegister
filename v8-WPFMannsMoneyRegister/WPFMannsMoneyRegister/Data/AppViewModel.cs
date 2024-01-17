@@ -27,12 +27,7 @@ public class AppViewModel
 
     public static async Task<Entities.Settings> GetAllSettingsAsync()
     {
-        Entities.Settings emptySettings = new()
-        {
-            Id = 1,
-            DefaultAccountId = Guid.Empty,
-            SearchDayCount = 45,
-        };
+        Entities.Settings emptySettings = null;
         var settings = await _context.Settings.SingleOrDefaultAsync() ?? emptySettings;
 
         return settings;
