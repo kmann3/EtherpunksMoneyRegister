@@ -45,8 +45,13 @@ namespace WPFMannsMoneyRegister
 
         private async void LoadDatabaseButton_Click(object sender, RoutedEventArgs e)
         {
-            //AppViewModel.LoadDatabase(@$"d:\src\3MMR.sqlite3");
-            //await LoadData(sender, e);
+            Configuration oConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            oConfig.AppSettings.Settings["databaseLocation"].Value = $"d:\\src\\wpfMMR.sqlite32";
+            oConfig.Save(ConfigurationSaveMode.Full);
+            ConfigurationManager.RefreshSection("appSettings");
+            string db = ConfigurationManager.AppSettings["databaseLocation"] ?? "";
+
+            Trace.WriteLine(db);
         }
 
         private async Task LoadData(object sender, RoutedEventArgs e)
