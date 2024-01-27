@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using WPFMannsMoneyRegister.Data.Entities.Base;
 using System.Diagnostics;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace WPFMannsMoneyRegister.Data.Entities;
 /// <summary>
@@ -106,8 +107,26 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
             return Files.Count;
         }
     }
+
     [JsonIgnore]
-    public List<TransactionFile> Files { get; set; } = new();
+    private ObservableCollection<TransactionFile> _files = new();
+
+    [JsonIgnore]
+    public ObservableCollection<TransactionFile> Files
+    {
+        get
+        {
+            return _files;
+        }
+        set
+        {
+            if(_files != value)
+            {
+                _files = value;
+                OnPropertyChanged(nameof(Files));
+            }
+        }
+    }
     [JsonIgnore]
     public RecurringTransaction? RecurringTransaction { get; set; }
     public Guid? RecurringTransactionId { get; set; }

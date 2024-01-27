@@ -23,7 +23,7 @@ public partial class TransactionItemUserControl : UserControl
 
     private async void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
     {
-        _accounts = await AppViewModel.GetAllAccountsAsync();
+        _accounts = await ServiceModel.GetAllAccountsAsync();
         transactionAccountComboBox.ItemsSource = _accounts;
         transactionTypeComboBox.ItemsSource = Data.Entities.Base.Enums.GetTransactionTypeEnums;
     }
@@ -37,7 +37,7 @@ public partial class TransactionItemUserControl : UserControl
     public async Task LoadTransaction(Guid id)
     {
         DataContext = null;
-        loadedTransaction = await AppViewModel.GetTransactionAsync(id);
+        loadedTransaction = await ServiceModel.GetTransactionAsync(id);
         previousVersion = loadedTransaction.DeepClone();
         DataContext = loadedTransaction;
         transactionFilesListView.ItemsSource = loadedTransaction.Files;
