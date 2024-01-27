@@ -99,7 +99,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     public Enums.TransactionType TransactionType { get; set; }
 
     [JsonIgnore]
-    public List<Transaction> PreviousTransactions { get; set; }
+    public List<AccountTransaction> PreviousAccountTransactions { get; set; }
 
     public override void Configure(EntityTypeBuilder<RecurringTransaction> builder)
     {

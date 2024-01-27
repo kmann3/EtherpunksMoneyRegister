@@ -33,7 +33,7 @@ namespace WPFMannsMoneyRegister
             await LoadData(sender, e);
         }
 
-        private async void TransactionListUserControl_TransactionSelected(object sender, Data.Entities.Transaction e)
+        private async void TransactionListUserControl_TransactionSelected(object sender, Guid e)
         {
             await transactionItem.LoadTransaction(e);
         }
@@ -45,13 +45,13 @@ namespace WPFMannsMoneyRegister
 
         private async void LoadDatabaseButton_Click(object sender, RoutedEventArgs e)
         {
-            Configuration oConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            oConfig.AppSettings.Settings["databaseLocation"].Value = $"d:\\src\\wpfMMR.sqlite32";
-            oConfig.Save(ConfigurationSaveMode.Full);
-            ConfigurationManager.RefreshSection("appSettings");
-            string db = ConfigurationManager.AppSettings["databaseLocation"] ?? "";
+            //Configuration oConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            //oConfig.AppSettings.Settings["databaseLocation"].Value = $"d:\\src\\wpfMMR.sqlite32";
+            //oConfig.Save(ConfigurationSaveMode.Full);
+            //ConfigurationManager.RefreshSection("appSettings");
+            //string db = ConfigurationManager.AppSettings["databaseLocation"] ?? "";
 
-            Trace.WriteLine(db);
+            //Trace.WriteLine(db);
         }
 
         private async Task LoadData(object sender, RoutedEventArgs e)

@@ -41,12 +41,7 @@
                 </Style>
 
             </TabControl.Resources>
-            <TabItem Header="Config">
-                <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="databaseLocationTextBox" Width="200" Height="30" VerticalAlignment="Top" Margin="0,20,5,0" />
-                    <Button x:Name="LoadDatabaseButton" Click="LoadDatabaseButton_Click" Width="200" Height="30" VerticalAlignment="Top" Margin="0,20,5,0">Load</Button>
-                </StackPanel>
-            </TabItem>
+            
             <TabItem Header="Transactions">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -82,6 +77,13 @@
 
             <TabItem Header="Categories">
 
+            </TabItem>
+
+            <TabItem Header="Config">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox x:Name="databaseLocationTextBox" Width="200" Height="30" VerticalAlignment="Top" Margin="0,20,5,0" />
+                    <Button x:Name="LoadDatabaseButton" Click="LoadDatabaseButton_Click" Width="200" Height="30" VerticalAlignment="Top" Margin="0,20,5,0">Load</Button>
+                </StackPanel>
             </TabItem>
 
         </TabControl>

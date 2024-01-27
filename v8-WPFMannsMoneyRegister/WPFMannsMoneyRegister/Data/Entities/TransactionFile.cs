@@ -21,9 +21,9 @@ public class TransactionFile : BasicTable<TransactionFile>, IEntityTypeConfigura
     public byte[] Data { get; set; } = [];
 
     [JsonIgnore]
-    public Transaction Transaction { get; set; }
+    public AccountTransaction AccountTransaction { get; set; }
 
-    public Guid TransactionId { get; set; }
+    public Guid AccountTransactionId { get; set; }
 
     public string Filename { get; set; } = string.Empty;
     public string ContentType { get; set; } = string.Empty;

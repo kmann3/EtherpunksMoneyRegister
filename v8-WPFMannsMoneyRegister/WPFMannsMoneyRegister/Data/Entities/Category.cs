@@ -13,7 +13,7 @@ public class Category : BasicTable<Category>, IEntityTypeConfiguration<Category>
     public List<Link_Category_Transaction> Link_Category_Transactions { get; } = new();
 
     [JsonIgnore]
-    public List<Transaction> Transactions { get; } = new();
+    public List<AccountTransaction> AccountTransactions { get; } = new();
 
     [JsonIgnore]
     public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
