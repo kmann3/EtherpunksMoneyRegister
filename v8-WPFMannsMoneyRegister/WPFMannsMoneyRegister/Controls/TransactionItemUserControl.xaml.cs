@@ -1,9 +1,14 @@
-﻿using System.ComponentModel;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Linq;
 using WPFMannsMoneyRegister.Data;
 using WPFMannsMoneyRegister.Data.Entities;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
 
 namespace WPFMannsMoneyRegister.Controls;
 /// <summary>
@@ -62,13 +67,31 @@ public partial class TransactionItemUserControl : UserControl
         loadedTransaction.Files.Add(newFile);
 
         loadedTransaction.Name = "FOOOOOO";
-        ((AccountTransaction)DataContext).Name = "FOO2";
 
-        Trace.WriteLine($"{loadedTransaction.Name} and {(this.DataContext as AccountTransaction).Name} |  old: {previousVersion.Name}");
+        Trace.WriteLine($"{loadedTransaction.Name} and {transactionNameTextBox.Text} |  old: {previousVersion.Name}");
     }
 
     private void DeleteFile_Click(object sender, System.Windows.RoutedEventArgs e)
     {
+        if (transactionFilesListView.Items.Count == 0) return;
+        List<TransactionFile> listToRemove = new();
+        if(transactionFilesListView.SelectedItems.Count > 0)
+        {
+            foreach(var item in transactionFilesListView.SelectedItems)
+            {
+                // Show a message showing which item(s) will be deleted.
+                listToRemove.Add(((TransactionFile)item));
+            }
+
+            foreach(var itemToRemove in listToRemove)
+            {
+                loadedTransaction.Files.Remove(itemToRemove);
+            }
+        } else
+        {
+            // Show a message saying nothing was selected to be deleted
+        }
+        
         // Remove a selected file5
     }
 
@@ -77,5 +100,12 @@ public partial class TransactionItemUserControl : UserControl
         var file = ((ListViewItem)sender).DataContext as TransactionFile;
 
         Trace.WriteLine($"{file.Name}");
+    }
+
+    private void SaveFile_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        if(loadedTransaction.DeepEquals(previousVersion)) return;
+
+        // Get the differences and show them to confirm saving.
     }
 }

@@ -11,16 +11,16 @@ namespace WPFMannsMoneyRegister.Data.Entities;
 public class Category : BasicTable<Category>, IEntityTypeConfiguration<Category>
 {
     [JsonIgnore]
-    public ObservableCollection<Link_Category_Transaction> Link_Category_Transactions { get; } = new();
+    public List<Link_Category_Transaction> Link_Category_Transactions { get; } = new();
 
     [JsonIgnore]
-    public ObservableCollection<AccountTransaction> AccountTransactions { get; } = new();
+    public List<AccountTransaction> AccountTransactions { get; } = new();
 
     [JsonIgnore]
-    public ObservableCollection<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
+    public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
 
     [JsonIgnore]
-    public ObservableCollection<RecurringTransaction> RecurringTransactions { get; } = new();
+    public List<RecurringTransaction> RecurringTransactions { get; } = new();
 
     public override void Configure(EntityTypeBuilder<Category> builder)
     {

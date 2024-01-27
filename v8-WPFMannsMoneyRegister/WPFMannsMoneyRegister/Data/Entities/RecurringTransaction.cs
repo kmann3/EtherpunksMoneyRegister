@@ -37,10 +37,10 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     public string BankTransactionRegEx { get; set; } = string.Empty;
 
     [JsonIgnore]
-    public ObservableCollection<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
+    public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
 
     [JsonIgnore]
-    public ObservableCollection<Category> Categories { get; set; } = new();
+    public List<Category> Categories { get; set; } = new();
 
     public Enums.RecurringFrequencyType RecurringFrequencyType { get; set; } = Enums.RecurringFrequencyType.Unknown;
 
@@ -100,7 +100,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     public Enums.TransactionType TransactionType { get; set; }
 
     [JsonIgnore]
-    public ObservableCollection<AccountTransaction> PreviousAccountTransactions { get; set; }
+    public List<AccountTransaction> PreviousAccountTransactions { get; set; }
 
     public override void Configure(EntityTypeBuilder<RecurringTransaction> builder)
     {

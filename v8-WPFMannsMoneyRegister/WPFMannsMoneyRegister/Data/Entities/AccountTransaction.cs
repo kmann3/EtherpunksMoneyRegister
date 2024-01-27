@@ -17,30 +17,11 @@ namespace WPFMannsMoneyRegister.Data.Entities;
 /// <summary>
 /// Individual transactions for associated accounts.
 /// </summary>
-public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeConfiguration<AccountTransaction>, INotifyPropertyChanged
+public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeConfiguration<AccountTransaction>
 {
     [DataType(DataType.Currency)]
     [Precision(18, 2)]
-    [JsonIgnore]
-    private decimal _amount = 0M;
-
-    [DataType(DataType.Currency)]
-    [Precision(18, 2)]
-    public decimal Amount
-    {
-        get
-        {
-            return _amount;
-        }
-        set
-        {
-            if (_amount != value)
-            {
-                _amount = value;
-                base.OnPropertyChanged(nameof(Amount));
-            }
-        }
-    }
+    public decimal Amount { get; set; } = 0M;
 
     [JsonIgnore]
     public Account Account { get; set; }
@@ -86,7 +67,7 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
     public decimal Balance { get; set; } = 0M;
     public string Notes { get; set; } = string.Empty;
     [JsonIgnore]
-    public ObservableCollection<Link_Category_Transaction> Link_Category_Transactions { get; } = new();
+    public List<Link_Category_Transaction> Link_Category_Transactions { get; } = new();
     [NotMapped]
     [JsonIgnore]
     public string CategoryString
@@ -97,7 +78,7 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
         }
     }
     [JsonIgnore]
-    public ObservableCollection<Category> Categories { get; set; } = new();
+    public List<Category> Categories { get; set; } = new();
     [JsonIgnore]
     [NotMapped]
     public int FileCount
@@ -109,24 +90,7 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
     }
 
     [JsonIgnore]
-    private ObservableCollection<TransactionFile> _files = new();
-
-    [JsonIgnore]
-    public ObservableCollection<TransactionFile> Files
-    {
-        get
-        {
-            return _files;
-        }
-        set
-        {
-            if(_files != value)
-            {
-                _files = value;
-                OnPropertyChanged(nameof(Files));
-            }
-        }
-    }
+    public List<TransactionFile> Files { get; set; }
     [JsonIgnore]
     public RecurringTransaction? RecurringTransaction { get; set; }
     public Guid? RecurringTransactionId { get; set; }

@@ -48,7 +48,7 @@
         <TextBox x:Name="transactionNameTextBox" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="1" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="3" Grid.Column="0">Amount:</Label>
-        <TextBox x:Name="transactionAmountTextBox" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="2" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox x:Name="transactionAmountTextBox" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="2" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=C}" />
 
         <Label Grid.Row="4" Grid.Column="0">Categories:</Label>
         <ListView x:Name="transactionCategoriesListView" Grid.Row="4" Grid.Column="1" Grid.RowSpan="3" TabIndex="3" />
@@ -85,7 +85,7 @@
                 <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="File List">
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Filename}" Header="Name" Width="75"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Size}" Header="Size" Width="50"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=CreatedOn, StringFormat=MM/dd/yyyy}" Header="Date" Width="75"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=CreatedOnLocalTime, StringFormat=MM/dd/yyyy}" Header="Date" Width="75"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Notes}" Header="Notes" Width="190"/>
 
                 </GridView>
@@ -93,7 +93,7 @@
         </ListView>
         <Button x:Name="AddFile" Grid.Row="12" Grid.Column="4" Click="AddFile_Click">Add File</Button>
         <Button x:Name="DeleteFile" Grid.Row="14" Grid.Column="4" Click="DeleteFile_Click">Delete File</Button>
-        <Button Grid.Row="16" Grid.Column="3" TabIndex="10" IsEnabled="false">Save</Button>
+        <Button Grid.Row="16" Grid.Column="3" TabIndex="10" Click="SaveFile_Click">Save</Button>
         
 
     </Grid>

@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
         <DataGrid Name="DataGridTransactions" AutoGenerateColumns="False" CanUserAddRows="false"
- EnableRowVirtualization="True" AlternatingRowBackground="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="DataGridTransactions_SelectionChanged">
+ EnableRowVirtualization="True" AlternatingRowBackground="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="DataGridTransactions_SelectionChanged" SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden" />
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="325" />

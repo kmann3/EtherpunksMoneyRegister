@@ -57,7 +57,7 @@ public class Account : BasicTable<Account>, IEntityTypeConfiguration<Account>
     }
 
     [JsonIgnore]
-    public ObservableCollection<AccountTransaction> AccountTransactions { get; set; } = new();
+    public List<AccountTransaction> AccountTransactions { get; set; } = new();
 
     // TODO: Account Types? Liability, Assets?
 

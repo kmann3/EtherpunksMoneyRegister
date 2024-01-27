@@ -16,7 +16,7 @@ namespace WPFMannsMoneyRegister.Data.Entities;
 public class TransactionGroup : BasicTable<TransactionGroup>, IEntityTypeConfiguration<TransactionGroup>
 {
     [JsonIgnore]
-    public ObservableCollection<RecurringTransaction> RecurringTransactions { get; set; } = new();
+    public List<RecurringTransaction> RecurringTransactions { get; set; } = new();
 
     public override void Configure(EntityTypeBuilder<TransactionGroup> builder)
     {
