@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WPFMannsMoneyRegister.Data.Entities.Base;
+using System.Collections.ObjectModel;
 
 namespace WPFMannsMoneyRegister.Data.Entities;
 /// <summary>
@@ -36,10 +37,10 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     public string BankTransactionRegEx { get; set; } = string.Empty;
 
     [JsonIgnore]
-    public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
+    public ObservableCollection<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
 
     [JsonIgnore]
-    public List<Category> Categories { get; set; } = new();
+    public ObservableCollection<Category> Categories { get; set; } = new();
 
     public Enums.RecurringFrequencyType RecurringFrequencyType { get; set; } = Enums.RecurringFrequencyType.Unknown;
 
@@ -99,7 +100,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     public Enums.TransactionType TransactionType { get; set; }
 
     [JsonIgnore]
-    public List<AccountTransaction> PreviousAccountTransactions { get; set; }
+    public ObservableCollection<AccountTransaction> PreviousAccountTransactions { get; set; }
 
     public override void Configure(EntityTypeBuilder<RecurringTransaction> builder)
     {

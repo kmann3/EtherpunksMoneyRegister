@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WPFMannsMoneyRegister.Data.Entities.Base;
+using System.Collections.ObjectModel;
 
 namespace WPFMannsMoneyRegister.Data.Entities;
 /// <summary>
@@ -15,7 +16,7 @@ namespace WPFMannsMoneyRegister.Data.Entities;
 public class TransactionGroup : BasicTable<TransactionGroup>, IEntityTypeConfiguration<TransactionGroup>
 {
     [JsonIgnore]
-    public List<RecurringTransaction> RecurringTransactions { get; set; } = new();
+    public ObservableCollection<RecurringTransaction> RecurringTransactions { get; set; } = new();
 
     public override void Configure(EntityTypeBuilder<TransactionGroup> builder)
     {

@@ -86,7 +86,7 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
     public decimal Balance { get; set; } = 0M;
     public string Notes { get; set; } = string.Empty;
     [JsonIgnore]
-    public List<Link_Category_Transaction> Link_Category_Transactions { get; } = new List<Link_Category_Transaction>();
+    public ObservableCollection<Link_Category_Transaction> Link_Category_Transactions { get; } = new List<Link_Category_Transaction>();
     [NotMapped]
     [JsonIgnore]
     public string CategoryString
@@ -97,7 +97,7 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
         }
     }
     [JsonIgnore]
-    public List<Category> Categories { get; set; } = new();
+    public ObservableCollection<Category> Categories { get; set; } = new();
     [JsonIgnore]
     [NotMapped]
     public int FileCount

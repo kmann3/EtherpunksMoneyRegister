@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using WPFMannsMoneyRegister.Data.Entities.Base;
+using System.Collections.ObjectModel;
 
 namespace WPFMannsMoneyRegister.Data.Entities;
 
@@ -56,7 +57,7 @@ public class Account : BasicTable<Account>, IEntityTypeConfiguration<Account>
     }
 
     [JsonIgnore]
-    public List<AccountTransaction> AccountTransactions { get; set; } = new();
+    public ObservableCollection<AccountTransaction> AccountTransactions { get; set; } = new();
 
     // TODO: Account Types? Liability, Assets?
 
