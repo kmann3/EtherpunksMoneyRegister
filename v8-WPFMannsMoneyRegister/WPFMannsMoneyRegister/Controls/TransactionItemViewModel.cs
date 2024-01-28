@@ -72,12 +72,10 @@ public class TransactionItemViewModel : INotifyPropertyChanged
 
     public Guid AccountId
     {
-        get
-        {
-            return currentTransactionVersion.AccountId;
-        }
+        get => currentTransactionVersion.AccountId;
         set
         {
+            if (currentTransactionVersion.AccountId == value) return;
             currentTransactionVersion.AccountId = value;
             OnPropertyChanged(nameof(AccountId));
         }
@@ -85,11 +83,7 @@ public class TransactionItemViewModel : INotifyPropertyChanged
 
     public decimal Amount
     {
-        get
-        {
-            return currentTransactionVersion.Amount;
-        }
-
+        get => currentTransactionVersion.Amount;
         set
         {
             if(currentTransactionVersion.Amount == value) return;
@@ -98,35 +92,61 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         }
     }
 
-    public List<Category> Categories
+    public string BankTransactionText
     {
-        get
-        {
-            return currentTransactionVersion.Categories;
-        }
+        get => currentTransactionVersion.BankTransactionText;
         set
         {
+            if (currentTransactionVersion.BankTransactionText == value) return;
+            currentTransactionVersion.BankTransactionText = value;
+            OnPropertyChanged(nameof(BankTransactionText));
+        }
+    }
+
+    public List<Category> Categories
+    {
+        get => currentTransactionVersion.Categories;
+        set
+        {
+            if (currentTransactionVersion.Categories == value) return;
             currentTransactionVersion.Categories = value;
             OnPropertyChanged(nameof(Categories));
         }
     }
 
+    public string ConfirmationNumber
+    {
+        get => currentTransactionVersion.ConfirmationNumber;
+        set
+        {
+            if (currentTransactionVersion.ConfirmationNumber == value) return;
+            currentTransactionVersion.ConfirmationNumber = value;
+            OnPropertyChanged(nameof(ConfirmationNumber));
+        }
+    }
+
     public DateTime CreatedOn
     {
-        get
+        get => currentTransactionVersion.CreatedOnLocalTime;
+    }
+
+    public DateTime? DueDate
+    {
+        get => currentTransactionVersion.DueDate;
+        set
         {
-            return currentTransactionVersion.CreatedOnLocalTime;
+            if (currentTransactionVersion.DueDate == value) return;
+            currentTransactionVersion.DueDate = value;
+            OnPropertyChanged(nameof(DueDate));
         }
     }
 
     public List<TransactionFile> Files
     {
-        get
-        {
-            return currentTransactionVersion.Files;
-        }
+        get => currentTransactionVersion.Files;
         set
         {
+            if (currentTransactionVersion.Files == value) return;
             currentTransactionVersion.Files = value;
             OnPropertyChanged(nameof(Files));
         }
@@ -134,18 +154,12 @@ public class TransactionItemViewModel : INotifyPropertyChanged
 
     public Guid Id
     {
-        get
-        {
-            return currentTransactionVersion.Id;
-        }
+        get => currentTransactionVersion.Id;
     }
 
     public string Name
     {
-        get
-        {
-            return currentTransactionVersion.Name;
-        }
+        get => currentTransactionVersion.Name;
         set
         {
             if (currentTransactionVersion.Name == value) return;
@@ -154,14 +168,44 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         }
     }
 
-    public Enums.TransactionTypeEnum TransactionType
+    public string Notes
     {
-        get
-        {
-            return currentTransactionVersion.TransactionType;
-        }
+        get => currentTransactionVersion.Notes;
         set
         {
+            if (currentTransactionVersion.Notes == value)  return;
+            currentTransactionVersion.Notes = value;
+            OnPropertyChanged(nameof(Notes));
+        }
+    }
+
+    public DateTime? TransactionCleared
+    {
+        get => currentTransactionVersion.TransactionClearedLocalTime;
+        set
+        {
+            if (currentTransactionVersion.TransactionClearedLocalTime == value) return;
+            currentTransactionVersion.TransactionClearedLocalTime = value;
+            OnPropertyChanged(nameof(TransactionCleared));
+        }
+    }
+    public DateTime? TransactionPending
+    {
+        get => currentTransactionVersion.TransactionPendingLocalTime;
+        set
+        {
+            if (currentTransactionVersion.TransactionPendingLocalTime == value) return;
+            currentTransactionVersion.TransactionPendingLocalTime = value;
+            OnPropertyChanged(nameof(TransactionPending));
+        }
+    }
+
+    public Enums.TransactionTypeEnum TransactionType
+    {
+        get => currentTransactionVersion.TransactionType;
+        set
+        {
+            if (currentTransactionVersion.TransactionType == value) return;
             currentTransactionVersion.TransactionType = value;
             OnPropertyChanged(nameof(TransactionType));
         }

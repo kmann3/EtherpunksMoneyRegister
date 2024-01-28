@@ -51,13 +51,13 @@
         <TextBox x:Name="transactionAmountTextBox" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="2" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=C}" />
 
         <Label Grid.Row="4" Grid.Column="0">Categories:</Label>
-        <ListView x:Name="transactionCategoriesListView" Grid.Row="4" Grid.Column="1" Grid.RowSpan="3" TabIndex="3" />
+        <ListView x:Name="transactionCategoriesListView" Grid.Row="4" Grid.Column="1" Grid.RowSpan="3" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedValue="{Binding Categories}" />
 
         <Label Grid.Row="7" Grid.Column="0">Pending:</Label>
-        <DatePicker x:Name="pendingDatePicker" Grid.Row="7" Grid.Column="1" TabIndex="4" SelectedDate="{Binding TransactionPendingLocalTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionPendingLocalTime, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" />
+        <DatePicker x:Name="pendingDatePicker" Grid.Row="7" Grid.Column="1" TabIndex="4" SelectedDate="{Binding TransactionPending, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionPendingLocalTime, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" />
 
         <Label Grid.Row="7" Grid.Column="2">Cleared:</Label>
-        <DatePicker x:Name="clearedDatePicker" Grid.Row="7" Grid.Column="3" IsTodayHighlighted="True" TabIndex="5" SelectedDate="{Binding TransactionClearedLocalTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='',StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionClearedLocalTime, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}"  />
+        <DatePicker x:Name="clearedDatePicker" Grid.Row="7" Grid.Column="3" IsTodayHighlighted="True" TabIndex="5" SelectedDate="{Binding TransactionCleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='',StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionClearedLocalTime, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}"  />
 
         <Label Grid.Row="8" Grid.Column="0">Notes:</Label>
         <TextBox x:Name="notesTextBox" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="6" Text="{Binding Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

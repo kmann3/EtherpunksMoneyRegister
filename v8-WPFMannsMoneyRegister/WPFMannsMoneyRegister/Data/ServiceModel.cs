@@ -25,6 +25,15 @@ public class ServiceModel
         return _accounts;
     }
 
+    public static async Task<List<Category>> GetAllCategoriesAsync()
+    {
+        var _categories = await _context.Categories
+            .OrderBy(x => x.Name)
+            .ToListAsync();
+
+        return _categories;
+    }
+
     public static async Task<Settings> GetAllSettingsAsync()
     {
         Entities.Settings emptySettings = null;

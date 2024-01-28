@@ -18,6 +18,7 @@ namespace WPFMannsMoneyRegister.Controls;
 public partial class TransactionItemUserControl : UserControl
 {
     private List<Account> _accounts = new();
+    private List<Category> _categories = new();
     private TransactionItemViewModel _viewModel = new();
 
     public TransactionItemUserControl()
@@ -29,7 +30,9 @@ public partial class TransactionItemUserControl : UserControl
     private async void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
     {
         _accounts = await ServiceModel.GetAllAccountsAsync();
+        _categories = await ServiceModel.GetAllCategoriesAsync();
         transactionAccountComboBox.ItemsSource = _accounts;
+        transactionCategoriesListView.ItemsSource = _categories;
         transactionTypeComboBox.ItemsSource = Data.Entities.Base.Enums.GetTransactionTypeEnums;
         transactionFilesListView.ItemsSource = _viewModel.Files;
     }
