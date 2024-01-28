@@ -7,6 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WPFMannsMoneyRegister.Data.Entities;
+using System.Collections.ObjectModel;
+using System.Text.Json.Serialization;
+using static WPFMannsMoneyRegister.Controls.TransactionItemViewModel;
+using WPFMannsMoneyRegister.Data;
+using WPFMannsMoneyRegister.Data.Entities.Base;
 
 namespace WPFMannsMoneyRegister.Controls;
 public class TransactionItemViewModel : INotifyPropertyChanged
@@ -16,6 +21,7 @@ public class TransactionItemViewModel : INotifyPropertyChanged
     public TransactionItemViewModel()
     {
     }
+
 
     public event EventHandler<bool> HasChanged;
     public event PropertyChangedEventHandler PropertyChanged;
@@ -39,10 +45,15 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    public void LoadAccountTransaction(AccountTransaction transaction)
+    public void PropertyFilesChanged()
     {
-        currentTransactionVersion = transaction;
-        previousTransactionVersion = transaction.DeepClone();
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Files)));
+    }
+
+    public async Task LoadAccountTransaction(Guid id)
+    {
+        currentTransactionVersion = await ServiceModel.GetTransactionAsync(id);
+        previousTransactionVersion = currentTransactionVersion.DeepClone();
     }
 
     public override string ToString()
@@ -56,6 +67,68 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         get
         {
             return !previousTransactionVersion.DeepEquals(currentTransactionVersion);
+        }
+    }
+
+    public Guid AccountId
+    {
+        get
+        {
+            return currentTransactionVersion.AccountId;
+        }
+        set
+        {
+            currentTransactionVersion.AccountId = value;
+            OnPropertyChanged(nameof(AccountId));
+        }
+    }
+
+    public decimal Amount
+    {
+        get
+        {
+            return currentTransactionVersion.Amount;
+        }
+
+        set
+        {
+            if(currentTransactionVersion.Amount == value) return;
+            currentTransactionVersion.Amount = value;
+            OnPropertyChanged(nameof(Amount));
+        }
+    }
+
+    public List<Category> Categories
+    {
+        get
+        {
+            return currentTransactionVersion.Categories;
+        }
+        set
+        {
+            currentTransactionVersion.Categories = value;
+            OnPropertyChanged(nameof(Categories));
+        }
+    }
+
+    public DateTime CreatedOn
+    {
+        get
+        {
+            return currentTransactionVersion.CreatedOnLocalTime;
+        }
+    }
+
+    public List<TransactionFile> Files
+    {
+        get
+        {
+            return currentTransactionVersion.Files;
+        }
+        set
+        {
+            currentTransactionVersion.Files = value;
+            OnPropertyChanged(nameof(Files));
         }
     }
 
@@ -81,26 +154,16 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         }
     }
 
-    public decimal Amount
+    public Enums.TransactionTypeEnum TransactionType
     {
         get
         {
-            return currentTransactionVersion.Amount;
+            return currentTransactionVersion.TransactionType;
         }
-
         set
         {
-            if(currentTransactionVersion.Amount == value) return;
-            currentTransactionVersion.Amount = value;
-            OnPropertyChanged(nameof(Amount));
-        }
-    }
-
-    public DateTime CreatedOn
-    {
-        get
-        {
-            return currentTransactionVersion.CreatedOnLocalTime;
+            currentTransactionVersion.TransactionType = value;
+            OnPropertyChanged(nameof(TransactionType));
         }
     }
 }

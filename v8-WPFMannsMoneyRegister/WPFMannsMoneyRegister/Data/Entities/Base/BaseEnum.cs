@@ -4,13 +4,13 @@ using System.Windows.Data;
 namespace WPFMannsMoneyRegister.Data.Entities.Base;
 public class Enums
 {
-    public enum TransactionType
+    public enum TransactionTypeEnum
     {
         Credit,
         Debit,
     }
 
-    public enum RecurringFrequencyType
+    public enum RecurringFrequencyTypeEnum
     {
         Unknown,
         Irregular,
@@ -22,11 +22,11 @@ public class Enums
         XWeekOnYDayOfWeek
     }
 
-    public static IEnumerable<TransactionType> GetTransactionTypeEnums
+    public static IEnumerable<TransactionTypeEnum> GetTransactionTypeEnums
     {
         get
         {
-            return Enum.GetValues(typeof(TransactionType)).Cast<TransactionType>();
+            return Enum.GetValues(typeof(TransactionTypeEnum)).Cast<TransactionTypeEnum>();
         }
     }
 }

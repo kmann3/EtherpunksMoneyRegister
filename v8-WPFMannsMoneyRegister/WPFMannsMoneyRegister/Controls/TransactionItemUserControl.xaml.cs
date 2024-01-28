@@ -9,6 +9,7 @@ using WPFMannsMoneyRegister.Data;
 using WPFMannsMoneyRegister.Data.Entities;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using WPFMannsMoneyRegister.SubWindows;
 
 namespace WPFMannsMoneyRegister.Controls;
 /// <summary>
@@ -17,13 +18,12 @@ namespace WPFMannsMoneyRegister.Controls;
 public partial class TransactionItemUserControl : UserControl
 {
     private List<Account> _accounts = new();
-    private AccountTransaction previousVersion = new();
-    private AccountTransaction loadedTransaction = new();
+    private TransactionItemViewModel _viewModel = new();
 
     public TransactionItemUserControl()
     {
         InitializeComponent();
-        DataContext = loadedTransaction;
+        DataContext = _viewModel;
     }
 
     private async void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -31,6 +31,7 @@ public partial class TransactionItemUserControl : UserControl
         _accounts = await ServiceModel.GetAllAccountsAsync();
         transactionAccountComboBox.ItemsSource = _accounts;
         transactionTypeComboBox.ItemsSource = Data.Entities.Base.Enums.GetTransactionTypeEnums;
+        transactionFilesListView.ItemsSource = _viewModel.Files;
     }
 
     /// <summary>
@@ -42,33 +43,31 @@ public partial class TransactionItemUserControl : UserControl
     public async Task LoadTransaction(Guid id)
     {
         DataContext = null;
-        loadedTransaction = await ServiceModel.GetTransactionAsync(id);
-        previousVersion = loadedTransaction.DeepClone();
-        DataContext = loadedTransaction;
-        transactionFilesListView.ItemsSource = loadedTransaction.Files;
+        await _viewModel.LoadAccountTransaction(id);
+        DataContext = _viewModel;
+        //transactionFilesListView.ItemsSource = loadedTransaction.Files;
 
         transactionNameTextBox.Focus();
     }
 
     private void AddFile_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-        Trace.WriteLine($"{loadedTransaction.Name} and {(this.DataContext as AccountTransaction).Name} |  old: {previousVersion.Name}");
         // Add a new file.
-        TransactionFile newFile = new()
-        {
-            ContentType = "",
-            Data = new byte[] { },
-            Filename = "Foo.exe",
-            Name = "Foo",
-            Notes = "Notes here",
-            AccountTransactionId = loadedTransaction.Id,
-        };
+        //TransactionFile newFile = new()
+        //{
+        //    ContentType = "",
+        //    Data = new byte[] { },
+        //    Filename = "Foo.exe",
+        //    Name = "Foo",
+        //    Notes = "Notes here",
+        //    AccountTransactionId = _viewModel.Id,
+        //};
 
-        loadedTransaction.Files.Add(newFile);
+        //_viewModel.Files.Add(newFile);
+        //_viewModel.PropertyFilesChanged();
 
-        loadedTransaction.Name = "FOOOOOO";
-
-        Trace.WriteLine($"{loadedTransaction.Name} and {transactionNameTextBox.Text} |  old: {previousVersion.Name}");
+        var fileWindow = new FileWindow();
+        fileWindow.ShowDialog();
     }
 
     private void DeleteFile_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -77,15 +76,18 @@ public partial class TransactionItemUserControl : UserControl
         List<TransactionFile> listToRemove = new();
         if(transactionFilesListView.SelectedItems.Count > 0)
         {
+            // This loop is needed because you cannot remove SelectedItems in the DataContext WHILE looping through them. For some reason it throws an exception.
             foreach(var item in transactionFilesListView.SelectedItems)
             {
-                // Show a message showing which item(s) will be deleted.
                 listToRemove.Add(((TransactionFile)item));
             }
+            // Show a message showing which item(s) will be deleted.
 
-            foreach(var itemToRemove in listToRemove)
+            // Delete them
+            foreach (var itemToRemove in listToRemove)
             {
-                loadedTransaction.Files.Remove(itemToRemove);
+                _viewModel.Files.Remove(itemToRemove);
+                _viewModel.PropertyFilesChanged();
             }
         } else
         {
@@ -102,9 +104,11 @@ public partial class TransactionItemUserControl : UserControl
         Trace.WriteLine($"{file.Name}");
     }
 
-    private void SaveFile_Click(object sender, System.Windows.RoutedEventArgs e)
+    private async void SaveFile_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-        if(loadedTransaction.DeepEquals(previousVersion)) return;
+        if (!_viewModel.IsChanged) return;
+
+        //await ServiceModel.UpdateTransaction(_viewModel.)
 
         // Get the differences and show them to confirm saving.
     }

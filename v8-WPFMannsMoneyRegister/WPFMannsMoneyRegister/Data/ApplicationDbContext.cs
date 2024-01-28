@@ -35,19 +35,19 @@ class ApplicationDbContext : DbContext
             .Property(x => x.TransactionType)
             .HasConversion(
             v => v.ToString(),
-            v => (Enums.TransactionType)Enum.Parse(typeof(Enums.TransactionType), v));
+            v => (Enums.TransactionTypeEnum)Enum.Parse(typeof(Enums.TransactionTypeEnum), v));
 
         builder.Entity<RecurringTransaction>()
             .Property(x => x.TransactionType)
             .HasConversion(
             v => v.ToString(),
-            v => (Enums.TransactionType)Enum.Parse(typeof(Enums.TransactionType), v));
+            v => (Enums.TransactionTypeEnum)Enum.Parse(typeof(Enums.TransactionTypeEnum), v));
 
         builder.Entity<RecurringTransaction>()
             .Property(x => x.RecurringFrequencyType)
             .HasConversion(
             v => v.ToString(),
-            v => (Enums.RecurringFrequencyType)Enum.Parse(typeof(Enums.RecurringFrequencyType), v));
+            v => (Enums.RecurringFrequencyTypeEnum)Enum.Parse(typeof(Enums.RecurringFrequencyTypeEnum), v));
 
         builder.Entity<Category>()
             .HasMany(x => x.RecurringTransactions)

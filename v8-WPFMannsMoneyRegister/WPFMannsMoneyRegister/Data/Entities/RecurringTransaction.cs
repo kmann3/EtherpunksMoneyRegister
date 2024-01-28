@@ -42,7 +42,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     [JsonIgnore]
     public List<Category> Categories { get; set; } = new();
 
-    public Enums.RecurringFrequencyType RecurringFrequencyType { get; set; } = Enums.RecurringFrequencyType.Unknown;
+    public Enums.RecurringFrequencyTypeEnum RecurringFrequencyType { get; set; } = Enums.RecurringFrequencyTypeEnum.Unknown;
 
     /// <summary>
     /// Test all of these.
@@ -54,14 +54,14 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
         {
             return RecurringFrequencyType switch
             {
-                Enums.RecurringFrequencyType.Yearly => $"Yearly on {FrequencyDateValue!.Value:MMM} {FrequencyDateValue.Value.Day.ToString().Ordinalize()}", // TBI: I need to test this.
-                Enums.RecurringFrequencyType.Monthly => $"{FrequencyDateValue!.Value.Day.ToString().Ordinalize()} of the month",
-                Enums.RecurringFrequencyType.Weekly => $"Every {FrequencyDayOfWeekValue}",
-                Enums.RecurringFrequencyType.XMonths => $"Every {FrequencyValue} month{(FrequencyValue == 1 ? "" : "s")} on the {FrequencyDateValue!.Value.Day.ToString().Ordinalize()}",
-                Enums.RecurringFrequencyType.XDays => $"Every {FrequencyValue} day{(FrequencyValue == 1 ? "" : "s")}",
-                Enums.RecurringFrequencyType.XWeekOnYDayOfWeek => $"Every {FrequencyValue.ToString().Ordinalize()} {FrequencyDayOfWeekValue}",
-                Enums.RecurringFrequencyType.Irregular => $"Irregular",
-                Enums.RecurringFrequencyType.Unknown => $"Unknown",
+                Enums.RecurringFrequencyTypeEnum.Yearly => $"Yearly on {FrequencyDateValue!.Value:MMM} {FrequencyDateValue.Value.Day.ToString().Ordinalize()}", // TBI: I need to test this.
+                Enums.RecurringFrequencyTypeEnum.Monthly => $"{FrequencyDateValue!.Value.Day.ToString().Ordinalize()} of the month",
+                Enums.RecurringFrequencyTypeEnum.Weekly => $"Every {FrequencyDayOfWeekValue}",
+                Enums.RecurringFrequencyTypeEnum.XMonths => $"Every {FrequencyValue} month{(FrequencyValue == 1 ? "" : "s")} on the {FrequencyDateValue!.Value.Day.ToString().Ordinalize()}",
+                Enums.RecurringFrequencyTypeEnum.XDays => $"Every {FrequencyValue} day{(FrequencyValue == 1 ? "" : "s")}",
+                Enums.RecurringFrequencyTypeEnum.XWeekOnYDayOfWeek => $"Every {FrequencyValue.ToString().Ordinalize()} {FrequencyDayOfWeekValue}",
+                Enums.RecurringFrequencyTypeEnum.Irregular => $"Irregular",
+                Enums.RecurringFrequencyTypeEnum.Unknown => $"Unknown",
                 _ => throw new NotImplementedException()
             };
         }
@@ -97,7 +97,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     public Guid? TransactionGroupId { get; set; }
 
 
-    public Enums.TransactionType TransactionType { get; set; }
+    public Enums.TransactionTypeEnum TransactionType { get; set; }
 
     [JsonIgnore]
     public List<AccountTransaction> PreviousAccountTransactions { get; set; }
@@ -114,26 +114,26 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
 
         switch (RecurringFrequencyType)
         {
-            case Enums.RecurringFrequencyType.Unknown:
+            case Enums.RecurringFrequencyTypeEnum.Unknown:
                 break;
-            case Enums.RecurringFrequencyType.Irregular:
+            case Enums.RecurringFrequencyTypeEnum.Irregular:
                 break;
-            case Enums.RecurringFrequencyType.Yearly:
+            case Enums.RecurringFrequencyTypeEnum.Yearly:
                 NextDueDate = NextDueDate.Value.AddYears(1);
                 break;
-            case Enums.RecurringFrequencyType.Monthly:
+            case Enums.RecurringFrequencyTypeEnum.Monthly:
                 NextDueDate = NextDueDate.Value.AddMonths(1);
                 break;
-            case Enums.RecurringFrequencyType.Weekly:
+            case Enums.RecurringFrequencyTypeEnum.Weekly:
                 NextDueDate = NextDueDate.Value.AddDays(7);
                 break;
-            case Enums.RecurringFrequencyType.XDays:
+            case Enums.RecurringFrequencyTypeEnum.XDays:
                 NextDueDate = NextDueDate.Value.AddDays(FrequencyValue ?? throw new Exception($"Missing Frequency Value for Recurring Transaction: {this}"));
                 break;
-            case Enums.RecurringFrequencyType.XMonths:
+            case Enums.RecurringFrequencyTypeEnum.XMonths:
                 NextDueDate = NextDueDate.Value.AddMonths(FrequencyValue ?? throw new Exception($"Missing Frequency Value for Recurring Transaction: {this}"));
                 break;
-            case Enums.RecurringFrequencyType.XWeekOnYDayOfWeek:
+            case Enums.RecurringFrequencyTypeEnum.XWeekOnYDayOfWeek:
                 NextDueDate = NextDueDate.Value.AddMonths(1);
                 NextDueDate = DayOccurrence(NextDueDate.Value.Year, NextDueDate.Value.Month, FrequencyDayOfWeekValue ?? throw new Exception($"Missing FrequencyDayOfWeekValue in {this}"), FrequencyValue ?? throw new Exception($"Missing Frequency Value in {this}"));
                 break;
@@ -155,8 +155,8 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     {
         Amount = TransactionType switch
         {
-            Enums.TransactionType.Credit => Math.Abs(Amount),
-            Enums.TransactionType.Debit => -Math.Abs(Amount),
+            Enums.TransactionTypeEnum.Credit => Math.Abs(Amount),
+            Enums.TransactionTypeEnum.Debit => -Math.Abs(Amount),
             _ => throw new Exception($"Unknown case: {TransactionType}"),
         };
     }

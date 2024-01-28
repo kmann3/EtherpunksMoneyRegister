@@ -26,7 +26,7 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
     [JsonIgnore]
     public Account Account { get; set; }
     public Guid AccountId { get; set; }
-    public Enums.TransactionType TransactionType { get; set; }
+    public Enums.TransactionTypeEnum TransactionType { get; set; }
     [Display(Name = "Transaction Pending")]
     public DateTime? TransactionPendingUTC { get; set; } = null;
     [NotMapped]
@@ -85,12 +85,13 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
     {
         get
         {
+            if (Files == null) return 0;
             return Files.Count;
         }
     }
 
     [JsonIgnore]
-    public List<TransactionFile> Files { get; set; }
+    public List<TransactionFile> Files { get; set; } = new();
     [JsonIgnore]
     public RecurringTransaction? RecurringTransaction { get; set; }
     public Guid? RecurringTransactionId { get; set; }
@@ -110,8 +111,8 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
     {
         Amount = TransactionType switch
         {
-            Enums.TransactionType.Credit => Math.Abs(Amount),
-            Enums.TransactionType.Debit => -Math.Abs(Amount),
+            Enums.TransactionTypeEnum.Credit => Math.Abs(Amount),
+            Enums.TransactionTypeEnum.Debit => -Math.Abs(Amount),
             _ => throw new Exception($"Unknown case: {TransactionType}"),
         };
     }
