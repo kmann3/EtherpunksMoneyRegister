@@ -8,20 +8,20 @@ This is a program I plan on using personally.
 
 v1-v-whatever are simply varying things I'm toying with. They aren't incremental. It's just "oh, that sounds neat, I want to check that out".
 
-## TBI
+Currently doing the v8 WPF version.
 
-* Edit Account Details dialog ( such as editing starting balance)
-* Form validationin pages. Currently there's only base sanity checking. Could help with UX if we displayed the problems as they progressed
-* Fix category selection in recurring transaction and transactions.
-* RecurringTransactionDetails: Handle file data / ability to download
-* Files: Consider a lookup for types of files such as bills, contracts, warranties, etc
+## TBI for WPF
+
+* Account management
+* Category management
+* Recurring Transactions. Need a management tool AND the ability to do it on the Transaction List screen. Maybe a dropdown?
+* Form validation
+* File data - finish
 * Export/Import: Test: file data, lookups, and link tables
-* Polish RecurringTransactionDetails. I don't like how it looks.
-* Menu adjust so you see where you are / Nav
-* Categories/Tags: Details page for editing and getting an overview of their use
 * Unit Testing
-* Hard deletes or soft deletes?
+* Hard deletes or soft deletes? Currently everything is a hard delete. 
 * Logging: Should there be a history table which talks about all db changes? This might allow for hard deletes while preserving information
+* Anything with a NotImeplemented Exception is..... not implemented or thought out well. Still flushing out details.
 <hr />
 
 * Encrypting important things. This is a later thing because I'm still manually tweaking things in the database to test and it's simply easier to see mistakes currently.
