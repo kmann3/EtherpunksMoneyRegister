@@ -39,7 +39,7 @@
         <Label Grid.Row="0" Grid.Column="0">Account:</Label>
         <ComboBox x:Name="transactionAccountComboBox" Grid.Row="0" Grid.Column="1" TabIndex="12" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedValue="{Binding AccountId}" />
 
-        <Button Grid.Row="0" Grid.Column="3" TabIndex="11">Delete</Button>
+        <Button Grid.Row="0" Grid.Column="3" TabIndex="11" Click="DeleteTransaction_Click">Delete</Button>
 
         <Label Grid.Row="1" Grid.Column="0">Transaction Type:</Label>
         <ComboBox x:Name="transactionTypeComboBox" Grid.Row="1" Grid.Column="1" TabIndex="13" SelectedValue="{Binding TransactionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -51,7 +51,7 @@
         <TextBox x:Name="transactionAmountTextBox" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="2" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=C}" />
 
         <Label Grid.Row="4" Grid.Column="0">Categories:</Label>
-        <ListView x:Name="transactionCategoriesListView" Grid.Row="4" Grid.Column="1" Grid.RowSpan="3" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedValue="{Binding Categories}" />
+        <ListView x:Name="transactionCategoriesListView" Grid.Row="4" Grid.Column="1" Grid.RowSpan="3" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Multiple" SelectionChanged="transactionCategoriesListView_SelectionChanged" />
 
         <Label Grid.Row="7" Grid.Column="0">Pending:</Label>
         <DatePicker x:Name="pendingDatePicker" Grid.Row="7" Grid.Column="1" TabIndex="4" SelectedDate="{Binding TransactionPending, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionPendingLocalTime, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" />
@@ -93,7 +93,7 @@
         </ListView>
         <Button x:Name="AddFile" Grid.Row="12" Grid.Column="4" Click="AddFile_Click">Add File</Button>
         <Button x:Name="DeleteFile" Grid.Row="14" Grid.Column="4" Click="DeleteFile_Click">Delete File</Button>
-        <Button Grid.Row="16" Grid.Column="3" TabIndex="10" Click="SaveFile_Click">Save</Button>
+        <Button Grid.Row="16" Grid.Column="3" TabIndex="10" Click="SaveTransaction_Click">Save</Button>
         
 
     </Grid>

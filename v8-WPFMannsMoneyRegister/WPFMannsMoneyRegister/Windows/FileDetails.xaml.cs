@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPFMannsMoneyRegister.Data.Entities;
 
 namespace WPFMannsMoneyRegister.Windows
 {
@@ -19,9 +20,24 @@ namespace WPFMannsMoneyRegister.Windows
     /// </summary>
     public partial class FileDetails : Window
     {
+        public bool isCancelled = false;
+        public TransactionFile fileData = new();
+        public string title = "New File";
+        // Add a new file.
+        //TransactionFile newFile = new()
+        //{
+        //    ContentType = "",
+        //    Data = new byte[] { },
+        //    Filename = "Foo.exe",
+        //    Name = "Foo",
+        //    Notes = "Notes here",
+        //    AccountTransactionId = _viewModel.Id,
+        //};
+
         public FileDetails()
         {
             InitializeComponent();
+            Title = title;
         }
     }
 }

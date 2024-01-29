@@ -10,6 +10,8 @@ using WPFMannsMoneyRegister.Data.Entities;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using WPFMannsMoneyRegister.SubWindows;
+using WPFMannsMoneyRegister.Windows;
+using System.Windows;
 
 namespace WPFMannsMoneyRegister.Controls;
 /// <summary>
@@ -43,10 +45,19 @@ public partial class TransactionItemUserControl : UserControl
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task LoadTransaction(Guid id)
+    public async Task LoadTransaction(Guid? id)
     {
         DataContext = null;
-        await _viewModel.LoadAccountTransaction(id);
+        if (id == null)
+        {
+            DataContext = null;
+            _viewModel = new();
+        } else
+        {
+            await _viewModel.LoadAccountTransaction(id.Value);
+
+        }
+
         DataContext = _viewModel;
         //transactionFilesListView.ItemsSource = loadedTransaction.Files;
 
@@ -55,22 +66,16 @@ public partial class TransactionItemUserControl : UserControl
 
     private void AddFile_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-        // Add a new file.
-        //TransactionFile newFile = new()
-        //{
-        //    ContentType = "",
-        //    Data = new byte[] { },
-        //    Filename = "Foo.exe",
-        //    Name = "Foo",
-        //    Notes = "Notes here",
-        //    AccountTransactionId = _viewModel.Id,
-        //};
-
-        //_viewModel.Files.Add(newFile);
-        //_viewModel.PropertyFilesChanged();
-
-        var fileWindow = new FileWindow();
+        var fileWindow = new FileDetails();
+        fileWindow.title = "Add new file";
         fileWindow.ShowDialog();
+
+        if(!fileWindow.isCancelled)
+        {
+            var newFile = fileWindow.fileData;
+            _viewModel.Files.Add(newFile);
+            _viewModel.PropertyFilesChanged();
+        }
     }
 
     private void DeleteFile_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -104,15 +109,38 @@ public partial class TransactionItemUserControl : UserControl
     {
         var file = ((ListViewItem)sender).DataContext as TransactionFile;
 
-        Trace.WriteLine($"{file.Name}");
+        var fileWindow = new FileDetails();
+        fileWindow.title = $"File details: {file.Name}";
+        fileWindow.ShowDialog();
+
+        if (!fileWindow.isCancelled)
+        {
+            file = fileWindow.fileData;
+            //_viewModel.Files.Add(newFile);
+            _viewModel.PropertyFilesChanged();
+        }
     }
 
-    private async void SaveFile_Click(object sender, System.Windows.RoutedEventArgs e)
+    private async void SaveTransaction_Click(object sender, System.Windows.RoutedEventArgs e)
     {
         if (!_viewModel.IsChanged) return;
 
         //await ServiceModel.UpdateTransaction(_viewModel.)
 
         // Get the differences and show them to confirm saving.
+    }
+
+    private void transactionCategoriesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
+
+    private void DeleteTransaction_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        if(MessageBox.Show($"Are you sure you want to delete: {_viewModel.Name}?", "Caption", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+        {
+            //_viewModel.DeleteTransaction();
+            LoadTransaction(null);
+        }
     }
 }
