@@ -21,7 +21,7 @@ public partial class TransactionListUserControl : UserControl
 
     public async void UpdateTransactionsFromDates(Guid accountId, DateTime startDate, DateTime endDate)
     {
-        _transactions = await AddDbService.GetAllTransactionsForAccountAsync(accountId, startDate, endDate);
+        _transactions = await AppDbService.GetAllTransactionsForAccountAsync(accountId, startDate, endDate);
         DataGridTransactions.ItemsSource = _transactions;
 
         IEditableCollectionView cv = (IEditableCollectionView)DataGridTransactions.Items;
@@ -34,7 +34,7 @@ public partial class TransactionListUserControl : UserControl
 
         // This is where we update the data and re-pull it
         transData.TransactionPendingUTC = DateTime.UtcNow;
-        await AddDbService.UpdateTransaction(transData);
+        await AppDbService.UpdateTransaction(transData);
         DataGridTransactions.Items.Refresh();
     }
     private async void MarkCleared(object sender, RoutedEventArgs e)
@@ -42,7 +42,7 @@ public partial class TransactionListUserControl : UserControl
         var transData = DataGridTransactions.SelectedItem as AccountTransaction ?? throw new Exception("Transaction data is null.");
 
         transData.TransactionClearedUTC = DateTime.UtcNow;
-        await AddDbService.UpdateTransaction(transData);
+        await AppDbService.UpdateTransaction(transData);
         DataGridTransactions.Items.Refresh();
     }
 

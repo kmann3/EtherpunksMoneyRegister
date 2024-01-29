@@ -64,9 +64,9 @@ public class TransactionItemViewModel : INotifyPropertyChanged
 
     public async Task LoadAccountTransaction(Guid id)
     {
-        currentTransactionVersion = await AddDbService.GetTransactionAsync(id);
+        currentTransactionVersion = await AppDbService.GetTransactionAsync(id);
         previousTransactionVersion = currentTransactionVersion.DeepClone();
-        _allCategories = await AddDbService.GetAllCategoriesAsync();
+        _allCategories = await AppDbService.GetAllCategoriesAsync();
         _selectedCategories = [];
         _unselectedCategories = [];
 
@@ -76,7 +76,10 @@ public class TransactionItemViewModel : INotifyPropertyChanged
 
     private async Task SaveLoadedTransaction()
     {
-        await AddDbService.UpdateTransaction(currentTransactionVersion);
+        //await AppDbService.UpdateTransaction(currentTransactionVersion);
+
+        // IF THERE WAS AN ACCOUNT CHANGE THEN WE NEED TO UPDATE TWO ACCOUNTS
+        throw new NotImplementedException();
     }
 
     private void _unselectedCategories_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)

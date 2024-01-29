@@ -31,8 +31,8 @@ public partial class TransactionItemUserControl : UserControl
 
     private async void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
     {
-        _accounts = await AddDbService.GetAllAccountsAsync();
-        _categories = await AddDbService.GetAllCategoriesAsync();
+        _accounts = await AppDbService.GetAllAccountsAsync();
+        _categories = await AppDbService.GetAllCategoriesAsync();
         transactionAccountComboBox.ItemsSource = _accounts;
         transactionTypeComboBox.ItemsSource = Data.Entities.Base.Enums.GetTransactionTypeEnums;
         transactionFilesListView.ItemsSource = _viewModel.Files;
@@ -123,7 +123,7 @@ public partial class TransactionItemUserControl : UserControl
     {
         if (!_viewModel.IsChanged) return;
 
-        //await AddDbService.UpdateTransaction(_viewModel.)
+        //await AppDbService.UpdateTransaction(_viewModel.)
 
         // Get the differences and show them to confirm saving.
     }
