@@ -111,11 +111,10 @@ public class AppDbService
             .ToListAsync();
 
         // Merge the two lists
-        List<AccountTransaction> returnList = _transactions.Concat(pendingAndClearedTransactions).Distinct()
+        List<AccountTransaction> returnList = [.. _transactions.Concat(pendingAndClearedTransactions).Distinct()
             .OrderByDescending(x => x.TransactionClearedUTC == null && x.TransactionPendingUTC != null)
             .ThenByDescending(x => x.TransactionPendingUTC == null && x.TransactionClearedUTC == null)
-            .ThenByDescending(x => x.CreatedOnUTC)
-            .ToList();
+            .ThenByDescending(x => x.CreatedOnUTC)];
 
         return returnList;
     }
@@ -152,7 +151,7 @@ public class AppDbService
         int outstandingCount = 0;
         decimal outstandingBalance = 0M;
 
-        accountTransactions = accountTransactions.OrderBy(x => x.CreatedOnUTC).ToList();
+        accountTransactions = [.. accountTransactions.OrderBy(x => x.CreatedOnUTC)];
 
 
         foreach (var transaction in accountTransactions)

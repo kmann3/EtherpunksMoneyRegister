@@ -19,8 +19,8 @@ namespace WPFMannsMoneyRegister.Controls;
 /// </summary>
 public partial class TransactionItemUserControl : UserControl
 {
-    private List<Account> _accounts = new();
-    private List<Category> _categories = new();
+    private List<Account> _accounts = [];
+    private List<Category> _categories = [];
     private TransactionItemViewModel _viewModel = new();
 
     public TransactionItemUserControl()
@@ -64,8 +64,10 @@ public partial class TransactionItemUserControl : UserControl
 
     private void AddFile_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-        var fileWindow = new FileDetails();
-        fileWindow.title = "Add new file";
+        var fileWindow = new FileDetails
+        {
+            title = "Add new file"
+        };
         fileWindow.ShowDialog();
 
         if(!fileWindow.isCancelled)
@@ -79,7 +81,7 @@ public partial class TransactionItemUserControl : UserControl
     private void DeleteFile_Click(object sender, System.Windows.RoutedEventArgs e)
     {
         if (transactionFilesListView.Items.Count == 0) return;
-        List<TransactionFile> listToRemove = new();
+        List<TransactionFile> listToRemove = [];
         if(transactionFilesListView.SelectedItems.Count > 0)
         {
             // This loop is needed because you cannot remove SelectedItems in the DataContext WHILE looping through them. For some reason it throws an exception.
@@ -107,8 +109,10 @@ public partial class TransactionItemUserControl : UserControl
     {
         var file = ((ListViewItem)sender).DataContext as TransactionFile;
 
-        var fileWindow = new FileDetails();
-        fileWindow.title = $"File details: {file.Name}";
+        var fileWindow = new FileDetails
+        {
+            title = $"File details: {file.Name}"
+        };
         fileWindow.ShowDialog();
 
         if (!fileWindow.isCancelled)
@@ -146,8 +150,7 @@ public partial class TransactionItemUserControl : UserControl
 
     private void AddCategoryToTransaction_Click(object sender, RoutedEventArgs e)
     {
-        var cat = transactionUnselectedCategoriesListView.SelectedItem as Category;
-        if (cat == null) return;
+        if (transactionUnselectedCategoriesListView.SelectedItem is not Category cat) return;
         _viewModel.UnselectedCategories.Remove(cat);
         _viewModel.SelectedCategories.Add(cat);
         _viewModel.PropertySelectedCategoriesChanged();
@@ -156,28 +159,25 @@ public partial class TransactionItemUserControl : UserControl
 
     private void RemoveCategoryFromTransaction_Click(object sender, RoutedEventArgs e)
     {
-        var cat = transactionSelectedCategoriesListView.SelectedItem as Category;
-        if (cat == null) return;
+        if (transactionSelectedCategoriesListView.SelectedItem is not Category cat) return;
         _viewModel.SelectedCategories.Remove(cat);
         _viewModel.UnselectedCategories.Add(cat);
         _viewModel.PropertySelectedCategoriesChanged();
         _viewModel.PropertyUnselectedCategoriesChanged();
     }
 
-    private void transactionUnselectedCategoriesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    private void TransactionUnselectedCategoriesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        var cat = transactionUnselectedCategoriesListView.SelectedItem as Category;
-        if (cat == null) return;
+        if (transactionUnselectedCategoriesListView.SelectedItem is not Category cat) return;
         _viewModel.UnselectedCategories.Remove(cat);
         _viewModel.SelectedCategories.Add(cat);
         _viewModel.PropertySelectedCategoriesChanged();
         _viewModel.PropertyUnselectedCategoriesChanged();
     }
 
-    private void transactionSelectedCategoriesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    private void TransactionSelectedCategoriesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        var cat = transactionSelectedCategoriesListView.SelectedItem as Category;
-        if (cat == null) return;
+        if (transactionSelectedCategoriesListView.SelectedItem is not Category cat) return;
         _viewModel.SelectedCategories.Remove(cat);
         _viewModel.UnselectedCategories.Add(cat);
         _viewModel.PropertySelectedCategoriesChanged();

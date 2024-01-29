@@ -34,7 +34,7 @@ public partial class TransactionListUserControl : UserControl
 
         // This is where we update the data and re-pull it
         transData.TransactionPendingUTC = DateTime.UtcNow;
-        await AppDbService.UpdateTransaction(transData);
+        await AppDbService.UpdateTransactionAsync(transData);
         DataGridTransactions.Items.Refresh();
     }
     private async void MarkCleared(object sender, RoutedEventArgs e)
@@ -42,7 +42,7 @@ public partial class TransactionListUserControl : UserControl
         var transData = DataGridTransactions.SelectedItem as AccountTransaction ?? throw new Exception("Transaction data is null.");
 
         transData.TransactionClearedUTC = DateTime.UtcNow;
-        await AppDbService.UpdateTransaction(transData);
+        await AppDbService.UpdateTransactionAsync(transData);
         DataGridTransactions.Items.Refresh();
     }
 

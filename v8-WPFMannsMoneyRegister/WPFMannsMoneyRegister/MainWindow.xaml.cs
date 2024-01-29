@@ -68,18 +68,11 @@ namespace WPFMannsMoneyRegister
                 throw new System.IO.FileNotFoundException(db);
             }
 
-            AppDbService.LoadDatabase(db);
+            AppDbService.LoadDatabaseAsync(db);
             
             // Might still have to do Task.Run
 
-            var settings = await AppDbService.GetAllSettingsAsync();
-
-            if (settings == null)
-            {
-                // begin guided tour
-                throw new NotImplementedException();
-            }
-
+            var settings = await AppDbService.GetAllSettingsAsync() ?? throw new NotImplementedException();
             startDatePicker.DisplayDate = DateTime.Now;
             startDatePicker.Text = DateTime.Now.ToString();
             endDatePicker.DisplayDate = DateTime.Now.AddDays(-settings.SearchDayCount);
@@ -90,7 +83,7 @@ namespace WPFMannsMoneyRegister
             if (settings.DefaultAccountId != Guid.Empty && accounts.Count > 0)
             {
                 // Let's do some sanity checks in the unlikely event someone was poking around in the database and broke stuff
-                if (settings.DefaultAccountId != Guid.Empty && (accounts.Where(x => x.Id == settings.DefaultAccountId).Count() == 0)) throw new Exception("Default account not found in database. Possible corruption?");
+                if (settings.DefaultAccountId != Guid.Empty && (!accounts.Where(x => x.Id == settings.DefaultAccountId).Any())) throw new Exception("Default account not found in database. Possible corruption?");
                 if (settings.DefaultAccountId != Guid.Empty && (accounts.Where(x => x.Id == settings.DefaultAccountId).Count() > 1)) throw new Exception("Default account returned more than one account. Possible corruption?");
 
                 accounts = accounts.OrderBy(x => x.Name).ToList();

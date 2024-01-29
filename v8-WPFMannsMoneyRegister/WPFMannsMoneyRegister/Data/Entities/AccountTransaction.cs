@@ -126,17 +126,19 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
     /// <returns></returns>
     public AccountTransaction DeepClone()
     {
-        AccountTransaction returnTransaction = new();
-        //returnTransaction.Account
-        returnTransaction.AccountId = this.AccountId;
-        returnTransaction.Amount = this.Amount;
-        returnTransaction.Balance = this.Balance;
-        //returnTransaction.Categories
-        returnTransaction.ConfirmationNumber = this.ConfirmationNumber;
-        returnTransaction.CreatedOnUTC = this.CreatedOnUTC;
-        returnTransaction.DueDate = this.DueDate;
-        
-        foreach(var file in returnTransaction.Files)
+        AccountTransaction returnTransaction = new()
+        {
+            //returnTransaction.Account
+            AccountId = this.AccountId,
+            Amount = this.Amount,
+            Balance = this.Balance,
+            //returnTransaction.Categories
+            ConfirmationNumber = this.ConfirmationNumber,
+            CreatedOnUTC = this.CreatedOnUTC,
+            DueDate = this.DueDate
+        };
+
+        foreach (var file in returnTransaction.Files)
         {
             //returnTransaction.Files
             TransactionFile newFile = new()
@@ -183,9 +185,8 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
     /// <returns></returns>
     public bool DeepEquals(object? obj)
     {
-        var secondTransaction = obj as AccountTransaction;
         if (obj == null) return false;
-        if (secondTransaction == null) return false;    
+        if (obj is not AccountTransaction secondTransaction) return false;    
 
         bool returnVal = true;
 

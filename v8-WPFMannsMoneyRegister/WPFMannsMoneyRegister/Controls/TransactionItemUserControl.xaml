@@ -51,10 +51,10 @@
         <TextBox x:Name="transactionAmountTextBox" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="2" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=C}" />
 
         <Label Grid.Row="4" Grid.Column="0">Categories:</Label>
-        <ListView x:Name="transactionUnselectedCategoriesListView" Grid.Row="4" Grid.Column="1" Grid.RowSpan="3" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Single" ItemsSource="{Binding UnselectedCategories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="transactionUnselectedCategoriesListView_MouseDoubleClick" />
+        <ListView x:Name="transactionUnselectedCategoriesListView" Grid.Row="4" Grid.Column="1" Grid.RowSpan="3" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Single" ItemsSource="{Binding UnselectedCategories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="TransactionUnselectedCategoriesListView_MouseDoubleClick" />
         <Button x:Name="AddCategoryToTransaction" Grid.Row="4" Grid.Column="2" Content="&gt;&gt;" Margin="5,5,5,5" Click="AddCategoryToTransaction_Click" />
         <Button x:Name="RemoveCategoryFromTransaction" Grid.Row="6" Grid.Column="2" Content="&lt;&lt;" Margin="5,5,5,5" Click="RemoveCategoryFromTransaction_Click" />
-        <ListView x:Name="transactionSelectedCategoriesListView" Grid.Row="4" Grid.Column="3" Grid.RowSpan="3" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Single" ItemsSource="{Binding SelectedCategories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="transactionSelectedCategoriesListView_MouseDoubleClick" />
+        <ListView x:Name="transactionSelectedCategoriesListView" Grid.Row="4" Grid.Column="3" Grid.RowSpan="3" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Single" ItemsSource="{Binding SelectedCategories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="TransactionSelectedCategoriesListView_MouseDoubleClick" />
 
         <Label Grid.Row="7" Grid.Column="0">Pending:</Label>
         <DatePicker x:Name="pendingDatePicker" Grid.Row="7" Grid.Column="1" TabIndex="4" SelectedDate="{Binding TransactionPending, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionPending, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" />

@@ -70,8 +70,8 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         _selectedCategories = [];
         _unselectedCategories = [];
 
-        _selectedCategories.CollectionChanged += _selectedCategories_CollectionChanged;
-        _unselectedCategories.CollectionChanged += _unselectedCategories_CollectionChanged;
+        _selectedCategories.CollectionChanged += SelectedCategories_CollectionChanged;
+        _unselectedCategories.CollectionChanged += UnselectedCategories_CollectionChanged;
     }
 
     private async Task SaveLoadedTransaction()
@@ -82,7 +82,7 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         throw new NotImplementedException();
     }
 
-    private void _unselectedCategories_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void UnselectedCategories_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         Trace.WriteLine("UNSELECTED CHANGE");
         if (e.NewItems != null)
@@ -113,7 +113,7 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         }
     }
 
-    private void _selectedCategories_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void SelectedCategories_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         Trace.WriteLine("SELECTED CHANGE");
         if (e.NewItems != null)
