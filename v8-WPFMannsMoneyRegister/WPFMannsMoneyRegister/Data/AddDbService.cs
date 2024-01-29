@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using WPFMannsMoneyRegister.Data.Entities;
 
 namespace WPFMannsMoneyRegister.Data;
@@ -83,7 +84,14 @@ public class AddDbService
 
     public static async Task UpdateTransaction(AccountTransaction _transaction)
     {
-        _context.Attach(_transaction);
+
+        if(_context.Entry(_transaction).State == EntityState.Detached)
+        {
+            _context.AccountTransactions.Add(_transaction);
+        } else
+        {
+
+        }
         await _context.SaveChangesAsync();
     }
 }

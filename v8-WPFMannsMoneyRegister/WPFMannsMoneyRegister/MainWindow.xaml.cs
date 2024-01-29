@@ -43,7 +43,7 @@ namespace WPFMannsMoneyRegister
             transactionList.UpdateTransactionsFromDates(Guid.Parse(transactionAccountComboBox.SelectedValue.ToString() ?? Guid.Empty.ToString()), startDatePicker.DisplayDate, endDatePicker.DisplayDate);
         }
 
-        private async void LoadDatabaseButton_Click(object sender, RoutedEventArgs e)
+        private void LoadDatabaseButton_Click(object sender, RoutedEventArgs e)
         {
             //Configuration oConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             //oConfig.AppSettings.Settings["databaseLocation"].Value = $"d:\\src\\wpfMMR.sqlite32";
@@ -52,6 +52,7 @@ namespace WPFMannsMoneyRegister
             //string db = ConfigurationManager.AppSettings["databaseLocation"] ?? "";
 
             //Trace.WriteLine(db);
+            throw new NotImplementedException();
         }
 
         private async Task LoadData(object sender, RoutedEventArgs e)
@@ -124,6 +125,11 @@ namespace WPFMannsMoneyRegister
                     throw new NotImplementedException();
                 }
             }
+        }
+
+        private async void NewTransactionButton_Click(object sender, RoutedEventArgs e)
+        {
+            await transactionItem.LoadTransaction(null);
         }
     }
 }

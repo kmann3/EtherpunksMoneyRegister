@@ -20,15 +20,9 @@ using System.Windows.Documents;
 namespace WPFMannsMoneyRegister.Controls;
 public class TransactionItemViewModel : INotifyPropertyChanged
 {
+    private List<Category> _allCategories = new();
     private AccountTransaction previousTransactionVersion = new();
     private AccountTransaction currentTransactionVersion = new();
-
-    private List<Category> _allCategories = new();
-    public TransactionItemViewModel()
-    {
-        
-    }
-
 
     public event EventHandler<bool> HasChanged;
     public event PropertyChangedEventHandler PropertyChanged;
@@ -57,27 +51,94 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Files)));
     }
 
-    public void PropertyCategoriesChanged()
+    public void PropertySelectedCategoriesChanged()
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Categories)));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCategories)));
+        currentTransactionVersion.Categories = _selectedCategories.ToList();
     }
 
-    private ObservableCollection<Category> _processedUnSelectedCat = new();
-    private ObservableCollection<Category> _processedCat = new();
-
-
+    public void PropertyUnselectedCategoriesChanged()
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UnselectedCategories)));
+    }
 
     public async Task LoadAccountTransaction(Guid id)
     {
         currentTransactionVersion = await AddDbService.GetTransactionAsync(id);
         previousTransactionVersion = currentTransactionVersion.DeepClone();
         _allCategories = await AddDbService.GetAllCategoriesAsync();
-        //_processedCat = new();
+        _selectedCategories = [];
+        _unselectedCategories = [];
 
-        //_allCategories.ForEach(x => x.IsSelected = false);
-        //_processedCat.CollectionChanged += HandleChangeInCategories;
-        //Categories.CollectionChanged += HandleChangeInCategories;
+        _selectedCategories.CollectionChanged += _selectedCategories_CollectionChanged;
+        _unselectedCategories.CollectionChanged += _unselectedCategories_CollectionChanged;
+    }
 
+    private async Task SaveLoadedTransaction()
+    {
+        await AddDbService.UpdateTransaction(currentTransactionVersion);
+    }
+
+    private void _unselectedCategories_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        Trace.WriteLine("UNSELECTED CHANGE");
+        if (e.NewItems != null)
+        {
+            foreach (var x in e.NewItems)
+            {
+                // do something
+                Trace.WriteLine($"New item: {(x as Category).Name}");
+            }
+        }
+
+        if (e.OldItems != null)
+        {
+            foreach (var y in e.OldItems)
+            {
+                //do something
+                Trace.WriteLine($"Old item: {(y as Category).Name}");
+            }
+        }
+        if (e.Action == NotifyCollectionChangedAction.Remove)
+        {
+            //do something
+            Trace.WriteLine($"Removed: ");
+        }
+        else if (e.Action == NotifyCollectionChangedAction.Add)
+        {
+            Trace.WriteLine($"Add: ");
+        }
+    }
+
+    private void _selectedCategories_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        Trace.WriteLine("SELECTED CHANGE");
+        if (e.NewItems != null)
+        {
+            foreach (var x in e.NewItems)
+            {
+                // do something
+                Trace.WriteLine($"New item: {(x as Category).Name}");
+            }
+        }
+
+        if (e.OldItems != null)
+        {
+            foreach (var y in e.OldItems)
+            {
+                //do something
+                Trace.WriteLine($"Old item: {(y as Category).Name}");
+            }
+        }
+        if (e.Action == NotifyCollectionChangedAction.Remove)
+        {
+            //do something
+            Trace.WriteLine($"Removed: ");
+        }
+        else if (e.Action == NotifyCollectionChangedAction.Add)
+        {
+            Trace.WriteLine($"Add: ");
+        }
     }
 
     public override string ToString()
@@ -124,33 +185,6 @@ public class TransactionItemViewModel : INotifyPropertyChanged
             if (currentTransactionVersion.BankTransactionText == value) return;
             currentTransactionVersion.BankTransactionText = value;
             OnPropertyChanged(nameof(BankTransactionText));
-        }
-    }
-
-    public ObservableCollection<Category> Categories
-    {
-        get
-        {
-            //if(_processedCat == null || _processedCat.Count > 0) return _processedCat;
-            //foreach(var cat in _allCategories)
-            //{
-            //    if (currentTransactionVersion.Categories.Where(x => x.Id == cat.Id).Count() > 0)
-            //    {
-            //        Category catToLoad = currentTransactionVersion.Categories.Where(x => x.Id == cat.Id).Single();
-            //        catToLoad.IsSelected = true;
-            //        _processedCat.Add(catToLoad);
-            //    } else
-            //    {
-            //        _processedCat.Add(cat);
-            //    }
-            //}
-            //return _processedCat;
-            return null;
-        }
-        set
-        {
-            _processedCat = value; 
-            OnPropertyChanged(nameof(Categories));
         }
     }
 
@@ -219,6 +253,26 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         }
     }
 
+    private ObservableCollection<Category> _selectedCategories = [];
+
+    public ObservableCollection<Category> SelectedCategories
+    {
+        get
+        {
+            if (_selectedCategories == null || _selectedCategories.Count == 0)
+            {
+                _selectedCategories = [.. currentTransactionVersion.Categories.OrderBy(x => x.Name)];
+            }
+
+            return _selectedCategories;
+        }
+        set
+        {
+            _selectedCategories = value;
+            OnPropertyChanged(nameof(SelectedCategories));
+        }
+    }
+
     public DateTime? TransactionCleared
     {
         get => currentTransactionVersion.TransactionClearedLocalTime;
@@ -251,61 +305,33 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<Category> UnSelectedCategories
+    private ObservableCollection<Category> _unselectedCategories = [];
+    public ObservableCollection<Category> UnselectedCategories
     {
         get
         {
-            //if (_processedCat == null || _processedCat.Count > 0) return _processedCat;
-            //foreach (var cat in _allCategories)
-            //{
-            //    if (currentTransactionVersion.Categories.Where(x => x.Id == cat.Id).Count() > 0)
-            //    {
-            //        Category catToLoad = currentTransactionVersion.Categories.Where(x => x.Id == cat.Id).Single();
-            //        catToLoad.IsSelected = true;
-            //        _processedCat.Add(catToLoad);
-            //    }
-            //    else
-            //    {
-            //        _processedCat.Add(cat);
-            //    }
-            //}
-            //return _processedCat;
-            return null;
+            if (_unselectedCategories == null || _unselectedCategories.Count == 0)
+            {
+                _unselectedCategories = new();
+                foreach (var cat in _allCategories.OrderBy(x => x.Name))
+                {
+                    if (!currentTransactionVersion.Categories.Any(x => x.Id == cat.Id))
+                    {
+                        _unselectedCategories.Add(cat);
+                    }
+                }
+            }
+            return _unselectedCategories;
         }
         set
         {
-            //_processedCat = value;
-            OnPropertyChanged(nameof(UnSelectedCategories));
+            _unselectedCategories = value;
+            OnPropertyChanged(nameof(UnselectedCategories));
         }
     }
 
     private void HandleChangeInCategories(object sender, NotifyCollectionChangedEventArgs e)
     {
-        if (e.NewItems != null)
-        {
-            foreach (var x in e.NewItems)
-            {
-                // do something
-                Trace.WriteLine($"New item: {(x as Category).Name}");
-            }
-        }
-
-        if (e.OldItems != null)
-        {
-            foreach (var y in e.OldItems)
-            {
-                //do something
-                Trace.WriteLine($"Old item: {(y as Category).Name}");
-            }
-        }
-        if (e.Action == NotifyCollectionChangedAction.Remove)
-        {
-            //do something
-            Trace.WriteLine($"Removed: ");
-        }
-        else if (e.Action == NotifyCollectionChangedAction.Add)
-        {
-            Trace.WriteLine($"Add: ");
-        }
+        Trace.WriteLine("Something?");
     }
 }

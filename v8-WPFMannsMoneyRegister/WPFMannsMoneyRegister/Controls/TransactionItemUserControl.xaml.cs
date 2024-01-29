@@ -34,9 +34,10 @@ public partial class TransactionItemUserControl : UserControl
         _accounts = await AddDbService.GetAllAccountsAsync();
         _categories = await AddDbService.GetAllCategoriesAsync();
         transactionAccountComboBox.ItemsSource = _accounts;
-        transactionCategoriesListView.ItemsSource = _categories;
         transactionTypeComboBox.ItemsSource = Data.Entities.Base.Enums.GetTransactionTypeEnums;
         transactionFilesListView.ItemsSource = _viewModel.Files;
+
+        //transactionCategoriesListView.ItemsSource = _categories;
     }
 
     /// <summary>
@@ -50,15 +51,14 @@ public partial class TransactionItemUserControl : UserControl
         DataContext = null;
         if (id == null)
         {
-            DataContext = null;
-            _viewModel = new();
-            Visibility = Visibility.Hidden;
-            return;
+            throw new NotImplementedException("Need to implement creating a new transaction");
         }
         await _viewModel.LoadAccountTransaction(id.Value);
         Visibility = Visibility.Visible;
 
         DataContext = _viewModel;
+        transactionUnselectedCategoriesListView.ItemsSource = _viewModel.UnselectedCategories;
+        transactionSelectedCategoriesListView.ItemsSource = _viewModel.SelectedCategories;
         transactionNameTextBox.Focus();
     }
 
@@ -132,7 +132,7 @@ public partial class TransactionItemUserControl : UserControl
     {
         //e.RemovedItems
         //e.AddedItems
-        _viewModel.PropertyCategoriesChanged();
+        //_viewModel.PropertyCategoriesChanged();
     }
 
     private void DeleteTransaction_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -140,7 +140,47 @@ public partial class TransactionItemUserControl : UserControl
         if(MessageBox.Show($"Are you sure you want to delete: {_viewModel.Name}?", "Caption", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
         {
             //_viewModel.DeleteTransaction();
-            LoadTransaction(null);
+            throw new NotImplementedException();
         }
+    }
+
+    private void AddCategoryToTransaction_Click(object sender, RoutedEventArgs e)
+    {
+        var cat = transactionUnselectedCategoriesListView.SelectedItem as Category;
+        if (cat == null) return;
+        _viewModel.UnselectedCategories.Remove(cat);
+        _viewModel.SelectedCategories.Add(cat);
+        _viewModel.PropertySelectedCategoriesChanged();
+        _viewModel.PropertyUnselectedCategoriesChanged();
+    }
+
+    private void RemoveCategoryFromTransaction_Click(object sender, RoutedEventArgs e)
+    {
+        var cat = transactionSelectedCategoriesListView.SelectedItem as Category;
+        if (cat == null) return;
+        _viewModel.SelectedCategories.Remove(cat);
+        _viewModel.UnselectedCategories.Add(cat);
+        _viewModel.PropertySelectedCategoriesChanged();
+        _viewModel.PropertyUnselectedCategoriesChanged();
+    }
+
+    private void transactionUnselectedCategoriesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        var cat = transactionUnselectedCategoriesListView.SelectedItem as Category;
+        if (cat == null) return;
+        _viewModel.UnselectedCategories.Remove(cat);
+        _viewModel.SelectedCategories.Add(cat);
+        _viewModel.PropertySelectedCategoriesChanged();
+        _viewModel.PropertyUnselectedCategoriesChanged();
+    }
+
+    private void transactionSelectedCategoriesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        var cat = transactionSelectedCategoriesListView.SelectedItem as Category;
+        if (cat == null) return;
+        _viewModel.SelectedCategories.Remove(cat);
+        _viewModel.UnselectedCategories.Add(cat);
+        _viewModel.PropertySelectedCategoriesChanged();
+        _viewModel.PropertyUnselectedCategoriesChanged();
     }
 }
