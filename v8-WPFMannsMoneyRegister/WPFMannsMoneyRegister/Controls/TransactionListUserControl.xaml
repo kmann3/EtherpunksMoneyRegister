@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
         <DataGrid Name="DataGridTransactions" AutoGenerateColumns="False" CanUserAddRows="false"
  EnableRowVirtualization="True" HorizontalAlignment="Stretch" Background="Gray" AlternationCount="2" VerticalAlignment="Stretch" SelectionChanged="DataGridTransactions_SelectionChanged" SelectionMode="Single">
-            <DataGrid.Columns>
+        <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden" />
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="325" />
             <DataGridTextColumn Binding="{Binding Amount, StringFormat=C}" Header="Amount" Width="120" >
@@ -88,16 +88,29 @@
                 <Style TargetType="DataGridRow">
                     <Setter Property="FontSize" Value="18" />
                     <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="DarkGray"/>
-                            <Setter Property="Foreground" Value="Black"/>
-                        </Trigger>
                     <Trigger Property="ItemsControl.AlternationIndex" Value="1">
                         <Setter Property="Background" Value="DarkGray"></Setter>
                     </Trigger>
                     <Trigger Property="ItemsControl.AlternationIndex" Value="0">
                         <Setter Property="Background" Value="LightGray"></Setter>
                     </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="LightBlue"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                    </Trigger>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding Path=TransactionClearedLocalTime}" Value="{x:Null}" />
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="Background" Value="LightYellow" />
+                    </MultiDataTrigger>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding Path=TransactionPendingLocalTime}" Value="{x:Null}" />
+                            <Condition Binding="{Binding Path=TransactionClearedLocalTime}" Value="{x:Null}" />
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="Background" Value="LightCoral" />
+                    </MultiDataTrigger>
                 </Style.Triggers>
                 </Style>
             </DataGrid.RowStyle>

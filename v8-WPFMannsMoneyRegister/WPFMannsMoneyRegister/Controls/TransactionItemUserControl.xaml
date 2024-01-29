@@ -37,48 +37,47 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Grid.Column="0">Account:</Label>
-        <ComboBox x:Name="transactionAccountComboBox" Grid.Row="0" Grid.Column="1" TabIndex="12" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedValue="{Binding AccountId}" />
+        <ComboBox x:Name="transactionAccountComboBox" Grid.Row="0" Grid.Column="1" Margin="5,0,5,0" TabIndex="12" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedValue="{Binding AccountId}" />
 
-        <Button Grid.Row="0" Grid.Column="3" TabIndex="11" Click="DeleteTransaction_Click">Delete</Button>
+        <Button Grid.Row="0" Grid.Column="3" TabIndex="11" Margin="5,5,5,5" Click="DeleteTransaction_Click">Delete</Button>
 
         <Label Grid.Row="1" Grid.Column="0">Transaction Type:</Label>
-        <ComboBox x:Name="transactionTypeComboBox" Grid.Row="1" Grid.Column="1" TabIndex="13" SelectedValue="{Binding TransactionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <ComboBox x:Name="transactionTypeComboBox" Grid.Row="1" Grid.Column="1" Margin="5,0,5,0" TabIndex="13" SelectedValue="{Binding TransactionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="2" Grid.Column="0">Name:</Label>
-        <TextBox x:Name="transactionNameTextBox" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="1" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox x:Name="transactionNameTextBox" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="5,5,5,5" TabIndex="1" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="3" Grid.Column="0">Amount:</Label>
-        <TextBox x:Name="transactionAmountTextBox" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="2" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=C}" />
+        <TextBox x:Name="transactionAmountTextBox" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="5,5,5,5" TabIndex="2" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=C}" />
 
         <Label Grid.Row="4" Grid.Column="0">Categories:</Label>
-        <ListView x:Name="transactionUnselectedCategoriesListView" Grid.Row="4" Grid.Column="1" Grid.RowSpan="3" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Single" ItemsSource="{Binding UnselectedCategories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="TransactionUnselectedCategoriesListView_MouseDoubleClick" />
+        <ListView x:Name="transactionUnselectedCategoriesListView" Grid.Row="4" Grid.Column="1" Grid.RowSpan="3" Margin="5,5,5,5" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Single" ItemsSource="{Binding UnselectedCategories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="TransactionUnselectedCategoriesListView_MouseDoubleClick" />
         <Button x:Name="AddCategoryToTransaction" Grid.Row="4" Grid.Column="2" Content="&gt;&gt;" Margin="5,5,5,5" Click="AddCategoryToTransaction_Click" />
         <Button x:Name="RemoveCategoryFromTransaction" Grid.Row="6" Grid.Column="2" Content="&lt;&lt;" Margin="5,5,5,5" Click="RemoveCategoryFromTransaction_Click" />
-        <ListView x:Name="transactionSelectedCategoriesListView" Grid.Row="4" Grid.Column="3" Grid.RowSpan="3" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Single" ItemsSource="{Binding SelectedCategories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="TransactionSelectedCategoriesListView_MouseDoubleClick" />
+        <ListView x:Name="transactionSelectedCategoriesListView" Grid.Row="4" Grid.Column="3" Grid.RowSpan="3" Margin="5,5,5,5" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Single" ItemsSource="{Binding SelectedCategories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="TransactionSelectedCategoriesListView_MouseDoubleClick" />
 
         <Label Grid.Row="7" Grid.Column="0">Pending:</Label>
-        <DatePicker x:Name="pendingDatePicker" Grid.Row="7" Grid.Column="1" TabIndex="4" SelectedDate="{Binding TransactionPending, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionPending, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" />
+        <DatePicker x:Name="pendingDatePicker" Grid.Row="7" Grid.Column="1" TabIndex="4" Margin="5,0,5,0" SelectedDate="{Binding TransactionPending, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionPending, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" />
 
-        <Label Grid.Row="7" Grid.Column="2">Cleared:</Label>
-        <DatePicker x:Name="clearedDatePicker" Grid.Row="7" Grid.Column="3" IsTodayHighlighted="True" TabIndex="5" SelectedDate="{Binding TransactionCleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='',StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionCleared, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}"  />
+        <Label Grid.Row="7" Grid.Column="2" HorizontalAlignment="Right">Cleared:</Label>
+        <DatePicker x:Name="clearedDatePicker" Grid.Row="7" Grid.Column="3" IsTodayHighlighted="True" TabIndex="5" Margin="5,0,5,0" SelectedDate="{Binding TransactionCleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='',StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionCleared, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}"  />
 
         <Label Grid.Row="8" Grid.Column="0">Notes:</Label>
-        <TextBox x:Name="notesTextBox" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="6" Text="{Binding Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox x:Name="notesTextBox" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Margin="5,5,5,5" TabIndex="6" Text="{Binding Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="9" Grid.Column="0">Confirmation #:</Label>
-        <TextBox x:Name="confirmationTextBox" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="7" Text="{Binding ConfirmationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox x:Name="confirmationTextBox" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Margin="5,5,5,5" TabIndex="7" Text="{Binding ConfirmationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="10" Grid.Column="0">Bank Text:</Label>
-        <TextBox x:Name="bankTextTextBox" Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="8" Text="{Binding BankTransactionText}" />
+        <TextBox x:Name="bankTextTextBox" Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" Margin="5,5,5,5" TabIndex="8" Text="{Binding BankTransactionText}" />
 
         <Label Grid.Row="11" Grid.Column="0">Cleared:</Label>
-        <DatePicker x:Name="dueDateDatePicker" Grid.Row="11" Grid.Column="1" IsTodayHighlighted="True" TabIndex="5" SelectedDate="{Binding DueDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding DueDate, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}"  />
+        <DatePicker x:Name="dueDateDatePicker" Grid.Row="11" Grid.Column="1" IsTodayHighlighted="True" Margin="5,0,5,0" TabIndex="5" SelectedDate="{Binding DueDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding DueDate, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}"  />
 
 
         <Label Grid.Row="12" Grid.Column="0">Files:</Label>
-        <Button Grid.Row="12" Grid.Column="1" Width="100">Add File</Button>
 
-        <ListView x:Name="transactionFilesListView" Grid.Row="12" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="3" TabIndex="9" ItemsSource="{Binding Files, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <ListView x:Name="transactionFilesListView" Grid.Row="12" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="5,5,5,5" TabIndex="9" ItemsSource="{Binding Files, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ListView.Resources>
                 <Style x:Key="itemstyle" TargetType="{x:Type ListViewItem}">
                     <EventSetter Event="MouseDoubleClick" Handler="TransactionFilesListView_MouseDoubleClick" />
@@ -94,10 +93,8 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="AddFile" Grid.Row="12" Grid.Column="4" Click="AddFile_Click">Add File</Button>
-        <Button x:Name="DeleteFile" Grid.Row="14" Grid.Column="4" Click="DeleteFile_Click">Delete File</Button>
-        <Button Grid.Row="16" Grid.Column="3" TabIndex="10" Click="SaveTransaction_Click">Save</Button>
-        
-
+        <Button x:Name="AddFile" Grid.Row="12" Grid.Column="4" Margin="5,5,5,5" Click="AddFile_Click">Add File</Button>
+        <Button x:Name="DeleteFile" Grid.Row="14" Grid.Column="4" Margin="5,5,5,5" Click="DeleteFile_Click">Delete File</Button>
+        <Button Grid.Row="16" Grid.Column="3" TabIndex="10" Margin="5,5,5,5" Click="SaveTransaction_Click">Save</Button>
     </Grid>
 </UserControl>

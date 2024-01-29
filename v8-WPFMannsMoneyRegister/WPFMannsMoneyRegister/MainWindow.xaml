@@ -43,7 +43,7 @@
             </TabControl.Resources>
             
             <TabItem Header="Transactions">
-                <Grid>
+                <Grid Background="DarkGray">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -55,7 +55,10 @@
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="2*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Content="BALANCE:" />
+                    <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
+                        <Label Content="BALANCE:" />
+                        <Label Content="Oustanding:" />
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                         <ComboBox x:Name="transactionAccountComboBox" Width="200" Margin="5,10" />
                         <Label HorizontalAlignment="Center" VerticalAlignment="Center">Start:</Label>
