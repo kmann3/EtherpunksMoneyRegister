@@ -2,11 +2,11 @@
 using WPFMannsMoneyRegister.Data.Entities;
 
 namespace WPFMannsMoneyRegister.Data;
-public class ServiceModel
+public class AddDbService
 {
     private static ApplicationDbContext _context = new();
 
-    public ServiceModel()
+    public AddDbService()
     {
     }
 

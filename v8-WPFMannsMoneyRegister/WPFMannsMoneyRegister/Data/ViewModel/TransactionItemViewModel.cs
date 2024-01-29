@@ -12,14 +12,21 @@ using System.Text.Json.Serialization;
 using static WPFMannsMoneyRegister.Controls.TransactionItemViewModel;
 using WPFMannsMoneyRegister.Data;
 using WPFMannsMoneyRegister.Data.Entities.Base;
+using Microsoft.VisualBasic;
+using System.Diagnostics;
+using System.Collections.Specialized;
+using System.Windows.Documents;
 
 namespace WPFMannsMoneyRegister.Controls;
 public class TransactionItemViewModel : INotifyPropertyChanged
 {
     private AccountTransaction previousTransactionVersion = new();
     private AccountTransaction currentTransactionVersion = new();
+
+    private List<Category> _allCategories = new();
     public TransactionItemViewModel()
     {
+        
     }
 
 
@@ -50,10 +57,27 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Files)));
     }
 
+    public void PropertyCategoriesChanged()
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Categories)));
+    }
+
+    private ObservableCollection<Category> _processedUnSelectedCat = new();
+    private ObservableCollection<Category> _processedCat = new();
+
+
+
     public async Task LoadAccountTransaction(Guid id)
     {
-        currentTransactionVersion = await ServiceModel.GetTransactionAsync(id);
+        currentTransactionVersion = await AddDbService.GetTransactionAsync(id);
         previousTransactionVersion = currentTransactionVersion.DeepClone();
+        _allCategories = await AddDbService.GetAllCategoriesAsync();
+        //_processedCat = new();
+
+        //_allCategories.ForEach(x => x.IsSelected = false);
+        //_processedCat.CollectionChanged += HandleChangeInCategories;
+        //Categories.CollectionChanged += HandleChangeInCategories;
+
     }
 
     public override string ToString()
@@ -103,13 +127,29 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         }
     }
 
-    public List<Category> Categories
+    public ObservableCollection<Category> Categories
     {
-        get => currentTransactionVersion.Categories;
+        get
+        {
+            //if(_processedCat == null || _processedCat.Count > 0) return _processedCat;
+            //foreach(var cat in _allCategories)
+            //{
+            //    if (currentTransactionVersion.Categories.Where(x => x.Id == cat.Id).Count() > 0)
+            //    {
+            //        Category catToLoad = currentTransactionVersion.Categories.Where(x => x.Id == cat.Id).Single();
+            //        catToLoad.IsSelected = true;
+            //        _processedCat.Add(catToLoad);
+            //    } else
+            //    {
+            //        _processedCat.Add(cat);
+            //    }
+            //}
+            //return _processedCat;
+            return null;
+        }
         set
         {
-            if (currentTransactionVersion.Categories == value) return;
-            currentTransactionVersion.Categories = value;
+            _processedCat = value; 
             OnPropertyChanged(nameof(Categories));
         }
     }
@@ -208,6 +248,64 @@ public class TransactionItemViewModel : INotifyPropertyChanged
             if (currentTransactionVersion.TransactionType == value) return;
             currentTransactionVersion.TransactionType = value;
             OnPropertyChanged(nameof(TransactionType));
+        }
+    }
+
+    public ObservableCollection<Category> UnSelectedCategories
+    {
+        get
+        {
+            //if (_processedCat == null || _processedCat.Count > 0) return _processedCat;
+            //foreach (var cat in _allCategories)
+            //{
+            //    if (currentTransactionVersion.Categories.Where(x => x.Id == cat.Id).Count() > 0)
+            //    {
+            //        Category catToLoad = currentTransactionVersion.Categories.Where(x => x.Id == cat.Id).Single();
+            //        catToLoad.IsSelected = true;
+            //        _processedCat.Add(catToLoad);
+            //    }
+            //    else
+            //    {
+            //        _processedCat.Add(cat);
+            //    }
+            //}
+            //return _processedCat;
+            return null;
+        }
+        set
+        {
+            //_processedCat = value;
+            OnPropertyChanged(nameof(UnSelectedCategories));
+        }
+    }
+
+    private void HandleChangeInCategories(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.NewItems != null)
+        {
+            foreach (var x in e.NewItems)
+            {
+                // do something
+                Trace.WriteLine($"New item: {(x as Category).Name}");
+            }
+        }
+
+        if (e.OldItems != null)
+        {
+            foreach (var y in e.OldItems)
+            {
+                //do something
+                Trace.WriteLine($"Old item: {(y as Category).Name}");
+            }
+        }
+        if (e.Action == NotifyCollectionChangedAction.Remove)
+        {
+            //do something
+            Trace.WriteLine($"Removed: ");
+        }
+        else if (e.Action == NotifyCollectionChangedAction.Add)
+        {
+            Trace.WriteLine($"Add: ");
         }
     }
 }

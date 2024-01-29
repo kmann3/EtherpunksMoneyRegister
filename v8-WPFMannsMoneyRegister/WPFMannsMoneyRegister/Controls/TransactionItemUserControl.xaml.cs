@@ -31,8 +31,8 @@ public partial class TransactionItemUserControl : UserControl
 
     private async void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
     {
-        _accounts = await ServiceModel.GetAllAccountsAsync();
-        _categories = await ServiceModel.GetAllCategoriesAsync();
+        _accounts = await AddDbService.GetAllAccountsAsync();
+        _categories = await AddDbService.GetAllCategoriesAsync();
         transactionAccountComboBox.ItemsSource = _accounts;
         transactionCategoriesListView.ItemsSource = _categories;
         transactionTypeComboBox.ItemsSource = Data.Entities.Base.Enums.GetTransactionTypeEnums;
@@ -52,15 +52,13 @@ public partial class TransactionItemUserControl : UserControl
         {
             DataContext = null;
             _viewModel = new();
-        } else
-        {
-            await _viewModel.LoadAccountTransaction(id.Value);
-
+            Visibility = Visibility.Hidden;
+            return;
         }
+        await _viewModel.LoadAccountTransaction(id.Value);
+        Visibility = Visibility.Visible;
 
         DataContext = _viewModel;
-        //transactionFilesListView.ItemsSource = loadedTransaction.Files;
-
         transactionNameTextBox.Focus();
     }
 
@@ -125,14 +123,16 @@ public partial class TransactionItemUserControl : UserControl
     {
         if (!_viewModel.IsChanged) return;
 
-        //await ServiceModel.UpdateTransaction(_viewModel.)
+        //await AddDbService.UpdateTransaction(_viewModel.)
 
         // Get the differences and show them to confirm saving.
     }
 
     private void transactionCategoriesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-
+        //e.RemovedItems
+        //e.AddedItems
+        _viewModel.PropertyCategoriesChanged();
     }
 
     private void DeleteTransaction_Click(object sender, System.Windows.RoutedEventArgs e)

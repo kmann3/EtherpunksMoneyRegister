@@ -39,5 +39,16 @@ namespace WPFMannsMoneyRegister.Windows
             InitializeComponent();
             Title = title;
         }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+            isCancelled = true;
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

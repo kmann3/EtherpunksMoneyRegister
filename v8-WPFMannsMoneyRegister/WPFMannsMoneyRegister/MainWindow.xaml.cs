@@ -67,11 +67,11 @@ namespace WPFMannsMoneyRegister
                 throw new System.IO.FileNotFoundException(db);
             }
 
-            ServiceModel.LoadDatabase(db);
+            AddDbService.LoadDatabase(db);
             
             // Might still have to do Task.Run
 
-            var settings = await ServiceModel.GetAllSettingsAsync();
+            var settings = await AddDbService.GetAllSettingsAsync();
 
             if (settings == null)
             {
@@ -85,7 +85,7 @@ namespace WPFMannsMoneyRegister
             endDatePicker.Text = DateTime.Now.AddDays(-settings.SearchDayCount).ToString();
 
             // Get list of accounts and populate dropdown
-            var accounts = await ServiceModel.GetAllAccountsAsync();
+            var accounts = await AddDbService.GetAllAccountsAsync();
             if (settings.DefaultAccountId != Guid.Empty && accounts.Count > 0)
             {
                 // Let's do some sanity checks in the unlikely event someone was poking around in the database and broke stuff

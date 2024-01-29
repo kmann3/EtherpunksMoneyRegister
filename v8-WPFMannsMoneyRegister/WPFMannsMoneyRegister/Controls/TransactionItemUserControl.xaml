@@ -8,7 +8,7 @@
              Loaded="UserControl_Loaded"
              x:Name="TransactionItemUserControl_Window"
              d:DesignHeight="450" d:DesignWidth="500">
-    <Grid Background="AliceBlue">
+    <Grid Background="LightGray">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"></ColumnDefinition>
             <ColumnDefinition Width="150"></ColumnDefinition>
@@ -51,13 +51,22 @@
         <TextBox x:Name="transactionAmountTextBox" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="2" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=C}" />
 
         <Label Grid.Row="4" Grid.Column="0">Categories:</Label>
-        <ListView x:Name="transactionCategoriesListView" Grid.Row="4" Grid.Column="1" Grid.RowSpan="3" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Multiple" SelectionChanged="transactionCategoriesListView_SelectionChanged" />
+        <ListView x:Name="transactionCategoriesListView" Grid.Row="4" Grid.Column="1" Grid.RowSpan="3" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Multiple" ItemsSource="{Binding Categories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+        <Button x:Name="AddCategoryToTransaction" Grid.Row="4" Grid.Column="2" Content="&gt;&gt;" Margin="5,5,5,5" />
+        <Button x:Name="RemoveCategoryFromTransaction" Grid.Row="6" Grid.Column="2" Content="&lt;&lt;" Margin="5,5,5,5" />
+        <ListView x:Name="transactionSelectedCategoriesListView" Grid.Row="4" Grid.Column="3" Grid.RowSpan="3" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Single" ItemsSource="{Binding Categories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="7" Grid.Column="0">Pending:</Label>
-        <DatePicker x:Name="pendingDatePicker" Grid.Row="7" Grid.Column="1" TabIndex="4" SelectedDate="{Binding TransactionPending, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionPendingLocalTime, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" />
+        <DatePicker x:Name="pendingDatePicker" Grid.Row="7" Grid.Column="1" TabIndex="4" SelectedDate="{Binding TransactionPending, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionPending, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" />
 
         <Label Grid.Row="7" Grid.Column="2">Cleared:</Label>
-        <DatePicker x:Name="clearedDatePicker" Grid.Row="7" Grid.Column="3" IsTodayHighlighted="True" TabIndex="5" SelectedDate="{Binding TransactionCleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='',StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionClearedLocalTime, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}"  />
+        <DatePicker x:Name="clearedDatePicker" Grid.Row="7" Grid.Column="3" IsTodayHighlighted="True" TabIndex="5" SelectedDate="{Binding TransactionCleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='',StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionCleared, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}"  />
 
         <Label Grid.Row="8" Grid.Column="0">Notes:</Label>
         <TextBox x:Name="notesTextBox" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="6" Text="{Binding Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -69,7 +78,7 @@
         <TextBox x:Name="bankTextTextBox" Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" TabIndex="8" Text="{Binding BankTransactionText}" />
 
         <Label Grid.Row="11" Grid.Column="0">Cleared:</Label>
-        <DatePicker x:Name="dueDateDatePicker" Grid.Row="11" Grid.Column="1" IsTodayHighlighted="True" TabIndex="5" SelectedDate="{Binding DueDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionClearedLocalTime, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}"  />
+        <DatePicker x:Name="dueDateDatePicker" Grid.Row="11" Grid.Column="1" IsTodayHighlighted="True" TabIndex="5" SelectedDate="{Binding DueDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding DueDate, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}"  />
 
 
         <Label Grid.Row="12" Grid.Column="0">Files:</Label>
