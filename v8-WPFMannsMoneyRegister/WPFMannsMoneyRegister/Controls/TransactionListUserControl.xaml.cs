@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.ComponentModel;
 using WPFMannsMoneyRegister.Data;
 
-namespace WPFMannsMoneyRegister;
+namespace WPFMannsMoneyRegister.Controls;
 /// <summary>
 /// Interaction logic for TransactionListUserControl.xaml
 /// </summary>

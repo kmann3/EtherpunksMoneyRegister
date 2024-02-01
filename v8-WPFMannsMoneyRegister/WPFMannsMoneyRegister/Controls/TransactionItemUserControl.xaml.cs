@@ -1,17 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Linq;
+using System.Windows.Input;
 using WPFMannsMoneyRegister.Data;
 using WPFMannsMoneyRegister.Data.Entities;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
-using WPFMannsMoneyRegister.SubWindows;
 using WPFMannsMoneyRegister.Windows;
-using System.Windows;
+
 
 namespace WPFMannsMoneyRegister.Controls;
 /// <summary>
@@ -20,8 +13,10 @@ namespace WPFMannsMoneyRegister.Controls;
 public partial class TransactionItemUserControl : UserControl
 {
     private List<Account> _accounts = [];
-    private List<Category> _categories = [];
-    private TransactionItemViewModel _viewModel = new();
+    private readonly TransactionItemViewModel _viewModel = new();
+    private bool isNew = false;
+
+    public event EventHandler ControlClosed;
 
     public TransactionItemUserControl()
     {
@@ -32,12 +27,31 @@ public partial class TransactionItemUserControl : UserControl
     private async void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
     {
         _accounts = await AppDbService.GetAllAccountsAsync();
-        _categories = await AppDbService.GetAllCategoriesAsync();
         transactionAccountComboBox.ItemsSource = _accounts;
         transactionTypeComboBox.ItemsSource = Data.Entities.Base.Enums.GetTransactionTypeEnums;
-        transactionFilesListView.ItemsSource = _viewModel.Files;
+    }
 
-        //transactionCategoriesListView.ItemsSource = _categories;
+    /// <summary>
+    /// Creates an empty area for a new transaction to be entered.
+    /// </summary>
+    /// <param name="accoundId">The default account. This should be from the already loaded accounts.</param>
+    /// <exception cref="NotImplementedException"></exception>
+    public async void CreateNewTransaction(Guid accoundId)
+    {
+        if(isNew && _viewModel.IsChanged)
+        {
+            // We have a new transaction already loaded and ttey probably put new stuff in it. Ask if they are willing to lose it.
+            throw new NotImplementedException();
+        }
+        DataContext = null;
+        isNew = true;
+        await _viewModel.CreateNewTransaction(accoundId);
+        DataContext = _viewModel;
+        Visibility = Visibility.Visible;
+        transactionUnselectedCategoriesListView.ItemsSource = _viewModel.UnselectedCategories;
+        transactionSelectedCategoriesListView.ItemsSource = _viewModel.SelectedCategories;
+        transactionFilesListView.ItemsSource = _viewModel.Files;
+        transactionNameTextBox.Focus();
     }
 
     /// <summary>
@@ -46,19 +60,21 @@ public partial class TransactionItemUserControl : UserControl
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task LoadTransaction(Guid? id)
+    public async Task LoadTransaction(Guid id)
     {
-        DataContext = null;
-        if (id == null)
+        if (isNew && _viewModel.IsChanged)
         {
-            throw new NotImplementedException("Need to implement creating a new transaction");
+            // We have a new transaction already loaded and ttey probably put new stuff in it. Ask if they are willing to lose it.
+            throw new NotImplementedException();
         }
-        await _viewModel.LoadAccountTransaction(id.Value);
+        DataContext = null;
+        isNew = false;
+        await _viewModel.LoadAccountTransaction(id);
         Visibility = Visibility.Visible;
-
         DataContext = _viewModel;
         transactionUnselectedCategoriesListView.ItemsSource = _viewModel.UnselectedCategories;
         transactionSelectedCategoriesListView.ItemsSource = _viewModel.SelectedCategories;
+        transactionFilesListView.ItemsSource = _viewModel.Files;
         transactionNameTextBox.Focus();
     }
 
@@ -182,5 +198,11 @@ public partial class TransactionItemUserControl : UserControl
         _viewModel.UnselectedCategories.Add(cat);
         _viewModel.PropertySelectedCategoriesChanged();
         _viewModel.PropertyUnselectedCategoriesChanged();
+    }
+
+    private void CloseWindow_Click(object sender, RoutedEventArgs e)
+    {
+        Visibility = Visibility.Hidden;
+        ControlClosed?.Invoke(this, EventArgs.Empty);
     }
 }

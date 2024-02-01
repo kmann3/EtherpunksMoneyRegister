@@ -24,35 +24,31 @@ namespace WPFMannsMoneyRegister
     {
         public MainWindow()
         {
-            InitializeComponent();  
-            
+            InitializeComponent();
+            transactionItem.ControlClosed += TransactionItem_ControlClosed;
+        }
+
+        private void TransactionItem_ControlClosed(object? sender, EventArgs e)
+        {
+            transactionList.SetValue(Grid.ColumnSpanProperty, 3);
         }
 
         public async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await LoadData(sender, e);
+            transactionItem.Visibility = Visibility.Hidden;
+            transactionList.SetValue(Grid.ColumnSpanProperty, 3);
         }
 
         private async void TransactionListUserControl_TransactionSelected(object sender, Guid e)
         {
+            transactionList.SetValue(Grid.ColumnSpanProperty, 2);
             await transactionItem.LoadTransaction(e);
         }
 
         private void LoadSelectedDates(object sender, RoutedEventArgs e)
         {
             transactionList.UpdateTransactionsFromDates(Guid.Parse(transactionAccountComboBox.SelectedValue.ToString() ?? Guid.Empty.ToString()), startDatePicker.DisplayDate, endDatePicker.DisplayDate);
-        }
-
-        private void LoadDatabaseButton_Click(object sender, RoutedEventArgs e)
-        {
-            //Configuration oConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            //oConfig.AppSettings.Settings["databaseLocation"].Value = $"d:\\src\\wpfMMR.sqlite32";
-            //oConfig.Save(ConfigurationSaveMode.Full);
-            //ConfigurationManager.RefreshSection("appSettings");
-            //string db = ConfigurationManager.AppSettings["databaseLocation"] ?? "";
-
-            //Trace.WriteLine(db);
-            throw new NotImplementedException();
         }
 
         private async Task LoadData(object sender, RoutedEventArgs e)
@@ -120,9 +116,10 @@ namespace WPFMannsMoneyRegister
             }
         }
 
-        private async void NewTransactionButton_Click(object sender, RoutedEventArgs e)
+        private void NewTransactionButton_Click(object sender, RoutedEventArgs e)
         {
-            await transactionItem.LoadTransaction(null);
+            transactionList.SetValue(Grid.ColumnSpanProperty, 2);
+            transactionItem.CreateNewTransaction((Guid)transactionAccountComboBox.SelectedValue);
         }
     }
 }

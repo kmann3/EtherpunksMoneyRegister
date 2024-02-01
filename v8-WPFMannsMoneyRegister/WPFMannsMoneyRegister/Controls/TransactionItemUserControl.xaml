@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              Loaded="UserControl_Loaded"
              x:Name="TransactionItemUserControl_Window"
-             d:DesignHeight="450" d:DesignWidth="500">
+             d:DesignHeight="550" d:DesignWidth="500">
     <Grid Background="LightGray">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"></ColumnDefinition>
@@ -39,7 +39,11 @@
         <Label Grid.Row="0" Grid.Column="0">Account:</Label>
         <ComboBox x:Name="transactionAccountComboBox" Grid.Row="0" Grid.Column="1" Margin="5,0,5,0" TabIndex="12" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedValue="{Binding AccountId}" />
 
-        <Button Grid.Row="0" Grid.Column="3" TabIndex="11" Margin="5,5,5,5" Click="DeleteTransaction_Click">Delete</Button>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="3">
+            <Button TabIndex="11" Margin="5,5,40,5"  Click="SaveTransaction_Click" Width="70">Save</Button>
+            <Button TabIndex="11" Margin="0,5,0,5"  Click="CloseWindow_Click" Width="30">X</Button>
+        </StackPanel>
+
 
         <Label Grid.Row="1" Grid.Column="0">Transaction Type:</Label>
         <ComboBox x:Name="transactionTypeComboBox" Grid.Row="1" Grid.Column="1" Margin="5,0,5,0" TabIndex="13" SelectedValue="{Binding TransactionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -95,6 +99,6 @@
         </ListView>
         <Button x:Name="AddFile" Grid.Row="12" Grid.Column="4" Margin="5,5,5,5" Click="AddFile_Click">Add File</Button>
         <Button x:Name="DeleteFile" Grid.Row="14" Grid.Column="4" Margin="5,5,5,5" Click="DeleteFile_Click">Delete File</Button>
-        <Button Grid.Row="16" Grid.Column="3" TabIndex="10" Margin="5,5,5,5" Click="SaveTransaction_Click">Save</Button>
+        <Button Grid.Row="16" Grid.Column="3" TabIndex="10" Margin="5,5,45,5" Click="DeleteTransaction_Click">Delete</Button>
     </Grid>
 </UserControl>

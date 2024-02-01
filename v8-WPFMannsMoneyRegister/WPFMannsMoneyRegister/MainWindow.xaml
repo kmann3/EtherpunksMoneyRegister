@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFMannsMoneyRegister" xmlns:local1="clr-namespace:WPFMannsMoneyRegister.Controls"
+        xmlns:local="clr-namespace:WPFMannsMoneyRegister.Controls"
         mc:Ignorable="d"
         Loaded="MainWindow_Loaded"
         Title="MainWindow" Height="900" Width="2000">
@@ -55,9 +55,15 @@
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="2*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
-                        <Label Content="BALANCE:" />
-                        <Label Content="Oustanding:" />
+                    <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="BALANCE:" FontSize="22" />
+                            <Label Content="$0.00" FontSize="22" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Oustanding:" FontSize="22" />
+                            <Label Content="$0.00 (0 items)" FontSize="22" />
+                        </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                         <ComboBox x:Name="transactionAccountComboBox" Width="200" Margin="5,10" />
@@ -68,8 +74,8 @@
                         <Button Click="LoadSelectedDates" Margin="5,10" Width="80">Load</Button>
                     </StackPanel>
                     <local:TransactionListUserControl x:Name="transactionList" Grid.Row="2" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" TransactionSelected="TransactionListUserControl_TransactionSelected" />
-                    <local1:TransactionItemUserControl x:Name="transactionItem" Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" />
-                    <Button x:Name="NewTransactionButton" Grid.Row="1" Grid.Column="1" Content="New Transaction" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="100" Height="30" Margin="5,5,5,5" Click="NewTransactionButton_Click" />
+                    <local:TransactionItemUserControl x:Name="transactionItem" Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" />
+                    <Button x:Name="NewTransactionButton" Grid.Row="1" Grid.Column="2" Content="New Transaction" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="100" Height="30" Margin="5,5,5,5" Click="NewTransactionButton_Click" />
 
                 </Grid>
             </TabItem>
@@ -85,10 +91,13 @@
 
             </TabItem>
 
+            <TabItem Header="Reports">
+
+            </TabItem>
+
             <TabItem Header="Config">
-                <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="databaseLocationTextBox" Width="200" Height="30" VerticalAlignment="Top" Margin="0,20,5,0" />
-                    <Button x:Name="LoadDatabaseButton" Click="LoadDatabaseButton_Click" Width="200" Height="30" VerticalAlignment="Top" Margin="0,20,5,0">Load</Button>
+                <StackPanel Orientation="Vertical" Background="DarkGray">
+                    <local:ConfigUserControl />
                 </StackPanel>
             </TabItem>
 

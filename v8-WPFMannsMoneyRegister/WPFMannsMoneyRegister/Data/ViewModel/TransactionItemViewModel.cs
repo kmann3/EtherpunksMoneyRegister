@@ -62,6 +62,21 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UnselectedCategories)));
     }
 
+    public async Task CreateNewTransaction(Guid accountId)
+    {
+        currentTransactionVersion = new AccountTransaction();
+        currentTransactionVersion.AccountId = accountId;
+        currentTransactionVersion.TransactionType = Enums.TransactionTypeEnum.Debit;
+        previousTransactionVersion = currentTransactionVersion.DeepClone();
+        _allCategories = await AppDbService.GetAllCategoriesAsync();
+        _selectedCategories = [];
+        _unselectedCategories = [];
+        _isNew = true;
+
+        _selectedCategories.CollectionChanged += SelectedCategories_CollectionChanged;
+        _unselectedCategories.CollectionChanged += UnselectedCategories_CollectionChanged;
+    }
+
     public async Task LoadAccountTransaction(Guid id)
     {
         currentTransactionVersion = await AppDbService.GetTransactionAsync(id);
@@ -77,6 +92,13 @@ public class TransactionItemViewModel : INotifyPropertyChanged
     private async Task SaveLoadedTransaction()
     {
         //await AppDbService.UpdateTransaction(currentTransactionVersion);
+        if(IsNew)
+        {
+
+        } else
+        {
+
+        }
 
         // IF THERE WAS AN ACCOUNT CHANGE THEN WE NEED TO UPDATE TWO ACCOUNTS
         throw new NotImplementedException();
@@ -232,6 +254,15 @@ public class TransactionItemViewModel : INotifyPropertyChanged
     public Guid Id
     {
         get => currentTransactionVersion.Id;
+    }
+
+    private bool _isNew = false;
+    public bool IsNew
+    {
+        get
+        {
+            return _isNew;
+        }
     }
 
     public string Name
