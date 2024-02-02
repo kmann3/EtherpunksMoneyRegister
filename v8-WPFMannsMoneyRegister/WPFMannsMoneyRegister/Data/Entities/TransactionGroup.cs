@@ -1,13 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using WPFMannsMoneyRegister.Data.Entities.Base;
-using System.Collections.ObjectModel;
 
 namespace WPFMannsMoneyRegister.Data.Entities;
 /// <summary>
@@ -16,7 +10,7 @@ namespace WPFMannsMoneyRegister.Data.Entities;
 public class TransactionGroup : BasicTable<TransactionGroup>, IEntityTypeConfiguration<TransactionGroup>
 {
     [JsonIgnore]
-    public List<RecurringTransaction> RecurringTransactions { get; set; } = new();
+    public List<RecurringTransaction> RecurringTransactions { get; set; } = [];
 
     public override void Configure(EntityTypeBuilder<TransactionGroup> builder)
     {

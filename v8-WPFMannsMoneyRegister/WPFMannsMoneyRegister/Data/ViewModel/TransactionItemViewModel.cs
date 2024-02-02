@@ -1,26 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WPFMannsMoneyRegister.Data.Entities;
-using System.Collections.ObjectModel;
-using System.Text.Json.Serialization;
-using static WPFMannsMoneyRegister.Controls.TransactionItemViewModel;
-using WPFMannsMoneyRegister.Data;
-using WPFMannsMoneyRegister.Data.Entities.Base;
-using Microsoft.VisualBasic;
-using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Windows.Documents;
+using System.ComponentModel;
+using System.Diagnostics;
+using WPFMannsMoneyRegister.Data;
+using WPFMannsMoneyRegister.Data.Entities;
+using WPFMannsMoneyRegister.Data.Entities.Base;
 
 namespace WPFMannsMoneyRegister.Controls;
 public class TransactionItemViewModel : INotifyPropertyChanged
 {
-    private List<Category> _allCategories = new();
+    private List<Category> _allCategories = [];
     private AccountTransaction previousTransactionVersion = new();
     private AccountTransaction currentTransactionVersion = new();
 
@@ -64,9 +53,11 @@ public class TransactionItemViewModel : INotifyPropertyChanged
 
     public async Task CreateNewTransaction(Guid accountId)
     {
-        currentTransactionVersion = new AccountTransaction();
-        currentTransactionVersion.AccountId = accountId;
-        currentTransactionVersion.TransactionType = Enums.TransactionTypeEnum.Debit;
+        currentTransactionVersion = new AccountTransaction
+        {
+            AccountId = accountId,
+            TransactionType = Enums.TransactionTypeEnum.Debit
+        };
         previousTransactionVersion = currentTransactionVersion.DeepClone();
         _allCategories = await AppDbService.GetAllCategoriesAsync();
         _selectedCategories = [];
@@ -92,10 +83,11 @@ public class TransactionItemViewModel : INotifyPropertyChanged
     private async Task SaveLoadedTransaction()
     {
         //await AppDbService.UpdateTransaction(currentTransactionVersion);
-        if(IsNew)
+        if (IsNew)
         {
 
-        } else
+        }
+        else
         {
 
         }
@@ -109,7 +101,7 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         Trace.WriteLine("UNSELECTED CHANGE");
         if (e.NewItems != null)
         {
-            foreach (var x in e.NewItems)
+            foreach (object? x in e.NewItems)
             {
                 // do something
                 Trace.WriteLine($"New item: {(x as Category).Name}");
@@ -118,7 +110,7 @@ public class TransactionItemViewModel : INotifyPropertyChanged
 
         if (e.OldItems != null)
         {
-            foreach (var y in e.OldItems)
+            foreach (object? y in e.OldItems)
             {
                 //do something
                 Trace.WriteLine($"Old item: {(y as Category).Name}");
@@ -140,7 +132,7 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         Trace.WriteLine("SELECTED CHANGE");
         if (e.NewItems != null)
         {
-            foreach (var x in e.NewItems)
+            foreach (object? x in e.NewItems)
             {
                 // do something
                 Trace.WriteLine($"New item: {(x as Category).Name}");
@@ -149,7 +141,7 @@ public class TransactionItemViewModel : INotifyPropertyChanged
 
         if (e.OldItems != null)
         {
-            foreach (var y in e.OldItems)
+            foreach (object? y in e.OldItems)
             {
                 //do something
                 Trace.WriteLine($"Old item: {(y as Category).Name}");
@@ -196,7 +188,7 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         get => currentTransactionVersion.Amount;
         set
         {
-            if(currentTransactionVersion.Amount == value) return;
+            if (currentTransactionVersion.Amount == value) return;
             currentTransactionVersion.Amount = value;
             OnPropertyChanged(nameof(Amount));
         }
@@ -281,7 +273,7 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         get => currentTransactionVersion.Notes;
         set
         {
-            if (currentTransactionVersion.Notes == value)  return;
+            if (currentTransactionVersion.Notes == value) return;
             currentTransactionVersion.Notes = value;
             OnPropertyChanged(nameof(Notes));
         }
@@ -346,8 +338,8 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         {
             if (_unselectedCategories == null || _unselectedCategories.Count == 0)
             {
-                _unselectedCategories = new();
-                foreach (var cat in _allCategories.OrderBy(x => x.Name))
+                _unselectedCategories = [];
+                foreach (Category? cat in _allCategories.OrderBy(x => x.Name))
                 {
                     if (!currentTransactionVersion.Categories.Any(x => x.Id == cat.Id))
                     {

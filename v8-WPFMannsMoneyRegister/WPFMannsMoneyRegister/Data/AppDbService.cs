@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using System.Security.Principal;
 using WPFMannsMoneyRegister.Data.Entities;
 
 namespace WPFMannsMoneyRegister.Data;
@@ -32,7 +31,7 @@ public class AppDbService
 
     public static async Task DeleteAccountAsync()
     {
-        
+
         throw new NotImplementedException();
     }
 
@@ -67,9 +66,14 @@ public class AppDbService
         throw new NotImplementedException();
     }
 
+    public static async Task<Account> GetAccountAsync(Guid id)
+    {
+        return await _context.Accounts.Where(x => x.Id == id).SingleAsync();
+    }
+
     public static async Task<List<Account>> GetAllAccountsAsync()
     {
-        var _accounts = await _context.Accounts
+        List<Account> _accounts = await _context.Accounts
             .ToListAsync();
 
         return _accounts;
@@ -77,7 +81,7 @@ public class AppDbService
 
     public static async Task<List<Category>> GetAllCategoriesAsync()
     {
-        var _categories = await _context.Categories
+        List<Category> _categories = await _context.Categories
             .OrderBy(x => x.Name)
             .ToListAsync();
 
@@ -87,7 +91,7 @@ public class AppDbService
     public static async Task<Settings> GetAllSettingsAsync()
     {
         Entities.Settings emptySettings = null;
-        var settings = await _context.Settings.SingleOrDefaultAsync() ?? emptySettings;
+        Settings? settings = await _context.Settings.SingleOrDefaultAsync() ?? emptySettings;
 
         return settings;
     }
@@ -95,7 +99,7 @@ public class AppDbService
     public static async Task<List<AccountTransaction>> GetAllTransactionsForAccountAsync(Guid accountId, DateTime startDate, DateTime endDate)
     {
         // Get all transactions from the account within the date range
-        var _transactions = await _context.AccountTransactions
+        List<AccountTransaction> _transactions = await _context.AccountTransactions
             .Include(x => x.Categories)
             .Where(x => x.AccountId == accountId)
             .Where(x => x.CreatedOnUTC >= endDate)
@@ -104,7 +108,7 @@ public class AppDbService
 
         // Make sure that pending and uncleared items are ALWAYS added regardless of date, so we don't accidentally leave something sitting out and it's date goes way past a normal search
         // For example, we don't want an uncashed check that's 60 days old forgotten, not cleared, and now shown.
-        var pendingAndClearedTransactions = await _context.AccountTransactions
+        List<AccountTransaction> pendingAndClearedTransactions = await _context.AccountTransactions
             .Include(x => x.Categories)
             .Where(x => x.AccountId == accountId)
             .Where(x => x.TransactionPendingUTC == null || x.TransactionClearedUTC == null)
@@ -121,9 +125,9 @@ public class AppDbService
 
     public static async Task<AccountTransaction> GetTransactionAsync(Guid transactionId)
     {
-        var transaction = await _context.AccountTransactions
+        AccountTransaction transaction = await _context.AccountTransactions
             .Include(x => x.Categories)
-            .Include( x=> x.Files)
+            .Include(x => x.Files)
             .Where(x => x.Id == transactionId)
             .SingleAsync();
 
@@ -145,7 +149,7 @@ public class AppDbService
     /// <param name="account">The guid of the account to re-balance.</param>
     public static async Task RecalculateAccountAsync(Account account)
     {
-        var accountTransactions = _context.AccountTransactions.Where(x => x.AccountId == account.Id).ToList();
+        List<AccountTransaction> accountTransactions = _context.AccountTransactions.Where(x => x.AccountId == account.Id).ToList();
 
         decimal balance = account.StartingBalance;
         int outstandingCount = 0;
@@ -154,7 +158,7 @@ public class AppDbService
         accountTransactions = [.. accountTransactions.OrderBy(x => x.CreatedOnUTC)];
 
 
-        foreach (var transaction in accountTransactions)
+        foreach (AccountTransaction? transaction in accountTransactions)
         {
             transaction.Balance = balance + transaction.Amount;
             balance = transaction.Balance;

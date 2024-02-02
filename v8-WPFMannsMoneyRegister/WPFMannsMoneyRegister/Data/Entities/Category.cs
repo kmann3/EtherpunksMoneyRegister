@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 using WPFMannsMoneyRegister.Data.Entities.Base;
 
@@ -11,16 +10,16 @@ namespace WPFMannsMoneyRegister.Data.Entities;
 public class Category : BasicTable<Category>, IEntityTypeConfiguration<Category>
 {
     [JsonIgnore]
-    public List<Link_Category_Transaction> Link_Category_Transactions { get; } = new();
+    public List<Link_Category_Transaction> Link_Category_Transactions { get; } = [];
 
     [JsonIgnore]
-    public List<AccountTransaction> AccountTransactions { get; } = new();
+    public List<AccountTransaction> AccountTransactions { get; } = [];
 
     [JsonIgnore]
-    public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
+    public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = [];
 
     [JsonIgnore]
-    public List<RecurringTransaction> RecurringTransactions { get; } = new();
+    public List<RecurringTransaction> RecurringTransactions { get; } = [];
 
     public override void Configure(EntityTypeBuilder<Category> builder)
     {

@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using WPFMannsMoneyRegister.Data.Entities.Base;
-using System.Collections.ObjectModel;
 
 namespace WPFMannsMoneyRegister.Data.Entities;
 
@@ -57,7 +56,7 @@ public class Account : BasicTable<Account>, IEntityTypeConfiguration<Account>
     }
 
     [JsonIgnore]
-    public List<AccountTransaction> AccountTransactions { get; set; } = new();
+    public List<AccountTransaction> AccountTransactions { get; set; } = [];
 
     // TODO: Account Types? Liability, Assets?
 

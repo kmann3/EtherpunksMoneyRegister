@@ -1,11 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using WPFMannsMoneyRegister.Data.Entities.Base;
 
 namespace WPFMannsMoneyRegister.Data.Entities;

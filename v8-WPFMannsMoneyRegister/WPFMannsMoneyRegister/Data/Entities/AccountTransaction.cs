@@ -1,17 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using WPFMannsMoneyRegister.Data.Entities.Base;
-using System.Diagnostics;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
 
 namespace WPFMannsMoneyRegister.Data.Entities;
 /// <summary>
@@ -67,7 +59,7 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
     public decimal Balance { get; set; } = 0M;
     public string Notes { get; set; } = string.Empty;
     [JsonIgnore]
-    public List<Link_Category_Transaction> Link_Category_Transactions { get; } = new();
+    public List<Link_Category_Transaction> Link_Category_Transactions { get; } = [];
     [NotMapped]
     [JsonIgnore]
     public string CategoryString
@@ -78,7 +70,7 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
         }
     }
     [JsonIgnore]
-    public List<Category> Categories { get; set; } = new();
+    public List<Category> Categories { get; set; } = [];
     [JsonIgnore]
     [NotMapped]
     public int FileCount
@@ -91,7 +83,7 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
     }
 
     [JsonIgnore]
-    public List<TransactionFile> Files { get; set; } = new();
+    public List<TransactionFile> Files { get; set; } = [];
     [JsonIgnore]
     public RecurringTransaction? RecurringTransaction { get; set; }
     public Guid? RecurringTransactionId { get; set; }
@@ -129,16 +121,16 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
         AccountTransaction returnTransaction = new()
         {
             //returnTransaction.Account
-            AccountId = this.AccountId,
-            Amount = this.Amount,
-            Balance = this.Balance,
+            AccountId = AccountId,
+            Amount = Amount,
+            Balance = Balance,
             //returnTransaction.Categories
-            ConfirmationNumber = this.ConfirmationNumber,
-            CreatedOnUTC = this.CreatedOnUTC,
-            DueDate = this.DueDate
+            ConfirmationNumber = ConfirmationNumber,
+            CreatedOnUTC = CreatedOnUTC,
+            DueDate = DueDate
         };
 
-        foreach (var file in returnTransaction.Files)
+        foreach (TransactionFile file in returnTransaction.Files)
         {
             //returnTransaction.Files
             TransactionFile newFile = new()
@@ -154,8 +146,8 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
 
             returnTransaction.Files.Add(newFile);
         }
-        returnTransaction.Id = this.Id;
-        foreach(var catLink in returnTransaction.Link_Category_Transactions)
+        returnTransaction.Id = Id;
+        foreach (Link_Category_Transaction catLink in returnTransaction.Link_Category_Transactions)
         {
             Link_Category_Transaction newLink = new()
             {
@@ -164,13 +156,13 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
             };
             returnTransaction.Link_Category_Transactions.Add(newLink);
         }
-        returnTransaction.Name = this.Name;
-        returnTransaction.Notes = this.Notes;
+        returnTransaction.Name = Name;
+        returnTransaction.Notes = Notes;
         //returnTransaction.RecurringTransaction
-        returnTransaction.RecurringTransactionId = this.RecurringTransactionId;
-        returnTransaction.TransactionClearedUTC = this.TransactionClearedUTC;
-        returnTransaction.TransactionPendingUTC = this.TransactionPendingUTC;
-        returnTransaction.TransactionType = this.TransactionType;
+        returnTransaction.RecurringTransactionId = RecurringTransactionId;
+        returnTransaction.TransactionClearedUTC = TransactionClearedUTC;
+        returnTransaction.TransactionPendingUTC = TransactionPendingUTC;
+        returnTransaction.TransactionType = TransactionType;
 
         return returnTransaction;
     }
@@ -186,7 +178,7 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
     public bool DeepEquals(object? obj)
     {
         if (obj == null) return false;
-        if (obj is not AccountTransaction secondTransaction) return false;    
+        if (obj is not AccountTransaction secondTransaction) return false;
 
         bool returnVal = true;
 
@@ -198,9 +190,9 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
         returnVal = returnVal && DateTime.Equals(CreatedOnUTC, secondTransaction.CreatedOnUTC);
         returnVal = returnVal && DateTime.Equals(DueDate, secondTransaction.DueDate);
         returnVal = returnVal && Files.Count == secondTransaction.Files.Count;
-        foreach (var file in Files)
+        foreach (TransactionFile file in Files)
         {
-            foreach (var secondFile in secondTransaction.Files)
+            foreach (TransactionFile secondFile in secondTransaction.Files)
             {
                 // Compare the files.
                 // There is probably a better way to compare
@@ -215,9 +207,9 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
         }
         returnVal = returnVal && Guid.Equals(Id, secondTransaction.Id);
         returnVal = returnVal && Link_Category_Transactions.Count == secondTransaction.Link_Category_Transactions.Count;
-        foreach(var cat in Link_Category_Transactions)
+        foreach (Link_Category_Transaction cat in Link_Category_Transactions)
         {
-            foreach(var secondCategory in secondTransaction.Link_Category_Transactions)
+            foreach (Link_Category_Transaction secondCategory in secondTransaction.Link_Category_Transactions)
             {
                 // There is probably a better way to compare
                 returnVal = returnVal && cat.CategoryId == secondCategory.CategoryId;

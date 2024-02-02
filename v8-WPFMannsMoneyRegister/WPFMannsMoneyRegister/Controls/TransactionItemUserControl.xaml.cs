@@ -38,7 +38,7 @@ public partial class TransactionItemUserControl : UserControl
     /// <exception cref="NotImplementedException"></exception>
     public async void CreateNewTransaction(Guid accoundId)
     {
-        if(isNew && _viewModel.IsChanged)
+        if (isNew && _viewModel.IsChanged)
         {
             // We have a new transaction already loaded and ttey probably put new stuff in it. Ask if they are willing to lose it.
             throw new NotImplementedException();
@@ -80,15 +80,15 @@ public partial class TransactionItemUserControl : UserControl
 
     private void AddFile_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-        var fileWindow = new FileDetails
+        FileDetails fileWindow = new()
         {
             title = "Add new file"
         };
         fileWindow.ShowDialog();
 
-        if(!fileWindow.isCancelled)
+        if (!fileWindow.isCancelled)
         {
-            var newFile = fileWindow.fileData;
+            TransactionFile newFile = fileWindow.fileData;
             _viewModel.Files.Add(newFile);
             _viewModel.PropertyFilesChanged();
         }
@@ -98,34 +98,35 @@ public partial class TransactionItemUserControl : UserControl
     {
         if (transactionFilesListView.Items.Count == 0) return;
         List<TransactionFile> listToRemove = [];
-        if(transactionFilesListView.SelectedItems.Count > 0)
+        if (transactionFilesListView.SelectedItems.Count > 0)
         {
             // This loop is needed because you cannot remove SelectedItems in the DataContext WHILE looping through them. For some reason it throws an exception.
-            foreach(var item in transactionFilesListView.SelectedItems)
+            foreach (object? item in transactionFilesListView.SelectedItems)
             {
                 listToRemove.Add(((TransactionFile)item));
             }
             // Show a message showing which item(s) will be deleted.
 
             // Delete them
-            foreach (var itemToRemove in listToRemove)
+            foreach (TransactionFile itemToRemove in listToRemove)
             {
                 _viewModel.Files.Remove(itemToRemove);
                 _viewModel.PropertyFilesChanged();
             }
-        } else
+        }
+        else
         {
             // Show a message saying nothing was selected to be deleted
         }
-        
+
         // Remove a selected file5
     }
 
     private void TransactionFilesListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        var file = ((ListViewItem)sender).DataContext as TransactionFile;
+        TransactionFile? file = ((ListViewItem)sender).DataContext as TransactionFile;
 
-        var fileWindow = new FileDetails
+        FileDetails fileWindow = new()
         {
             title = $"File details: {file.Name}"
         };
@@ -157,7 +158,7 @@ public partial class TransactionItemUserControl : UserControl
 
     private void DeleteTransaction_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-        if(MessageBox.Show($"Are you sure you want to delete: {_viewModel.Name}?", "Caption", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+        if (MessageBox.Show($"Are you sure you want to delete: {_viewModel.Name}?", "Caption", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
         {
             //_viewModel.DeleteTransaction();
             throw new NotImplementedException();

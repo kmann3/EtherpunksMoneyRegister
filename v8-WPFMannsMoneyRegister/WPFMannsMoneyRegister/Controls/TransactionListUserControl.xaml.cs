@@ -1,8 +1,8 @@
-﻿using WPFMannsMoneyRegister.Data.Entities;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.ComponentModel;
 using WPFMannsMoneyRegister.Data;
+using WPFMannsMoneyRegister.Data.Entities;
 
 namespace WPFMannsMoneyRegister.Controls;
 /// <summary>
@@ -24,13 +24,13 @@ public partial class TransactionListUserControl : UserControl
         _transactions = await AppDbService.GetAllTransactionsForAccountAsync(accountId, startDate, endDate);
         DataGridTransactions.ItemsSource = _transactions;
 
-        IEditableCollectionView cv = (IEditableCollectionView)DataGridTransactions.Items;
+        IEditableCollectionView cv = DataGridTransactions.Items;
         cv.NewItemPlaceholderPosition = NewItemPlaceholderPosition.AtBeginning;
     }
 
     private async void MarkPending(object sender, RoutedEventArgs e)
     {
-        var transData = DataGridTransactions.SelectedItem as AccountTransaction ?? throw new Exception("Transaction data is null.");
+        AccountTransaction transData = DataGridTransactions.SelectedItem as AccountTransaction ?? throw new Exception("Transaction data is null.");
 
         // This is where we update the data and re-pull it
         transData.TransactionPendingUTC = DateTime.UtcNow;
@@ -39,7 +39,7 @@ public partial class TransactionListUserControl : UserControl
     }
     private async void MarkCleared(object sender, RoutedEventArgs e)
     {
-        var transData = DataGridTransactions.SelectedItem as AccountTransaction ?? throw new Exception("Transaction data is null.");
+        AccountTransaction transData = DataGridTransactions.SelectedItem as AccountTransaction ?? throw new Exception("Transaction data is null.");
 
         transData.TransactionClearedUTC = DateTime.UtcNow;
         await AppDbService.UpdateTransactionAsync(transData);
@@ -48,7 +48,7 @@ public partial class TransactionListUserControl : UserControl
 
     private void DataGridTransactions_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if(DataGridTransactions.SelectedItem is AccountTransaction && TransactionSelected != null)
+        if (DataGridTransactions.SelectedItem is AccountTransaction && TransactionSelected != null)
         {
             TransactionSelected(this, (DataGridTransactions.SelectedItem as AccountTransaction ?? throw new Exception("Transaction data is null.")).Id);
         }

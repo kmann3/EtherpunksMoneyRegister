@@ -1,7 +1,4 @@
-﻿using System.Globalization;
-using System.Windows.Data;
-
-namespace WPFMannsMoneyRegister.Data.Entities.Base;
+﻿namespace WPFMannsMoneyRegister.Data.Entities.Base;
 public class Enums
 {
     public enum TransactionTypeEnum

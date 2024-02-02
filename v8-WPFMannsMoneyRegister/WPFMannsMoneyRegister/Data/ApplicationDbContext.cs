@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Text.Json;
 using WPFMannsMoneyRegister.Data.Entities;
 using WPFMannsMoneyRegister.Data.Entities.Base;
@@ -74,7 +73,7 @@ class ApplicationDbContext : DbContext
 
     private void SeedDatabase(ModelBuilder builder)
     {
-        
+
     }
 
     private static void FillDbType<TEntity>(string fileLocation, ModelBuilder builder, JsonSerializerOptions options) where TEntity : class

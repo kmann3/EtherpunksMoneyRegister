@@ -1,16 +1,10 @@
 ﻿using Humanizer;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using WPFMannsMoneyRegister.Data.Entities.Base;
-using System.Collections.ObjectModel;
 
 namespace WPFMannsMoneyRegister.Data.Entities;
 /// <summary>
@@ -37,10 +31,10 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     public string BankTransactionRegEx { get; set; } = string.Empty;
 
     [JsonIgnore]
-    public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = new();
+    public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = [];
 
     [JsonIgnore]
-    public List<Category> Categories { get; set; } = new();
+    public List<Category> Categories { get; set; } = [];
 
     public Enums.RecurringFrequencyTypeEnum RecurringFrequencyType { get; set; } = Enums.RecurringFrequencyTypeEnum.Unknown;
 
@@ -110,7 +104,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     public void BumpNextDueDate()
     {
         // If we don't know a due date at all then we can't calculate the next one.
-        if (this.NextDueDate == null) return;
+        if (NextDueDate == null) return;
 
         switch (RecurringFrequencyType)
         {

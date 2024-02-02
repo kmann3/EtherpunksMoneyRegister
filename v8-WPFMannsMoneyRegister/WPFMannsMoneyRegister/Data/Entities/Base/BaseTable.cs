@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-using System.Diagnostics;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace WPFMannsMoneyRegister.Data.Entities.Base;
@@ -24,7 +22,7 @@ public abstract class BasicTable<T> : IEntityTypeConfiguration<T>
     [Required]
     [StringLength(255)]
     [Column(Order = 2)]
-    public string Name { get; set;} = string.Empty;
+    public string Name { get; set; } = string.Empty;
 
     [Required]
     public DateTime CreatedOnUTC { get; set; } = DateTime.UtcNow;

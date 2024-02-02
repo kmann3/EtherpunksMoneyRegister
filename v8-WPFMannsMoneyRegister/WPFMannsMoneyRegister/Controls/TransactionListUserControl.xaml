@@ -9,7 +9,7 @@
         <DataGrid Name="DataGridTransactions" AutoGenerateColumns="False" CanUserAddRows="false"
  EnableRowVirtualization="True" HorizontalAlignment="Stretch" Background="Gray" AlternationCount="2" VerticalAlignment="Stretch" SelectionChanged="DataGridTransactions_SelectionChanged" SelectionMode="Single">
         <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden" />
+                <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden" IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="325" />
             <DataGridTextColumn Binding="{Binding Amount, StringFormat=C}" Header="Amount" Width="120" >
                 <DataGridTextColumn.ElementStyle>
@@ -70,10 +70,10 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTextColumn Binding="{Binding CategoryString}" Header="Categories" Width="145" />
-            <DataGridTextColumn Binding="{Binding FileCount}" Header="Files" Width="35" />
+            <DataGridTextColumn Binding="{Binding CategoryString}" Header="Categories" Width="145" IsReadOnly="True" />
+            <DataGridTextColumn Binding="{Binding FileCount}" Header="Files" Width="35" IsReadOnly="true" />
             <DataGridTextColumn Binding="{Binding Notes}" Header="Notes" Width="*" />
-            <DataGridTextColumn Binding="{Binding Balance, StringFormat=C}" Header="Balance" Width="110">
+            <DataGridTextColumn Binding="{Binding Balance, StringFormat=C}" Header="Balance" Width="110" IsReadOnly="True">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="HorizontalAlignment" Value="Right" />
