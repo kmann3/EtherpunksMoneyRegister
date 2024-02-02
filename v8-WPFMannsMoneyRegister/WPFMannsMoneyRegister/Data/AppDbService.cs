@@ -88,6 +88,11 @@ public class AppDbService
         return _categories;
     }
 
+    public static async Task<List<RecurringTransaction>> GetAllRecurringTransactionsAsync()
+    {
+        return await _context.RecurringTransactions.ToListAsync();
+    }
+
     public static async Task<Settings> GetAllSettingsAsync()
     {
         Entities.Settings emptySettings = null;
