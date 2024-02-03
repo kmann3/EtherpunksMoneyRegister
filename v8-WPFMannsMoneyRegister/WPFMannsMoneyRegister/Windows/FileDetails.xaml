@@ -33,14 +33,15 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Grid.Column="0">Name:</Label>
-        <TextBox x:Name="fileName" Grid.Row="0" Grid.Column="1" />
+        <TextBox x:Name="nameTextbox" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" TabIndex="1" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="1" Grid.Column="0">Filename:</Label>
+        <TextBox x:Name="fileNameTextbox" Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" TabIndex="2" Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Button Grid.Row="1" Grid.Column="3" Margin="5" Content="Attach File" Click="Cancel_Click" />
 
-
         <Label Grid.Row="2" Grid.Column="0">Notes:</Label>
+        <TextBox x:Name="notesTextbox" Grid.Row="2" Grid.Column="1" Margin="5,5,5,5" TabIndex="3" Text="{Binding Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         
         <Label Grid.Row="3" Grid.Column="0">Download:</Label>
         <Button Grid.Row="3" Grid.Column="1" Margin="5" Content="Filename.ext" Cursor="Hand">

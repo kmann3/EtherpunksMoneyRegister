@@ -80,10 +80,7 @@ public partial class TransactionItemUserControl : UserControl
 
     private void AddFile_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-        FileDetails fileWindow = new()
-        {
-            title = "Add new file"
-        };
+        FileDetails fileWindow = new FileDetails("Add new file");
         fileWindow.ShowDialog();
 
         if (!fileWindow.isCancelled)

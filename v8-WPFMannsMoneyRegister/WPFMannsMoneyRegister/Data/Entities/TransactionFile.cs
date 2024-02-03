@@ -39,4 +39,40 @@ public class TransactionFile : BasicTable<TransactionFile>, IEntityTypeConfigura
     {
         builder.HasIndex(k => k.Name).IsUnique(true);
     }
+
+    public TransactionFile DeepClone()
+    {
+        TransactionFile returnFile = new()
+        {
+            AccountTransactionId = this.AccountTransactionId,
+            ContentType = this.ContentType,
+            CreatedOnUTC = this.CreatedOnUTC,
+            Filename = this.Filename,
+            Id = this.Id,
+            Notes = this.Notes,
+        };
+
+        this.Data.CopyTo(returnFile.Data, 0);
+
+        return returnFile;
+    }
+
+    public bool DeepEquals(object? obj)
+    {
+        if (obj == null) return false;
+        if (obj is not TransactionFile secondTransactionFile) return false;
+
+        bool returnVal = true;
+
+        returnVal = returnVal && Guid.Equals(this.AccountTransactionId, secondTransactionFile.AccountTransactionId);
+        returnVal = returnVal && String.Equals(this.ContentType, secondTransactionFile.ContentType);
+        returnVal = returnVal && DateTime.Equals(this.CreatedOnUTC, secondTransactionFile.CreatedOnUTC);
+        returnVal = returnVal && this.Data.SequenceEqual(secondTransactionFile.Data);
+        returnVal = returnVal && String.Equals(this.Filename, secondTransactionFile.Filename);
+        returnVal = returnVal && Guid.Equals(this.Id, secondTransactionFile.Id);
+        returnVal = returnVal && String.Equals(this.Notes, secondTransactionFile.Notes);
+
+
+        return returnVal;
+    }
 }

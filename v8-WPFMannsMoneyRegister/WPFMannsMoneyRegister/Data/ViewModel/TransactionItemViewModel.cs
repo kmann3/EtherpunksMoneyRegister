@@ -26,6 +26,7 @@ public class TransactionItemViewModel : INotifyPropertyChanged
     {
         HasChanged?.Invoke(this, !previousTransactionVersion.DeepEquals(currentTransactionVersion));
     }
+
     /// <summary>
     /// Notifies objects registered to receive this event that a property value has changed.
     /// </summary>
@@ -85,7 +86,7 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         //await AppDbService.UpdateTransaction(currentTransactionVersion);
         if (IsNew)
         {
-
+            _isNew = false;
         }
         else
         {

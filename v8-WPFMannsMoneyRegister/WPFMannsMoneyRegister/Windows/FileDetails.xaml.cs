@@ -22,12 +22,14 @@ public partial class FileDetails : Window
     //    AccountTransactionId = _viewModel.Id,
     //};
 
-    public FileDetails()
+    public FileDetails(string title)
     {
         InitializeComponent();
         Title = title;
+        DataContext = fileData;
     }
 
+    
     private void Cancel_Click(object sender, RoutedEventArgs e)
     {
         Close();
