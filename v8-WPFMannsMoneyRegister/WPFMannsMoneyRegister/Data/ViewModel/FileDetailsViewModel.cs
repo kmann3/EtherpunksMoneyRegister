@@ -65,7 +65,19 @@ public class FileDetailsViewModel
 
     public override string ToString()
     {
-        return $"Name: {Name} | Filename: {Filename} | Size: {HumanSize} | ID: {Id}";
+        return $"Name: {Name} | Filename: {Filename} | Size: {Size} | ID: {Id}";
+    }
+
+    public byte[] Data
+    {
+        get => currentTransactionFileVersion.Data;
+
+        set
+        {
+            if (currentTransactionFileVersion.Data.SequenceEqual(value)) return;
+            currentTransactionFileVersion.Data = value;
+            OnPropertyChanged(nameof(Data));
+        }
     }
 
     public bool IsChanged
@@ -74,6 +86,33 @@ public class FileDetailsViewModel
         {
             return !previousTransactionFileVersion.DeepEquals(currentTransactionFileVersion);
         }
+    }
+
+    public string ContentType
+    {
+        get => currentTransactionFileVersion.ContentType;
+        set
+        {
+            if (currentTransactionFileVersion.ContentType == value) return;
+            currentTransactionFileVersion.ContentType = value;
+            OnPropertyChanged(nameof(ContentType));
+        }
+    }
+
+    public string Filename
+    {
+        get => currentTransactionFileVersion.Filename;
+        set
+        {
+            if (currentTransactionFileVersion.Filename == value) return;
+            currentTransactionFileVersion.Filename = value;
+            OnPropertyChanged(nameof(Filename));
+        }
+    }
+
+    public Guid Id
+    {
+        get => currentTransactionFileVersion.Id;
     }
 
     private bool _isNew = false;
@@ -85,4 +124,41 @@ public class FileDetailsViewModel
         }
     }
 
+    public string Name
+    {
+        get => currentTransactionFileVersion.Name;
+        set
+        {
+            if (currentTransactionFileVersion.Name == value) return;
+            currentTransactionFileVersion.Name = value;
+            OnPropertyChanged(nameof(Name));
+        }
+    }
+
+    public string Notes
+    {
+        get => currentTransactionFileVersion.Notes;
+        set
+        {
+            if (currentTransactionFileVersion.Notes == value) return;
+            currentTransactionFileVersion.Notes = value;
+            OnPropertyChanged(nameof(Notes);
+        }
+    }
+
+    public string Size
+    {
+        get => currentTransactionFileVersion.Size;
+    }
+
+    public Guid AccountTransactionId
+    {
+        get => currentTransactionFileVersion.AccountTransactionId;
+        set
+        {
+            if (currentTransactionFileVersion.AccountTransactionId == value) return;
+            currentTransactionFileVersion.AccountTransactionId = value;
+            OnPropertyChanged(nameof(AccountTransactionId);
+        }
+    }
 }
