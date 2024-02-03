@@ -63,7 +63,7 @@
                 </Style>
             </Button.Style>
         </Button>
-        <Label x:Name="fileSizeLabel" Grid.Row="4" Grid.Column="1">0kb</Label>
+        <Label x:Name="fileSizeLabel" Grid.Row="4" Grid.Column="1" Content="{Binding Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Button Grid.Row="6" Grid.Column="0" Margin="5" Content="Cancel" Click="Cancel_Click" />
         <Button Grid.Row="6" Grid.Column="3" Margin="5" Content="Save" Click="Save_Click" />

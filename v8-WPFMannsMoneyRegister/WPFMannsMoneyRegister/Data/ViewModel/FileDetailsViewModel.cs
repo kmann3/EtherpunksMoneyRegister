@@ -77,6 +77,7 @@ public class FileDetailsViewModel
             if (currentTransactionFileVersion.Data.SequenceEqual(value)) return;
             currentTransactionFileVersion.Data = value;
             OnPropertyChanged(nameof(Data));
+            OnPropertyChanged(nameof(Size));
         }
     }
 
@@ -142,7 +143,7 @@ public class FileDetailsViewModel
         {
             if (currentTransactionFileVersion.Notes == value) return;
             currentTransactionFileVersion.Notes = value;
-            OnPropertyChanged(nameof(Notes);
+            OnPropertyChanged(nameof(Notes));
         }
     }
 

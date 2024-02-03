@@ -80,7 +80,7 @@ public partial class TransactionItemUserControl : UserControl
 
     private void AddFile_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-        FileDetails fileWindow = new FileDetails("Add new file");
+        FileDetails fileWindow = new FileDetails(null);
         fileWindow.ShowDialog();
 
         if (!fileWindow.isCancelled)
@@ -121,18 +121,14 @@ public partial class TransactionItemUserControl : UserControl
 
     private void TransactionFilesListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        TransactionFile? file = ((ListViewItem)sender).DataContext as TransactionFile;
+        TransactionFile file = ((ListViewItem)sender).DataContext as TransactionFile ?? throw new NotImplementedException();
 
-        FileDetails fileWindow = new()
-        {
-            title = $"File details: {file.Name}"
-        };
+        FileDetails fileWindow = new(file!);
         fileWindow.ShowDialog();
 
         if (!fileWindow.isCancelled)
         {
             file = fileWindow.fileData;
-            //_viewModel.Files.Add(newFile);
             _viewModel.PropertyFilesChanged();
         }
     }

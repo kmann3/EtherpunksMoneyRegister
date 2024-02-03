@@ -8,24 +8,21 @@ namespace WPFMannsMoneyRegister.Windows;
 /// </summary>
 public partial class FileDetails : Window
 {
-    public bool isCancelled = false;
+    public bool isCancelled = true;
     public TransactionFile fileData = new();
-    public string title = "New File";
-    // Add a new file.
-    //TransactionFile newFile = new()
-    //{
-    //    ContentType = "",
-    //    Data = new byte[] { },
-    //    Filename = "Foo.exe",
-    //    Name = "Foo",
-    //    Notes = "Notes here",
-    //    AccountTransactionId = _viewModel.Id,
-    //};
 
-    public FileDetails(string title)
+    public FileDetails(TransactionFile? file)
     {
         InitializeComponent();
-        Title = title;
+        if(file == null)
+        {
+            fileData = new();
+            Title = "New File";
+        } else
+        {
+            Title = $"File details: {fileData.Name}";
+        }
+
         DataContext = fileData;
     }
 
@@ -33,11 +30,12 @@ public partial class FileDetails : Window
     private void Cancel_Click(object sender, RoutedEventArgs e)
     {
         Close();
-        isCancelled = true;
+        
     }
 
     private void Save_Click(object sender, RoutedEventArgs e)
     {
-
+        isCancelled = false;
+        Close();
     }
 }
