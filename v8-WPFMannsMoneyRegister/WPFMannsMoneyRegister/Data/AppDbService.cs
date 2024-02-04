@@ -11,11 +11,17 @@ public class AppDbService
     {
     }
 
+    /// <summary>
+    /// Creates a new transaction for an account
+    /// </summary>
+    /// <param name="transaction">The new transaction to create</param>
+    /// <remarks>This method is not currently tested.</remarks>
     public static async Task CreateNewTransactionAsync(AccountTransaction transaction)
     {
-        //// If there was an account change then we need to update two accounts balances accordingly.
-        //transaction.VerifySignage();
-        //transaction.Balance = account.CurrentBalance + transaction.Amount;
+        Account account = await _context.Accounts.Where(x => x.Id == transaction.Id).SingleAsync();
+        transaction.VerifySignage();
+        transaction.Balance = account.CurrentBalance + transaction.Amount;
+        account.CurrentBalance = transaction.Balance;
         //account.CurrentBalance = transaction.Balance;
         //if (transaction.TransactionPendingUTC == null || transaction.TransactionClearedUTC == null)
         //{
@@ -29,41 +35,43 @@ public class AppDbService
         throw new NotImplementedException();
     }
 
-    public static async Task DeleteAccountAsync()
+    public static async Task DeleteAccountAsync(Account account)
     {
+        // Delete transaction files
+        // delete transactions
+        // delete account
 
         throw new NotImplementedException();
     }
 
-    public static async Task DeleteTransactionAsync()
+    public static async Task DeleteTransactionAsync(AccountTransaction transaction)
     {
-        //// Update account balance
-        //account.CurrentBalance -= transaction.Amount;
+        Account account = await _context.Accounts.Where(x => x.Id == transaction.Id).SingleAsync();
+        // Update account balance
+        account.CurrentBalance -= transaction.Amount;
 
-        //// Check to see if it's outstanding, and if it is remove it from calculations
-        //if (transaction.TransactionClearedUTC == null)
-        //{
-        //    account.OutstandingItemCount--;
-        //    account.OutstandingBalance -= transaction.Amount;
-        //}
+        // Check to see if it's outstanding, and if it is remove it from calculations
+        if (transaction.TransactionClearedUTC == null)
+        {
+            account.OutstandingItemCount--;
+            account.OutstandingBalance -= transaction.Amount;
+        }
 
-        //// Figure out the new balance of items newer going forward
-        //var itemsToUpdate = await _context.Transactions
-        //    .Where(x => x.CreatedOnUTC >= transaction.CreatedOnUTC)
-        //    .Where(x => x.AccountId == transaction.AccountId)
-        //    .Where(x => x.DeletedOnUTC == null)
-        //    .Where(x => x.Id != transaction.Id)
-        //    .ToListAsync();
+        // Figure out the new balance of items newer going forward
+        var itemsToUpdate = await _context.AccountTransactions
+            .Where(x => x.CreatedOnUTC >= transaction.CreatedOnUTC)
+            .Where(x => x.AccountId == transaction.AccountId)
+            .Where(x => x.Id != transaction.Id)
+            .ToListAsync();
 
-        //foreach (var item in itemsToUpdate)
-        //{
-        //    item.Balance -= transaction.Amount;
-        //}
+        foreach (var item in itemsToUpdate)
+        {
+            item.Balance -= transaction.Amount;
+        }
 
-        //_context.Remove(transaction);
+        _context.Remove(transaction);
 
-        //await _context.SaveChangesAsync();
-        throw new NotImplementedException();
+        await _context.SaveChangesAsync();
     }
 
     public static async Task<Account> GetAccountAsync(Guid id)
@@ -154,8 +162,7 @@ public class AppDbService
     /// <param name="account">The guid of the account to re-balance.</param>
     public static async Task RecalculateAccountAsync(Account account)
     {
-        List<AccountTransaction> accountTransactions = _context.AccountTransactions.Where(x => x.AccountId == account.Id).ToList();
-
+        List<AccountTransaction> accountTransactions = await _context.AccountTransactions.Where(x => x.AccountId == account.Id).ToListAsync();
         decimal balance = account.StartingBalance;
         int outstandingCount = 0;
         decimal outstandingBalance = 0M;
@@ -182,97 +189,107 @@ public class AppDbService
         await _context.SaveChangesAsync();
     }
 
-    public async Task ReserveTransactionsAsync(List<RecurringTransaction> transactionsToReserve)
+    public async Task ReserveTransactionsAsync(List<RecurringTransaction> transactionsToReserve, Account accountToReserveFrom)
     {
-        //foreach (var bill in transactionsToReserve)
-        //{
-        //    Transaction reserveTransaction = new()
-        //    {
-        //        Name = bill.Name,
-        //        Amount = bill.Amount,
-        //        Account = accountToReserveFrom,
-        //        Categories = bill.Categories,
-        //        TransactionType = bill.TransactionType,
-        //        RecurringTransaction = bill
-        //    };
+        foreach (var bill in transactionsToReserve)
+        {
+            AccountTransaction reserveTransaction = new()
+            {
+                Name = bill.Name,
+                Amount = bill.Amount,
+                AccountId = accountToReserveFrom.Id,
+                Categories = bill.Categories,
+                TransactionType = bill.TransactionType,
+                RecurringTransaction = bill
+            };
 
-        //    reserveTransaction.VerifySignage();
+            reserveTransaction.VerifySignage();
 
-        //    accountToReserveFrom.CurrentBalance += bill.Amount;
-        //    accountToReserveFrom.OutstandingBalance += bill.Amount;
-        //    accountToReserveFrom.OutstandingItemCount++;
-        //    reserveTransaction.Balance = accountToReserveFrom.CurrentBalance;
+            accountToReserveFrom.CurrentBalance += bill.Amount;
+            accountToReserveFrom.OutstandingBalance += bill.Amount;
+            accountToReserveFrom.OutstandingItemCount++;
+            reserveTransaction.Balance = accountToReserveFrom.CurrentBalance;
 
-        //    if (bill.NextDueDate != null)
-        //    {
-        //        reserveTransaction.Notes = $"Expected due date: {bill.NextDueDate.Value.ToShortDateString()}";
-        //    }
+            if (bill.NextDueDate != null)
+            {
+                reserveTransaction.Notes = $"Expected due date: {bill.NextDueDate.Value.ToShortDateString()}";
+            }
 
-        //    bill.BumpNextDueDate();
+            bill.BumpNextDueDate();
 
-        //    _context.Transactions.Add(reserveTransaction);
-        //}
+            _context.AccountTransactions.Add(reserveTransaction);
+        }
 
-        //await _context.SaveChangesAsync();
-        throw new NotImplementedException();
+        await _context.SaveChangesAsync();
     }
 
-    public static async Task UpdateTransactionAsync(AccountTransaction _transaction)
+    public static async Task UpdateTransactionAsync(AccountTransaction transaction, AccountTransaction previousTransaction)
     {
-        Trace.WriteLine(_context.Entry(_transaction).State);
+        ArgumentNullException.ThrowIfNull(transaction);
+        ArgumentNullException.ThrowIfNull(previousTransaction);
 
-        //ArgumentNullException.ThrowIfNull(account);
-        //ArgumentNullException.ThrowIfNull(transaction);
+        Trace.WriteLine(_context.Entry(transaction).State);
 
-        //Transaction oldTransaction = (Transaction)_context.Entry(transaction!).OriginalValues.ToObject();
-        //transaction.VerifySignage();
+        Account account = await _context.Accounts.Where(x => x.Id == transaction.AccountId).SingleAsync();
+        Account previousAccount = await _context.Accounts.Where(x => x.Id == previousTransaction.AccountId).SingleAsync();
 
-        //// Check to see if outstanding balances need to change.
-        //// If it wasn't cleared then and it HAS cleared now - then we need to update outstanding balance.
-        //if (!oldTransaction!.TransactionClearedUTC.HasValue && transaction.TransactionClearedUTC.HasValue)
-        //{
-        //    // Item cleared
-        //    account.OutstandingItemCount--;
-        //    account.OutstandingBalance -= transaction.Amount;
-        //}
-        //else if (oldTransaction.TransactionClearedUTC.HasValue && !transaction.TransactionClearedUTC.HasValue)
-        //{
-        //    // Item was previously cleared but now is not.
-        //    account.OutstandingItemCount++;
-        //    account.OutstandingBalance += transaction.Amount;
-        //}
+        if(transaction.AccountId != previousTransaction.AccountId)
+        {
+            // We save the changes so the account ID's swap
+            _context.Attach(transaction);
+            await _context.SaveChangesAsync();
 
-        //// If the amount didn't change, the check to see if we need to update outstanding balance.
-        //// Update as needed then return. We do not need to update balances.
-        //if (oldTransaction.Amount == transaction.Amount)
-        //{
-        //    // Possible other values changes but no further transaction modifications necessary
-        //    await _context.SaveChangesAsync();
-        //}
-        //else
-        //{
-        //    var itemsToUpdate = await _context.Transactions
-        //    .Where(x => x.CreatedOnUTC >= transaction.CreatedOnUTC)
-        //    .Where(x => x.AccountId == transaction.AccountId)
-        //    .Where(x => x.DeletedOnUTC == null)
-        //    .Where(x => x.Id != transaction.Id)
-        //    .ToListAsync();
+            // We recalculate both accounts because I don't intelligently track outstanding items. Surely there's a better / smarter way for this.
+            await RecalculateAccountAsync(account);
+            await RecalculateAccountAsync(previousAccount);
+            return;
+        }
 
-        //    foreach (var item in itemsToUpdate)
-        //    {
-        //        item.Balance -= oldTransaction.Amount - transaction.Amount;
-        //    }
+        transaction.VerifySignage();
+        
+        // Check to see if outstanding balances need to change.
+        // If it wasn't cleared then and it HAS cleared now - then we need to update outstanding balance.
+        if (!previousTransaction!.TransactionClearedUTC.HasValue && transaction.TransactionClearedUTC.HasValue)
+        {
+            // Item cleared
+            account.OutstandingItemCount--;
+            account.OutstandingBalance -= transaction.Amount;
+        }
+        else if (previousTransaction.TransactionClearedUTC.HasValue && !transaction.TransactionClearedUTC.HasValue)
+        {
+            // Item was previously cleared but now is not.
+            account.OutstandingItemCount++;
+            account.OutstandingBalance += transaction.Amount;
+        }
 
-        //    if (!transaction.TransactionClearedUTC.HasValue)
-        //    {
-        //        account.OutstandingBalance -= oldTransaction.Amount - transaction.Amount;
-        //    }
+        // If the amount didn't change, the check to see if we need to update outstanding balance.
+        // Update as needed then return. We do not need to update balances.
+        if (previousTransaction.Amount == transaction.Amount)
+        {
+            // Possible other values changes but no further transaction modifications necessary
+            await _context.SaveChangesAsync();
+        }
+        else
+        {
+            var itemsToUpdate = await _context.AccountTransactions
+            .Where(x => x.CreatedOnUTC >= transaction.CreatedOnUTC)
+            .Where(x => x.AccountId == transaction.AccountId)
+            .Where(x => x.Id != transaction.Id)
+            .ToListAsync();
 
-        //    account.CurrentBalance -= oldTransaction.Amount - transaction.Amount;
+            foreach (var item in itemsToUpdate)
+            {
+                item.Balance -= previousTransaction.Amount - transaction.Amount;
+            }
 
-        //    await _context.SaveChangesAsync();
-        //}
+            if (!transaction.TransactionClearedUTC.HasValue)
+            {
+                account.OutstandingBalance -= previousTransaction.Amount - transaction.Amount;
+            }
 
-        throw new NotImplementedException();
+            account.CurrentBalance -= previousTransaction.Amount - transaction.Amount;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

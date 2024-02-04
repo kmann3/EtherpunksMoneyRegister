@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WPFMannsMoneyRegister.Data;
@@ -17,6 +18,7 @@ public partial class TransactionItemUserControl : UserControl
     private bool isNew = false;
 
     public event EventHandler ControlClosed;
+    public event EventHandler TransactionAddedOrUpdated;
 
     public TransactionItemUserControl()
     {
@@ -40,9 +42,10 @@ public partial class TransactionItemUserControl : UserControl
     {
         if (isNew && _viewModel.IsChanged)
         {
-            // We have a new transaction already loaded and ttey probably put new stuff in it. Ask if they are willing to lose it.
+            // We have a new transaction already loaded and they probably put new stuff in it. Ask if they are willing to lose it.
             throw new NotImplementedException();
         }
+
         DataContext = null;
         isNew = true;
         await _viewModel.CreateNewTransaction(accoundId);
@@ -64,7 +67,7 @@ public partial class TransactionItemUserControl : UserControl
     {
         if (isNew && _viewModel.IsChanged)
         {
-            // We have a new transaction already loaded and ttey probably put new stuff in it. Ask if they are willing to lose it.
+            // We have a new transaction already loaded and they probably put new stuff in it. Ask if they are willing to lose it.
             throw new NotImplementedException();
         }
         DataContext = null;
@@ -137,9 +140,14 @@ public partial class TransactionItemUserControl : UserControl
     {
         if (!_viewModel.IsChanged) return;
 
-        //await AppDbService.UpdateTransaction(_viewModel.)
+        // TODO: Get the differences and show them to confirm saving.
 
-        // Get the differences and show them to confirm saving.
+#if !DEBUG
+        throw new NotImplementedException("Get the differences and show them to confirm saving.");
+#endif
+
+        await _viewModel.SaveLoadedTransaction();
+        TransactionAddedOrUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     private void transactionCategoriesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

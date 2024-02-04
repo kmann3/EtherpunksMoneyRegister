@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using SQLitePCL;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -81,20 +82,18 @@ public class TransactionItemViewModel : INotifyPropertyChanged
         _unselectedCategories.CollectionChanged += UnselectedCategories_CollectionChanged;
     }
 
-    private async Task SaveLoadedTransaction()
+    public async Task SaveLoadedTransaction()
     {
         //await AppDbService.UpdateTransaction(currentTransactionVersion);
         if (IsNew)
         {
+            await AppDbService.CreateNewTransactionAsync(currentTransactionVersion);
             _isNew = false;
         }
         else
         {
-
+            await AppDbService.UpdateTransactionAsync(currentTransactionVersion, previousTransactionVersion);
         }
-
-        // IF THERE WAS AN ACCOUNT CHANGE THEN WE NEED TO UPDATE TWO ACCOUNTS
-        throw new NotImplementedException();
     }
 
     private void UnselectedCategories_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
