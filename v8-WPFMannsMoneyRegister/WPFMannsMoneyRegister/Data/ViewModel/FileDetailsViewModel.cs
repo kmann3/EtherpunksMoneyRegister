@@ -159,7 +159,7 @@ public class FileDetailsViewModel
         {
             if (currentTransactionFileVersion.AccountTransactionId == value) return;
             currentTransactionFileVersion.AccountTransactionId = value;
-            OnPropertyChanged(nameof(AccountTransactionId);
+            OnPropertyChanged(nameof(AccountTransactionId));
         }
     }
 }

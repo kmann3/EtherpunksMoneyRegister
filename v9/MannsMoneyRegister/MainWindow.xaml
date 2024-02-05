@@ -1,0 +1,226 @@
+﻿<Window x:Class="MannsMoneyRegister.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MannsMoneyRegister"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="900" Width="2000">
+    <DockPanel>
+        <Ribbon DockPanel.Dock="Top">
+            <RibbonTab Header="Dashboard">
+                <RibbonGroup Header="Account">
+                    <StackPanel Orientation="Vertical">
+                        <RibbonComboBox Label="Account:">
+                            <RibbonGallery SelectedValue="Acc1" SelectedValuePath="Content" MaxColumnCount="1" SelectionChanged="RibbonGallery_SelectionChanged">
+                                <RibbonGalleryCategory>
+                                    <RibbonGalleryItem Content="Acc1" />
+                                    <RibbonGalleryItem Content="Acc2" />
+                                    <RibbonGalleryItem Content="Acc3" />
+                                    <RibbonGalleryItem Content="Acc4" />
+                                </RibbonGalleryCategory>
+                            </RibbonGallery>
+                        </RibbonComboBox>
+                        <Separator />
+                        <RibbonButton Label="New Account" SmallImageSource="Images/icon_new_account.png" VerticalAlignment="Bottom" Margin="0,15,0,0" />
+                    </StackPanel>
+                </RibbonGroup>
+                <RibbonGroup Header="New">
+                    <StackPanel Orientation="Horizontal">
+                        <RibbonGroup>
+                            <RibbonButton Label="New Transaction" LargeImageSource="Images/icon_add_transaction.png" Margin="-7,-7,-7,-13" />
+                        </RibbonGroup>
+                        <RibbonButton Label="Reserve Transaction" LargeImageSource="Images/icon_event_repeat.png" />
+                        <RibbonButton Height="20">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="New Transaction"></Label>
+                            </StackPanel>
+                        </RibbonButton>
+
+                    </StackPanel>
+                </RibbonGroup>
+                <RibbonGroup Header="Transaction Data">
+                    <StackPanel Orientation="Vertical">
+                        <RibbonCheckBox Label="Autoload on hover" ToolTip="As you hover over transactions this will autoload the details; Save this in SETTINGS IN DATABASE NotImplementedException();" />
+                    </StackPanel>
+                </RibbonGroup>
+                <RibbonGroup Header="Date Range">
+                    <!-- Combo box 30,60, 90  OR popup box for custom range selection -->
+                    <StackPanel Orientation="Vertical">
+                        <RibbonComboBox Label="Days:">
+                            <RibbonGallery SelectedValue="35 days" SelectedValuePath="Content" MaxColumnCount="1">
+                                <RibbonGalleryCategory>
+                                    <RibbonGalleryItem Content="35 days" />
+                                    <RibbonGalleryItem Content="60 days" />
+                                    <RibbonGalleryItem Content="90 days" />
+                                    <RibbonGalleryItem Content="Custom" />
+                                </RibbonGalleryCategory>
+                            </RibbonGallery>
+                        </RibbonComboBox>
+                        <RibbonButton Label="Custom Range" VerticalAlignment="Bottom" Margin="0,15,0,0" />
+                    </StackPanel>
+                </RibbonGroup>
+            </RibbonTab>
+            <RibbonTab Header="Accounts" />
+        </Ribbon>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <Label Content="Balance: $43.55" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <Label Content="Oustanding: -$43.55 (4 items)" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem HorizontalAlignment="Right">
+                <Label Content="Status: Idle" />
+            </StatusBarItem>
+        </StatusBar>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1200"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <DataGrid Name="DataGridTransactions" AutoGenerateColumns="False" CanUserAddRows="false" Grid.Row="0" Grid.Column="0"
+                      EnableRowVirtualization="True" Background="Gray" AlternationCount="2" SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden" IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="300">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.TextWrapping" Value="NoWrap" />
+                                <Setter Property="TextBlock.TextTrimming" Value="CharacterEllipsis" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Amount, StringFormat=C}" Header="Amount" Width="100" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn x:Name="Pending" Header="Pending" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button>
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Grid>
+                                                <TextBlock Name="PendingLink" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden">
+                                            <Hyperlink >Pending</Hyperlink>
+                                                </TextBlock>
+                                                <TextBlock Name="PendingTextBlock" Text="{Binding TransactionPendingLocalTime, StringFormat={}{0:MM/dd/yyyy}}" Visibility="Visible" Margin="2,2,2,2" />
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Path=TransactionPendingLocalTime}" Value="{x:Null}" />
+                                                        <Condition Binding="{Binding Path=TransactionClearedLocalTime}" Value="{x:Null}"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter TargetName="PendingLink" Property="Visibility" Value="Visible" />
+                                                    <Setter TargetName="PendingTextBlock" Property="Visibility" Value="Hidden" />
+                                                </MultiDataTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn x:Name="ClearedColumn" Header="Clear" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button>
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Grid>
+                                                <TextBlock Name="ClearLink" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden">
+                                            <Hyperlink>Clear</Hyperlink>
+                                                </TextBlock>
+                                                <TextBlock Name="ClearedTextBlock" Text="{Binding TransactionClearedLocalTime, StringFormat={}{0:MM/dd/yyyy}}" Visibility="Visible" Margin="2,2,2,2" />
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding TransactionClearedLocalTime}" Value="{x:Null}">
+                                                    <Setter TargetName="ClearLink" Property="Visibility" Value="Visible" />
+                                                    <Setter TargetName="ClearedTextBlock" Property="Visibility" Value="Hidden" />
+                                                </DataTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding CategoryString}" Header="Categories" Width="145" IsReadOnly="True">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding FileCount}" Header="Files" Width="35" IsReadOnly="true" />
+                    <DataGridTextColumn Binding="{Binding Notes}" Header="Notes" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.TextWrapping" Value="NoWrap" />
+                                <Setter Property="TextBlock.TextTrimming" Value="WordEllipsis" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Balance, StringFormat=C}" Header="Balance" Width="100" IsReadOnly="True">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                <Setter Property="Margin" Value="5" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+
+                    </DataGridTextColumn>
+
+                </DataGrid.Columns>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="FontSize" Value="18" />
+                        <Style.Triggers>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                <Setter Property="Background" Value="DarkGray"></Setter>
+                            </Trigger>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                <Setter Property="Background" Value="LightGray"></Setter>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="LightBlue"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=TransactionClearedLocalTime}" Value="{x:Null}" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" Value="LightYellow" />
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=TransactionPendingLocalTime}" Value="{x:Null}" />
+                                    <Condition Binding="{Binding Path=TransactionClearedLocalTime}" Value="{x:Null}" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" Value="LightCoral" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+            </DataGrid>
+            <Button Content="Test" Grid.Row="0" Grid.Column="1" />
+        </Grid>
+        <!-- <local:TransactionListUserControl x:Name="transactionList" Grid.Row="2" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" TransactionSelected="TransactionListUserControl_TransactionSelected" /> -->
+        <!--<local:TransactionItemUserControl x:Name="transactionItem" Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" /> -->
+
+
+    </DockPanel>
+</Window>

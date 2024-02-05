@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\icon_add_categories.png" />
+    <None Remove="Images\icon_add_file.png" />
+    <None Remove="Images\icon_add_reccuring_transactions.png" />
+    <None Remove="Images\icon_add_transaction.png" />
+    <None Remove="Images\icon_delete.png" />
+    <None Remove="Images\icon_edit.png" />
+    <None Remove="Images\icon_event_repeat.png" />
+    <None Remove="Images\icon_new_account.png" />
+    <None Remove="Images\icon_open_database.png" />
+    <None Remove="Images\icon_report.png" />
+    <None Remove="Images\icon_save.png" />
+  </ItemGroup>
+
+    <ItemGroup>
+    <PackageReference Include="ByteSize" Version="2.1.2" />
+    <PackageReference Include="Humanizer" Version="2.14.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Controls\" />
+      <Folder Include="Windows\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Images\icon_add_categories.png" />
+      <Resource Include="Images\icon_add_file.png" />
+      <Resource Include="Images\icon_add_reccuring_transactions.png" />
+      <Resource Include="Images\icon_add_transaction.png" />
+      <Resource Include="Images\icon_delete.png" />
+      <Resource Include="Images\icon_edit.png" />
+      <Resource Include="Images\icon_event_repeat.png" />
+      <Resource Include="Images\icon_new_account.png" />
+      <Resource Include="Images\icon_open_database.png" />
+      <Resource Include="Images\icon_report.png" />
+      <Resource Include="Images\icon_save.png" />
+    </ItemGroup>
+
+</Project>

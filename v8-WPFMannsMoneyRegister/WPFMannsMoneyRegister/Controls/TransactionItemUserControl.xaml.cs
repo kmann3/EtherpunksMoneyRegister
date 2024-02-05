@@ -17,8 +17,8 @@ public partial class TransactionItemUserControl : UserControl
     private readonly TransactionItemViewModel _viewModel = new();
     private bool isNew = false;
 
-    public event EventHandler ControlClosed;
-    public event EventHandler TransactionAddedOrUpdated;
+    public event EventHandler? ControlClosed;
+    public event EventHandler? TransactionAddedOrUpdated;
 
     public TransactionItemUserControl()
     {
