@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MannsMoneyRegister"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="2000">
+        Title="Mann's Money Register" Height="900" Width="1825">
     <DockPanel>
-        <Ribbon DockPanel.Dock="Top">
+        <Ribbon x:Name="RibbonTest" DockPanel.Dock="Top">
             <RibbonTab Header="Dashboard">
                 <RibbonGroup Header="Account">
                     <StackPanel Orientation="Vertical">
                         <RibbonComboBox Label="Account:">
-                            <RibbonGallery SelectedValue="Acc1" SelectedValuePath="Content" MaxColumnCount="1" SelectionChanged="RibbonGallery_SelectionChanged">
+                            <RibbonGallery x:Name="ribbonComboBox_Dashboard_AccountSelection" SelectedValue="Acc1" SelectedValuePath="Content" MaxColumnCount="1" SelectionChanged="ribbonComboBox_Dashboard_AccountSelection_SelectionChanged">
                                 <RibbonGalleryCategory>
                                     <RibbonGalleryItem Content="Acc1" />
                                     <RibbonGalleryItem Content="Acc2" />
@@ -22,16 +22,16 @@
                             </RibbonGallery>
                         </RibbonComboBox>
                         <Separator />
-                        <RibbonButton Label="New Account" SmallImageSource="Images/icon_new_account.png" VerticalAlignment="Bottom" Margin="0,15,0,0" />
+                        <RibbonButton x:Name="ribbonButton_Dashboard_NewAccount" Label="New Account" SmallImageSource="Images/icon_new_account.png" VerticalAlignment="Bottom" Margin="0,15,0,0" Click="ribbonButton_Dashboard_NewAccount_Click" />
                     </StackPanel>
                 </RibbonGroup>
                 <RibbonGroup Header="New">
                     <StackPanel Orientation="Horizontal">
                         <RibbonGroup>
-                            <RibbonButton Label="New Transaction" LargeImageSource="Images/icon_add_transaction.png" Margin="-7,-7,-7,-13" />
+                            <RibbonButton x:Name="ribbonButton_Dashboard_NewTransaction" Label="New Transaction" LargeImageSource="Images/icon_add_transaction.png" Margin="-7,-7,-7,-13" Click="ribbonButton_Dashboard_NewTransaction_Click" />
                         </RibbonGroup>
                         <RibbonButton Label="Reserve Transaction" LargeImageSource="Images/icon_event_repeat.png" />
-                        <RibbonButton Height="20">
+                        <RibbonButton x:Name="ribbonButton_Dashboard_ReserveTransaction" Height="20" Click="ribbonButton_Dashboard_ReserveTransaction_Click">
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="New Transaction"></Label>
                             </StackPanel>
@@ -41,23 +41,23 @@
                 </RibbonGroup>
                 <RibbonGroup Header="Transaction Data">
                     <StackPanel Orientation="Vertical">
-                        <RibbonCheckBox Label="Autoload on hover" ToolTip="As you hover over transactions this will autoload the details; Save this in SETTINGS IN DATABASE NotImplementedException();" />
+                        <RibbonCheckBox x:Name="ribbonCheckBox_Dashboard_Autoload" Label="Autoload on hover" ToolTip="As you hover over transactions this will autoload the details; Save this in SETTINGS IN DATABASE NotImplementedException();" Checked="ribbonCheckBox_Dashboard_Autoload_Checked" />
                     </StackPanel>
                 </RibbonGroup>
                 <RibbonGroup Header="Date Range">
-                    <!-- Combo box 30,60, 90  OR popup box for custom range selection -->
                     <StackPanel Orientation="Vertical">
                         <RibbonComboBox Label="Days:">
-                            <RibbonGallery SelectedValue="35 days" SelectedValuePath="Content" MaxColumnCount="1">
+                            <RibbonGallery x:Name="ribbonComboBox_Dashboard_DayCount" SelectedValue="30 days" SelectedValuePath="Content" MaxColumnCount="1" SelectionChanged="ribbonComboBox_Dashboard_DayCount_SelectionChanged">
                                 <RibbonGalleryCategory>
-                                    <RibbonGalleryItem Content="35 days" />
+                                    <RibbonGalleryItem Content="30 days" />
+                                    <RibbonGalleryItem Content="45 days" />
                                     <RibbonGalleryItem Content="60 days" />
                                     <RibbonGalleryItem Content="90 days" />
                                     <RibbonGalleryItem Content="Custom" />
                                 </RibbonGalleryCategory>
                             </RibbonGallery>
                         </RibbonComboBox>
-                        <RibbonButton Label="Custom Range" VerticalAlignment="Bottom" Margin="0,15,0,0" />
+                        <RibbonButton x:Name="ribbonButton_Dashboard_CustomRange" Label="Custom Range" VerticalAlignment="Bottom" Margin="0,15,0,0" Click="ribbonButton_Dashboard_CustomRange_Click" />
                     </StackPanel>
                 </RibbonGroup>
             </RibbonTab>
@@ -66,29 +66,57 @@
 
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
-                <Label Content="Balance: $43.55" />
+                <Label x:Name="labelBalance" Content="Balance: $43.55" />
             </StatusBarItem>
             <Separator />
             <StatusBarItem>
-                <Label Content="Oustanding: -$43.55 (4 items)" />
+                <Label x:Name="labelOutstanding" Content="Oustanding: -$43.55 (4 items)" />
             </StatusBarItem>
             <Separator />
             <StatusBarItem HorizontalAlignment="Right">
-                <Label Content="Status: Idle" />
+                <Label x:Name="labelStatus" Content="Status: Idle" />
             </StatusBarItem>
         </StatusBar>
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1200"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="1200" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <DataGrid Name="DataGridTransactions" AutoGenerateColumns="False" CanUserAddRows="false" Grid.Row="0" Grid.Column="0"
-                      EnableRowVirtualization="True" Background="Gray" AlternationCount="2" SelectionMode="Single">
+            <DataGrid x:Name="dataGridTransactions" AutoGenerateColumns="False" CanUserAddRows="false" Grid.Row="0" Grid.Column="0" Grid.RowSpan="24"
+                      EnableRowVirtualization="True" Background="Gray" AlternationCount="2" SelectionMode="Single" SelectionChanged="dataGridTransactions_SelectionChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden" IsReadOnly="True" />
                     <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="300">
@@ -216,11 +244,49 @@
                     </Style>
                 </DataGrid.RowStyle>
             </DataGrid>
-            <Button Content="Test" Grid.Row="0" Grid.Column="1" />
+            <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="24" Height="2008" Width="2" Background="WhiteSmoke" BorderThickness="1" BorderBrush="#ABADB3" Margin="2 2 2 2 "/>
+
+            <Border Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="9" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="10" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="11" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="12" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="13" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="14" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="15" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="16" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="17" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="18" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="19" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="20" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="21" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="22" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="23" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+            <Border Grid.Row="24" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
+
+            <Button x:Name="buttonSaveTransaction" Grid.Row="0" Grid.Column="5" Width="70" Margin="5,5,5,5" HorizontalAlignment="Right" Content="Save" Click="buttonSaveTransaction_Click" />
+
+            <Label Grid.Row="1" Grid.Column="2">Account:</Label>
+            <ComboBox x:Name="comboBoxAccount" Grid.Row="1" Grid.Column="3" Margin="5,5,25,5" TabIndex="12" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedValue="{Binding AccountId}" />
+
+            <Label Grid.Row="2" Grid.Column="2">Transaction Type:</Label>
+            <ComboBox x:Name="transactionTypeComboBox" Grid.Row="2" Grid.Column="3" Margin="5,5,25,5" TabIndex="13" SelectedValue="{Binding TransactionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Grid.Row="3" Grid.Column="2">Name:</Label>
+            <TextBox x:Name="transactionNameTextBox" Grid.Row="3" Grid.Column="3" Margin="5,5,5,5" TabIndex="1" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Grid.Row="4" Grid.Column="2">Amount:</Label>
+            <TextBox x:Name="transactionAmountTextBox" Grid.Row="4" Grid.Column="3" Margin="5,5,5,5" TabIndex="2" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=C}" />
+
+
         </Grid>
-        <!-- <local:TransactionListUserControl x:Name="transactionList" Grid.Row="2" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" TransactionSelected="TransactionListUserControl_TransactionSelected" /> -->
-        <!--<local:TransactionItemUserControl x:Name="transactionItem" Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" /> -->
-
-
     </DockPanel>
 </Window>
