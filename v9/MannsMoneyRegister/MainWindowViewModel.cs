@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace MannsMoneyRegister
 {
-    public  class MainWindowViewModel
+    public static class MainWindowViewModel
     {
         private static ApplicationDbContext _context = new();
         private static void SaveConfigValue(string key, string value)
