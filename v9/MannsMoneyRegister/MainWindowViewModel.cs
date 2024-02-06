@@ -1,5 +1,6 @@
 ﻿using MannsMoneyRegister.Data;
 using MannsMoneyRegister.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
@@ -97,6 +98,32 @@ namespace MannsMoneyRegister
                 return start;
             }
             set => SaveConfigValue("DefaultSearchDayCustomEnd", value.ToString());
+        }
+
+        public static async Task<List<AccountTransaction>> GetAllAccountTransactionsAsync(Guid accountId, DateTime startDate, DateTime endDate)
+        {
+            List<AccountTransaction> _transactions = await _context.AccountTransactions
+            .Include(x => x.Categories)
+            .Where(x => x.AccountId == accountId)
+            .Where(x => x.CreatedOnUTC >= endDate)
+            .Where(x => x.CreatedOnUTC <= startDate)
+            .ToListAsync();
+
+            // Make sure that pending and uncleared items are ALWAYS added regardless of date, so we don't accidentally leave something sitting out and it's date goes way past a normal search
+            // For example, we don't want an uncashed check that's 60 days old forgotten, not cleared, and now shown.
+            List<AccountTransaction> pendingAndClearedTransactions = await _context.AccountTransactions
+                .Include(x => x.Categories)
+                .Where(x => x.AccountId == accountId)
+                .Where(x => x.TransactionPendingUTC == null || x.TransactionClearedUTC == null)
+                .ToListAsync();
+
+            // Merge the two lists
+            List<AccountTransaction> returnList = [.. _transactions.Concat(pendingAndClearedTransactions).Distinct()
+            .OrderByDescending(x => x.TransactionClearedUTC == null && x.TransactionPendingUTC != null)
+            .ThenByDescending(x => x.TransactionPendingUTC == null && x.TransactionClearedUTC == null)
+            .ThenByDescending(x => x.CreatedOnUTC)];
+
+            return returnList;
         }
 
         public static async Task LoadDatabaseAsync(string fileName)

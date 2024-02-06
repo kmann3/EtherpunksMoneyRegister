@@ -13,6 +13,9 @@ namespace MannsMoneyRegister;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private DateTime transactionStartDate = DateTime.UtcNow.AddDays(-45);
+    private DateTime transactionEndDate = DateTime.UtcNow;
+    List<AccountTransaction> transactionList = new();
     public MainWindow()
     {
         InitializeComponent();
@@ -39,7 +42,13 @@ public partial class MainWindow : Window
         {
             case "Custom":
                 ribbonComboBox_Dashboard_SearchDayCount.SelectedValue = "Custom";
-                // Assign start and end dates
+                transactionStartDate = MainWindowViewModel.DefaultSearchDayCustomStart;
+                transactionEndDate = MainWindowViewModel.DefaultSearchDayCustomEnd;
+                ribbonTextBox_Dashboard_CustomRangeDisplayStart.Visibility = Visibility.Visible;
+                ribbonTextBox_Dashboard_CustomRangeDisplayStart.Text = transactionStartDate.ToShortDateString();
+                ribbonTextBox_Dashboard_CustomRangeDisplayEnd.Visibility = Visibility.Visible;
+                ribbonTextBox_Dashboard_CustomRangeDisplayEnd.Text = transactionEndDate.ToShortDateString();
+                // Show the date range textbox
                 break;
             default:
                 if (MainWindowViewModel.DefaultSearchDayCount is "30 Days" or "45 Days" or "60 Days" or "90 Days")
@@ -55,6 +64,8 @@ public partial class MainWindow : Window
                 break;
         }
 
+        transactionList = await MainWindowViewModel.GetAllAccountTransactionsAsync(defaultAccountId, transactionStartDate, transactionEndDate);
+        dataGridTransactions.ItemsSource = transactionList;
     }
 
     private void ribbonComboBox_Dashboard_AccountSelection_SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
