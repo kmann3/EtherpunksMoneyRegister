@@ -18,20 +18,9 @@ namespace MannsMoneyRegister;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private List<TestITem> testing = new();
     public MainWindow()
     {
         this.InitializeComponent();
-        testing.Add(new TestITem());
-        testing.Add(new TestITem());
-        testing.Add(new TestITem());
-        testing.Add(new TestITem());
-        testing.Add(new TestITem());
-        testing.Add(new TestITem());
-
-        Trace.WriteLine($"{RibbonTest.Background.ToString()}");
-
-        dataGridTransactions.ItemsSource = testing;
     }
 
     private void ribbonComboBox_Dashboard_AccountSelection_SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -75,6 +64,46 @@ public partial class MainWindow : Window
     }
 
     private void buttonSaveTransaction_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void listViewUnselectedTransactionCategories_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+
+    }
+
+    private void listViewSelectedTransactionCategories_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+
+    }
+
+    private void buttonRemoveCategoryFromTransaction_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void buttonAddCategoryToTransaction_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void listViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+
+    }
+
+    private void buttonDeleteTransaction_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void buttonDeleteFile_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void buttonAddFile_Click(object sender, RoutedEventArgs e)
     {
 
     }

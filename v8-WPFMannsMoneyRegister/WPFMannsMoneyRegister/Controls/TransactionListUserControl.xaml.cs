@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using WPFMannsMoneyRegister.Data;
@@ -17,6 +18,8 @@ public partial class TransactionListUserControl : UserControl
     public TransactionListUserControl()
     {
         InitializeComponent();
+
+
     }
 
     public async void UpdateTransactionsFromDates(Guid accountId, DateTime startDate, DateTime endDate)

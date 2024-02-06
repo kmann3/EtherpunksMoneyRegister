@@ -1,0 +1,6 @@
+﻿namespace MannsMoneyRegister.Data.Entities;
+public class Link_Category_RecurringTransaction
+{
+    public Guid CategoryId { get; set; }
+    public Guid RecurringTransactionId { get; set; }
+}
