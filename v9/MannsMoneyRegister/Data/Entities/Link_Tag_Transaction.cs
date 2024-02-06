@@ -1,6 +1,6 @@
 ﻿namespace MannsMoneyRegister.Data.Entities;
-public class Link_Category_Transaction
+public class Link_Tag_Transaction
 {
-    public Guid CategoryId { get; set; }
+    public Guid TagId { get; set; }
     public Guid AccountTransactionId { get; set; }
 }

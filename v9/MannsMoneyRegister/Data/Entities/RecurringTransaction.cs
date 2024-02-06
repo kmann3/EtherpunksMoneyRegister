@@ -31,10 +31,10 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     public string BankTransactionRegEx { get; set; } = string.Empty;
 
     [JsonIgnore]
-    public List<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; } = [];
+    public List<Link_Tag_RecurringTransaction> Link_Tag_RecurringTransactions { get; } = [];
 
     [JsonIgnore]
-    public List<Category> Categories { get; set; } = [];
+    public List<Tag> Categories { get; set; } = [];
 
     public Enums.RecurringFrequencyTypeEnum RecurringFrequencyType { get; set; } = Enums.RecurringFrequencyTypeEnum.Unknown;
 
@@ -86,9 +86,9 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     public DateTime? FrequencyDateValue { get; set; } = null;
 
     [JsonIgnore]
-    public TransactionGroup? Group { get; set; }
+    public RecurringTransactionGroup? Group { get; set; }
 
-    public Guid? TransactionGroupId { get; set; }
+    public Guid? RecurringTransactionGroupId { get; set; }
 
 
     public Enums.TransactionTypeEnum TransactionType { get; set; }

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using MannsMoneyRegister.Data;
+using MannsMoneyRegister.Data.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -10,9 +12,10 @@ using System.Windows.Input;
 
 namespace MannsMoneyRegister
 {
-    public class MainWindowViewModel
+    public  class MainWindowViewModel
     {
-        private void SaveConfigValue(string key, string value)
+        private static ApplicationDbContext _context = new();
+        private static void SaveConfigValue(string key, string value)
         {
             try
             {
@@ -35,13 +38,23 @@ namespace MannsMoneyRegister
             }
         }
 
-        public string DatabaseLocation
+        private static List<Account> _accountList = new();
+        public static List<Account> AccountList
+        {
+            get
+            {
+                _accountList = [.. _context.Accounts.OrderBy(x => x.Name)];
+                return _accountList;
+            }
+        }
+
+        public static string DatabaseLocation
         {
             get => ConfigurationManager.AppSettings["DatabaseLocation"] ?? "MMR.sqlite3";
             set => SaveConfigValue("DatabaseLocation", value);
         }
 
-        public Guid DefaultAccountId
+        public static Guid DefaultAccountId
         {
             get
             {
@@ -54,13 +67,13 @@ namespace MannsMoneyRegister
             set => SaveConfigValue("DefaultAccountId", value.ToString());
         }
 
-        public string DefaultDayCount
+        public static string DefaultSearchDayCount
         {
-            get => ConfigurationManager.AppSettings["DefaultDayCount"] ?? "45 days";
-            set => SaveConfigValue("DefaultDayCount", value.ToString());
+            get => ConfigurationManager.AppSettings["DefaultSearchDayCount"] ?? "45 Days";
+            set => SaveConfigValue("DefaultSearchDayCount", value.ToString());
         }
 
-        public DateTime DefaultSearchDayCustomStart
+        public static DateTime DefaultSearchDayCustomStart
         {
             get
             {
@@ -73,7 +86,7 @@ namespace MannsMoneyRegister
             set => SaveConfigValue("DefaultSearchDayCustomStart", value.ToString());
         }
 
-        public DateTime DefaultSearchDayCustomEnd
+        public static DateTime DefaultSearchDayCustomEnd
         {
             get
             {
@@ -86,6 +99,11 @@ namespace MannsMoneyRegister
             set => SaveConfigValue("DefaultSearchDayCustomEnd", value.ToString());
         }
 
-
+        public static async Task LoadDatabaseAsync(string fileName)
+        {
+            ApplicationDbContext.DatabaseLocation = fileName;
+            await _context.DisposeAsync(); // I don't know if I need to do this
+            _context = new();
+        }
     }
 }

@@ -1,6 +1,9 @@
-﻿using System.Configuration;
+﻿using MannsMoneyRegister.Data.Entities;
+using System.Configuration;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Ribbon;
 using System.Windows.Input;
 
 namespace MannsMoneyRegister;
@@ -13,6 +16,45 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        
+    }
+
+    /// <summary>
+    /// Load default settings
+    /// Load datadase transactions, accounts, etc - get the window ready to be used.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private async void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+        await MainWindowViewModel.LoadDatabaseAsync(MainWindowViewModel.DatabaseLocation);
+
+        Guid defaultAccountId = MainWindowViewModel.DefaultAccountId;
+        ribbonComboBox_Dashboard_AccountSelectionList.ItemsSource = MainWindowViewModel.AccountList;
+        ribbonComboBox_Dashboard_AccountSelectionList.DisplayMemberPath = "Name";
+        ribbonComboBox_Dashboard_AccountSelection.SelectedValuePath = "Id";
+        ribbonComboBox_Dashboard_AccountSelection.SelectedValue = defaultAccountId;
+
+        switch (MainWindowViewModel.DefaultSearchDayCount)
+        {
+            case "Custom":
+                ribbonComboBox_Dashboard_SearchDayCount.SelectedValue = "Custom";
+                // Assign start and end dates
+                break;
+            default:
+                if (MainWindowViewModel.DefaultSearchDayCount is "30 Days" or "45 Days" or "60 Days" or "90 Days")
+                {
+                    ribbonComboBox_Dashboard_SearchDayCount.SelectedValue = MainWindowViewModel.DefaultSearchDayCount;
+                }
+                else
+                {
+                    Trace.WriteLine($"Error parsing app.config's key 'DefaultSearchDayCount'. The value we got was: {MainWindowViewModel.DefaultSearchDayCount}. We are going to re-assign to 45 Days.");
+                    MainWindowViewModel.DefaultSearchDayCount = "45 Days";
+                    ribbonComboBox_Dashboard_SearchDayCount.SelectedValue = MainWindowViewModel.DefaultSearchDayCount;
+                }
+                break;
+        }
+
     }
 
     private void ribbonComboBox_Dashboard_AccountSelection_SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -60,22 +102,22 @@ public partial class MainWindow : Window
 
     }
 
-    private void listViewUnselectedTransactionCategories_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    private void listViewUnselectedTransactionTags_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
 
     }
 
-    private void listViewSelectedTransactionCategories_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    private void listViewSelectedTransactionTags_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
 
     }
 
-    private void buttonRemoveCategoryFromTransaction_Click(object sender, RoutedEventArgs e)
+    private void buttonRemoveTagFromTransaction_Click(object sender, RoutedEventArgs e)
     {
 
     }
 
-    private void buttonAddCategoryToTransaction_Click(object sender, RoutedEventArgs e)
+    private void buttonAddTagToTransaction_Click(object sender, RoutedEventArgs e)
     {
 
     }

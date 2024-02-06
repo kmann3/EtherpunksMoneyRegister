@@ -7,7 +7,7 @@ namespace MannsMoneyRegister.Data.Entities;
 /// <summary>
 /// The binary data and meta data of a file.
 /// </summary>
-public class TransactionFile : BasicTable<TransactionFile>, IEntityTypeConfiguration<TransactionFile>
+public class AccountTransactionFile : BasicTable<AccountTransactionFile>, IEntityTypeConfiguration<AccountTransactionFile>
 {
     /// <summary>
     /// We ignore the data because we're going to re-create the file itself and zip it.
@@ -35,14 +35,14 @@ public class TransactionFile : BasicTable<TransactionFile>, IEntityTypeConfigura
 
     // Consider a lookup for types of files such as bills, contracts, warranties, etc
 
-    public override void Configure(EntityTypeBuilder<TransactionFile> builder)
+    public override void Configure(EntityTypeBuilder<AccountTransactionFile> builder)
     {
         builder.HasIndex(k => k.Name).IsUnique(true);
     }
 
-    public TransactionFile DeepClone()
+    public AccountTransactionFile DeepClone()
     {
-        TransactionFile returnFile = new()
+        AccountTransactionFile returnFile = new()
         {
             AccountTransactionId = this.AccountTransactionId,
             ContentType = this.ContentType,
@@ -60,7 +60,7 @@ public class TransactionFile : BasicTable<TransactionFile>, IEntityTypeConfigura
     public bool DeepEquals(object? obj)
     {
         if (obj == null) return false;
-        if (obj is not TransactionFile secondTransactionFile) return false;
+        if (obj is not AccountTransactionFile secondTransactionFile) return false;
 
         bool returnVal = true;
 

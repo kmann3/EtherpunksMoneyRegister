@@ -7,12 +7,12 @@ namespace MannsMoneyRegister.Data.Entities;
 /// <summary>
 /// A group of transactions - such as a list of bills
 /// </summary>
-public class TransactionGroup : BasicTable<TransactionGroup>, IEntityTypeConfiguration<TransactionGroup>
+public class RecurringTransactionGroup : BasicTable<RecurringTransactionGroup>, IEntityTypeConfiguration<RecurringTransactionGroup>
 {
     [JsonIgnore]
     public List<RecurringTransaction> RecurringTransactions { get; set; } = [];
 
-    public override void Configure(EntityTypeBuilder<TransactionGroup> builder)
+    public override void Configure(EntityTypeBuilder<RecurringTransactionGroup> builder)
     {
         builder.HasIndex(k => k.Name).IsUnique(true);
     }

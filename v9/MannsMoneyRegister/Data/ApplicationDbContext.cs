@@ -9,13 +9,13 @@ namespace MannsMoneyRegister.Data;
 public class ApplicationDbContext : DbContext
 {
     public DbSet<Account> Accounts { get; set; }
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<TransactionFile> Files { get; set; }
-    public DbSet<Link_Category_RecurringTransaction> Link_Category_RecurringTransactions { get; set; }
-    public DbSet<Link_Category_Transaction> Link_Categories_Transactions { get; set; }
+    public DbSet<Tag> Categories { get; set; }
+    public DbSet<AccountTransactionFile> Files { get; set; }
+    public DbSet<Link_Tag_RecurringTransaction> Link_Tag_RecurringTransactions { get; set; }
+    public DbSet<Link_Tag_Transaction> Link_Categories_Transactions { get; set; }
 
     public DbSet<RecurringTransaction> RecurringTransactions { get; set; }
-    public DbSet<TransactionGroup> TransactionGroups { get; set; }
+    public DbSet<RecurringTransactionGroup> RecurringTransactionGroups { get; set; }
     public DbSet<AccountTransaction> AccountTransactions { get; set; }
 
     public static string DatabaseLocation { get; set; } = "MMR.sqlite3";
@@ -46,24 +46,24 @@ public class ApplicationDbContext : DbContext
             v => v.ToString(),
             v => (Enums.RecurringFrequencyTypeEnum)Enum.Parse(typeof(Enums.RecurringFrequencyTypeEnum), v));
 
-        builder.Entity<Category>()
+        builder.Entity<Tag>()
             .HasMany(x => x.RecurringTransactions)
             .WithMany(x => x.Categories)
-            .UsingEntity<Link_Category_RecurringTransaction>(
+            .UsingEntity<Link_Tag_RecurringTransaction>(
 
-            l => l.HasOne<RecurringTransaction>().WithMany(e => e.Link_Category_RecurringTransactions).HasForeignKey(x => x.RecurringTransactionId),
+            l => l.HasOne<RecurringTransaction>().WithMany(e => e.Link_Tag_RecurringTransactions).HasForeignKey(x => x.RecurringTransactionId),
 
-            r => r.HasOne<Category>().WithMany(e => e.Link_Category_RecurringTransactions).HasForeignKey(x => x.CategoryId)
+            r => r.HasOne<Tag>().WithMany(e => e.Link_Tag_RecurringTransactions).HasForeignKey(x => x.TagId)
             );
 
-        builder.Entity<Category>()
+        builder.Entity<Tag>()
             .HasMany(x => x.AccountTransactions)
             .WithMany(x => x.Categories)
-            .UsingEntity<Link_Category_Transaction>(
+            .UsingEntity<Link_Tag_Transaction>(
 
-            l => l.HasOne<AccountTransaction>().WithMany(e => e.Link_Category_Transactions).HasForeignKey(x => x.AccountTransactionId),
+            l => l.HasOne<AccountTransaction>().WithMany(e => e.Link_Tag_Transactions).HasForeignKey(x => x.AccountTransactionId),
 
-            r => r.HasOne<Category>().WithMany(e => e.Link_Category_Transactions).HasForeignKey(x => x.CategoryId)
+            r => r.HasOne<Tag>().WithMany(e => e.Link_Tag_Transactions).HasForeignKey(x => x.TagId)
             );
         SeedDatabase(builder);
         base.OnModelCreating(builder);
@@ -71,7 +71,7 @@ public class ApplicationDbContext : DbContext
 
     private void SeedDatabase(ModelBuilder builder)
     {
-
+        
     }
 
     private static void FillDbType<TEntity>(string fileLocation, ModelBuilder builder, JsonSerializerOptions options) where TEntity : class
@@ -90,13 +90,13 @@ public class ApplicationDbContext : DbContext
 
         if (billId == null) return;
 
-        Link_Category_RecurringTransaction linkCatTran = new()
+        Link_Tag_RecurringTransaction linkCatTran = new()
         {
-            CategoryId = billId.Value,
+            TagId = billId.Value,
             RecurringTransactionId = recTran.Id,
         };
 
 
-        builder.Entity<Link_Category_RecurringTransaction>().HasData(linkCatTran);
+        builder.Entity<Link_Tag_RecurringTransaction>().HasData(linkCatTran);
     }
 }

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MannsMoneyRegister"
         mc:Ignorable="d"
+        Loaded="Window_Loaded"
         Title="Mann's Money Register" Height="900" Width="1825">
     <DockPanel>
         <Ribbon x:Name="RibbonTest" DockPanel.Dock="Top">
@@ -12,13 +13,8 @@
                 <RibbonGroup Header="Account">
                     <StackPanel Orientation="Vertical">
                         <RibbonComboBox Label="Account:">
-                            <RibbonGallery x:Name="ribbonComboBox_Dashboard_AccountSelection" SelectedValue="Acc1" SelectedValuePath="Content" MaxColumnCount="1" SelectionChanged="ribbonComboBox_Dashboard_AccountSelection_SelectionChanged">
-                                <RibbonGalleryCategory>
-                                    <RibbonGalleryItem Content="Acc1" />
-                                    <RibbonGalleryItem Content="Acc2" />
-                                    <RibbonGalleryItem Content="Acc3" />
-                                    <RibbonGalleryItem Content="Acc4" />
-                                </RibbonGalleryCategory>
+                            <RibbonGallery x:Name="ribbonComboBox_Dashboard_AccountSelection" MaxColumnCount="1" SelectionChanged="ribbonComboBox_Dashboard_AccountSelection_SelectionChanged">
+                                <RibbonGalleryCategory x:Name="ribbonComboBox_Dashboard_AccountSelectionList" />
                             </RibbonGallery>
                         </RibbonComboBox>
                         <Separator />
@@ -47,12 +43,12 @@
                 <RibbonGroup Header="Date Range">
                     <StackPanel Orientation="Vertical">
                         <RibbonComboBox Label="Days:">
-                            <RibbonGallery x:Name="ribbonComboBox_Dashboard_DayCount" SelectedValue="30 days" SelectedValuePath="Content" MaxColumnCount="1" SelectionChanged="ribbonComboBox_Dashboard_DayCount_SelectionChanged">
-                                <RibbonGalleryCategory>
-                                    <RibbonGalleryItem Content="30 days" />
-                                    <RibbonGalleryItem Content="45 days" />
-                                    <RibbonGalleryItem Content="60 days" />
-                                    <RibbonGalleryItem Content="90 days" />
+                            <RibbonGallery x:Name="ribbonComboBox_Dashboard_SearchDayCount" SelectedValuePath="Content" MaxColumnCount="1" SelectionChanged="ribbonComboBox_Dashboard_DayCount_SelectionChanged">
+                                <RibbonGalleryCategory x:Name="ribbonComboBox_Dashboard_SearchDayCountList">
+                                    <RibbonGalleryItem Content="30 Days" />
+                                    <RibbonGalleryItem Content="45 Days" />
+                                    <RibbonGalleryItem Content="60 Days" />
+                                    <RibbonGalleryItem Content="90 Days" />
                                     <RibbonGalleryItem Content="Custom" />
                                 </RibbonGalleryCategory>
                             </RibbonGallery>
@@ -186,7 +182,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Binding="{Binding CategoryString}" Header="Categories" Width="145" IsReadOnly="True">
+                    <DataGridTextColumn Binding="{Binding TagCompositeString}" Header="Tags" Width="145" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style>
                                 <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
@@ -286,11 +282,11 @@
             <Label Grid.Row="4" Grid.Column="2">Amount:</Label>
             <TextBox x:Name="transactionAmountTextBox" Grid.Row="4" Grid.Column="3" Margin="5,5,5,5" TabIndex="2" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=C}" />
 
-            <Label Grid.Row="5" Grid.Column="0">Categories:</Label>
-            <ListView x:Name="listViewUnselectedTransactionCategories" Grid.Row="5" Grid.Column="3" Grid.RowSpan="3" Margin="5,5,5,5" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Single" ItemsSource="{Binding UnselectedCategories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="listViewUnselectedTransactionCategories_MouseDoubleClick" d:ItemsSource="{d:SampleData ItemCount=5}" />
-            <Button x:Name="buttonAddCategoryToTransaction" Grid.Row="5" Grid.Column="4" Content="&gt;&gt;" Margin="5,5,5,5" Click="buttonAddCategoryToTransaction_Click" />
-            <Button x:Name="buttonRemoveCategoryFromTransaction" Grid.Row="7" Grid.Column="4" Content="&lt;&lt;" Margin="5,5,5,5" Click="buttonRemoveCategoryFromTransaction_Click" />
-            <ListView x:Name="listViewSelectedTransactionCategories" Grid.Row="5" Grid.Column="5" Grid.RowSpan="3" Margin="5,5,5,5" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Single" ItemsSource="{Binding SelectedCategories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="listViewSelectedTransactionCategories_MouseDoubleClick" />
+            <Label Grid.Row="5" Grid.Column="2">Tags:</Label>
+            <ListView x:Name="listViewUnselectedTransactionTags" Grid.Row="5" Grid.Column="3" Grid.RowSpan="3" Margin="5,5,5,5" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Single" ItemsSource="{Binding UnselectedTags, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="listViewUnselectedTransactionTags_MouseDoubleClick" />
+            <Button x:Name="buttonAddTagToTransaction" Grid.Row="5" Grid.Column="4" Content="&gt;&gt;" Margin="5,5,5,5" Click="buttonAddTagToTransaction_Click" />
+            <Button x:Name="buttonRemoveTagFromTransaction" Grid.Row="7" Grid.Column="4" Content="&lt;&lt;" Margin="5,5,5,5" Click="buttonRemoveTagFromTransaction_Click" />
+            <ListView x:Name="listViewSelectedTransactionTags" Grid.Row="5" Grid.Column="5" Grid.RowSpan="3" Margin="5,5,5,5" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Single" ItemsSource="{Binding SelectedTags, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="listViewSelectedTransactionTags_MouseDoubleClick" />
 
             <Label Grid.Row="8" Grid.Column="2">Pending:</Label>
             <DatePicker x:Name="datePickerPendingDate" Grid.Row="8" Grid.Column="3" TabIndex="4" Margin="5,0,5,0" SelectedDate="{Binding TransactionPending, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionPending, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" />
