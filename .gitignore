@@ -362,3 +362,5 @@ MigrationBackup/
 /v7/MoneyRegister/MMR.sqlite3
 
 *.zip
+/v8-WPFMannsMoneyRegister/MMR.sqlite3-shm
+/v8-WPFMannsMoneyRegister/MMR.sqlite3-wal
