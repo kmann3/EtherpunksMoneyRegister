@@ -9,14 +9,14 @@ namespace MannsMoneyRegister.Data;
 public class ApplicationDbContext : DbContext
 {
     public DbSet<Account> Accounts { get; set; }
-    public DbSet<Tag> Categories { get; set; }
-    public DbSet<AccountTransactionFile> Files { get; set; }
+    public DbSet<AccountTransaction> AccountTransactions { get; set; }
+    public DbSet<AccountTransactionFile> AccountTransactionFiles { get; set; }
     public DbSet<Link_Tag_RecurringTransaction> Link_Tag_RecurringTransactions { get; set; }
     public DbSet<Link_Tag_Transaction> Link_Categories_Transactions { get; set; }
 
     public DbSet<RecurringTransaction> RecurringTransactions { get; set; }
     public DbSet<RecurringTransactionGroup> RecurringTransactionGroups { get; set; }
-    public DbSet<AccountTransaction> AccountTransactions { get; set; }
+    public DbSet<Tag> Tags { get; set; }
 
     public static string DatabaseLocation { get; set; } = "MMR.sqlite3";
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -48,7 +48,7 @@ public class ApplicationDbContext : DbContext
 
         builder.Entity<Tag>()
             .HasMany(x => x.RecurringTransactions)
-            .WithMany(x => x.Categories)
+            .WithMany(x => x.Tags)
             .UsingEntity<Link_Tag_RecurringTransaction>(
 
             l => l.HasOne<RecurringTransaction>().WithMany(e => e.Link_Tag_RecurringTransactions).HasForeignKey(x => x.RecurringTransactionId),
@@ -58,7 +58,7 @@ public class ApplicationDbContext : DbContext
 
         builder.Entity<Tag>()
             .HasMany(x => x.AccountTransactions)
-            .WithMany(x => x.Categories)
+            .WithMany(x => x.Tags)
             .UsingEntity<Link_Tag_Transaction>(
 
             l => l.HasOne<AccountTransaction>().WithMany(e => e.Link_Tag_Transactions).HasForeignKey(x => x.AccountTransactionId),

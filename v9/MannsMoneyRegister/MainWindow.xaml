@@ -141,9 +141,7 @@
                                     <Button.Template>
                                         <ControlTemplate>
                                             <Grid>
-                                                <TextBlock Name="PendingLink" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden">
-                                            <Hyperlink >Pending</Hyperlink>
-                                                </TextBlock>
+                                                <Button Name="datagridButtonPendingTransaction" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Margin="2,2,2,2" Width="115" Height="30" Content="Pending" Click="datagridButtonPendingTransaction_Click" />
                                                 <TextBlock Name="PendingTextBlock" Text="{Binding TransactionPendingLocalTime, StringFormat={}{0:MM/dd/yyyy}}" Visibility="Visible" Margin="2,2,2,2" />
                                             </Grid>
                                             <ControlTemplate.Triggers>
@@ -152,7 +150,7 @@
                                                         <Condition Binding="{Binding Path=TransactionPendingLocalTime}" Value="{x:Null}" />
                                                         <Condition Binding="{Binding Path=TransactionClearedLocalTime}" Value="{x:Null}"/>
                                                     </MultiDataTrigger.Conditions>
-                                                    <Setter TargetName="PendingLink" Property="Visibility" Value="Visible" />
+                                                    <Setter TargetName="datagridButtonPendingTransaction" Property="Visibility" Value="Visible" />
                                                     <Setter TargetName="PendingTextBlock" Property="Visibility" Value="Hidden" />
                                                 </MultiDataTrigger>
                                             </ControlTemplate.Triggers>
@@ -169,14 +167,12 @@
                                     <Button.Template>
                                         <ControlTemplate>
                                             <Grid>
-                                                <TextBlock Name="ClearLink" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden">
-                                            <Hyperlink>Clear</Hyperlink>
-                                                </TextBlock>
+                                                <Button Name="datagridButtonClearTransaction" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Margin="2,2,2,2" Width="115" Height="30" Content="Clear" Click="datagridButtonClearTransaction_Click" />
                                                 <TextBlock Name="ClearedTextBlock" Text="{Binding TransactionClearedLocalTime, StringFormat={}{0:MM/dd/yyyy}}" Visibility="Visible" Margin="2,2,2,2" />
                                             </Grid>
                                             <ControlTemplate.Triggers>
                                                 <DataTrigger Binding="{Binding TransactionClearedLocalTime}" Value="{x:Null}">
-                                                    <Setter TargetName="ClearLink" Property="Visibility" Value="Visible" />
+                                                    <Setter TargetName="datagridButtonClearTransaction" Property="Visibility" Value="Visible" />
                                                     <Setter TargetName="ClearedTextBlock" Property="Visibility" Value="Hidden" />
                                                 </DataTrigger>
                                             </ControlTemplate.Triggers>
@@ -226,6 +222,21 @@
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="LightBlue"/>
                                 <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver"
+                           Value="True">
+                                <Setter Property="Background"
+                               Value="LightBlue" />
+                                <Setter Property="Foreground"
+                        Value="Black" />
+
+                            </Trigger>
+                            <Trigger Property="IsSelected"
+                           Value="True">
+                                <Setter Property="Background"
+                               Value="BurlyWood" />
+                                <Setter Property="Foreground"
+                        Value="Black" />
                             </Trigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
@@ -319,10 +330,10 @@
                 </ListView.Resources>
                 <ListView.View>
                     <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="File List">
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Filename}" Header="Name" Width="75"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Size}" Header="Size" Width="50"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=CreatedOnLocalTime, StringFormat=MM/dd/yyyy}" Header="Date" Width="75"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Notes}" Header="Notes" Width="85"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Filename}" Header="Name" Width="75"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Size}" Header="Size" Width="50"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding CreatedOnLocalTime, StringFormat=MM/dd/yyyy}" Header="Date" Width="75"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Notes}" Header="Notes" Width="85"/>
 
                     </GridView>
                 </ListView.View>

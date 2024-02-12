@@ -34,7 +34,7 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
     public List<Link_Tag_RecurringTransaction> Link_Tag_RecurringTransactions { get; } = [];
 
     [JsonIgnore]
-    public List<Tag> Categories { get; set; } = [];
+    public List<Tag> Tags { get; set; } = [];
 
     public Enums.RecurringFrequencyTypeEnum RecurringFrequencyType { get; set; } = Enums.RecurringFrequencyTypeEnum.Unknown;
 

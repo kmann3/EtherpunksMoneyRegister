@@ -70,24 +70,23 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
     {
         get
         {
-            return String.Join(", ", Categories.Select(x => x.Name));
+            return String.Join(", ", Tags.Select(x => x.Name));
         }
     }
     [JsonIgnore]
-    public List<Tag> Categories { get; set; } = [];
+    public List<Tag> Tags { get; set; } = [];
     [JsonIgnore]
     [NotMapped]
     public int FileCount
     {
         get
         {
-            if (Files == null) return 0;
-            return Files.Count;
+            return Files == null ? 0 : Files.Count;
         }
     }
 
     [JsonIgnore]
-    public List<AccountTransactionFile> Files { get; set; } = [];
+    public List<AccountTransactionFile> Files { get; set; } = new();
     [JsonIgnore]
     public RecurringTransaction? RecurringTransaction { get; set; }
     public Guid? RecurringTransactionId { get; set; }
@@ -151,12 +150,12 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
             returnTransaction.Files.Add(newFile);
         }
         returnTransaction.Id = Id;
-        foreach (Link_Tag_Transaction catLink in returnTransaction.Link_Tag_Transactions)
+        foreach (Link_Tag_Transaction tagLink in returnTransaction.Link_Tag_Transactions)
         {
             Link_Tag_Transaction newLink = new()
             {
-                TagId = catLink.TagId,
-                AccountTransactionId = catLink.AccountTransactionId,
+                TagId = tagLink.TagId,
+                AccountTransactionId = tagLink.AccountTransactionId,
             };
             returnTransaction.Link_Tag_Transactions.Add(newLink);
         }
@@ -211,13 +210,13 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
         }
         returnVal = returnVal && Guid.Equals(Id, secondTransaction.Id);
         returnVal = returnVal && Link_Tag_Transactions.Count == secondTransaction.Link_Tag_Transactions.Count;
-        foreach (Link_Tag_Transaction cat in Link_Tag_Transactions)
+        foreach (Link_Tag_Transaction tag in Link_Tag_Transactions)
         {
             foreach (Link_Tag_Transaction secondTag in secondTransaction.Link_Tag_Transactions)
             {
                 // There is probably a better way to compare
-                returnVal = returnVal && cat.TagId == secondTag.TagId;
-                returnVal = returnVal && cat.AccountTransactionId == secondTag.AccountTransactionId;
+                returnVal = returnVal && tag.TagId == secondTag.TagId;
+                returnVal = returnVal && tag.AccountTransactionId == secondTag.AccountTransactionId;
             }
         }
         returnVal = returnVal && String.Equals(Name, secondTransaction.Name, StringComparison.InvariantCulture);
