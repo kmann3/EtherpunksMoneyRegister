@@ -54,8 +54,8 @@
                             </RibbonGallery>
                         </RibbonComboBox>
                         <StackPanel Orientation="Horizontal">
-                            <RibbonTextBox x:Name="ribbonTextBox_Dashboard_CustomRangeDisplayStart" Visibility="Visible" IsReadOnly="True" />
-                            <RibbonTextBox x:Name="ribbonTextBox_Dashboard_CustomRangeDisplayEnd" Visibility="Visible" IsReadOnly="True" />
+                            <RibbonTextBox x:Name="ribbonTextBox_Dashboard_CustomRangeDisplayStart" Visibility="Hidden" />
+                            <RibbonTextBox x:Name="ribbonTextBox_Dashboard_CustomRangeDisplayEnd" Visibility="Hidden" />
                         </StackPanel>
                         <RibbonButton x:Name="ribbonButton_Dashboard_CustomRange" Label="Change Range" VerticalAlignment="Bottom" Margin="0,0,0,0" Click="ribbonButton_Dashboard_CustomRange_Click" />
                     </StackPanel>

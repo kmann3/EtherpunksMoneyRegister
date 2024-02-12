@@ -97,14 +97,14 @@ public static class AppService
         set => SaveConfigValue("DefaultSearchDayCustomEnd", value.ToString());
     }
 
-    public static async Task<List<AccountTransaction>> GetAllAccountTransactionsAsync(Guid accountId, DateTime startDate, DateTime endDate)
+    public static async Task<List<AccountTransaction>> GetAccountTransactionsByDateRangeAsync(Guid accountId, DateTime startDate, DateTime endDate)
     {
         List<AccountTransaction> _transactions = await _context.AccountTransactions
         .Include(x => x.Tags)
         .Include(x => x.Files)
         .Where(x => x.AccountId == accountId)
-        .Where(x => x.CreatedOnUTC >= endDate)
-        .Where(x => x.CreatedOnUTC <= startDate)
+        .Where(x => x.CreatedOnUTC <= endDate)
+        .Where(x => x.CreatedOnUTC >= startDate)
         .ToListAsync();
 
         // Make sure that pending and uncleared items are ALWAYS added regardless of date, so we don't accidentally leave something sitting out and it's date goes way past a normal search

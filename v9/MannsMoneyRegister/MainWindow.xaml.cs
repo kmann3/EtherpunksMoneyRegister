@@ -18,6 +18,7 @@ public partial class MainWindow : Window
 {
     private DateTime _transactionStartDate = DateTime.UtcNow.AddDays(-45);
     private DateTime _transactionEndDate = DateTime.UtcNow;
+    private Guid _loadedAccountId = Guid.Empty;
     private MainWindowViewModel _viewModel = new();
     public MainWindow()
     {
@@ -35,11 +36,11 @@ public partial class MainWindow : Window
     {
         await AppService.LoadDatabaseAsync(AppService.DatabaseLocation);
 
-        Guid defaultAccountId = AppService.DefaultAccountId;
+        _loadedAccountId = AppService.DefaultAccountId;
         ribbonComboBox_Dashboard_AccountSelectionList.ItemsSource = AppService.AccountList;
         ribbonComboBox_Dashboard_AccountSelectionList.DisplayMemberPath = "Name";
         ribbonComboBox_Dashboard_AccountSelection.SelectedValuePath = "Id";
-        ribbonComboBox_Dashboard_AccountSelection.SelectedValue = defaultAccountId;
+        ribbonComboBox_Dashboard_AccountSelection.SelectedValue = _loadedAccountId;
 
         switch (AppService.DefaultSearchDayCount)
         {
@@ -67,7 +68,7 @@ public partial class MainWindow : Window
                 break;
         }
         
-        _viewModel.Transactions = await AppService.GetAllAccountTransactionsAsync(defaultAccountId, _transactionStartDate, _transactionEndDate);
+        _viewModel.Transactions = await AppService.GetAccountTransactionsByDateRangeAsync(_loadedAccountId, _transactionStartDate, _transactionEndDate);
         dataGridTransactions.ItemsSource = _viewModel.Transactions;
 
         comboBoxAccount.DisplayMemberPath = "Name";
@@ -81,22 +82,61 @@ public partial class MainWindow : Window
 
     private async void ribbonComboBox_Dashboard_AccountSelection_SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
-        Account accountToLoad = (Account)e.NewValue;
-        _viewModel.Transactions = await AppService.GetAllAccountTransactionsAsync(accountToLoad.Id, _transactionStartDate, _transactionEndDate);
+        _loadedAccountId = ((Account)e.NewValue).Id;
+        _viewModel.Transactions = await AppService.GetAccountTransactionsByDateRangeAsync(_loadedAccountId, _transactionStartDate, _transactionEndDate);
         dataGridTransactions.ItemsSource = _viewModel.Transactions;
 
         //throw new NotImplementedException("Need to implement clearing of any loaded transactions");
         // Update account info at status bar
     }
 
-    private void ribbonComboBox_Dashboard_DayCount_SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    private async void ribbonComboBox_Dashboard_DayCount_SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
+        switch(ribbonComboBox_Dashboard_SearchDayCount.SelectedValue)
+        {
+            case "30 Days":
+                _transactionStartDate = DateTime.UtcNow.AddDays(-30);
+                ribbonTextBox_Dashboard_CustomRangeDisplayStart.Visibility = Visibility.Hidden;
+                ribbonTextBox_Dashboard_CustomRangeDisplayEnd.Visibility = Visibility.Hidden;
 
+                break;
+            case "45 Days":
+                _transactionStartDate = DateTime.UtcNow.AddDays(-45);
+                ribbonTextBox_Dashboard_CustomRangeDisplayStart.Visibility = Visibility.Hidden;
+                ribbonTextBox_Dashboard_CustomRangeDisplayEnd.Visibility = Visibility.Hidden;
+
+                break;
+            case "60 Days":
+                _transactionStartDate = DateTime.UtcNow.AddDays(-60);
+                ribbonTextBox_Dashboard_CustomRangeDisplayStart.Visibility = Visibility.Hidden;
+                ribbonTextBox_Dashboard_CustomRangeDisplayEnd.Visibility = Visibility.Hidden;
+
+                break;
+            case "90 Days":
+                _transactionStartDate = DateTime.UtcNow.AddDays(-365);
+                ribbonTextBox_Dashboard_CustomRangeDisplayStart.Visibility = Visibility.Hidden;
+                ribbonTextBox_Dashboard_CustomRangeDisplayEnd.Visibility = Visibility.Hidden;
+
+                break;
+            case "Custom":
+                // Popup the box asking for a date range
+                throw new NotImplementedException();
+                ribbonTextBox_Dashboard_CustomRangeDisplayStart.Visibility = Visibility.Visible;
+                ribbonTextBox_Dashboard_CustomRangeDisplayEnd.Visibility = Visibility.Visible;
+
+
+                break;
+            default:
+                throw new Exception("Unknown selection");
+        }
+
+        _viewModel.Transactions = await AppService.GetAccountTransactionsByDateRangeAsync(_loadedAccountId, _transactionStartDate, _transactionEndDate);
+        dataGridTransactions.ItemsSource = _viewModel.Transactions;
     }
 
     private void ribbonButton_Dashboard_CustomRange_Click(object sender, RoutedEventArgs e)
     {
-
+        //asdf
     }
 
     private void ribbonButton_Dashboard_NewTransaction_Click(object sender, RoutedEventArgs e)
