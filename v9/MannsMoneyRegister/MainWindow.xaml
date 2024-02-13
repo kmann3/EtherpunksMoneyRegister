@@ -58,6 +58,15 @@
                             <RibbonTextBox x:Name="ribbonTextBox_Dashboard_CustomRangeDisplayEnd" Visibility="Hidden" />
                         </StackPanel>
                         <RibbonButton x:Name="ribbonButton_Dashboard_CustomRange" Label="Change Range" VerticalAlignment="Bottom" Margin="0,0,0,0" Click="ribbonButton_Dashboard_CustomRange_Click" />
+                        <Popup Name="ribbonPopup_Dashboard_CustomRangeStart" IsOpen="false">
+                            <Border BorderThickness="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <DatePicker />
+                                    <DatePicker />
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+
                     </StackPanel>
                 </RibbonGroup>
             </RibbonTab>
@@ -286,7 +295,7 @@
             <Button x:Name="buttonSaveTransaction" Grid.Row="0" Grid.Column="5" Width="70" Margin="5,5,5,5" HorizontalAlignment="Right" Content="Save" Click="buttonSaveTransaction_Click" />
 
             <Label Grid.Row="1" Grid.Column="2">Account:</Label>
-            <ComboBox x:Name="comboBoxAccount" Grid.Row="1" Grid.Column="3" Margin="5,5,25,5" TabIndex="12" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedValue="{Binding AccountId}" />
+            <ComboBox x:Name="comboBoxAccount" Grid.Row="1" Grid.Column="3" Margin="5,5,25,5" TabIndex="12" SelectedValue="{Binding AccountId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Row="2" Grid.Column="2">Transaction Type:</Label>
             <ComboBox x:Name="comboBoxTransactionType" Grid.Row="2" Grid.Column="3" Margin="5,5,25,5" TabIndex="13" SelectedValue="{Binding TransactionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

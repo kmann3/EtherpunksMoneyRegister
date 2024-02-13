@@ -2,36 +2,102 @@
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Windows.Automation.Provider;
 
 namespace MannsMoneyRegister.Data;
 
 public static class AppService
 {
-    private static ApplicationDbContext _context = new();
-    private static void SaveConfigValue(string key, string value)
+    static AppService()
     {
-        try
+        // Handle the database location
+
+        _databaseLocation = ConfigurationManager.AppSettings["DatabaseLocation"] ?? "MMR.sqlite3";
+        if (!File.Exists(_databaseLocation))
         {
-            var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var settings = configFile.AppSettings.Settings;
-            if (settings[key] == null)
-            {
-                settings.Add(key, value);
-            }
-            else
-            {
-                settings[key].Value = value;
-            }
-            configFile.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
+            throw new FileNotFoundException("Cannot find database");
+            throw new NotImplementedException("We should create an empty / new one");
         }
-        catch (ConfigurationErrorsException ex)
+
+        // Handle default account
+        if (Guid.TryParse(ConfigurationManager.AppSettings["DefaultAccountId"], out Guid id) == false)
         {
-            Trace.WriteLine($"Error reading app.config: {ex}");
+            // See if there are any accounts, if there are - pick the first one.
+            throw new NotImplementedException();
         }
+        else
+        {
+            _defaultAccountId = id;
+        }
+
+        // Handle search defaults
+
+        _defaultSearchDayCount = ConfigurationManager.AppSettings["DefaultSearchDayCount"] ?? "";
+        if(_defaultSearchDayCount == "")
+        {
+            _defaultSearchDayCount = "45 Days";
+            SaveConfigValue("DefaultSearchDayCount", _defaultSearchDayCount);
+        }
+
+        string[] dayOptions = ["30 Days", "45 Days", "60 Days", "90 Days", "Custom"];
+        if(!dayOptions.Any(x => x.Equals(_defaultSearchDayCount)))
+        {
+            _defaultSearchDayCount = "45 Days";
+            SaveConfigValue("DefaultSearchDayCount", _defaultSearchDayCount);
+        }
+
+        if (DateTime.TryParse(ConfigurationManager.AppSettings["DefaultSearchDayCustomStart"], out DateTime start) == false)
+        {
+            _defaultSearchDayCustomStart = DateTime.UtcNow.AddDays(-45);
+            SaveConfigValue("DefaultSearchDayCustomStart", _defaultSearchDayCustomStart.ToString());
+        }
+        else
+        {
+            _defaultSearchDayCustomStart = start;
+        }
+
+        if (DateTime.TryParse(ConfigurationManager.AppSettings["DefaultSearchDayCustomEnd"], out DateTime end) == false)
+        {
+            _defaultSearchDayCustomEnd = DateTime.UtcNow;
+            SaveConfigValue("DefaultSearchDayCustomEnd", _defaultSearchDayCustomEnd.ToString());
+        }
+        else
+        {
+            _defaultSearchDayCustomEnd = end;
+        }
+
+    }
+
+    public static async void Initialize()
+    {
+        ApplicationDbContext.DatabaseLocation = _databaseLocation;
+
+        await _context.DisposeAsync(); // I don't know if I need to do this
+        _context = new ApplicationDbContext() ?? throw new Exception("Cannot make a new database context.");
+
+        if (_defaultAccountId.HasValue == true) _loadedAccount = await _context.Accounts.Where(x => x.Id == _defaultAccountId.Value).SingleOrDefaultAsync();
+        if (_loadedAccount == null)
+        {
+            // account not found. Something went wrong.
+            throw new NotImplementedException();
+        }
+
+        await ReloadAllTags();
     }
 
     private static List<Account> _accountList = new();
+    private static ApplicationDbContext _context = new();
+    private static Guid? _defaultAccountId = null;
+    private static string _databaseLocation = "";
+    private static string _defaultSearchDayCount = "";
+    private static DateTime _defaultSearchDayCustomEnd = DateTime.MinValue;
+    private static DateTime _defaultSearchDayCustomStart = DateTime.MinValue;
+    private static List<Tag>? _allTags = null;
+
+    private static Account _loadedAccount = new();
+
     public static List<Account> AccountList
     {
         get
@@ -41,55 +107,46 @@ public static class AppService
         }
     }
 
-    public static string DatabaseLocation
+    public static Account Account
     {
-        get => ConfigurationManager.AppSettings["DatabaseLocation"] ?? "MMR.sqlite3";
-        set => SaveConfigValue("DatabaseLocation", value);
+        get => _loadedAccount;
+        set => _loadedAccount = value;
     }
 
-    public static Guid DefaultAccountId
+    public static List<Tag> AllTags
     {
         get
         {
-            if (Guid.TryParse(ConfigurationManager.AppSettings["DefaultAccountId"], out Guid id) == false)
-            {
-                return Guid.Empty;
-            }
-            return id;
+            _allTags ??= _context.Tags.OrderBy(x => x.Name).ToList();
+
+            return _allTags;
         }
-        set => SaveConfigValue("DefaultAccountId", value.ToString());
     }
 
     public static string DefaultSearchDayCount
     {
-        get => ConfigurationManager.AppSettings["DefaultSearchDayCount"] ?? "45 Days";
-        set => SaveConfigValue("DefaultSearchDayCount", value.ToString());
-    }
-
-    public static DateTime DefaultSearchDayCustomStart
-    {
-        get
-        {
-            if (DateTime.TryParse(ConfigurationManager.AppSettings["DefaultSearchDayCustomStart"], out DateTime start) == false)
-            {
-                return DateTime.UtcNow.AddMonths(-1);
-            }
-            return start;
-        }
-        set => SaveConfigValue("DefaultSearchDayCustomStart", value.ToString());
+        get => _defaultSearchDayCount!;
+        set => _defaultSearchDayCount = value;
     }
 
     public static DateTime DefaultSearchDayCustomEnd
     {
-        get
+        get => _defaultSearchDayCustomEnd;
+        set
         {
-            if (DateTime.TryParse(ConfigurationManager.AppSettings["DefaultSearchDayCustomEnd"], out DateTime start) == false)
-            {
-                return DateTime.UtcNow;
-            }
-            return start;
+            SaveConfigValue("DefaultSearchDayCustomEnd", _defaultSearchDayCustomEnd.ToString());
+            _defaultSearchDayCustomEnd = value;
         }
-        set => SaveConfigValue("DefaultSearchDayCustomEnd", value.ToString());
+    }
+
+    public static DateTime DefaultSearchDayCustomStart
+    {
+        get => _defaultSearchDayCustomStart;
+        set
+        {
+            SaveConfigValue("DefaultSearchDayCustomStart", _defaultSearchDayCustomStart.ToString());
+            _defaultSearchDayCustomStart = value;
+        }
     }
 
     public static async Task<List<AccountTransaction>> GetAccountTransactionsByDateRangeAsync(Guid accountId, DateTime startDate, DateTime endDate)
@@ -125,11 +182,25 @@ public static class AppService
         return await _context.Tags.OrderBy(x => x.Name).ToListAsync();
     }
 
-    public static async Task LoadDatabaseAsync(string fileName)
+    public static async Task<Account> LoadAccountAsync(Guid id)
     {
+        Account = await _context.Accounts.Where(x => x.Id == id).SingleAsync();
+        return Account;
+    }
+
+    public static async Task LoadDatabaseAsync(string fileName, bool setAsDefaultDatabase = false)
+    {
+        if (String.IsNullOrEmpty(fileName)) fileName = _databaseLocation;
+        if (!File.Exists(fileName)) throw new FileNotFoundException("Database not found");
         ApplicationDbContext.DatabaseLocation = fileName;
         await _context.DisposeAsync(); // I don't know if I need to do this
         _context = new();
+
+        if(setAsDefaultDatabase)
+        {
+            _databaseLocation = fileName;
+            SaveConfigValue("DatabaseLocation", fileName);
+        }
     }
 
     public static async Task<AccountTransaction> MarkTransactionAsCleared(AccountTransaction transaction)
@@ -150,5 +221,33 @@ public static class AppService
         await _context.SaveChangesAsync();
 
         return transaction;
+    }
+
+    public static async Task ReloadAllTags()
+    {
+        _allTags = await _context.Tags.OrderBy(x => x.Name).ToListAsync();
+    }
+
+    private static void SaveConfigValue(string key, string value)
+    {
+        try
+        {
+            var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var settings = configFile.AppSettings.Settings;
+            if (settings[key] == null)
+            {
+                settings.Add(key, value);
+            }
+            else
+            {
+                settings[key].Value = value;
+            }
+            configFile.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
+        }
+        catch (ConfigurationErrorsException ex)
+        {
+            Trace.WriteLine($"Error reading app.config? Error: {ex}");
+        }
     }
 }

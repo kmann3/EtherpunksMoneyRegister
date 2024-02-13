@@ -34,7 +34,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
     
     private AccountTransaction _currentTansactionVersion = new();
     private AccountTransaction _previousTransactionVersion = new();
-    private List<Tag> _allTags = [];
 
     protected void OnPropertyChanged(string propertyName)
     {
@@ -56,22 +55,20 @@ public class MainWindowViewModel : INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UnselectedTags)));
     }
-    public async Task CreateNewTransaction(Guid accountId)
+    public void CreateNewTransaction(Guid accountId, Enums.TransactionTypeEnum transactionType = Enums.TransactionTypeEnum.Debit)
     {
         CurrentTransaction = new AccountTransaction
         {
             AccountId = accountId,
-            TransactionType = Enums.TransactionTypeEnum.Debit
+            TransactionType = transactionType,
         };
-        throw new NotImplementedException("Check deep clone value here");
 
-        if (_allTags == null || _allTags.Count == 0)
-        {
-            _allTags = await AppService.GetAllTagsAsync();
-        }
+        _previousTransactionVersion = CurrentTransaction.DeepClone();
         _selectedTags = [];
         _unselectedTags = [];
         _isNew = true;
+
+        OnPropertyChanged(null);
 
         //_selectedTags.CollectionChanged += SelectedCategories_CollectionChanged;
         //_unselectedTags.CollectionChanged += UnselectedCategories_CollectionChanged;
@@ -80,11 +77,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
     public async Task LoadTransaction(AccountTransaction transaction)
     {
         CurrentTransaction = transaction;
-        if (_allTags == null || _allTags.Count == 0)
-        {
-            _allTags = await AppService.GetAllTagsAsync();
-        }
-
         OnPropertyChanged(null);
     }
 
@@ -344,7 +336,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
             if (_unselectedTags == null || _unselectedTags.Count == 0)
             {
                 _unselectedTags = [];
-                foreach (Tag? tag in _allTags.OrderBy(x => x.Name))
+                foreach (Tag? tag in AppService.AllTags.OrderBy(x => x.Name))
                 {
                     if (!_currentTansactionVersion.Tags.Any(x => x.Name == tag.Name))
                     {

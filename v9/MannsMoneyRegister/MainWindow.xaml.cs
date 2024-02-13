@@ -18,12 +18,13 @@ public partial class MainWindow : Window
 {
     private DateTime _transactionStartDate = DateTime.UtcNow.AddDays(-45);
     private DateTime _transactionEndDate = DateTime.UtcNow;
-    private Guid _loadedAccountId = Guid.Empty;
+    private Account _loadedAccount = new();
     private MainWindowViewModel _viewModel = new();
     public MainWindow()
     {
         InitializeComponent();
         DataContext = _viewModel;
+        AppService.Initialize();
     }
 
     /// <summary>
@@ -34,13 +35,14 @@ public partial class MainWindow : Window
     /// <param name="e"></param>
     private async void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        await AppService.LoadDatabaseAsync(AppService.DatabaseLocation);
+        await AppService.LoadDatabaseAsync(null);
 
-        _loadedAccountId = AppService.DefaultAccountId;
+        _loadedAccount = AppService.Account;
+
         ribbonComboBox_Dashboard_AccountSelectionList.ItemsSource = AppService.AccountList;
         ribbonComboBox_Dashboard_AccountSelectionList.DisplayMemberPath = "Name";
         ribbonComboBox_Dashboard_AccountSelection.SelectedValuePath = "Id";
-        ribbonComboBox_Dashboard_AccountSelection.SelectedValue = _loadedAccountId;
+        ribbonComboBox_Dashboard_AccountSelection.SelectedValue = _loadedAccount.Id;
 
         switch (AppService.DefaultSearchDayCount)
         {
@@ -68,31 +70,37 @@ public partial class MainWindow : Window
                 break;
         }
         
-        _viewModel.Transactions = await AppService.GetAccountTransactionsByDateRangeAsync(_loadedAccountId, _transactionStartDate, _transactionEndDate);
+        _viewModel.Transactions = await AppService.GetAccountTransactionsByDateRangeAsync(_loadedAccount.Id, _transactionStartDate, _transactionEndDate);
         dataGridTransactions.ItemsSource = _viewModel.Transactions;
 
         comboBoxAccount.DisplayMemberPath = "Name";
         comboBoxAccount.SelectedValuePath = "Id";
         comboBoxAccount.ItemsSource = AppService.AccountList;
+        comboBoxAccount.SelectedValue = AppService.Account.Id;
 
         comboBoxTransactionType.ItemsSource = Data.Entities.Base.Enums.GetTransactionTypeEnums;
 
-        // Update account info at status bar
+        labelOutstanding.Content = AppService.Account.OutstandingSummary;
     }
 
     private async void ribbonComboBox_Dashboard_AccountSelection_SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
-        _loadedAccountId = ((Account)e.NewValue).Id;
-        _viewModel.Transactions = await AppService.GetAccountTransactionsByDateRangeAsync(_loadedAccountId, _transactionStartDate, _transactionEndDate);
+        labelStatus.Content = "Status: loading transactions...";
+        _loadedAccount = await AppService.LoadAccountAsync(((Account)e.NewValue).Id);
+        _viewModel.Transactions = await AppService.GetAccountTransactionsByDateRangeAsync(_loadedAccount.Id, _transactionStartDate, _transactionEndDate);
         dataGridTransactions.ItemsSource = _viewModel.Transactions;
 
         //throw new NotImplementedException("Need to implement clearing of any loaded transactions");
         // Update account info at status bar
+        labelOutstanding.Content = AppService.Account.OutstandingSummary;
+        labelStatus.Content = "Status: Idle";
     }
 
     private async void ribbonComboBox_Dashboard_DayCount_SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
-        switch(ribbonComboBox_Dashboard_SearchDayCount.SelectedValue)
+        labelStatus.Content = "Status: loading transactions...";
+
+        switch (ribbonComboBox_Dashboard_SearchDayCount.SelectedValue)
         {
             case "30 Days":
                 _transactionStartDate = DateTime.UtcNow.AddDays(-30);
@@ -120,7 +128,7 @@ public partial class MainWindow : Window
                 break;
             case "Custom":
                 // Popup the box asking for a date range
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
                 ribbonTextBox_Dashboard_CustomRangeDisplayStart.Visibility = Visibility.Visible;
                 ribbonTextBox_Dashboard_CustomRangeDisplayEnd.Visibility = Visibility.Visible;
 
@@ -130,18 +138,22 @@ public partial class MainWindow : Window
                 throw new Exception("Unknown selection");
         }
 
-        _viewModel.Transactions = await AppService.GetAccountTransactionsByDateRangeAsync(_loadedAccountId, _transactionStartDate, _transactionEndDate);
+        _viewModel.Transactions = await AppService.GetAccountTransactionsByDateRangeAsync(_loadedAccount.Id, _transactionStartDate, _transactionEndDate);
         dataGridTransactions.ItemsSource = _viewModel.Transactions;
+        labelStatus.Content = "Status: Idle";
     }
 
     private void ribbonButton_Dashboard_CustomRange_Click(object sender, RoutedEventArgs e)
     {
-        //asdf
+        ribbonPopup_Dashboard_CustomRangeStart.IsOpen = !ribbonPopup_Dashboard_CustomRangeStart.IsOpen;
     }
 
     private void ribbonButton_Dashboard_NewTransaction_Click(object sender, RoutedEventArgs e)
     {
-
+        labelStatus.Content = "Status: creating new transaction...";
+        _viewModel.CreateNewTransaction(_loadedAccount.Id);
+        labelStatus.Content = "Status: Idle";
+        textBoxTransactionName.Focus();
     }
 
     private void ribbonButton_Dashboard_NewAccount_Click(object sender, RoutedEventArgs e)
@@ -165,9 +177,6 @@ public partial class MainWindow : Window
         labelStatus.Content = "Status: loading transaction...";
         var currentTransaction = dataGridTransactions.SelectedItem as AccountTransaction ?? throw new Exception("Unknown error in method dataGridTransactions_SelectionChanged.");
         await _viewModel.LoadTransaction(currentTransaction);
-        // Assign transaction to be loaded
-        //_viewModel.SelectedTransaction = selectedTransaction;
-        Trace.WriteLine($"Loading transaction into CurrentTransaction: {_viewModel.CurrentTransaction.Name}");
         labelStatus.Content = "Status: Idle";
     }
 
@@ -203,17 +212,17 @@ public partial class MainWindow : Window
 
     private void buttonDeleteTransaction_Click(object sender, RoutedEventArgs e)
     {
-
+        // Check to see if they REALLY want to delete the transaction
     }
 
     private void buttonDeleteFile_Click(object sender, RoutedEventArgs e)
     {
-
+        // Check to see if they really want to delete the file
     }
 
     private void buttonAddFile_Click(object sender, RoutedEventArgs e)
     {
-
+        // Show popup dialog for adding a file.
     }
 
     private async void datagridButtonClearTransaction_Click(object sender, RoutedEventArgs e)
