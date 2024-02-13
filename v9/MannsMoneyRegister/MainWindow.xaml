@@ -35,11 +35,6 @@
 
                     </StackPanel>
                 </RibbonGroup>
-                <RibbonGroup Header="Transaction Data">
-                    <StackPanel Orientation="Vertical">
-                        <RibbonCheckBox x:Name="ribbonCheckBox_Dashboard_Autoload" Label="Autoload on hover" ToolTip="As you hover over transactions this will autoload the details; Save this in SETTINGS IN DATABASE NotImplementedException();" Checked="ribbonCheckBox_Dashboard_Autoload_Checked" />
-                    </StackPanel>
-                </RibbonGroup>
                 <RibbonGroup Header="Date Range">
                     <StackPanel Orientation="Vertical">
                         <RibbonComboBox Label="Days:">

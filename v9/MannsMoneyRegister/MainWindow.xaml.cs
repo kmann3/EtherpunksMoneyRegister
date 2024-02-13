@@ -161,11 +161,6 @@ public partial class MainWindow : Window
 
     }
 
-    private void ribbonCheckBox_Dashboard_Autoload_Checked(object sender, RoutedEventArgs e)
-    {
-
-    }
-
     private void ribbonButton_Dashboard_ReserveTransaction_Click(object sender, RoutedEventArgs e)
     {
 
@@ -229,7 +224,7 @@ public partial class MainWindow : Window
     {
         labelStatus.Content = "Status: Marking transaction as cleared...";
         AccountTransaction selectedTransaction = ((FrameworkElement)sender).DataContext as AccountTransaction ?? throw new Exception("Unknown type of grid row");
-        selectedTransaction = await AppService.MarkTransactionAsCleared(selectedTransaction);
+        selectedTransaction = await AppService.MarkTransactionAsClearedAsync(selectedTransaction);
         dataGridTransactions.Items.Refresh();
         labelStatus.Content = "Status: Idle";
     }
@@ -238,7 +233,7 @@ public partial class MainWindow : Window
     {
         labelStatus.Content = "Status: Marking transaction as pending...";
         AccountTransaction selectedTransaction = ((FrameworkElement)sender).DataContext as AccountTransaction ?? throw new Exception("Unknown type of grid row");
-        selectedTransaction = await AppService.MarkTransactionAsPending(selectedTransaction);
+        selectedTransaction = await AppService.MarkTransactionAsPendingAsync(selectedTransaction);
         await _viewModel.LoadTransaction(selectedTransaction);
         dataGridTransactions.Items.Refresh();
         labelStatus.Content = "Status: Idle";

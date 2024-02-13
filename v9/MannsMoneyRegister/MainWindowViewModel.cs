@@ -80,6 +80,13 @@ public class MainWindowViewModel : INotifyPropertyChanged
         OnPropertyChanged(null);
     }
 
+    public async Task SaveLoadedTransaction()
+    {
+        await AppService.SaveTransactionAsync(_currentTansactionVersion, _isNew, _previousTransactionVersion);
+        _previousTransactionVersion = _currentTansactionVersion.DeepClone();
+        _isNew = false;
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     //private void UnselectedCategories_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
