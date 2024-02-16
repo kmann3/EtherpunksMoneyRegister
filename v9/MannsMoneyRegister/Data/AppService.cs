@@ -3,13 +3,29 @@ using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Windows.Automation.Provider;
 
 namespace MannsMoneyRegister.Data;
 
 public static class AppService
 {
+    private static List<Account> _accountList = new();
+
+    private static List<Tag>? _allTags = null;
+
+    private static ApplicationDbContext _context = new();
+
+    private static string _databaseLocation = "";
+
+    private static Guid? _defaultAccountId = null;
+
+    private static string _defaultSearchDayCount = "";
+
+    private static DateTime _defaultSearchDayCustomEnd = DateTime.MinValue;
+
+    private static DateTime _defaultSearchDayCustomStart = DateTime.MinValue;
+
+    private static Account _loadedAccount = new();
+
     static AppService()
     {
         // Handle the database location
@@ -35,14 +51,14 @@ public static class AppService
         // Handle search defaults
 
         _defaultSearchDayCount = ConfigurationManager.AppSettings["DefaultSearchDayCount"] ?? "";
-        if(_defaultSearchDayCount == "")
+        if (_defaultSearchDayCount == "")
         {
             _defaultSearchDayCount = "45 Days";
             SaveConfigValue("DefaultSearchDayCount", _defaultSearchDayCount);
         }
 
         string[] dayOptions = ["30 Days", "45 Days", "60 Days", "90 Days", "Custom"];
-        if(!dayOptions.Any(x => x.Equals(_defaultSearchDayCount)))
+        if (!dayOptions.Any(x => x.Equals(_defaultSearchDayCount)))
         {
             _defaultSearchDayCount = "45 Days";
             SaveConfigValue("DefaultSearchDayCount", _defaultSearchDayCount);
@@ -67,36 +83,13 @@ public static class AppService
         {
             _defaultSearchDayCustomEnd = end;
         }
-
     }
 
-    public static async void Initialize()
+    public static Account Account
     {
-        ApplicationDbContext.DatabaseLocation = _databaseLocation;
-
-        await _context.DisposeAsync(); // I don't know if I need to do this
-        _context = new ApplicationDbContext() ?? throw new Exception("Cannot make a new database context.");
-
-        if (_defaultAccountId.HasValue == true) _loadedAccount = await _context.Accounts.Where(x => x.Id == _defaultAccountId.Value).SingleOrDefaultAsync();
-        if (_loadedAccount == null)
-        {
-            // account not found. Something went wrong.
-            throw new NotImplementedException();
-        }
-
-        await ReloadAllTagsAsync();
+        get => _loadedAccount;
+        set => _loadedAccount = value;
     }
-
-    private static List<Account> _accountList = new();
-    private static ApplicationDbContext _context = new();
-    private static Guid? _defaultAccountId = null;
-    private static string _databaseLocation = "";
-    private static string _defaultSearchDayCount = "";
-    private static DateTime _defaultSearchDayCustomEnd = DateTime.MinValue;
-    private static DateTime _defaultSearchDayCustomStart = DateTime.MinValue;
-    private static List<Tag>? _allTags = null;
-
-    private static Account _loadedAccount = new();
 
     public static List<Account> AccountList
     {
@@ -105,12 +98,6 @@ public static class AppService
             _accountList = [.. _context.Accounts.OrderBy(x => x.Name)];
             return _accountList;
         }
-    }
-
-    public static Account Account
-    {
-        get => _loadedAccount;
-        set => _loadedAccount = value;
     }
 
     public static List<Tag> AllTags
@@ -149,6 +136,11 @@ public static class AppService
         }
     }
 
+    public static async Task CloseFileAsync()
+    {
+        await _context.DisposeAsync();
+    }
+
     public static async Task<List<AccountTransaction>> GetAccountTransactionsByDateRangeAsync(Guid accountId, DateTime startDate, DateTime endDate)
     {
         List<AccountTransaction> _transactions = await _context.AccountTransactions
@@ -182,6 +174,22 @@ public static class AppService
         return await _context.Tags.OrderBy(x => x.Name).ToListAsync();
     }
 
+    public static async void Initialize()
+    {
+        ApplicationDbContext.DatabaseLocation = _databaseLocation;
+
+        await _context.DisposeAsync(); // I don't know if I need to do this
+        _context = new ApplicationDbContext() ?? throw new Exception("Cannot make a new database context.");
+
+        if (_defaultAccountId.HasValue == true) _loadedAccount = await _context.Accounts.Where(x => x.Id == _defaultAccountId.Value).SingleOrDefaultAsync();
+        if (_loadedAccount == null)
+        {
+            // account not found. Something went wrong.
+            throw new NotImplementedException();
+        }
+
+        await ReloadAllTagsAsync();
+    }
     public static async Task<Account> LoadAccountAsync(Guid id)
     {
         Account = await _context.Accounts.Where(x => x.Id == id).SingleAsync();
@@ -196,7 +204,7 @@ public static class AppService
         await _context.DisposeAsync(); // I don't know if I need to do this
         _context = new();
 
-        if(setAsDefaultDatabase)
+        if (setAsDefaultDatabase)
         {
             _databaseLocation = fileName;
             SaveConfigValue("DatabaseLocation", fileName);
@@ -238,7 +246,6 @@ public static class AppService
 
         accountTransactions = [.. accountTransactions.OrderBy(x => x.CreatedOnUTC)];
 
-
         foreach (AccountTransaction? transaction in accountTransactions)
         {
             transaction.Balance = balance + transaction.Amount;
@@ -263,7 +270,7 @@ public static class AppService
         _allTags = await _context.Tags.OrderBy(x => x.Name).ToListAsync();
     }
 
-    public static async Task<Tuple<Account,AccountTransaction>> SaveTransactionAsync(AccountTransaction transaction, bool isNew, AccountTransaction previousTransaction)
+    public static async Task<Tuple<Account, AccountTransaction>> SaveTransactionAsync(AccountTransaction transaction, bool isNew, AccountTransaction previousTransaction)
     {
         if (isNew)
         {
@@ -338,20 +345,13 @@ public static class AppService
             return Tuple.Create(account, transaction);
         }
 
-        // Fix tags so we don't mess up unique contstraints
+        // Fix tags so we don't mess up unique constraints
         foreach (Tag tag in transaction.Tags)
         {
-            //_context.ChangeTracker.TrackGraph(tag, x => x.Entry.State = !x.Entry.IsKeySet ? EntityState.Added : EntityState.Unchanged);
-            Trace.WriteLine($"Transaction: {transaction} | Tag: {tag.Name} | State: {_context.Tags.Entry(tag).State}");
-            if(_context.Tags.Entry(tag).State == EntityState.Detached)
+            if (_context.Tags.Entry(tag).State == EntityState.Detached)
             {
                 _context.Tags.Attach(tag);
             }
-        }
-        foreach (Tag tag in previousTransaction.Tags)
-        {
-            //_context.ChangeTracker.TrackGraph(tag, x => x.Entry.State = !x.Entry.IsKeySet ? EntityState.Added : EntityState.Unchanged);
-            Trace.WriteLine($" Previous Transaction: {previousTransaction} | Tag: {tag.Name} | State: {_context.Tags.Entry(tag).State}");
         }
 
         transaction.VerifySignage();
@@ -391,22 +391,17 @@ public static class AppService
             //}
 
             //account.CurrentBalance -= previousTransaction.Amount - transaction.Amount;
-
         }
         try
         {
             await _context.SaveChangesAsync();
             _loadedAccount = account;
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             Trace.WriteLine(ex);
         }
 
         return Tuple.Create(account, transaction);
-    }
-
-    public static async Task CloseFileAsync()
-    {
-        await _context.DisposeAsync();
     }
 }

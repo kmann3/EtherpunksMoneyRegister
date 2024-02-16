@@ -19,109 +19,12 @@ namespace MannsMoneyRegister;
 
 public class MainWindowViewModel : INotifyPropertyChanged
 {
-    public List<AccountTransaction> Transactions { get; set; } = new();
-    public AccountTransaction CurrentTransaction {
-        get
-        {
-            return _currentTansactionVersion;
-        }
-        set
-        {
-            _currentTansactionVersion = value;
-            _previousTransactionVersion = value.DeepClone();
-        }
-    }
-    
     private AccountTransaction _currentTansactionVersion = new();
+    private bool _isNew = false;
     private AccountTransaction _previousTransactionVersion = new();
-
-    protected void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    public void PropertyFilesChanged()
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Files)));
-    }
-
-    public void PropertySelectedTagsChanged()
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTags)));
-        _currentTansactionVersion.Tags = _selectedTags.ToList();
-    }
-
-    public void PropertyUnselectedTagsChanged()
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UnselectedTags)));
-    }
-    public void CreateNewTransaction(Guid accountId, Enums.TransactionTypeEnum transactionType = Enums.TransactionTypeEnum.Debit)
-    {
-        _selectedTags = [];
-        _unselectedTags = [];
-        _isNew = true;
-        CurrentTransaction = new AccountTransaction
-        {
-            AccountId = accountId,
-            TransactionType = transactionType,
-            Tags = new(),
-            Files = new(),
-        };
-
-        _previousTransactionVersion = CurrentTransaction.DeepClone();
-
-        OnPropertyChanged(null);
-    }
-
-    public async Task LoadTransaction(AccountTransaction transaction)
-    {
-        _selectedTags = [];
-        _unselectedTags = [];
-        _isNew = false;
-        CurrentTransaction = transaction;
-        OnPropertyChanged(null);
-    }
-
-    public async Task<Tuple<Account, AccountTransaction>> SaveLoadedTransaction()
-    {
-        var foo = await AppService.SaveTransactionAsync(_currentTansactionVersion, _isNew, _previousTransactionVersion);
-        _previousTransactionVersion = _currentTansactionVersion.DeepClone();
-        _isNew = false;
-        OnPropertyChanged(null);
-
-        return foo;
-    }
-
+    private ObservableCollection<Tag> _selectedTags = [];
+    private ObservableCollection<Tag> _unselectedTags = [];
     public event PropertyChangedEventHandler? PropertyChanged;
-
-    public void AddTag(Tag tag)
-    {
-        _currentTansactionVersion.Tags.Add(tag);
-        _selectedTags.Add(tag);
-        _unselectedTags.Remove(tag);
-        OnPropertyChanged(nameof(SelectedTags));
-        OnPropertyChanged(nameof(UnselectedTags));
-    }
-
-    public void RemoveTag(Tag tag)
-    {
-        _currentTansactionVersion.Tags.Remove(tag);
-        _selectedTags.Remove(tag);
-        _unselectedTags.Add(tag);
-        OnPropertyChanged(nameof(SelectedTags));
-        OnPropertyChanged(nameof(UnselectedTags));
-
-    }
-
-    public void AddFile(AccountTransactionFile file)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void RemoveFile(AccountTransactionFile file)
-    {
-        throw new NotImplementedException();
-    }
 
     public Guid AccountId
     {
@@ -155,6 +58,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(Balance));
         }
     }
+
     public string BankTransactionText
     {
         get => _currentTansactionVersion.BankTransactionText;
@@ -180,6 +84,19 @@ public class MainWindowViewModel : INotifyPropertyChanged
     public DateTime CreatedOn
     {
         get => _currentTansactionVersion.CreatedOnLocalTime;
+    }
+
+    public AccountTransaction CurrentTransaction
+    {
+        get
+        {
+            return _currentTansactionVersion;
+        }
+        set
+        {
+            _currentTansactionVersion = value;
+            _previousTransactionVersion = value.DeepClone();
+        }
     }
 
     public DateTime? DueDate
@@ -218,7 +135,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    private bool _isNew = false;
     public bool IsNew
     {
         get
@@ -250,8 +166,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(Notes));
         }
     }
-
-    private ObservableCollection<Tag> _selectedTags = [];
 
     public ObservableCollection<Tag> SelectedTags
     {
@@ -295,6 +209,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    public List<AccountTransaction> Transactions { get; set; } = new();
     public Enums.TransactionTypeEnum TransactionType
     {
         get => _currentTansactionVersion.TransactionType;
@@ -307,7 +222,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    private ObservableCollection<Tag> _unselectedTags = [];
     public ObservableCollection<Tag> UnselectedTags
     {
         get
@@ -332,8 +246,94 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    public void AddFile(AccountTransactionFile file)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void AddTag(Tag tag)
+    {
+        _currentTansactionVersion.Tags.Add(tag);
+        _selectedTags.Add(tag);
+        _unselectedTags.Remove(tag);
+        OnPropertyChanged(nameof(SelectedTags));
+        OnPropertyChanged(nameof(UnselectedTags));
+    }
+
+    public void CreateNewTransaction(Guid accountId, Enums.TransactionTypeEnum transactionType = Enums.TransactionTypeEnum.Debit)
+    {
+        _selectedTags = [];
+        _unselectedTags = [];
+        _isNew = true;
+        CurrentTransaction = new AccountTransaction
+        {
+            AccountId = accountId,
+            TransactionType = transactionType,
+            Tags = new(),
+            Files = new(),
+        };
+
+        _previousTransactionVersion = CurrentTransaction.DeepClone();
+
+        OnPropertyChanged(null);
+    }
+
+    public async Task LoadTransaction(AccountTransaction transaction)
+    {
+        _selectedTags = [];
+        _unselectedTags = [];
+        _isNew = false;
+        CurrentTransaction = transaction;
+        OnPropertyChanged(null);
+    }
+
+    public void PropertyFilesChanged()
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Files)));
+    }
+
+    public void PropertySelectedTagsChanged()
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTags)));
+        _currentTansactionVersion.Tags = _selectedTags.ToList();
+    }
+
+    public void PropertyUnselectedTagsChanged()
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UnselectedTags)));
+    }
+
+    public void RemoveFile(AccountTransactionFile file)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RemoveTag(Tag tag)
+    {
+        _currentTansactionVersion.Tags.Remove(tag);
+        _selectedTags.Remove(tag);
+        _unselectedTags.Add(tag);
+        OnPropertyChanged(nameof(SelectedTags));
+        OnPropertyChanged(nameof(UnselectedTags));
+    }
+
+    public async Task<Tuple<Account, AccountTransaction>> SaveLoadedTransaction()
+    {
+        var foo = await AppService.SaveTransactionAsync(_currentTansactionVersion, _isNew, _previousTransactionVersion);
+        _previousTransactionVersion = _currentTansactionVersion.DeepClone();
+        _isNew = false;
+        OnPropertyChanged(null);
+
+        return foo;
+    }
+
     public override string ToString()
     {
         return $"Name: {Name} | Amount: {Amount} | ID: {Id}";
+    }
+
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
