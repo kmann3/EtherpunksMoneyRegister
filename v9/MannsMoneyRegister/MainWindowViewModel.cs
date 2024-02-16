@@ -57,99 +57,71 @@ public class MainWindowViewModel : INotifyPropertyChanged
     }
     public void CreateNewTransaction(Guid accountId, Enums.TransactionTypeEnum transactionType = Enums.TransactionTypeEnum.Debit)
     {
+        _selectedTags = [];
+        _unselectedTags = [];
+        _isNew = true;
         CurrentTransaction = new AccountTransaction
         {
             AccountId = accountId,
             TransactionType = transactionType,
+            Tags = new(),
+            Files = new(),
         };
 
         _previousTransactionVersion = CurrentTransaction.DeepClone();
-        _selectedTags = [];
-        _unselectedTags = [];
-        _isNew = true;
 
         OnPropertyChanged(null);
-
-        //_selectedTags.CollectionChanged += SelectedCategories_CollectionChanged;
-        //_unselectedTags.CollectionChanged += UnselectedCategories_CollectionChanged;
     }
 
     public async Task LoadTransaction(AccountTransaction transaction)
     {
+        _selectedTags = [];
+        _unselectedTags = [];
+        _isNew = false;
         CurrentTransaction = transaction;
         OnPropertyChanged(null);
     }
 
-    public async Task SaveLoadedTransaction()
+    public async Task<Tuple<Account, AccountTransaction>> SaveLoadedTransaction()
     {
-        await AppService.SaveTransactionAsync(_currentTansactionVersion, _isNew, _previousTransactionVersion);
+        var foo = await AppService.SaveTransactionAsync(_currentTansactionVersion, _isNew, _previousTransactionVersion);
         _previousTransactionVersion = _currentTansactionVersion.DeepClone();
         _isNew = false;
+        OnPropertyChanged(null);
+
+        return foo;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    //private void UnselectedCategories_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    //{
-    //    Trace.WriteLine("UNSELECTED CHANGE");
-    //    if (e.NewItems != null)
-    //    {
-    //        foreach (object? x in e.NewItems)
-    //        {
-    //            // do something
-    //            Trace.WriteLine($"New item: {(x as Category).Name}");
-    //        }
-    //    }
+    public void AddTag(Tag tag)
+    {
+        _currentTansactionVersion.Tags.Add(tag);
+        _selectedTags.Add(tag);
+        _unselectedTags.Remove(tag);
+        OnPropertyChanged(nameof(SelectedTags));
+        OnPropertyChanged(nameof(UnselectedTags));
+    }
 
-    //    if (e.OldItems != null)
-    //    {
-    //        foreach (object? y in e.OldItems)
-    //        {
-    //            //do something
-    //            Trace.WriteLine($"Old item: {(y as Category).Name}");
-    //        }
-    //    }
-    //    if (e.Action == NotifyCollectionChangedAction.Remove)
-    //    {
-    //        //do something
-    //        Trace.WriteLine($"Removed: ");
-    //    }
-    //    else if (e.Action == NotifyCollectionChangedAction.Add)
-    //    {
-    //        Trace.WriteLine($"Add: ");
-    //    }
-    //}
+    public void RemoveTag(Tag tag)
+    {
+        _currentTansactionVersion.Tags.Remove(tag);
+        _selectedTags.Remove(tag);
+        _unselectedTags.Add(tag);
+        OnPropertyChanged(nameof(SelectedTags));
+        OnPropertyChanged(nameof(UnselectedTags));
 
-    //private void SelectedCategories_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    //{
-    //    Trace.WriteLine("SELECTED CHANGE");
-    //    if (e.NewItems != null)
-    //    {
-    //        foreach (object? x in e.NewItems)
-    //        {
-    //            // do something
-    //            Trace.WriteLine($"New item: {(x as Category).Name}");
-    //        }
-    //    }
+    }
 
-    //    if (e.OldItems != null)
-    //    {
-    //        foreach (object? y in e.OldItems)
-    //        {
-    //            //do something
-    //            Trace.WriteLine($"Old item: {(y as Category).Name}");
-    //        }
-    //    }
-    //    if (e.Action == NotifyCollectionChangedAction.Remove)
-    //    {
-    //        //do something
-    //        Trace.WriteLine($"Removed: ");
-    //    }
-    //    else if (e.Action == NotifyCollectionChangedAction.Add)
-    //    {
-    //        Trace.WriteLine($"Add: ");
-    //    }
-    //}
+    public void AddFile(AccountTransactionFile file)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RemoveFile(AccountTransactionFile file)
+    {
+        throw new NotImplementedException();
+    }
 
     public Guid AccountId
     {

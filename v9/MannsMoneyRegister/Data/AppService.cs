@@ -263,19 +263,19 @@ public static class AppService
         _allTags = await _context.Tags.OrderBy(x => x.Name).ToListAsync();
     }
 
-    public static async Task SaveTransactionAsync(AccountTransaction transaction, bool isNew, AccountTransaction previousTransaction)
+    public static async Task<Tuple<Account,AccountTransaction>> SaveTransactionAsync(AccountTransaction transaction, bool isNew, AccountTransaction previousTransaction)
     {
         if (isNew)
         {
-            await CreateTransactionAsync(transaction);
+            return await CreateTransactionAsync(transaction);
         }
         else
         {
-            await UpdateTransactionAsync(transaction, previousTransaction);
+            return await UpdateTransactionAsync(transaction, previousTransaction);
         }
     }
 
-    private static async Task CreateTransactionAsync(AccountTransaction transaction)
+    private static async Task<Tuple<Account, AccountTransaction>> CreateTransactionAsync(AccountTransaction transaction)
     {
         Account account = await _context.Accounts.Where(x => x.Id == transaction.Id).SingleAsync();
         transaction.VerifySignage();
@@ -288,6 +288,10 @@ public static class AppService
         }
 
         _context.Add(transaction);
+        await _context.SaveChangesAsync();
+        _loadedAccount = account;
+
+        return Tuple.Create(account, transaction);
     }
 
     private static void SaveConfigValue(string key, string value)
@@ -313,7 +317,7 @@ public static class AppService
         }
     }
 
-    private static async Task UpdateTransactionAsync(AccountTransaction transaction, AccountTransaction previousTransaction)
+    private static async Task<Tuple<Account, AccountTransaction>> UpdateTransactionAsync(AccountTransaction transaction, AccountTransaction previousTransaction)
     {
         ArgumentNullException.ThrowIfNull(transaction);
         ArgumentNullException.ThrowIfNull(previousTransaction);
@@ -330,7 +334,24 @@ public static class AppService
             // We recalculate both accounts because I don't intelligently track outstanding items. Surely there's a better / smarter way for this.
             await RecalculateAccountAsync(account);
             await RecalculateAccountAsync(previousAccount);
-            return;
+            _loadedAccount = account;
+            return Tuple.Create(account, transaction);
+        }
+
+        // Fix tags so we don't mess up unique contstraints
+        foreach (Tag tag in transaction.Tags)
+        {
+            //_context.ChangeTracker.TrackGraph(tag, x => x.Entry.State = !x.Entry.IsKeySet ? EntityState.Added : EntityState.Unchanged);
+            Trace.WriteLine($"Transaction: {transaction} | Tag: {tag.Name} | State: {_context.Tags.Entry(tag).State}");
+            if(_context.Tags.Entry(tag).State == EntityState.Detached)
+            {
+                _context.Tags.Attach(tag);
+            }
+        }
+        foreach (Tag tag in previousTransaction.Tags)
+        {
+            //_context.ChangeTracker.TrackGraph(tag, x => x.Entry.State = !x.Entry.IsKeySet ? EntityState.Added : EntityState.Unchanged);
+            Trace.WriteLine($" Previous Transaction: {previousTransaction} | Tag: {tag.Name} | State: {_context.Tags.Entry(tag).State}");
         }
 
         transaction.VerifySignage();
@@ -350,14 +371,8 @@ public static class AppService
             account.OutstandingBalance += transaction.Amount;
         }
 
-        // If the amount didn't change, the check to see if we need to update outstanding balance.
         // Update as needed then return. We do not need to update balances.
-        if (previousTransaction.Amount == transaction.Amount)
-        {
-            // Possible other values changes but no further transaction modifications necessary
-            await _context.SaveChangesAsync();
-        }
-        else
+        if (previousTransaction.Amount != transaction.Amount)
         {
             var itemsToUpdate = await _context.AccountTransactions
             .Where(x => x.CreatedOnUTC >= transaction.CreatedOnUTC)
@@ -370,14 +385,28 @@ public static class AppService
                 item.Balance -= previousTransaction.Amount - transaction.Amount;
             }
 
-            if (!transaction.TransactionClearedUTC.HasValue)
-            {
-                account.OutstandingBalance -= previousTransaction.Amount - transaction.Amount;
-            }
+            //if (!transaction.TransactionClearedUTC.HasValue)
+            //{
+            //    account.OutstandingBalance -= previousTransaction.Amount - transaction.Amount;
+            //}
 
-            account.CurrentBalance -= previousTransaction.Amount - transaction.Amount;
+            //account.CurrentBalance -= previousTransaction.Amount - transaction.Amount;
 
-            await _context.SaveChangesAsync();
         }
+        try
+        {
+            await _context.SaveChangesAsync();
+            _loadedAccount = account;
+        } catch (Exception ex)
+        {
+            Trace.WriteLine(ex);
+        }
+
+        return Tuple.Create(account, transaction);
+    }
+
+    public static async Task CloseFileAsync()
+    {
+        await _context.DisposeAsync();
     }
 }

@@ -150,7 +150,7 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
             returnTransaction.Files.Add(newFile);
         }
         returnTransaction.Id = Id;
-        foreach (Link_Tag_Transaction tagLink in returnTransaction.Link_Tag_Transactions)
+        foreach (Link_Tag_Transaction tagLink in Link_Tag_Transactions)
         {
             Link_Tag_Transaction newLink = new()
             {
@@ -158,6 +158,10 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
                 AccountTransactionId = tagLink.AccountTransactionId,
             };
             returnTransaction.Link_Tag_Transactions.Add(newLink);
+        }
+        foreach(Tag tag in Tags)
+        {
+            returnTransaction.Tags.Add(tag);
         }
         returnTransaction.Name = Name;
         returnTransaction.Notes = Notes;

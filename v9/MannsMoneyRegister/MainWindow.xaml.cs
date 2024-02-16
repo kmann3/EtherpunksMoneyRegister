@@ -177,32 +177,52 @@ public partial class MainWindow : Window
 
     private void buttonSaveTransaction_Click(object sender, RoutedEventArgs e)
     {
+        // SAVE INFORMATION
+        labelStatus.Content = "Status: saving transaction...";
+        var returnData = _viewModel.SaveLoadedTransaction();
 
+        labelStatus.Content = "Status: refreshing grid transaction...";
+        labelOutstanding.Content = AppService.Account.OutstandingSummary;
+        dataGridTransactions.Items.Refresh();
+        labelStatus.Content = "Status: Idle";
+
+    }
+
+    private void AddTag()
+    {
+        var selectedTag = listViewUnselectedTransactionTags.SelectedItem as Tag ?? throw new Exception("Tag should not be null");
+        _viewModel.AddTag(selectedTag);
+    }
+
+    private void RemoveTag()
+    {
+        var selectedTag = listViewSelectedTransactionTags.SelectedItem as Tag ?? throw new Exception("Tag should not be null");
+        _viewModel.RemoveTag(selectedTag);
     }
 
     private void listViewUnselectedTransactionTags_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-
+        AddTag();
     }
 
     private void listViewSelectedTransactionTags_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-
+        RemoveTag();
     }
 
     private void buttonRemoveTagFromTransaction_Click(object sender, RoutedEventArgs e)
     {
-
+        RemoveTag();
     }
 
     private void buttonAddTagToTransaction_Click(object sender, RoutedEventArgs e)
     {
-
+        AddTag();
     }
 
     private void listViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-
+        // open file dialog
     }
 
     private void buttonDeleteTransaction_Click(object sender, RoutedEventArgs e)
@@ -237,5 +257,10 @@ public partial class MainWindow : Window
         await _viewModel.LoadTransaction(selectedTransaction);
         dataGridTransactions.Items.Refresh();
         labelStatus.Content = "Status: Idle";
+    }
+
+    private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        await AppService.CloseFileAsync();
     }
 }

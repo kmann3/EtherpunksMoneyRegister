@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:MannsMoneyRegister"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
+        Closing="Window_Closing"
         Title="Mann's Money Register" Height="900" Width="1825">
     <DockPanel>
         <Ribbon x:Name="RibbonTest" DockPanel.Dock="Top">
