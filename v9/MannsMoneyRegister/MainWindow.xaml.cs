@@ -220,11 +220,6 @@ public partial class MainWindow : Window
         AddTag();
     }
 
-    private void listViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-        // open file dialog
-    }
-
     private void buttonDeleteTransaction_Click(object sender, RoutedEventArgs e)
     {
         // Check to see if they REALLY want to delete the transaction
@@ -238,6 +233,15 @@ public partial class MainWindow : Window
     private void buttonAddFile_Click(object sender, RoutedEventArgs e)
     {
         // Show popup dialog for adding a file.
+        FileDetails fileWindow = new(null);
+        fileWindow.ShowDialog();
+
+        if (!fileWindow.isCancelled)
+        {
+            var file = fileWindow.fileData;
+            _viewModel.Files.Add(file);
+            _viewModel.PropertyFilesChanged();
+        }
     }
 
     private async void datagridButtonClearTransaction_Click(object sender, RoutedEventArgs e)
@@ -262,5 +266,19 @@ public partial class MainWindow : Window
     private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
         await AppService.CloseFileAsync();
+    }
+
+    private void listViewTransactionFileItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        AccountTransactionFile file = ((ListViewItem)sender).DataContext as AccountTransactionFile ?? throw new Exception("Unknown type of file");
+
+        FileDetails fileWindow = new(file!);
+        fileWindow.ShowDialog();
+
+        if (!fileWindow.isCancelled)
+        {
+            file = fileWindow.fileData;
+            _viewModel.PropertyFilesChanged();
+        }
     }
 }

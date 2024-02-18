@@ -330,7 +330,7 @@
             <ListView x:Name="listViewTransactionFiles" Grid.Row="13" Grid.Column="3" Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="5,5,5,5" TabIndex="9" ItemsSource="{Binding Files, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="400" HorizontalAlignment="Left">
                 <ListView.Resources>
                     <Style x:Key="itemstyle" TargetType="{x:Type ListViewItem}">
-                        <EventSetter Event="MouseDoubleClick" Handler="listViewItem_MouseDoubleClick" />
+                        <EventSetter Event="MouseDoubleClick" Handler="listViewTransactionFileItem_MouseDoubleClick" />
                     </Style>
                 </ListView.Resources>
                 <ListView.View>

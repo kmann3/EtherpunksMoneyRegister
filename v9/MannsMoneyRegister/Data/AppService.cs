@@ -369,6 +369,7 @@ public static class AppService
             // Item was previously cleared but now is not.
             account.OutstandingItemCount++;
             account.OutstandingBalance += transaction.Amount;
+            //account.CurrentBalance += transaction.Amount - transaction.Amount;
         }
 
         // Update as needed then return. We do not need to update balances.
