@@ -12,7 +12,7 @@ namespace MannsMoneyRegister;
 public partial class FileDetails : Window
 {
     public bool IsCancelled = true;
-    private FileDetailsViewModel _viewModel = new();
+    private readonly FileDetailsViewModel _viewModel = new();
     public AccountTransactionFile FileData = new();
 
     public FileDetails(AccountTransactionFile? file)

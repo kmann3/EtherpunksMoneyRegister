@@ -1,19 +1,8 @@
 ﻿using MannsMoneyRegister.Data;
 using MannsMoneyRegister.Data.Entities;
 using MannsMoneyRegister.Data.Entities.Base;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Configuration;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace MannsMoneyRegister;
 
@@ -24,9 +13,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private AccountTransaction _previousTransactionVersion = new();
     private ObservableCollection<Tag> _selectedTags = [];
     private ObservableCollection<Tag> _unselectedTags = [];
-    public event PropertyChangedEventHandler? PropertyChanged;
+
     public event EventHandler<bool> HasChangedFromOriginal;
 
+    public event PropertyChangedEventHandler? PropertyChanged;
     public Guid AccountId
     {
         get => _currentTansactionVersion.AccountId;
@@ -119,7 +109,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         {
             if (_currentTansactionVersion.Files == value) return;
             _currentTansactionVersion.Files = value;
-            OnPropertyChanged(nameof(Files));
+            OnPropertyChanged(null);
         }
     }
 
@@ -211,6 +201,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     }
 
     public List<AccountTransaction> Transactions { get; set; } = new();
+
     public Enums.TransactionTypeEnum TransactionType
     {
         get => _currentTansactionVersion.TransactionType;

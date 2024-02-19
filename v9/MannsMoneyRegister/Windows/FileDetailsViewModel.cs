@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace MannsMoneyRegister.Windows;
-public class FileDetailsViewModel
+public class FileDetailsViewModel : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
     public event EventHandler<bool> HasChangedFromOriginal;
@@ -45,8 +45,6 @@ public class FileDetailsViewModel
             _currentFile = file;
             _previousFile = file.DeepClone();
         }
-
-        OnPropertyChanged(null);
     }
 
     public Guid AccountTransactionId
@@ -88,10 +86,7 @@ public class FileDetailsViewModel
         {
             return ByteSizeLib.ByteSize.FromBytes(Data.Length).ToString();
         }
-        set
-        {
-
-        }
+        set { }
     }
 
     public string Notes

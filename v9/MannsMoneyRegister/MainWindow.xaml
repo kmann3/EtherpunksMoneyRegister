@@ -330,10 +330,11 @@
             <ListView x:Name="listViewTransactionFiles" Grid.Row="13" Grid.Column="3" Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="5,5,5,5" TabIndex="9" ItemsSource="{Binding Files, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="400" HorizontalAlignment="Left" MouseDoubleClick="listViewTransactionFiles_MouseDoubleClick">
                 <ListView.View>
                     <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="File List">
-                        <GridViewColumn DisplayMemberBinding="{Binding Filename}" Header="Name" Width="75"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width="75"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Filename}" Header="Filename" Width="75"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Size}" Header="Size" Width="50"/>
                         <GridViewColumn DisplayMemberBinding="{Binding CreatedOnLocalTime, StringFormat=MM/dd/yyyy}" Header="Date" Width="75"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding Notes}" Header="Notes" Width="85"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Notes}" Header="Notes" Width="90"/>
                     </GridView>
                 </ListView.View>
             </ListView>

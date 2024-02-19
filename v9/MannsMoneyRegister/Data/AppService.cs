@@ -357,7 +357,6 @@ public static class AppService
         // Fix files so we don't mess up unique constraints
         foreach (AccountTransactionFile file in transaction.Files)
         {
-            Trace.WriteLine(_context.AccountTransactionFiles.Entry(file).State);
             if (_context.AccountTransactionFiles.Entry(file).State == EntityState.Detached)
             {
                 await _context.AccountTransactionFiles.AddAsync(file);
