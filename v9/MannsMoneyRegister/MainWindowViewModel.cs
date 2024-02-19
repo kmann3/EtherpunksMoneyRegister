@@ -25,6 +25,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private ObservableCollection<Tag> _selectedTags = [];
     private ObservableCollection<Tag> _unselectedTags = [];
     public event PropertyChangedEventHandler? PropertyChanged;
+    public event EventHandler<bool> HasChangedFromOriginal;
 
     public Guid AccountId
     {
@@ -95,7 +96,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _currentTansactionVersion = value;
-            _previousTransactionVersion = value.DeepClone();
+            _previousTransactionVersion = _currentTansactionVersion.DeepClone();
         }
     }
 
@@ -283,6 +284,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         _selectedTags = [];
         _unselectedTags = [];
         _isNew = false;
+
         CurrentTransaction = transaction;
         OnPropertyChanged(null);
     }
@@ -290,17 +292,20 @@ public class MainWindowViewModel : INotifyPropertyChanged
     public void PropertyFilesChanged()
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Files)));
+        HasChangedFromOriginal?.Invoke(this, IsChanged);
     }
 
     public void PropertySelectedTagsChanged()
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTags)));
+        HasChangedFromOriginal?.Invoke(this, IsChanged);
         _currentTansactionVersion.Tags = _selectedTags.ToList();
     }
 
     public void PropertyUnselectedTagsChanged()
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UnselectedTags)));
+        HasChangedFromOriginal?.Invoke(this, IsChanged);
     }
 
     public void RemoveFile(AccountTransactionFile file)
@@ -335,5 +340,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
     protected void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        HasChangedFromOriginal?.Invoke(this, IsChanged);
     }
 }

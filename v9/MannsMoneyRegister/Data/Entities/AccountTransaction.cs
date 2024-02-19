@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Diagnostics;
 
 namespace MannsMoneyRegister.Data.Entities;
 
@@ -133,7 +134,8 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
             DueDate = DueDate
         };
 
-        foreach (AccountTransactionFile file in returnTransaction.Files)
+        returnTransaction.Files = new();
+        foreach (AccountTransactionFile file in Files)
         {
             //returnTransaction.Files
             AccountTransactionFile newFile = new()
@@ -144,11 +146,12 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
                 Id = file.Id,
                 Name = file.Name,
                 Notes = file.Notes,
+                Data = file.Data.ToArray()
             };
-            file.Data.CopyTo(newFile.Data, 0);
 
             returnTransaction.Files.Add(newFile);
         }
+
         returnTransaction.Id = Id;
         foreach (Link_Tag_Transaction tagLink in Link_Tag_Transactions)
         {

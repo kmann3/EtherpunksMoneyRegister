@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MannsMoneyRegister"
+        xmlns:local="clr-namespace:MannsMoneyRegister" d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
         Title="File Details" Height="250" Width="350">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -34,7 +35,7 @@
         <TextBox x:Name="notesTextbox" Grid.Row="2" Grid.Column="1" Margin="5,5,5,5" TabIndex="3" Text="{Binding Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="3" Grid.Column="0">Download:</Label>
-        <Button Grid.Row="3" Grid.Column="1" Margin="5" Content="Filename.ext" Cursor="Hand" Click="DownloadFile_Click">
+        <Button x:Name="buttonDownload" Grid.Row="3" Grid.Column="1" Margin="5" Cursor="Hand" Click="DownloadFile_Click" Content="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <TextBlock TextDecorations="Underline">
@@ -53,7 +54,7 @@
                 </Style>
             </Button.Style>
         </Button>
-        <Label x:Name="fileSizeLabel" Grid.Row="4" Grid.Column="1" Content="{Binding Size, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Label x:Name="fileSizeLabel" Grid.Row="4" Grid.Column="1" Content="{Binding Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Button Grid.Row="6" Grid.Column="0" Margin="5" Content="Cancel" Click="Cancel_Click" />
         <Button Grid.Row="6" Grid.Column="3" Margin="5" Content="Save" Click="Save_Click" />

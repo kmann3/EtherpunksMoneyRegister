@@ -327,19 +327,13 @@
             <DatePicker x:Name="datePickerDueDate" Grid.Row="12" Grid.Column="3" IsTodayHighlighted="True" Margin="5,0,5,0" TabIndex="5" SelectedDate="{Binding DueDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding DueDate, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}"  />
 
             <Label Grid.Row="13" Grid.Column="2">Files:</Label>
-            <ListView x:Name="listViewTransactionFiles" Grid.Row="13" Grid.Column="3" Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="5,5,5,5" TabIndex="9" ItemsSource="{Binding Files, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="400" HorizontalAlignment="Left">
-                <ListView.Resources>
-                    <Style x:Key="itemstyle" TargetType="{x:Type ListViewItem}">
-                        <EventSetter Event="MouseDoubleClick" Handler="listViewTransactionFileItem_MouseDoubleClick" />
-                    </Style>
-                </ListView.Resources>
+            <ListView x:Name="listViewTransactionFiles" Grid.Row="13" Grid.Column="3" Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="5,5,5,5" TabIndex="9" ItemsSource="{Binding Files, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="400" HorizontalAlignment="Left" MouseDoubleClick="listViewTransactionFiles_MouseDoubleClick">
                 <ListView.View>
                     <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="File List">
                         <GridViewColumn DisplayMemberBinding="{Binding Filename}" Header="Name" Width="75"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Size}" Header="Size" Width="50"/>
                         <GridViewColumn DisplayMemberBinding="{Binding CreatedOnLocalTime, StringFormat=MM/dd/yyyy}" Header="Date" Width="75"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Notes}" Header="Notes" Width="85"/>
-
                     </GridView>
                 </ListView.View>
             </ListView>

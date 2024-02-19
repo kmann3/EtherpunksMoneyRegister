@@ -354,6 +354,16 @@ public static class AppService
             }
         }
 
+        // Fix files so we don't mess up unique constraints
+        foreach (AccountTransactionFile file in transaction.Files)
+        {
+            Trace.WriteLine(_context.AccountTransactionFiles.Entry(file).State);
+            if (_context.AccountTransactionFiles.Entry(file).State == EntityState.Detached)
+            {
+                await _context.AccountTransactionFiles.AddAsync(file);
+            }
+        }
+
         transaction.VerifySignage();
 
         // Check to see if outstanding balances need to change.
@@ -369,7 +379,6 @@ public static class AppService
             // Item was previously cleared but now is not.
             account.OutstandingItemCount++;
             account.OutstandingBalance += transaction.Amount;
-            //account.CurrentBalance += transaction.Amount - transaction.Amount;
         }
 
         // Update as needed then return. We do not need to update balances.
@@ -386,12 +395,9 @@ public static class AppService
                 item.Balance -= previousTransaction.Amount - transaction.Amount;
             }
 
-            //if (!transaction.TransactionClearedUTC.HasValue)
-            //{
-            //    account.OutstandingBalance -= previousTransaction.Amount - transaction.Amount;
-            //}
-
-            //account.CurrentBalance -= previousTransaction.Amount - transaction.Amount;
+            // TBI TEST THIS OUT
+            account.CurrentBalance -= previousTransaction.Amount - transaction.Amount;
+            transaction.Balance = account.CurrentBalance;
         }
         try
         {

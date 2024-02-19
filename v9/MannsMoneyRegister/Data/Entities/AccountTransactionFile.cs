@@ -50,9 +50,8 @@ public class AccountTransactionFile : BasicTable<AccountTransactionFile>, IEntit
             Filename = this.Filename,
             Id = this.Id,
             Notes = this.Notes,
+            Data = [.. this.Data],
         };
-
-        this.Data.CopyTo(returnFile.Data, 0);
 
         return returnFile;
     }

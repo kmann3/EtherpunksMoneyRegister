@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Controls.Ribbon;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -25,6 +26,13 @@ public partial class MainWindow : Window
         InitializeComponent();
         DataContext = _viewModel;
         AppService.Initialize();
+        _viewModel.HasChangedFromOriginal += _viewModel_HasChangedFromOriginal;
+    }
+
+    private void _viewModel_HasChangedFromOriginal(object? sender, bool e)
+    {
+        if (e) buttonSaveTransaction.Visibility = Visibility.Visible;
+        else buttonSaveTransaction.Visibility = Visibility.Hidden;
     }
 
     /// <summary>
@@ -81,6 +89,9 @@ public partial class MainWindow : Window
         comboBoxTransactionType.ItemsSource = Data.Entities.Base.Enums.GetTransactionTypeEnums;
 
         labelOutstanding.Content = AppService.Account.OutstandingSummary;
+
+        _viewModel.CreateNewTransaction(_loadedAccount.Id);
+        textBoxTransactionName.Focus();
     }
 
     private async void ribbonComboBox_Dashboard_AccountSelection_SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -88,6 +99,7 @@ public partial class MainWindow : Window
         labelStatus.Content = "Status: loading transactions...";
         _loadedAccount = await AppService.LoadAccountAsync(((Account)e.NewValue).Id);
         _viewModel.Transactions = await AppService.GetAccountTransactionsByDateRangeAsync(_loadedAccount.Id, _transactionStartDate, _transactionEndDate);
+        _viewModel.CreateNewTransaction(_loadedAccount.Id);
         dataGridTransactions.ItemsSource = _viewModel.Transactions;
 
         //throw new NotImplementedException("Need to implement clearing of any loaded transactions");
@@ -222,23 +234,36 @@ public partial class MainWindow : Window
 
     private void buttonDeleteTransaction_Click(object sender, RoutedEventArgs e)
     {
+        AccountTransactionFile? file = ((FrameworkElement)e.OriginalSource).DataContext as AccountTransactionFile;
+        if (file == null) return;
+
         // Check to see if they REALLY want to delete the transaction
+        if (MessageBox.Show($"Are you sure you want to delete: {file.Name}", "Delete transaction?", MessageBoxButton.YesNo) == MessageBoxResult.No) return;
     }
 
     private void buttonDeleteFile_Click(object sender, RoutedEventArgs e)
     {
+        
+        AccountTransactionFile? file = listViewTransactionFiles.SelectedItem as AccountTransactionFile;
+        if (file == null) return;
+
         // Check to see if they really want to delete the file
+        if (MessageBox.Show($"Are you sure you want to delete: {file.Name}", "Delete file?", MessageBoxButton.YesNo) == MessageBoxResult.No) return;
+
+        _viewModel.Files.Remove(file);
+        _viewModel.PropertyFilesChanged();
     }
 
     private void buttonAddFile_Click(object sender, RoutedEventArgs e)
     {
         // Show popup dialog for adding a file.
         FileDetails fileWindow = new(null);
+        fileWindow.Owner = this;
         fileWindow.ShowDialog();
 
-        if (!fileWindow.isCancelled)
+        if (!fileWindow.IsCancelled)
         {
-            var file = fileWindow.fileData;
+            var file = fileWindow.FileData;
             _viewModel.Files.Add(file);
             _viewModel.PropertyFilesChanged();
         }
@@ -268,16 +293,19 @@ public partial class MainWindow : Window
         await AppService.CloseFileAsync();
     }
 
-    private void listViewTransactionFileItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    private void listViewTransactionFiles_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        AccountTransactionFile file = ((ListViewItem)sender).DataContext as AccountTransactionFile ?? throw new Exception("Unknown type of file");
+        AccountTransactionFile? file = ((FrameworkElement)e.OriginalSource).DataContext as AccountTransactionFile;
+        if (file == null) return;
 
-        FileDetails fileWindow = new(file!);
+        FileDetails fileWindow = new(file);
+        fileWindow.Owner = this;
         fileWindow.ShowDialog();
 
-        if (!fileWindow.isCancelled)
+        if (!fileWindow.IsCancelled)
         {
-            file = fileWindow.fileData;
+            if (file == null) throw new NullReferenceException("File cannot be null. This should not happen");
+            file = fileWindow.FileData;
             _viewModel.PropertyFilesChanged();
         }
     }
