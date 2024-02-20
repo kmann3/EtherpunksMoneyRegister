@@ -19,7 +19,9 @@
                             </RibbonGallery>
                         </RibbonComboBox>
                         <Separator />
-                        <RibbonButton x:Name="ribbonButton_Dashboard_NewAccount" Label="New Account" SmallImageSource="Images/icon_new_account.png" VerticalAlignment="Bottom" Margin="0,15,0,0" Click="ribbonButton_Dashboard_NewAccount_Click" />
+                        <RibbonButton x:Name="ribbonButton_Dashboard_NewAccount" Label="New Account" SmallImageSource="Images/icon_new_account.png" VerticalAlignment="Bottom" Margin="0,0,0,0" Click="ribbonButton_Dashboard_NewAccount_Click" />
+                        <RibbonButton x:Name="ribbonButton_Dashboard_RecalculateAccount" Label="Recalculate Account"  Margin="1,0,1,1" Click="ribbonButton_Dashboard_RecalculateAccount_Click" />
+
                     </StackPanel>
                 </RibbonGroup>
                 <RibbonGroup Header="New">
@@ -62,7 +64,6 @@
                                 </StackPanel>
                             </Border>
                         </Popup>
-
                     </StackPanel>
                 </RibbonGroup>
             </RibbonTab>

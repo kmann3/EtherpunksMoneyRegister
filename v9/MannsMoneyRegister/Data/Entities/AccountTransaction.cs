@@ -202,19 +202,46 @@ public class AccountTransaction : BasicTable<AccountTransaction>, IEntityTypeCon
         returnVal = returnVal && Files.Count == secondTransaction.Files.Count;
         foreach (AccountTransactionFile file in Files)
         {
-            foreach (AccountTransactionFile secondFile in secondTransaction.Files)
+            // See if the second file has a matching fileId
+            if (!secondTransaction.Files.Any(x => x.Id == file.Id))
             {
-                // Compare the files.
-                // There is probably a better way to compare
-                returnVal = returnVal && String.Equals(file.ContentType, secondFile.ContentType, StringComparison.InvariantCulture);
-                returnVal = returnVal && DateTime.Equals(file.CreatedOnUTC, secondFile.CreatedOnUTC);
-                returnVal = returnVal && String.Equals(file.Filename, secondFile.Filename, StringComparison.InvariantCulture);
-                returnVal = returnVal && Guid.Equals(file.Id, secondFile.Id);
-                returnVal = returnVal && String.Equals(file.Name, secondFile.Name, StringComparison.InvariantCulture);
-                returnVal = returnVal && String.Equals(file.Notes, secondFile.Notes, StringComparison.InvariantCulture);
-                returnVal = returnVal && file.Data.SequenceEqual(secondFile.Data);
+                return false;
             }
+
+            var secondFile = secondTransaction.Files.Where(x => x.Id == file.Id).SingleOrDefault();
+            if (secondFile == null) return false;
+            // Compare the files.
+            // There is probably a better way to compare
+            returnVal = returnVal && String.Equals(file.ContentType, secondFile.ContentType, StringComparison.InvariantCulture);
+            returnVal = returnVal && DateTime.Equals(file.CreatedOnUTC, secondFile.CreatedOnUTC);
+            returnVal = returnVal && String.Equals(file.Filename, secondFile.Filename, StringComparison.InvariantCulture);
+            returnVal = returnVal && Guid.Equals(file.Id, secondFile.Id);
+            returnVal = returnVal && String.Equals(file.Name, secondFile.Name, StringComparison.InvariantCulture);
+            returnVal = returnVal && String.Equals(file.Notes, secondFile.Notes, StringComparison.InvariantCulture);
+            returnVal = returnVal && file.Data.SequenceEqual(secondFile.Data);
         }
+
+        foreach (AccountTransactionFile file in secondTransaction.Files.Except(Files))
+        {
+            // See if the second file has a matching fileId
+            if (!Files.Any(x => x.Id == file.Id))
+            {
+                return false;
+            }
+
+            var secondFile = secondTransaction.Files.Where(x => x.Id == file.Id).SingleOrDefault();
+            if (secondFile == null) return false;
+            // Compare the files.
+            // There is probably a better way to compare
+            returnVal = returnVal && String.Equals(file.ContentType, secondFile.ContentType, StringComparison.InvariantCulture);
+            returnVal = returnVal && DateTime.Equals(file.CreatedOnUTC, secondFile.CreatedOnUTC);
+            returnVal = returnVal && String.Equals(file.Filename, secondFile.Filename, StringComparison.InvariantCulture);
+            returnVal = returnVal && Guid.Equals(file.Id, secondFile.Id);
+            returnVal = returnVal && String.Equals(file.Name, secondFile.Name, StringComparison.InvariantCulture);
+            returnVal = returnVal && String.Equals(file.Notes, secondFile.Notes, StringComparison.InvariantCulture);
+            returnVal = returnVal && file.Data.SequenceEqual(secondFile.Data);
+        }
+
         returnVal = returnVal && Guid.Equals(Id, secondTransaction.Id);
         returnVal = returnVal && Link_Tag_Transactions.Count == secondTransaction.Link_Tag_Transactions.Count;
         foreach (Link_Tag_Transaction tag in Link_Tag_Transactions)

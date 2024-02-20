@@ -9,11 +9,11 @@ namespace MannsMoneyRegister;
 public class MainWindowViewModel : INotifyPropertyChanged
 {
     private AccountTransaction _currentTansactionVersion = new();
+    private ObservableCollection<AccountTransactionFile> _files = new();
     private bool _isNew = false;
     private AccountTransaction _previousTransactionVersion = new();
     private ObservableCollection<Tag> _selectedTags = [];
     private ObservableCollection<Tag> _unselectedTags = [];
-
     public event EventHandler<bool> HasChangedFromOriginal;
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -102,14 +102,14 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public List<AccountTransactionFile> Files
+    public ObservableCollection<AccountTransactionFile> Files
     {
-        get => _currentTansactionVersion.Files;
+        get => _files;
         set
         {
-            if (_currentTansactionVersion.Files == value) return;
-            _currentTansactionVersion.Files = value;
-            OnPropertyChanged(null);
+            //if (_currentTansactionVersion.Files == value) return;
+            //_currentTansactionVersion.Files = value;
+            //OnPropertyChanged(nameof(Files));
         }
     }
 
@@ -240,7 +240,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     public void AddFile(AccountTransactionFile file)
     {
-        throw new NotImplementedException();
+        _files.Add(file);
+        _currentTansactionVersion.Files.Add(file);
+        OnPropertyChanged(nameof(Files));
     }
 
     public void AddTag(Tag tag)
@@ -257,6 +259,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         _selectedTags = [];
         _unselectedTags = [];
         _isNew = true;
+        _files = new();
         CurrentTransaction = new AccountTransaction
         {
             AccountId = accountId,
@@ -275,11 +278,22 @@ public class MainWindowViewModel : INotifyPropertyChanged
         _selectedTags = [];
         _unselectedTags = [];
         _isNew = false;
+        _files = [.. transaction.Files];
 
         CurrentTransaction = transaction;
         OnPropertyChanged(null);
     }
 
+    public void ModifyFile(AccountTransactionFile file)
+    {
+        var fileToEdit = Files.Where(x => x.Id == file.Id).ToList();
+        fileToEdit[0] = file;
+
+        var secondFileToEdit = _currentTansactionVersion.Files.Where(x => x.Id == file.Id).Single();
+        secondFileToEdit = file;
+        OnPropertyChanged(nameof(Files));
+        PropertyFilesChanged();
+    }
     public void PropertyFilesChanged()
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Files)));
@@ -299,9 +313,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         HasChangedFromOriginal?.Invoke(this, IsChanged);
     }
 
+    public async Task RecalculateAccountAsync(Account account)
+    {
+        await AppService.RecalculateAccountAsync(account);
+    }
+
     public void RemoveFile(AccountTransactionFile file)
     {
-        throw new NotImplementedException();
+        _files.Remove(file);
+        _currentTansactionVersion.Files.Remove(file);
+        OnPropertyChanged(nameof(Files));
     }
 
     public void RemoveTag(Tag tag)
@@ -315,12 +336,12 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     public async Task<Tuple<Account, AccountTransaction>> SaveLoadedTransaction()
     {
-        var foo = await AppService.SaveTransactionAsync(_currentTansactionVersion, _isNew, _previousTransactionVersion);
+        var transaction = await AppService.SaveTransactionAsync(_currentTansactionVersion, _isNew, _previousTransactionVersion);
         _previousTransactionVersion = _currentTansactionVersion.DeepClone();
         _isNew = false;
         OnPropertyChanged(null);
 
-        return foo;
+        return transaction;
     }
 
     public override string ToString()
