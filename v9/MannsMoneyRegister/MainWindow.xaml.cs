@@ -1,13 +1,8 @@
 ﻿using MannsMoneyRegister.Data;
 using MannsMoneyRegister.Data.Entities;
-using System.Collections.ObjectModel;
-using System.Configuration;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Controls.Ribbon;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace MannsMoneyRegister;
@@ -21,6 +16,7 @@ public partial class MainWindow : Window
     private DateTime _transactionEndDate = DateTime.UtcNow;
     private DateTime _transactionStartDate = DateTime.UtcNow.AddDays(-45);
     private MainWindowViewModel _viewModel = new();
+
     public MainWindow()
     {
         InitializeComponent();
@@ -88,15 +84,12 @@ public partial class MainWindow : Window
 
     private async void buttonSaveTransaction_Click(object sender, RoutedEventArgs e)
     {
-        // SAVE INFORMATION
         labelStatus.Content = "Status: saving transaction...";
         var returnData = _viewModel.SaveLoadedTransaction();
-
         labelStatus.Content = "Status: refreshing grid transaction...";
         await UpdateAccountStatusLabels();
         dataGridTransactions.Items.Refresh();
         labelStatus.Content = "Status: Idle";
-        
     }
 
     private async void datagridButtonClearTransaction_Click(object sender, RoutedEventArgs e)
@@ -105,7 +98,6 @@ public partial class MainWindow : Window
         AccountTransaction selectedTransaction = ((FrameworkElement)sender).DataContext as AccountTransaction ?? throw new Exception("Unknown type of grid row");
         selectedTransaction = await AppService.MarkTransactionAsClearedAsync(selectedTransaction);
         dataGridTransactions.Items.Refresh();
-        //throw new NotImplementedException("Implement updating of account information if cleared.");
         await UpdateAccountStatusLabels();
         labelStatus.Content = "Status: Idle";
     }
@@ -188,7 +180,6 @@ public partial class MainWindow : Window
         dataGridTransactions.ItemsSource = _viewModel.Transactions;
         UpdateAccountStatusLabels();
         labelStatus.Content = "Status: Idle";
-
     }
 
     private void ribbonButton_Dashboard_ReserveTransaction_Click(object sender, RoutedEventArgs e)
@@ -222,32 +213,36 @@ public partial class MainWindow : Window
                 ribbonTextBox_Dashboard_CustomRangeDisplayEnd.Visibility = Visibility.Hidden;
 
                 break;
+
             case "45 Days":
                 _transactionStartDate = DateTime.UtcNow.AddDays(-45);
                 ribbonTextBox_Dashboard_CustomRangeDisplayStart.Visibility = Visibility.Hidden;
                 ribbonTextBox_Dashboard_CustomRangeDisplayEnd.Visibility = Visibility.Hidden;
 
                 break;
+
             case "60 Days":
                 _transactionStartDate = DateTime.UtcNow.AddDays(-60);
                 ribbonTextBox_Dashboard_CustomRangeDisplayStart.Visibility = Visibility.Hidden;
                 ribbonTextBox_Dashboard_CustomRangeDisplayEnd.Visibility = Visibility.Hidden;
 
                 break;
+
             case "90 Days":
                 _transactionStartDate = DateTime.UtcNow.AddDays(-365);
                 ribbonTextBox_Dashboard_CustomRangeDisplayStart.Visibility = Visibility.Hidden;
                 ribbonTextBox_Dashboard_CustomRangeDisplayEnd.Visibility = Visibility.Hidden;
 
                 break;
+
             case "Custom":
                 // Popup the box asking for a date range
                 //throw new NotImplementedException();
                 ribbonTextBox_Dashboard_CustomRangeDisplayStart.Visibility = Visibility.Visible;
                 ribbonTextBox_Dashboard_CustomRangeDisplayEnd.Visibility = Visibility.Visible;
 
-
                 break;
+
             default:
                 throw new Exception("Unknown selection");
         }
@@ -299,6 +294,7 @@ public partial class MainWindow : Window
                 ribbonTextBox_Dashboard_CustomRangeDisplayEnd.Text = _transactionEndDate.ToShortDateString();
                 // Show the date range textbox
                 break;
+
             default:
                 if (AppService.DefaultSearchDayCount is "30 Days" or "45 Days" or "60 Days" or "90 Days")
                 {
@@ -312,7 +308,7 @@ public partial class MainWindow : Window
                 }
                 break;
         }
-        
+
         _viewModel.Transactions = await AppService.GetAccountTransactionsByDateRangeAsync(_loadedAccount.Id, _transactionStartDate, _transactionEndDate);
         dataGridTransactions.ItemsSource = _viewModel.Transactions;
 
