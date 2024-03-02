@@ -91,7 +91,7 @@ public partial class MainWindow : Window
     {
         labelStatus.Content = "Status: Marking transaction as cleared...";
         AccountTransaction selectedTransaction = ((FrameworkElement)sender).DataContext as AccountTransaction ?? throw new Exception("Unknown type of grid row");
-        //selectedTransaction = await AppService.MarkTransactionAsClearedAsync(selectedTransaction);
+        selectedTransaction = await _viewModel.MarkTransactionAsClearedAsync(selectedTransaction);
         dataGridTransactions.Items.Refresh();
         await UpdateAccountStatusLabels();
         labelStatus.Content = "Status: Idle";
@@ -101,7 +101,7 @@ public partial class MainWindow : Window
     {
         labelStatus.Content = "Status: Marking transaction as pending...";
         AccountTransaction selectedTransaction = ((FrameworkElement)sender).DataContext as AccountTransaction ?? throw new Exception("Unknown type of grid row");
-        //selectedTransaction = await AppService.MarkTransactionAsPendingAsync(selectedTransaction);
+        selectedTransaction = await _viewModel.MarkTransactionAsPendingAsync(selectedTransaction);
         await _viewModel.LoadTransaction(selectedTransaction);
         dataGridTransactions.Items.Refresh();
         await UpdateAccountStatusLabels();

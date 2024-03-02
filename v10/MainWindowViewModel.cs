@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Security.Principal;
+using System.Transactions;
 using System.Windows;
 
 namespace MannsMoneyRegister;
@@ -349,6 +350,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
         CurrentTransaction = transaction;
         OnPropertyChanged(null);
+    }
+
+    public async Task<AccountTransaction> MarkTransactionAsClearedAsync(AccountTransaction transaction)
+    {
+        return await AppService.MarkTransactionAsClearedAsync(transaction);
+    }
+
+    public async Task<AccountTransaction> MarkTransactionAsPendingAsync(AccountTransaction transaction)
+    {
+        return await AppService.MarkTransactionAsPendingAsync(transaction);
     }
 
     public void ModifyFile(AccountTransactionFile file)
