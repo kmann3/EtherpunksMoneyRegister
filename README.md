@@ -8,10 +8,21 @@ This is a program I plan on using personally.
 
 v1-v-whatever are simply varying things I'm toying with. They aren't incremental. It's just "oh, that sounds neat, I want to check that out".
 
-Currently doing the v8 WPF version.
+Currently doing the v10 WPF version.
+
+Main screen
+	- Checkbox for CreatedOn
+	- Show icon for showing which sort is enabled
+Recurring Transaction
+	- Ability to group items
+
 
 ## TBI for WPF
 
+
+* Toggle-able CreatedOn column for grid.
+* Show icon for which column is the one being sorted
+* Icons to represent type of transaction?
 * Account management
 * Category management
 * Recurring Transactions. Need a management tool AND the ability to do it on the Transaction List screen. Maybe a dropdown?
