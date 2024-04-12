@@ -92,6 +92,7 @@ public partial class MainWindow : Window
         labelStatus.Content = "Status: Marking transaction as cleared...";
         AccountTransaction selectedTransaction = ((FrameworkElement)sender).DataContext as AccountTransaction ?? throw new Exception("Unknown type of grid row");
         selectedTransaction = await _viewModel.MarkTransactionAsClearedAsync(selectedTransaction);
+        _viewModel.LoadTransaction(selectedTransaction);
         dataGridTransactions.Items.Refresh();
         await UpdateAccountStatusLabels();
         labelStatus.Content = "Status: Idle";
@@ -102,7 +103,7 @@ public partial class MainWindow : Window
         labelStatus.Content = "Status: Marking transaction as pending...";
         AccountTransaction selectedTransaction = ((FrameworkElement)sender).DataContext as AccountTransaction ?? throw new Exception("Unknown type of grid row");
         selectedTransaction = await _viewModel.MarkTransactionAsPendingAsync(selectedTransaction);
-        await _viewModel.LoadTransaction(selectedTransaction);
+        _viewModel.LoadTransaction(selectedTransaction);
         dataGridTransactions.Items.Refresh();
         await UpdateAccountStatusLabels();
         labelStatus.Content = "Status: Idle";
@@ -113,7 +114,7 @@ public partial class MainWindow : Window
         if (dataGridTransactions.SelectedItem is not AccountTransaction) return;
         labelStatus.Content = "Status: loading transaction...";
         var currentTransaction = dataGridTransactions.SelectedItem as AccountTransaction ?? throw new Exception("Unknown error in method dataGridTransactions_SelectionChanged.");
-        await _viewModel.LoadTransaction(currentTransaction);
+        _viewModel.LoadTransaction(currentTransaction);
         labelStatus.Content = "Status: Idle";
     }
 
@@ -289,5 +290,15 @@ public partial class MainWindow : Window
         await UpdateAccountStatusLabels();
 
         textBoxTransactionName.Focus();
+    }
+
+    private void datePickerPendingDate_CalendarOpened(object sender, RoutedEventArgs e)
+    {
+        if(datePickerPendingDate.SelectedDate == null) datePickerPendingDate.SelectedDate = DateTime.Now;
+    }
+
+    private void datePickerClearedDate_CalendarOpened(object sender, RoutedEventArgs e)
+    {
+        if (datePickerClearedDate.SelectedDate == null) datePickerClearedDate.SelectedDate = DateTime.Now;
     }
 }

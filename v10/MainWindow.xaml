@@ -310,10 +310,10 @@
             <ListView x:Name="listViewSelectedTransactionTags" Grid.Row="5" Grid.Column="5" Grid.RowSpan="3" Margin="5,5,5,5" TabIndex="3" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionMode="Single" ItemsSource="{Binding SelectedTags, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="listViewSelectedTransactionTags_MouseDoubleClick" />
 
             <Label Grid.Row="8" Grid.Column="2">Pending:</Label>
-            <DatePicker x:Name="datePickerPendingDate" Grid.Row="8" Grid.Column="3" TabIndex="4" Margin="5,0,5,0" SelectedDate="{Binding TransactionPending, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionPending, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" />
+            <DatePicker x:Name="datePickerPendingDate" Grid.Row="8" Grid.Column="3" TabIndex="4" Margin="5,0,5,0" SelectedDate="{Binding TransactionPending, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionPending, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" CalendarOpened="datePickerPendingDate_CalendarOpened" />
 
             <Label Grid.Row="8" Grid.Column="4" HorizontalAlignment="Right">Cleared:</Label>
-            <DatePicker x:Name="datePickerClearedDate" Grid.Row="8" Grid.Column="5" IsTodayHighlighted="True" TabIndex="5" Margin="5,0,5,0" SelectedDate="{Binding TransactionCleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='',StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionCleared, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}"  />
+            <DatePicker x:Name="datePickerClearedDate" Grid.Row="8" Grid.Column="5" IsTodayHighlighted="True" TabIndex="5" Margin="5,0,5,0" SelectedDate="{Binding TransactionCleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='',StringFormat={}{0:MM/dd/yyyy}}" DisplayDate="{Binding TransactionCleared, Mode=TwoWay, TargetNullValue='' ,StringFormat={}{0:MM/dd/yyyy}}" CalendarOpened="datePickerClearedDate_CalendarOpened"  />
 
             <Label Grid.Row="9" Grid.Column="2">Notes:</Label>
             <TextBox x:Name="textBoxNotes" Grid.Row="9" Grid.Column="3" Margin="5,4,5,6" TabIndex="6" Text="{Binding Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

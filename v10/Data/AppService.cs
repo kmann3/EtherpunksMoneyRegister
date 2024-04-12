@@ -289,7 +289,7 @@ public static class AppService
 
     private static async Task<Tuple<Account, AccountTransaction>> CreateTransactionAsync(AccountTransaction transaction)
     {
-        Account account = await _context.Accounts.Where(x => x.Id == transaction.Id).SingleAsync();
+        Account account = await _context.Accounts.Where(x => x.Id == transaction.AccountId).SingleAsync();
         transaction.VerifySignage();
         transaction.Balance = account.CurrentBalance + transaction.Amount;
         account.CurrentBalance = transaction.Balance;

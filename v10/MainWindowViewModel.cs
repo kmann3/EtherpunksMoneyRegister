@@ -341,7 +341,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     }
 
-    public async Task LoadTransaction(AccountTransaction transaction)
+    public void LoadTransaction(AccountTransaction transaction)
     {
         _selectedTags = [];
         _unselectedTags = [];
