@@ -1,8 +1,10 @@
 ﻿using MannsMoneyRegister.Data;
 using MannsMoneyRegister.Data.Entities;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace MannsMoneyRegister;
@@ -300,5 +302,26 @@ public partial class MainWindow : Window
     private void datePickerClearedDate_CalendarOpened(object sender, RoutedEventArgs e)
     {
         if (datePickerClearedDate.SelectedDate == null) datePickerClearedDate.SelectedDate = DateTime.Now;
+    }
+
+    private void dataGridTransactions_Editing(object sender, DataGridBeginningEditEventArgs e)
+    {
+        Trace.WriteLine("BEGIN: " + e.ToString());
+    }
+
+    private void dataGridTransactions_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+    {
+        Trace.WriteLine("Cell Ending: " + e.ToString());
+    }
+
+    private void dataGridTransactions_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+    {
+        Trace.WriteLine("Row Ending: " + e.ToString());
+        
+    }
+
+    private void buttonDeleteTransaction_IsHitTestVisibleChanged()
+    {
+
     }
 }

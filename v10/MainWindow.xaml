@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Loaded="Window_Loaded"
         Closing="Window_Closing"
-        Title="Mann's Money Register" Height="900" Width="1825">
+        Title="Mann's Money Register" Height="900" Width="1220">
     <DockPanel>
         <Ribbon x:Name="RibbonTest" DockPanel.Dock="Top">
             <RibbonTab Header="Dashboard">
@@ -87,16 +87,14 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1200" />
+                <ColumnDefinition Width="630" />
                 <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
                 <RowDefinition Height="30" />
                 <RowDefinition Height="30" />
                 <RowDefinition Height="30" />
@@ -122,8 +120,12 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <DataGrid x:Name="dataGridTransactions" AutoGenerateColumns="False" CanUserAddRows="false" Grid.Row="0" Grid.Column="0" Grid.RowSpan="24"
-                      EnableRowVirtualization="True" Background="Gray" AlternationCount="2" SelectionMode="Single" SelectionChanged="dataGridTransactions_SelectionChanged">
+            
+            <DataGrid x:Name="dataGridTransactions"  Grid.Row="0" Grid.Column="0" Grid.RowSpan="24" Visibility="Hidden"
+                      AutoGenerateColumns="False" CanUserAddRows="true" EnableRowVirtualization="True"
+                      Background="Gray" AlternationCount="2" SelectionMode="Single"
+                      BeginningEdit="dataGridTransactions_Editing" CellEditEnding="dataGridTransactions_CellEditEnding" RowEditEnding="dataGridTransactions_RowEditEnding"
+                      SelectionChanged="dataGridTransactions_SelectionChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden" IsReadOnly="True" />
                     <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="280">
@@ -262,6 +264,7 @@
                     </Style>
                 </DataGrid.RowStyle>
             </DataGrid>
+            
             <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="24" Height="2008" Width="2" Background="WhiteSmoke" BorderThickness="1" BorderBrush="#ABADB3" Margin="2 2 2 2 "/>
 
             <Border Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4" Background="#FFDFE9F5" />
@@ -343,9 +346,7 @@
             <Button x:Name="buttonAddFile" Grid.Row="13" Grid.Column="5" Margin="5,5,5,5" HorizontalAlignment="Right" Width="75" Click="buttonAddFile_Click">Add File</Button>
             <Button x:Name="buttonDeleteFile" Grid.Row="15" Grid.Column="5" Margin="5,5,5,5" HorizontalAlignment="Right" Width="75" Click="buttonDeleteFile_Click">Delete File</Button>
             <Button x:Name="buttonDeleteTransaction" Grid.Row="18" Grid.Column="5" TabIndex="10" Margin="5,5,15,5" HorizontalAlignment="Right" Width="125" Click="buttonDeleteTransaction_Click">Delete Transaction</Button>
-
-            <uc:TransactionItemControl Grid.Row="20" Grid.Column="2" Grid.ColumnSpan="4" Grid.RowSpan="2" />
-            <uc:TransactionItemControl Grid.Row="22" Grid.Column="2" Grid.ColumnSpan="4" Grid.RowSpan="2" />
+            <uc:TransactionListControl Grid.Row="0" Grid.Column="0" Grid.RowSpan="20" />
         </Grid>
     </DockPanel>
 </Window>
