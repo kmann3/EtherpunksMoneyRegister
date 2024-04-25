@@ -5,15 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MannsMoneyRegister.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="60" d:DesignWidth="495" d:Background="AliceBlue">
-    <Grid x:Name="GridControl" MouseWheel="GridControl_MouseWheel" MouseDown="GridControl_MouseDown">
+             d:DesignHeight="60" d:DesignWidth="600" d:Background="AliceBlue">
+    <Grid x:Name="GridControl">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="225" /> <!-- Name/Tags -->
             <ColumnDefinition Width="90" /> <!-- Amount/Confirmation -->
             <ColumnDefinition Width="80" />  <!-- Pending/Confirmation -->
             <ColumnDefinition Width="80" /> <!-- Cleared/Confirmation -->
-            <ColumnDefinition Width="25" /> <!-- Attachment/Notes -->
-            <ColumnDefinition Width="95" /> <!-- Balance -->
+            <ColumnDefinition Width="45" /> <!-- Attachment/Notes -->
+            <ColumnDefinition Width="70" /> <!-- Balance -->
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
@@ -29,62 +29,22 @@
         <Border Grid.Column="0" Grid.Row="1" BorderBrush="Black" BorderThickness="1,0,0.5,1" />
         <Border Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="0,0,0.5,1" />
         <Border Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="Black" BorderThickness="0,0,1,1" />
-        <TextBox Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" x:Name="TextBoxName" Text="{Binding Item.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="TextBoxName_GotFocus" LostFocus="TextBoxName_LostFocus" MouseWheel="TextBoxName_MouseWheel" />
-        <TextBox Grid.Column="1" Grid.Row="0" Margin="2,2,2,2" x:Name="TextBoxAmount" HorizontalContentAlignment="Right" Text="{Binding Item.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="TextBoxAmount_GotFocus" LostFocus="TextBoxAmount_LostFocus"/>
-        <Button Grid.Column="2" Grid.Row="0" Margin="2,2,2,2">
-            <Button.Template>
-                <ControlTemplate>
-                    <Grid>
-                        <Button Name="datagridButtonPendingTransaction" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Margin="2,2,2,2" Width="65" Height="20" Content="Pending" Click="datagridButtonPendingTransaction_Click" />
-                        <TextBlock Name="PendingTextBlock" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Item.PendingLocalTime, StringFormat={}{0:yyyy.MM.dd}}" Visibility="Visible" Margin="2,2,2,2" />
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Path=Item.PendingLocalTime}" Value="{x:Null}" />
-                                <Condition Binding="{Binding Path=Item.ClearedLocalTime}" Value="{x:Null}"/>
-                            </MultiDataTrigger.Conditions>
-                            <Setter TargetName="datagridButtonPendingTransaction" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="PendingTextBlock" Property="Visibility" Value="Hidden" />
-                        </MultiDataTrigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
-        <Button Grid.Column="3" Grid.Row="0" Margin="2,2,2,2">
-            <Button.Template>
-                <ControlTemplate>
-                    <Grid>
-                        <Button Name="datagridButtonClearTransaction" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Margin="2,2,2,2" Width="65" Height="20" Content="Clear" Click="datagridButtonClearTransaction_Click" />
-                        <TextBlock Name="ClearedTextBlock" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Item.ClearedLocalTime, StringFormat={}{0:yyyy.MM.dd}}" Visibility="Visible" Margin="2,2,2,2" />
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding Item.ClearedLocalTime}" Value="{x:Null}">
-                            <Setter TargetName="datagridButtonClearTransaction" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="ClearedTextBlock" Property="Visibility" Value="Hidden" />
-                        </DataTrigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
-        <Button Grid.Column="4" Grid.Row="0" Margin="2,2,2,2">
-            <Button.Template>
-                <ControlTemplate>
-                    <Grid>
-                        <Label Name="buttonAttachments" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible" Margin="2,4,2,2" Width="25" Height="30" Content="📎" />
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding Item.HasAttachments}" Value="false">
-                            <Setter TargetName="buttonAttachments" Property="Visibility" Value="Hidden" />
-                        </DataTrigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
-        <Label x:Name="LabelBalance" Grid.Column="5" Grid.Row="0" Margin="2,2,2,2" HorizontalContentAlignment="Right" Content="{Binding Item.BalanceString}" />
+        <Button x:Name="ButtonPendingTransaction" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Margin="2,2,2,2" Width="65" Height="20" Content="Pending" Click="ButtonPendingTransaction_Click" />
+        <TextBlock x:Name="TextBlockPendingLocalTime" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible" Text="{Binding Item.PendingLocalTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=d}" />
+        <Button x:Name="ButtonClearedTransaction" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Margin="2,2,2,2" Width="65" Height="20" Content="Clear" Click="ButtonClearTransaction_Click" />
+        <TextBlock x:Name="TextBlockClearedLocalTime" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible" Text="{Binding Item.ClearedLocalTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=d}" />
+        <TextBlock x:Name="TextBlockAttachments"  Grid.Column="4" Grid.Row="0" Margin="2,2,2,2" Text="📎x12" Visibility="Hidden"
+                   ToolTipService.InitialShowDelay="0" 
+ToolTipService.ShowDuration="10000" 
+ToolTipService.BetweenShowDelay="3000" 
+ToolTip=""
+                   />
+        <TextBox x:Name="TextBoxName" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" Text="{Binding Item.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="Object_GotFocus" LostFocus="Object_LostFocus" />
+        <TextBox x:Name="TextBoxAmount" Grid.Column="1" Grid.Row="0" Margin="2,2,2,2" HorizontalContentAlignment="Right" Text="{Binding Item.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="Object_GotFocus" LostFocus="Object_LostFocus" PreviewTextInput="TextBoxAmount_PreviewTextInput" />
+        <TextBox x:Name="TextBoxConfirmationNumber" Grid.Column="1" Grid.Row="1" Margin="2,2,2,2" Grid.ColumnSpan="2" Text="{Binding Item.ConfirmationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="Object_GotFocus" LostFocus="Object_LostFocus" />
+        <TextBox x:Name="TextBoxNotes" Grid.Column="3" Grid.Row="1" Margin="2,2,2,2" Grid.ColumnSpan="3" Text="{Binding Item.Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="Object_GotFocus" LostFocus="Object_LostFocus" />
         <Label x:Name="LabelTags" Grid.Column="0" Grid.Row="1" Margin="2,2,2,2" Content="{Binding Item.Tags}" />
-        <Label x:Name="LabelConfirmationNumber" Grid.Column="1" Grid.Row="1" Margin="2,2,2,2" Grid.ColumnSpan="2" Content="{Binding Item.ConfirmationNumber}" />
-        <Label x:Name="LabelNotes" Grid.Column="3" Grid.Row="1" Margin="2,2,2,2" Grid.ColumnSpan="3" Content="{Binding Item.Notes}" />
+        <Label x:Name="LabelBalance" Grid.Column="5" Grid.Row="0" Margin="2,2,2,2" HorizontalContentAlignment="Right" Content="{Binding Item.Balance, StringFormat=C}" />
     </Grid>
 
 </UserControl>
