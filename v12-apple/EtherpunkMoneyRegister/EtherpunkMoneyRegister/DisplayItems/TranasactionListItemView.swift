@@ -13,37 +13,23 @@ struct TranasactionListItemView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Text(item.name)
-                Text(item.amount.formatted())
-                if let pendingText: Date = self.item.pending?.advanced(by: 0) {
-                    Text(pendingText, format: .dateTime.month().day())
-                } else {
-                    Text("Pending")
-                }
-                if let clearedText: Date = self.item.cleared?.advanced(by: 0) {
-                    Text(clearedText, format: .dateTime.month().day())
-                } else {
-                    Text("Cleared")
-                }
+        HStack(spacing: 0) {
+            Text(item.transaction.name).padding().border(Color.gray, width: 1)
+            Text(item.transaction.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD")).padding().border(Color.gray, width: 1)
+            if let pendingText: Date = self.item.transaction.pending?.advanced(by: 0) {
+                Text(pendingText, format: .dateTime.month().day()).padding().border(Color.gray, width: 1)
+            } else {
+                Text("Pending").padding().border(Color.gray, width: 1)
             }
+            if let cleagrayText: Date = self.item.transaction.cleared?.advanced(by: 0) {
+                Text(cleagrayText, format: .dateTime.month().day()).padding().border(Color.gray, width: 1)
+            } else {
+                Text("Cleared").padding().border(Color.gray, width: 1)
+            }
+            Text(item.transaction.balance, format: .currency(code: Locale.current.currency?.identifier ?? "USD")).padding().border(Color.gray, width: 1)
+
         }
-        .padding()
+        }
         .background(item.backgroundColor)
     }
-}
-
-#Preview("Reserved Transaction", traits: .defaultLayout) {
-    let previewItem: TransactionListItem = TransactionListItem(name: "Burger King", amount: 13.73, pending: nil, cleared: nil)
-    return TranasactionListItemView(item: previewItem)
-}
-
-#Preview("Pending Transaction", traits: .defaultLayout) {
-    let previewItem: TransactionListItem = TransactionListItem(name: "Burger King", amount: 13.73, pending: Date(), cleared: nil)
-    return TranasactionListItemView(item: previewItem)
-}
-
-#Preview("Regular TransactionData", traits: .defaultLayout) {
-    let previewItem: TransactionListItem = TransactionListItem(name: "Burger King", amount: 13.73, pending: nil, cleared: Date())
-    return TranasactionListItemView(item: previewItem)
 }

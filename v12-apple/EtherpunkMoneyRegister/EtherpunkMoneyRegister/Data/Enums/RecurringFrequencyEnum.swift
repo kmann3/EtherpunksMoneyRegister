@@ -12,6 +12,7 @@ enum RecurringFrequency: Codable {
     case irregular
     case yearly
     case monthly
+    case weekly
     case xdays
     case xmonths
     case xweekOnYDayOfWeek

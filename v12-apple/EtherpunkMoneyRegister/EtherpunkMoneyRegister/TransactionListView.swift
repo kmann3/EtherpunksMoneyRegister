@@ -10,19 +10,28 @@ import SwiftUI
 struct TransactionListView: View {
     
     @Environment(\.modelContext) var modelContext
-    var items: [TransactionListItem]
+    @Query var items: [AccountTransaction]
     
     var body: some View {
         NavigationStack() {
             List {
                 VStack() {
-                    Text("Date")
+                    ForEach(items) {  item in
+                        TranasactionListItemView(item: TransactionListItem(transaction: item))
+                    }
                 }
             }
         }
     }
 }
 
-//#Preview {
-//    TransactionListView()
-//}
+#Preview {
+    do {
+        let previewer = try Previewer()
+        
+        return TransactionListView()
+            .modelContainer(previewer.container)
+    } catch {
+        return Text("Failed: \(error.localizedDescription)")
+    }
+}

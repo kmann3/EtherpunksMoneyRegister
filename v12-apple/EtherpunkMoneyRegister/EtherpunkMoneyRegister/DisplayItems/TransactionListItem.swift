@@ -9,22 +9,16 @@ import Foundation
 import SwiftUI
 
 class TransactionListItem {
-    var name: String
-    var amount: Decimal
-    var pending: Date?
-    var cleared: Date?
+    var transaction: AccountTransaction
     
     var backgroundColor: Color
     
-    init(name: String, amount: Decimal, pending: Date? = nil, cleared: Date? = nil) {
-        self.name = name
-        self.amount = amount
-        self.pending = pending
-        self.cleared = cleared
+    init(transaction: AccountTransaction) {
+        self.transaction = transaction
         
-        if(pending == nil && cleared == nil) {
+        if(transaction.pending == nil && transaction.cleared == nil) {
             backgroundColor = Color.red
-        } else if (pending != nil && cleared == nil) {
+        } else if (transaction.pending != nil && transaction.cleared == nil) {
             backgroundColor = Color.orange
         } else {
             backgroundColor = Color.clear

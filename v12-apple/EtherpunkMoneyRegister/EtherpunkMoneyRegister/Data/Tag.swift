@@ -18,10 +18,15 @@ class Tag {
     
     var createdOn: Date = Date()
     
-    // recurring transactions
+    @Relationship(deleteRule: .noAction, inverse: \RecurringTransaction.tags)
+    var recurringTransaction: [RecurringTransaction]? = nil
     
     init(id: UUID, name: String) {
         self.id = id
+        self.name = name
+    }
+    
+    init(name: String) {
         self.name = name
     }
 }

@@ -17,6 +17,8 @@
 		AA0E1EFF2BF8EE0D00E68AB0 /* RecurringTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0E1EFE2BF8EE0D00E68AB0 /* RecurringTransaction.swift */; };
 		AA0E1F012BF8EE5100E68AB0 /* RecurringTransactionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0E1F002BF8EE5100E68AB0 /* RecurringTransactionGroup.swift */; };
 		AA0E1F032BF8EFFA00E68AB0 /* RecurringFrequencyEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0E1F022BF8EFFA00E68AB0 /* RecurringFrequencyEnum.swift */; };
+		AA1097A32BF906B800F242E3 /* DayOfWeekEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097A22BF906B800F242E3 /* DayOfWeekEnum.swift */; };
+		AA1097A52BF94CFC00F242E3 /* Previewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097A42BF94CFC00F242E3 /* Previewer.swift */; };
 		AAE814EE2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE814ED2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift */; };
 		AAE814F02BF853B400CA7DDD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE814EF2BF853B400CA7DDD /* ContentView.swift */; };
 		AAE814F22BF853B500CA7DDD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAE814F12BF853B500CA7DDD /* Assets.xcassets */; };
@@ -34,6 +36,8 @@
 		AA0E1EFE2BF8EE0D00E68AB0 /* RecurringTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurringTransaction.swift; sourceTree = "<group>"; };
 		AA0E1F002BF8EE5100E68AB0 /* RecurringTransactionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurringTransactionGroup.swift; sourceTree = "<group>"; };
 		AA0E1F022BF8EFFA00E68AB0 /* RecurringFrequencyEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurringFrequencyEnum.swift; sourceTree = "<group>"; };
+		AA1097A22BF906B800F242E3 /* DayOfWeekEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOfWeekEnum.swift; sourceTree = "<group>"; };
+		AA1097A42BF94CFC00F242E3 /* Previewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Previewer.swift; sourceTree = "<group>"; };
 		AAE814EA2BF853B400CA7DDD /* EtherpunkMoneyRegister.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtherpunkMoneyRegister.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAE814ED2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterApp.swift; sourceTree = "<group>"; };
 		AAE814EF2BF853B400CA7DDD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -62,6 +66,7 @@
 				AA0E1EFC2BF8EC6900E68AB0 /* Tag.swift */,
 				AA0E1EFE2BF8EE0D00E68AB0 /* RecurringTransaction.swift */,
 				AA0E1F002BF8EE5100E68AB0 /* RecurringTransactionGroup.swift */,
+				AA1097A42BF94CFC00F242E3 /* Previewer.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -80,6 +85,7 @@
 			children = (
 				AA0E1F022BF8EFFA00E68AB0 /* RecurringFrequencyEnum.swift */,
 				AA0E1EFA2BF85F5C00E68AB0 /* TransactionTypeEnum.swift */,
+				AA1097A22BF906B800F242E3 /* DayOfWeekEnum.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -196,12 +202,14 @@
 				AAE814F02BF853B400CA7DDD /* ContentView.swift in Sources */,
 				AA0E1EFB2BF85F5C00E68AB0 /* TransactionTypeEnum.swift in Sources */,
 				AA0E1EF22BF8546400E68AB0 /* TransactionListItem.swift in Sources */,
+				AA1097A52BF94CFC00F242E3 /* Previewer.swift in Sources */,
 				AA0E1F032BF8EFFA00E68AB0 /* RecurringFrequencyEnum.swift in Sources */,
 				AA0E1EF72BF85BA300E68AB0 /* AccountTransaction.swift in Sources */,
 				AA0E1EF42BF857F400E68AB0 /* TransactionListView.swift in Sources */,
 				AA0E1EF02BF8543D00E68AB0 /* TranasactionListItemView.swift in Sources */,
 				AA0E1EFF2BF8EE0D00E68AB0 /* RecurringTransaction.swift in Sources */,
 				AA0E1EFD2BF8EC6900E68AB0 /* Tag.swift in Sources */,
+				AA1097A32BF906B800F242E3 /* DayOfWeekEnum.swift in Sources */,
 				AAE814EE2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift in Sources */,
 				AA0E1F012BF8EE5100E68AB0 /* RecurringTransactionGroup.swift in Sources */,
 				AA0E1EF92BF85C2A00E68AB0 /* Account.swift in Sources */,

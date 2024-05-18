@@ -8,6 +8,6 @@
 import Foundation
 
 enum TransactionType: Codable {
-    case Credit
-    case Debit
+    case credit
+    case debit
 }
