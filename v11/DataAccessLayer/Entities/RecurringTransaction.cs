@@ -18,7 +18,28 @@ public class RecurringTransaction : BasicTable<RecurringTransaction>, IEntityTyp
 
     [DataType(DataType.Currency)]
     [Precision(18, 2)]
-    public decimal Amount { get; set; }
+    public decimal Amount { get; set; } = 0m;
+    public string AccountNumber { get; set; } = string.Empty;
+    public string BusinessPhoneNumber { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Usually this would be the full title of the company and department
+    /// </summary>
+    public string BusinessAddressLine1_Name { get; set; } = string.Empty;
+    /// <summary>
+    /// This might be an attention line
+    /// </summary>
+    public string BusinessAddressLine2_Name { get; set; } = string.Empty;
+
+    /// <summary>
+    ///  This might be the build number and street name
+    /// </summary>
+    public string BusinessAddressLine3_Location1 { get; set; } = string.Empty;
+    /// <summary>
+    /// This might be the city, state, zip.
+    /// </summary>
+    public string BusinessAddressLine4_Location2 { get; set; } = string.Empty;
+
 
     public string Notes { get; set; } = string.Empty;
 
