@@ -11,23 +11,19 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            TransactionListView()
-                .tabItem {
-                    Label("Transactions", systemImage: "banknote")
-                }
-            Text("Tab 2")
+            AccountListView()
                 .tabItem {
                     Label("Accounts", systemImage: "house.lodge")
                 }
-            Text("Tab 2")
+            Text("List of tags. Ability to create, delete, and lookup related transactions")
                 .tabItem {
                     Label("Tags", systemImage: "tag")
                 }
-            Text("Tab 2")
+            Text("CRUD recurring transactions and show history")
                 .tabItem {
                     Label("Recurring", systemImage: "repeat")
                 }
-            Text("Tab 2")
+            Text("Useful reports?")
                 .tabItem {
                     Label("Reports", systemImage: "chart.line.uptrend.xyaxis")
                 }
@@ -35,6 +31,13 @@ struct ContentView: View {
     }
 }
 
-//#Preview {
-//    ContentView()
-//}
+#Preview {
+    do {
+        let previewer = try Previewer()
+        
+        return ContentView()
+            .modelContainer(previewer.container)
+    } catch {
+        return Text("Failed: \(error.localizedDescription)")
+    }
+}

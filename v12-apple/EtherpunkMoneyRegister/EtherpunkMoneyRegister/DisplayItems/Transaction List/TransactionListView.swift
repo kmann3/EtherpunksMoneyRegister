@@ -10,16 +10,13 @@ import SwiftUI
 struct TransactionListView: View {
     
     @Environment(\.modelContext) var modelContext
-    @Query var items: [AccountTransaction]
+    @Query(sort: [SortDescriptor(\AccountTransaction.createdOn, order: .reverse)])
+    var items: [AccountTransaction]
     
     var body: some View {
         NavigationStack() {
-            List {
-                VStack() {
-                    ForEach(items) {  item in
-                        TranasactionListItemView(item: TransactionListItem(transaction: item))
-                    }
-                }
+            List(items) { item in
+                    TransactionListItemView(item: TransactionListItem(transaction: item))
             }
         }
     }
