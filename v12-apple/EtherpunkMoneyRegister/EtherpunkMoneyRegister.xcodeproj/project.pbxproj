@@ -22,6 +22,7 @@
 		AA1097A92BFA83DF00F242E3 /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097A82BFA83DF00F242E3 /* AccountListView.swift */; };
 		AA1097AB2BFA8C4B00F242E3 /* AccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */; };
 		AA1097AD2BFBA93600F242E3 /* AccountListItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097AC2BFBA93600F242E3 /* AccountListItemModel.swift */; };
+		AA2A4B6D2BFDAC0600FFA0A9 /* EditAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountView.swift */; };
 		AAE814EE2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE814ED2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift */; };
 		AAE814F02BF853B400CA7DDD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE814EF2BF853B400CA7DDD /* ContentView.swift */; };
 		AAE814F22BF853B500CA7DDD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAE814F12BF853B500CA7DDD /* Assets.xcassets */; };
@@ -44,6 +45,7 @@
 		AA1097A82BFA83DF00F242E3 /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
 		AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListItemView.swift; sourceTree = "<group>"; };
 		AA1097AC2BFBA93600F242E3 /* AccountListItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListItemModel.swift; sourceTree = "<group>"; };
+		AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountView.swift; sourceTree = "<group>"; };
 		AAE814EA2BF853B400CA7DDD /* EtherpunkMoneyRegister.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtherpunkMoneyRegister.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAE814ED2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterApp.swift; sourceTree = "<group>"; };
 		AAE814EF2BF853B400CA7DDD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				AA1097A82BFA83DF00F242E3 /* AccountListView.swift */,
+				AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountView.swift */,
 				AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */,
 				AA1097AC2BFBA93600F242E3 /* AccountListItemModel.swift */,
 			);
@@ -236,6 +239,7 @@
 				AA0E1EFF2BF8EE0D00E68AB0 /* RecurringTransaction.swift in Sources */,
 				AA1097A92BFA83DF00F242E3 /* AccountListView.swift in Sources */,
 				AA0E1EFD2BF8EC6900E68AB0 /* Tag.swift in Sources */,
+				AA2A4B6D2BFDAC0600FFA0A9 /* EditAccountView.swift in Sources */,
 				AA1097A32BF906B800F242E3 /* DayOfWeekEnum.swift in Sources */,
 				AA1097AD2BFBA93600F242E3 /* AccountListItemModel.swift in Sources */,
 				AAE814EE2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift in Sources */,

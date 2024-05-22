@@ -10,6 +10,7 @@ import SwiftUI
 struct TransactionListView: View {
     
     @Environment(\.modelContext) var modelContext
+    @State private var searchText = ""
     @Query var transactions: [AccountTransaction]
     
     var account: Account
@@ -20,6 +21,14 @@ struct TransactionListView: View {
             List(transactions) { item in
                     TransactionListItemView(item: TransactionListItem(transaction: item))
             }
+            .toolbar {
+                Button {
+                    createNewTransaction()
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+            .searchable(text: $searchText)
         }
     }
     
@@ -33,6 +42,10 @@ struct TransactionListView: View {
             transaction.account.id == accountId ||
             transaction.account.name.localizedStandardContains("Amegy")
         }, sort: sortOrder)
+    }
+    
+    func createNewTransaction() {
+        print("Make new transactioin")
     }
 }
 

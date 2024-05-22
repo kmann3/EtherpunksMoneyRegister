@@ -9,6 +9,8 @@ import SwiftUI
 
 struct AccountListView: View {
     @Environment(\.modelContext) var modelContext
+    @State private var searchText = ""
+    
     @Query(sort: [SortDescriptor(\Account.sortIndex, order: .forward), SortDescriptor(\Account.name, order: .forward)])
     var items: [Account]
     
@@ -16,37 +18,61 @@ struct AccountListView: View {
         NavigationStack() {
             List {
                 ForEach(items) { item in
-                    AccountListItemView(item: item)
-                        .navigationDestination(for: Account.self) { account in
-                            TransactionListView(account: item)
-                        }
+                    NavigationLink(value: item) {
+                        AccountListItemView(item: item)
+                    }
                 }
+                .listRowSeparator(.hidden)
                 .swipeActions(allowsFullSwipe: false) {
                     Button {
                         print("Edit")
+                        //editAccount(account: item)
                     } label: {
                         Label("Edit", systemImage: "gear")
                     }
                     .tint(.indigo)
-                    
+        
                     Button(role: .destructive) {
+                        //deleteAccount(account: item)
                         print("Delete")
                     } label: {
                         Label("Delete", systemImage: "trash.fill")
                     }
                 }
-                .listRowSeparator(.hidden)
                 
             }
             .listStyle(.plain)
             .toolbar {
                 Button {
-                    print("Create new account")
+                    print("Add")
+                    //createAccount()
                 } label: {
                     Image(systemName: "plus")
                 }
             }
+            .searchable(text: $searchText)
+            .navigationDestination(for: Account.self){ item in
+                TransactionListView(account: item)
+            }
         }
+        
+
+
+
+    }
+    
+    func createAccount() {
+        let newAccount = Account(name: "", startingBalance: 0)
+        modelContext.insert(newAccount)
+        //path.append(newAccount)
+    }
+    
+    func deleteAccount(account: Account) {
+        modelContext.delete(account)
+    }
+    
+    func editAccount(account: Account) {
+        print(account.createdOn)        
     }
 }
 
