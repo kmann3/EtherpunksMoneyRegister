@@ -17,9 +17,9 @@ class TransactionListItem {
         self.transaction = transaction
         
         if(transaction.pending == nil && transaction.cleared == nil) {
-            backgroundColor = Color.red
+            backgroundColor = Color(.sRGB, red: 255/255, green: 25/255, blue: 25/255, opacity: 0.5)
         } else if (transaction.pending != nil && transaction.cleared == nil) {
-            backgroundColor = Color.orange
+            backgroundColor = Color(.sRGB, red: 255/255, green: 150/255, blue: 25/255, opacity: 0.5)
         } else {
             backgroundColor = Color.clear
         }

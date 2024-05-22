@@ -21,7 +21,6 @@ struct TransactionListItemView: View {
                         .foregroundStyle(.green)
                 } else {
                     Text(item.transaction.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
-
                 }
             }
             
@@ -39,11 +38,24 @@ struct TransactionListItemView: View {
                 Spacer()
                 
                 Text(item.transaction.balance, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                    .font(.caption)
             }
             
             HStack(spacing: 0) {
-                
+                if(item.transaction.tags != nil) {
+                    ForEach(item.transaction.tags ?? [Tag(name: "EMPTY")]){ tag in
+                        Text(tag.name)
+                            .font(.callout)
+                    }
+                    Spacer()
+                    if(item.transaction.fileCount > 0) {
+                        Text(Image(systemName: "paperclip"))
+                            .font(.caption2)
+                    }
+                    
+                }
             }
+            
         }
         .background(item.backgroundColor)
     }

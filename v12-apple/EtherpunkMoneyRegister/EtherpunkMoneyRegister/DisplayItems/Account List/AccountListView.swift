@@ -17,6 +17,9 @@ struct AccountListView: View {
             List {
                 ForEach(items) { item in
                     AccountListItemView(item: item)
+                        .navigationDestination(for: Account.self) { account in
+                            TransactionListView(account: item)
+                        }
                 }
                 .swipeActions(allowsFullSwipe: false) {
                     Button {

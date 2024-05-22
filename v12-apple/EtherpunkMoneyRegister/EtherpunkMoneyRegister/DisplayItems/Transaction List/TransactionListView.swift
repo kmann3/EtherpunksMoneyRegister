@@ -10,15 +10,29 @@ import SwiftUI
 struct TransactionListView: View {
     
     @Environment(\.modelContext) var modelContext
-    @Query(sort: [SortDescriptor(\AccountTransaction.createdOn, order: .reverse)])
-    var items: [AccountTransaction]
+    @Query var transactions: [AccountTransaction]
     
+    var account: Account
+
     var body: some View {
         NavigationStack() {
-            List(items) { item in
+            AccountListItemView(item: account)
+            List(transactions) { item in
                     TransactionListItemView(item: TransactionListItem(transaction: item))
             }
         }
+    }
+    
+    init(account: Account) {
+        self.account = account
+        let accountId = account.id
+        
+        let sortOrder = [SortDescriptor(\AccountTransaction.createdOn, order: .reverse)]
+        
+        _transactions = Query(filter: #Predicate<AccountTransaction> { transaction in
+            transaction.account.id == accountId ||
+            transaction.account.name.localizedStandardContains("Amegy")
+        }, sort: sortOrder)
     }
 }
 
@@ -26,7 +40,7 @@ struct TransactionListView: View {
     do {
         let previewer = try Previewer()
         
-        return TransactionListView()
+        return TransactionListView(account: Account(name: "Amegy Bank", startingBalance: 238.99))
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")

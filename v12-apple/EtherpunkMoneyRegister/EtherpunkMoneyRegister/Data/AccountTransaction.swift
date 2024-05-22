@@ -24,7 +24,8 @@ class AccountTransaction {
     // link to recurring transaction if needed
     var bankTransactionText: String = ""
     // Transaction Type Enum
-    // files        
+    var fileCount: Int = 0
+    // files
     @Relationship(deleteRule: .noAction)
     var account: Account
     var createdOn: Date = Date()
@@ -32,7 +33,8 @@ class AccountTransaction {
     @Relationship(deleteRule: .noAction)
     var tags: [Tag]? = nil
 
-    init(uuid: UUID, name: String, transactionType: TransactionType, amount: Decimal, balance: Decimal, pending: Date? = nil, cleared: Date? = nil, notes: String, confirmationNumber: String, bankTransactionText: String, account: Account, createdOn: Date, tags: [Tag]? = nil) {
+
+    init(uuid: UUID, name: String, transactionType: TransactionType, amount: Decimal, balance: Decimal, pending: Date? = nil, cleared: Date? = nil, notes: String, confirmationNumber: String, bankTransactionText: String, fileCount: Int, account: Account, createdOn: Date, tags: [Tag]? = nil) {
         self.uuid = uuid
         self.name = name
         self.transactionType = transactionType
@@ -43,6 +45,7 @@ class AccountTransaction {
         self.notes = notes
         self.confirmationNumber = confirmationNumber
         self.bankTransactionText = bankTransactionText
+        self.fileCount = fileCount
         self.account = account
         self.createdOn = createdOn
         self.tags = tags
