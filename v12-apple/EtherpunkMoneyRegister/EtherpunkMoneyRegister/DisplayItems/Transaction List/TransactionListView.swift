@@ -10,26 +10,30 @@ import SwiftUI
 struct TransactionListView: View {
     
     @Environment(\.modelContext) var modelContext
+    @State private var path = NavigationPath()
     @State private var searchText = ""
     @Query var transactions: [AccountTransaction]
     
     var account: Account
 
     var body: some View {
-        NavigationStack() {
+        NavigationLink(value: NavData(navView: .EditAccount, account: account)) {
             AccountListItemView(item: account)
-            List(transactions) { item in
-                    TransactionListItemView(item: TransactionListItem(transaction: item))
-            }
-            .toolbar {
-                Button {
-                    createNewTransaction()
-                } label: {
-                    Image(systemName: "plus")
-                }
-            }
-            .searchable(text: $searchText)
         }
+        List(transactions) { item in
+            TransactionListItemView(item: TransactionListItem(transaction: item))
+        }
+        .toolbar {
+            Button {
+                createNewTransaction()
+            } label: {
+                Image(systemName: "plus")
+            }
+        }
+        .searchable(text: $searchText)
+//        .navigationDestination(for: Account.self) { item in
+//            EditAccountView(path: $path, account: item)
+//        }
     }
     
     init(account: Account) {
@@ -39,8 +43,7 @@ struct TransactionListView: View {
         let sortOrder = [SortDescriptor(\AccountTransaction.createdOn, order: .reverse)]
         
         _transactions = Query(filter: #Predicate<AccountTransaction> { transaction in
-            transaction.account.id == accountId ||
-            transaction.account.name.localizedStandardContains("Amegy")
+            transaction.account.id == accountId || transaction.account.name.localizedStandardContains("Amegy")
         }, sort: sortOrder)
     }
     

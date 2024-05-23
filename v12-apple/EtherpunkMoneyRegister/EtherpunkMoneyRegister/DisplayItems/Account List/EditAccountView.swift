@@ -10,11 +10,21 @@ import SwiftUI
 struct EditAccountView: View {
     
     @Environment(\.modelContext) var modelContext
+    @Binding var path: NavigationPath
     @Bindable var account: Account
-    @Binding var navigationPath: NavigationPath
     
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text(account.name)
+        Text(account.id.uuidString)
+        Text(account.createdOn.ISO8601Format())
+            .toolbar {
+                Button {
+                    // Save
+                    path.removeLast()
+                } label: {
+                    Text("Save")
+                }
+            }
     }
 }

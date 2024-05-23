@@ -23,6 +23,10 @@
 		AA1097AB2BFA8C4B00F242E3 /* AccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */; };
 		AA1097AD2BFBA93600F242E3 /* AccountListItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097AC2BFBA93600F242E3 /* AccountListItemModel.swift */; };
 		AA2A4B6D2BFDAC0600FFA0A9 /* EditAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountView.swift */; };
+		AA658F3C2BFE50F400071C20 /* TransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA658F3B2BFE50F400071C20 /* TransactionDetailView.swift */; };
+		AA658F3E2BFE53C700071C20 /* EditTransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA658F3D2BFE53C700071C20 /* EditTransactionDetailView.swift */; };
+		AA658F402BFEABC700071C20 /* NavViewEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA658F3F2BFEABC700071C20 /* NavViewEnum.swift */; };
+		AA658F422BFEAC1A00071C20 /* NavData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA658F412BFEAC1A00071C20 /* NavData.swift */; };
 		AAE814EE2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE814ED2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift */; };
 		AAE814F02BF853B400CA7DDD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE814EF2BF853B400CA7DDD /* ContentView.swift */; };
 		AAE814F22BF853B500CA7DDD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAE814F12BF853B500CA7DDD /* Assets.xcassets */; };
@@ -46,6 +50,10 @@
 		AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListItemView.swift; sourceTree = "<group>"; };
 		AA1097AC2BFBA93600F242E3 /* AccountListItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListItemModel.swift; sourceTree = "<group>"; };
 		AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountView.swift; sourceTree = "<group>"; };
+		AA658F3B2BFE50F400071C20 /* TransactionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailView.swift; sourceTree = "<group>"; };
+		AA658F3D2BFE53C700071C20 /* EditTransactionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionDetailView.swift; sourceTree = "<group>"; };
+		AA658F3F2BFEABC700071C20 /* NavViewEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavViewEnum.swift; sourceTree = "<group>"; };
+		AA658F412BFEAC1A00071C20 /* NavData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavData.swift; sourceTree = "<group>"; };
 		AAE814EA2BF853B400CA7DDD /* EtherpunkMoneyRegister.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtherpunkMoneyRegister.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAE814ED2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterApp.swift; sourceTree = "<group>"; };
 		AAE814EF2BF853B400CA7DDD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -83,7 +91,9 @@
 			isa = PBXGroup;
 			children = (
 				AA1097A72BFA795A00F242E3 /* Account List */,
+				AA658F3A2BFE50BD00071C20 /* Transaction Details */,
 				AA1097A62BFA795100F242E3 /* Transaction List */,
+				AA658F412BFEAC1A00071C20 /* NavData.swift */,
 			);
 			path = DisplayItems;
 			sourceTree = "<group>";
@@ -94,6 +104,7 @@
 				AA0E1F022BF8EFFA00E68AB0 /* RecurringFrequencyEnum.swift */,
 				AA0E1EFA2BF85F5C00E68AB0 /* TransactionTypeEnum.swift */,
 				AA1097A22BF906B800F242E3 /* DayOfWeekEnum.swift */,
+				AA658F3F2BFEABC700071C20 /* NavViewEnum.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -117,6 +128,15 @@
 				AA1097AC2BFBA93600F242E3 /* AccountListItemModel.swift */,
 			);
 			path = "Account List";
+			sourceTree = "<group>";
+		};
+		AA658F3A2BFE50BD00071C20 /* Transaction Details */ = {
+			isa = PBXGroup;
+			children = (
+				AA658F3B2BFE50F400071C20 /* TransactionDetailView.swift */,
+				AA658F3D2BFE53C700071C20 /* EditTransactionDetailView.swift */,
+			);
+			path = "Transaction Details";
 			sourceTree = "<group>";
 		};
 		AAE814E12BF853B400CA7DDD = {
@@ -231,15 +251,19 @@
 				AA0E1EFB2BF85F5C00E68AB0 /* TransactionTypeEnum.swift in Sources */,
 				AA1097AB2BFA8C4B00F242E3 /* AccountListItemView.swift in Sources */,
 				AA0E1EF22BF8546400E68AB0 /* TransactionListItemModel.swift in Sources */,
+				AA658F402BFEABC700071C20 /* NavViewEnum.swift in Sources */,
 				AA1097A52BF94CFC00F242E3 /* Previewer.swift in Sources */,
 				AA0E1F032BF8EFFA00E68AB0 /* RecurringFrequencyEnum.swift in Sources */,
+				AA658F422BFEAC1A00071C20 /* NavData.swift in Sources */,
 				AA0E1EF72BF85BA300E68AB0 /* AccountTransaction.swift in Sources */,
 				AA0E1EF42BF857F400E68AB0 /* TransactionListView.swift in Sources */,
+				AA658F3E2BFE53C700071C20 /* EditTransactionDetailView.swift in Sources */,
 				AA0E1EF02BF8543D00E68AB0 /* TransactionListItemView.swift in Sources */,
 				AA0E1EFF2BF8EE0D00E68AB0 /* RecurringTransaction.swift in Sources */,
 				AA1097A92BFA83DF00F242E3 /* AccountListView.swift in Sources */,
 				AA0E1EFD2BF8EC6900E68AB0 /* Tag.swift in Sources */,
 				AA2A4B6D2BFDAC0600FFA0A9 /* EditAccountView.swift in Sources */,
+				AA658F3C2BFE50F400071C20 /* TransactionDetailView.swift in Sources */,
 				AA1097A32BF906B800F242E3 /* DayOfWeekEnum.swift in Sources */,
 				AA1097AD2BFBA93600F242E3 /* AccountListItemModel.swift in Sources */,
 				AAE814EE2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift in Sources */,

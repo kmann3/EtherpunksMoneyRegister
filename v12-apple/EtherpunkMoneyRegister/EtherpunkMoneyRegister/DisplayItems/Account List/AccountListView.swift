@@ -10,61 +10,82 @@ import SwiftUI
 struct AccountListView: View {
     @Environment(\.modelContext) var modelContext
     @State private var searchText = ""
+    @State private var path = NavigationPath()
+    @State private var isShowingDeleteActions = false
+    @State private var accountToDelete: Account? = nil
     
     @Query(sort: [SortDescriptor(\Account.sortIndex, order: .forward), SortDescriptor(\Account.name, order: .forward)])
     var items: [Account]
     
     var body: some View {
-        NavigationStack() {
+        NavigationStack(path: $path) {
             List {
                 ForEach(items) { item in
-                    NavigationLink(value: item) {
+                    NavigationLink(value: NavData(navView: .TransactionList, account: item, transaction: nil)) {
                         AccountListItemView(item: item)
+                    }
+                    .swipeActions(allowsFullSwipe: true) {
+                        Button {
+                            addNewTransaction(account: item, transactionType: .debit)
+                        } label: {
+                            Label("New Debit", systemImage: "creditcard")
+                        }
+                        .tint(.cyan)
+            
+                        Button {
+                            addNewTransaction(account: item, transactionType: .credit)
+                        } label: {
+                            Label("New Credit", systemImage: "banknote")
+                        }
+                        .tint(.indigo)
+            
+                        Button(role: .destructive) {
+                            accountToDelete = item
+                            isShowingDeleteActions = true
+                        } label: {
+                            Label("Delete", systemImage: "trash.fill")
+                        }
                     }
                 }
                 .listRowSeparator(.hidden)
-                .swipeActions(allowsFullSwipe: false) {
-                    Button {
-                        print("Edit")
-                        //editAccount(account: item)
-                    } label: {
-                        Label("Edit", systemImage: "gear")
-                    }
-                    .tint(.indigo)
-        
-                    Button(role: .destructive) {
-                        //deleteAccount(account: item)
-                        print("Delete")
-                    } label: {
-                        Label("Delete", systemImage: "trash.fill")
-                    }
-                }
-                
             }
             .listStyle(.plain)
             .toolbar {
                 Button {
-                    print("Add")
-                    //createAccount()
+                    createAccount()
                 } label: {
                     Image(systemName: "plus")
                 }
             }
-            .searchable(text: $searchText)
-            .navigationDestination(for: Account.self){ item in
-                TransactionListView(account: item)
+            .confirmationDialog("Delete account?", isPresented: $isShowingDeleteActions) {
+                Button("Confirm Delete: \(accountToDelete?.name ?? "ERROR")", role: .destructive) {
+                    if let item = accountToDelete {
+                        deleteAccount(account: item)
+                        isShowingDeleteActions = false
+                        accountToDelete = nil
+                    }
+                }
             }
+            .searchable(text: $searchText)
+            .navigationDestination(for: NavData.self) { item in
+                if item.navView == .EditAccount && item.account != nil {
+                    EditAccountView(path: $path, account: item.account!)
+                        .navigationTitle("New Account")
+                } else if item.navView == .TransactionList && item.account != nil {
+                    TransactionListView(account: item.account!)
+                } else if item.navView == .EditTransaction && item.transaction != nil {
+                    EditTransactionDetailView(transaction: item.transaction!)
+                }
+            }
+            .navigationTitle("Account List")
         }
-        
-
-
 
     }
     
     func createAccount() {
         let newAccount = Account(name: "", startingBalance: 0)
         modelContext.insert(newAccount)
-        //path.append(newAccount)
+        path.append(NavData(navView: .EditAccount, account: newAccount))
     }
     
     func deleteAccount(account: Account) {
@@ -73,6 +94,13 @@ struct AccountListView: View {
     
     func editAccount(account: Account) {
         print(account.createdOn)        
+    }
+    
+    func addNewTransaction(account: Account, transactionType: TransactionType) {
+        print("New \(transactionType) for: \(account.name)")
+        let newTransaction: AccountTransaction = AccountTransaction(name: "", transactionType: transactionType, amount: 0, balance: account.currentBalance, pending: nil, cleared: nil, account: account)
+        modelContext.insert(newTransaction)
+        path.append(NavData(navView: .EditTransaction, transaction: newTransaction))
     }
 }
 
