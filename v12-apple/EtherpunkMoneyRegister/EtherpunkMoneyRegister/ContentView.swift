@@ -27,6 +27,10 @@ struct ContentView: View {
                 .tabItem {
                     Label("Reports", systemImage: "chart.line.uptrend.xyaxis")
                 }
+            Text("Settings")
+                .tabItem {
+                    Label("Settings", systemImage: "gear")
+                }
         }
     }
 }

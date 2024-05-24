@@ -21,7 +21,9 @@ struct TransactionListView: View {
             AccountListItemView(item: account)
         }
         List(transactions) { item in
-            TransactionListItemView(item: TransactionListItem(transaction: item))
+            NavigationLink(value: NavData(navView: .TransactionDetail, transaction: item)) {
+                TransactionListItemView(item: TransactionListItem(transaction: item))
+            }
         }
         .toolbar {
             Button {

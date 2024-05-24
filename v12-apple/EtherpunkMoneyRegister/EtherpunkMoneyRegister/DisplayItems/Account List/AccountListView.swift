@@ -75,6 +75,8 @@ struct AccountListView: View {
                     TransactionListView(account: item.account!)
                 } else if item.navView == .EditTransaction && item.transaction != nil {
                     EditTransactionDetailView(transaction: item.transaction!)
+                } else if item.navView == .TransactionDetail && item.transaction != nil {
+                    TransactionDetailView(transaction: item.transaction!)
                 }
             }
             .navigationTitle("Account List")

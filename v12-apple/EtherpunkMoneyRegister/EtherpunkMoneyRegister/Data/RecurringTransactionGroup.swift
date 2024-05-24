@@ -23,4 +23,9 @@ class RecurringTransactionGroup {
         self.createdOn = createdOn
         self.recurringTransactions = recurringTransactions
     }
+    
+    init(name: String, recurringTransactions: [RecurringTransaction]? = nil) {
+        self.name = name
+        self.recurringTransactions = recurringTransactions
+    }
 }

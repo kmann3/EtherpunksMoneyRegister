@@ -33,12 +33,13 @@ class RecurringTransaction {
     
     var createdOn: Date = Date()
 
-    init(uuid: UUID, name: String, transactionType: TransactionType, amount: Decimal, notes: String, tags: [Tag]? = nil, group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = nil, frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOn: Date) {
+    init(uuid: UUID, name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, tags: [Tag]? = nil, group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = nil, frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOn: Date) {
         self.uuid = uuid
         self.name = name
         self.transactionType = transactionType
         self.amount = amount
         self.notes = notes
+        self.nextDueDate = nextDueDate
         self.tags = tags
         self.group = group
         self.transactions = transactions
@@ -51,11 +52,12 @@ class RecurringTransaction {
         VerifySignage()
     }
     
-    init(name: String, transactionType: TransactionType, amount: Decimal, notes: String, tags: [Tag]? = nil, group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = nil, frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil) {
+    init(name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, tags: [Tag]? = nil, group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = nil, frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil) {
         self.name = name
         self.transactionType = transactionType
         self.amount = amount
         self.notes = notes
+        self.nextDueDate = nextDueDate
         self.tags = tags
         self.group = group
         self.transactions = transactions
@@ -66,11 +68,12 @@ class RecurringTransaction {
         
         VerifySignage()
     }
-    init(name: String, transactionType: TransactionType, amount: Decimal, tags: [Tag]? = nil, group: RecurringTransactionGroup? = nil, frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil) {
+    init(name: String, transactionType: TransactionType, amount: Decimal, nextDueDate: Date? = nil, tags: [Tag]? = nil, group: RecurringTransactionGroup? = nil, frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil) {
         self.name = name
         self.transactionType = transactionType
         self.amount = amount
         self.notes = notes
+        self.nextDueDate = nextDueDate
         self.tags = tags
         self.group = group
         self.frequency = frequency
@@ -95,8 +98,8 @@ class RecurringTransaction {
         let calendar = Calendar.current
         
         switch(frequency) {
-            case .unknown:
-                break;
+        case .unknown:
+            break;
             
         case .irregular:
             break;
@@ -106,6 +109,7 @@ class RecurringTransaction {
             break;
             
         case .monthly:
+            // what if it ends on a holiday or a weekend
             self.nextDueDate = calendar.date(byAdding: .month, value: 1, to: self.nextDueDate!)
             break;
 

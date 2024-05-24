@@ -10,13 +10,26 @@ import SwiftData
 
 @MainActor
 struct Previewer {
+    
     let container: ModelContainer
     
+    let cuAccount: Account
+    let burgerKingTransaction: AccountTransaction
+    let billsTag: Tag
+    let discordRecurringTransaction: RecurringTransaction
+    let billGroup: RecurringTransactionGroup
+    
     init() throws {
+        let schema = Schema([
+            Account.self,
+            AccountTransaction.self,
+            Tag.self,
+            RecurringTransaction.self,
+            RecurringTransactionGroup.self])
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        container = try ModelContainer(for: Account.self, configurations: config)
+        container = try! ModelContainer(for: schema, configurations: config)
         
-        let cuAccount: Account = Account(name: "Amegy Bank", startingBalance: 238.99)
+        cuAccount = Account(name: "Amegy Bank", startingBalance: 238.99)
         let boaAccount: Account = Account(name: "Bank of America", startingBalance: 492)
         let axosAccount: Account = Account(name: "Axos", startingBalance: 130494)
         
@@ -24,15 +37,15 @@ struct Previewer {
         boaAccount.sortIndex = 255
         axosAccount.sortIndex = 255
         
+        billsTag = Tag(name: "bills")
         let ffTag: Tag = Tag(name: "fast-food")
-        let billsTag: Tag = Tag(name: "bills")
         let incomeTag: Tag = Tag(name: "income")
-
+        
         var balance: Decimal = 238.99
         
         var transactionAmount: Decimal = -12.39
         balance = balance+transactionAmount
-        let burgerKingTransaction: AccountTransaction = AccountTransaction(name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), account: cuAccount, tags: [ffTag])
+        burgerKingTransaction = AccountTransaction(name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), account: cuAccount, tags: [ffTag])
 
         transactionAmount = -8.79
         balance = balance+transactionAmount
@@ -65,12 +78,12 @@ struct Previewer {
         cuAccount.currentBalance = balance
         boaAccount.currentBalance = 55.43
         axosAccount.currentBalance = axosAccount.startingBalance
+                
+        discordRecurringTransaction = RecurringTransaction(uuid: UUID.init(), name: "Discord", transactionType: .debit, amount: -10.81, notes: "", nextDueDate: nil, tags: [billsTag], transactions: [discordTransaction], frequency: .monthly, createdOn: Date())
         
+        billGroup = RecurringTransactionGroup(name: "Bills", recurringTransactions: [discordRecurringTransaction])
         
-        //cuAccount.transactions?.insert(burgerKingTransaction, at: 0)
-        //cuAccount.transactions?.insert(discordTransaction, at: 1)
-        //cuAccount.transactions?.insert(fitnessTransaction, at: 2)
-        //cuAccount.transactions?.insert(paydayTransaction, at: 3)
+        discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
 
         container.mainContext.insert(cuAccount)
         container.mainContext.insert(burgerKingTransaction)
@@ -81,6 +94,28 @@ struct Previewer {
         container.mainContext.insert(paydayTransaction)
         container.mainContext.insert(boaAccount)
         container.mainContext.insert(axosAccount)
+        container.mainContext.insert(discordRecurringTransaction)
+        //container.mainContext.insert(billGroup)
 
+    }
+    
+    private func getNextDueDate(day: Int) -> Date {
+        let calendar = Calendar.current
+
+        let currentComponents = calendar.dateComponents([.year, .month, .day], from: Date())
+
+        var monthsToAdd: Int = 0
+
+        if(currentComponents.day! > 16) {
+            monthsToAdd = 1
+        }
+
+
+        var components = calendar.dateComponents([.year, .month, .day], from: Date())
+        components.month! += monthsToAdd
+        components.day = 16
+
+        let date = calendar.date(from: components)
+        return date!
     }
 }

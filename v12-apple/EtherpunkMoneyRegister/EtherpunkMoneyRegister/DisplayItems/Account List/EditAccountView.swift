@@ -15,16 +15,22 @@ struct EditAccountView: View {
     
     
     var body: some View {
-        Text(account.name)
-        Text(account.id.uuidString)
-        Text(account.createdOn.ISO8601Format())
-            .toolbar {
-                Button {
-                    // Save
-                    path.removeLast()
-                } label: {
-                    Text("Save")
-                }
+        Form {
+            TextField("Name", text: $account.name)
+            TextField("Amount", value: $account.startingBalance, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+        }
+        .navigationTitle("New Account")
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
+        .toolbar {
+            Button {
+                // Save
+                account.currentBalance = account.startingBalance
+                path.removeLast()
+            } label: {
+                Text("Save")
             }
+        }
     }
 }
