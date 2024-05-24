@@ -18,7 +18,7 @@ struct TransactionListView: View {
 
     var body: some View {
         NavigationLink(value: NavData(navView: .EditAccount, account: account)) {
-            AccountListItemView(item: account)
+            AccountListItemView(account: account)
         }
         List(transactions) { item in
             NavigationLink(value: NavData(navView: .TransactionDetail, transaction: item)) {
@@ -58,7 +58,7 @@ struct TransactionListView: View {
     do {
         let previewer = try Previewer()
         
-        return TransactionListView(account: Account(name: "Amegy Bank", startingBalance: 238.99))
+        return TransactionListView(account: previewer.cuAccount)
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")

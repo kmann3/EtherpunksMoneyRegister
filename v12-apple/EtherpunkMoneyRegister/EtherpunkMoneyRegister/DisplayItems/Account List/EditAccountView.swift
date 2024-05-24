@@ -34,3 +34,13 @@ struct EditAccountView: View {
         }
     }
 }
+
+#Preview {
+    do {
+        let previewer = try Previewer()
+        return EditAccountView(path: .constant(NavigationPath()), account: previewer.cuAccount)
+            .modelContainer(previewer.container)
+    } catch {
+        return Text("Failed: \(error.localizedDescription)")
+    }
+}

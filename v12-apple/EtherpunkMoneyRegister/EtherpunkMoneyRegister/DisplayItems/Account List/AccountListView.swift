@@ -22,7 +22,7 @@ struct AccountListView: View {
             List {
                 ForEach(items) { item in
                     NavigationLink(value: NavData(navView: .TransactionList, account: item, transaction: nil)) {
-                        AccountListItemView(item: item)
+                        AccountListItemView(account: item)
                     }
                     .swipeActions(allowsFullSwipe: true) {
                         Button {

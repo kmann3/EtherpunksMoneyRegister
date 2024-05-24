@@ -60,3 +60,14 @@ struct TransactionListItemView: View {
         .background(item.backgroundColor)
     }
 }
+
+#Preview {
+    do {
+        let previewer = try Previewer()
+        
+        return TransactionListItemView(item: TransactionListItem(transaction: previewer.burgerKingTransaction))
+            .modelContainer(previewer.container)
+    } catch {
+        return Text("Failed: \(error.localizedDescription)")
+    }
+}

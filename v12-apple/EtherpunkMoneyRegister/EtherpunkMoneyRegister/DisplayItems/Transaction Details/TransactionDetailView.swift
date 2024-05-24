@@ -16,3 +16,14 @@ struct TransactionDetailView: View {
         Text("Id: \(transaction.id)")
     }
 }
+
+#Preview {
+    do {
+        let previewer = try Previewer()
+        
+        return TransactionDetailView(transaction: previewer.burgerKingTransaction)
+            .modelContainer(previewer.container)
+    } catch {
+        return Text("Failed: \(error.localizedDescription)")
+    }
+}

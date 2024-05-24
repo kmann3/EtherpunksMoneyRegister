@@ -9,12 +9,12 @@ import SwiftUI
 
 struct AccountListItemView: View {
     
-    var item: Account
+    var account: Account
     
     var body: some View {
         VStack{
             HStack() {
-                Text(item.name)
+                Text(account.name)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .font(.title2)
                     .foregroundStyle(.secondary)
@@ -36,7 +36,7 @@ struct AccountListItemView: View {
                 
                 Spacer()
                 
-                Text(item.currentBalance, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                Text(account.currentBalance, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                     .font(.headline)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 5)
@@ -50,7 +50,7 @@ struct AccountListItemView: View {
                 
                 Spacer()
                 
-                Text(item.outstandingBalance, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                Text(account.outstandingBalance, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                     .font(.headline)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 5)
@@ -64,7 +64,7 @@ struct AccountListItemView: View {
                 
                 Spacer()
                 
-                Text("\(item.outstandingItemCount) Items")
+                Text("\(account.outstandingItemCount) Items")
                     .font(.headline)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 5)
@@ -76,5 +76,15 @@ struct AccountListItemView: View {
             RoundedRectangle(cornerRadius: 10)
                 .stroke(Color(.sRGB, red: 125/255, green: 125/255, blue: 125/255, opacity: 0.5), lineWidth: 1)
             )
+    }
+}
+
+#Preview {
+    do {
+        let previewer = try Previewer()
+        return AccountListItemView(account: previewer.cuAccount)
+            .modelContainer(previewer.container)
+    } catch {
+        return Text("Failed: \(error.localizedDescription)")
     }
 }
