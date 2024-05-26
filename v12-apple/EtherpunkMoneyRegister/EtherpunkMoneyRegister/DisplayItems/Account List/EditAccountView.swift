@@ -12,6 +12,7 @@ struct EditAccountView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     @Binding var path: NavigationPath
+    @Binding var doSave: Bool
     @Bindable var account: Account
     
     private var title: String {
@@ -37,6 +38,7 @@ struct EditAccountView: View {
                 TextField("Name", text: $account.notes)
             }
         }
+        .navigationBarBackButtonHidden(true)
         .navigationTitle(title)
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
@@ -44,21 +46,16 @@ struct EditAccountView: View {
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button ("Save") {
-                    // Save
                     withAnimation {
                         save()
                         dismiss()
                     }
-//                    Button ("Save") {
-                    // Save
-                    account.currentBalance = account.startingBalance
-                    account.lastBalanced = Date()
-                    path.removeLast()
                 }
             }
         
             ToolbarItem(placement: .cancellationAction) {
                 Button ("Cancel", role: .cancel) {
+                    doSave = false
                     dismiss()
                 }
             }
@@ -67,14 +64,17 @@ struct EditAccountView: View {
     }
     
     private func save() {
-        
+        doSave = true
+        account.currentBalance = account.startingBalance
+        account.lastBalanced = Date()
     }
 }
 
 #Preview {
     do {
         let previewer = try Previewer()
-        return EditAccountView(path: .constant(NavigationPath()), account: previewer.cuAccount)
+        let doSave: Bool = false
+        return EditAccountView(path: .constant(NavigationPath()), doSave: .constant(doSave),  account: previewer.cuAccount)
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")

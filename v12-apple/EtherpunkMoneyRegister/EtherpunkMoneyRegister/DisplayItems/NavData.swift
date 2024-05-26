@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 class NavData: Hashable {
     var navView: NavView
     var account: Account? = nil
