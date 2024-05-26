@@ -20,6 +20,7 @@ struct TransactionListView: View {
         NavigationLink(value: NavData(navView: .EditAccount, account: account)) {
             AccountListItemView(account: account)
         }
+        // Should I use a lazyvstack?
         List(transactions) { item in
             NavigationLink(value: NavData(navView: .TransactionDetail, transaction: item)) {
                 TransactionListItemView(item: TransactionListItem(transaction: item))

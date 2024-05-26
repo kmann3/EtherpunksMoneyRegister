@@ -10,28 +10,64 @@ import SwiftUI
 struct EditAccountView: View {
     
     @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
     @Binding var path: NavigationPath
     @Bindable var account: Account
     
-    
+    private var title: String {
+        account.name == "" ? "Add Account" : "Edit \(account.name)"
+    }
+        
     var body: some View {
         Form {
-            TextField("Name", text: $account.name)
-            TextField("Amount", value: $account.startingBalance, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+            HStack {
+                Text("Name:")
+                TextField("Name", text: $account.name)
+            }
+            HStack {
+                Text("Starting Balance:")
+                TextField("Amount", value: $account.startingBalance, format: .number.precision((.fractionLength(2))))
+                    #if os(iOS)
+                    .keyboardType(.decimalPad)
+                    #endif
+                    
+            }
+            HStack {
+                Text("Notes:")
+                TextField("Name", text: $account.notes)
+            }
         }
-        .navigationTitle("New Account")
+        .navigationTitle(title)
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
         .toolbar {
-            Button {
-                // Save
-                account.currentBalance = account.startingBalance
-                path.removeLast()
-            } label: {
-                Text("Save")
+            ToolbarItem(placement: .confirmationAction) {
+                Button ("Save") {
+                    // Save
+                    withAnimation {
+                        save()
+                        dismiss()
+                    }
+//                    Button ("Save") {
+                    // Save
+                    account.currentBalance = account.startingBalance
+                    account.lastBalanced = Date()
+                    path.removeLast()
+                }
+                }
             }
+            ToolbarItem(placement: .cancellationAction) {
+                Button ("Cancel", role: .cancel) {
+                    dismiss()
+                }
+            }
+            
         }
+    }
+    
+    private func save() {
+        
     }
 }
 

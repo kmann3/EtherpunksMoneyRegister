@@ -14,6 +14,8 @@ struct AccountListView: View {
     @State private var isShowingDeleteActions = false
     @State private var accountToDelete: Account? = nil
     
+    @State private var newAccount: Account = Account(name: "", startingBalance: 0)
+    
     @Query(sort: [SortDescriptor(\Account.sortIndex, order: .forward), SortDescriptor(\Account.name, order: .forward)])
     var items: [Account]
     
@@ -71,6 +73,9 @@ struct AccountListView: View {
                 if item.navView == .EditAccount && item.account != nil {
                     EditAccountView(path: $path, account: item.account!)
                         .navigationTitle("New Account")
+                        .onDisappear {
+                            print("back \(item.account!.name)")
+                        }
                 } else if item.navView == .TransactionList && item.account != nil {
                     TransactionListView(account: item.account!)
                 } else if item.navView == .EditTransaction && item.transaction != nil {
@@ -85,7 +90,6 @@ struct AccountListView: View {
     }
     
     func createAccount() {
-        let newAccount = Account(name: "", startingBalance: 0)
         modelContext.insert(newAccount)
         path.append(NavData(navView: .EditAccount, account: newAccount))
     }
