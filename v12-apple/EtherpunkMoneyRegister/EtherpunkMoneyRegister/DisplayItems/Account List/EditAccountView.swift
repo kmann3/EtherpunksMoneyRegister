@@ -55,8 +55,8 @@ struct EditAccountView: View {
                     account.lastBalanced = Date()
                     path.removeLast()
                 }
-                }
             }
+        
             ToolbarItem(placement: .cancellationAction) {
                 Button ("Cancel", role: .cancel) {
                     dismiss()
