@@ -9,8 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class RecurringTransaction {
-    var uuid: UUID = UUID.init()
+final class RecurringTransaction {
     var name: String = ""
     var transactionType: TransactionType = TransactionType.debit
     var amount: Decimal = 0
@@ -33,8 +32,7 @@ class RecurringTransaction {
     
     var createdOn: Date = Date()
 
-    init(uuid: UUID, name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, tags: [Tag]? = nil, group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = nil, frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOn: Date) {
-        self.uuid = uuid
+    init(name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, tags: [Tag]? = nil, group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = nil, frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOn: Date) {
         self.name = name
         self.transactionType = transactionType
         self.amount = amount

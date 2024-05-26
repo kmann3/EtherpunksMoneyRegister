@@ -79,7 +79,7 @@ struct Previewer {
         boaAccount.currentBalance = 55.43
         axosAccount.currentBalance = axosAccount.startingBalance
                 
-        discordRecurringTransaction = RecurringTransaction(uuid: UUID.init(), name: "Discord", transactionType: .debit, amount: -10.81, notes: "", nextDueDate: nil, tags: [billsTag], transactions: [discordTransaction], frequency: .monthly, createdOn: Date())
+        discordRecurringTransaction = RecurringTransaction(name: "Discord", transactionType: .debit, amount: -10.81, notes: "", nextDueDate: nil, tags: [billsTag], transactions: [discordTransaction], frequency: .monthly, createdOn: Date())
         
         billGroup = RecurringTransactionGroup(name: "Bills", recurringTransactions: [discordRecurringTransaction])
         

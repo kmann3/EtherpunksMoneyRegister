@@ -9,9 +9,8 @@ import Foundation
 import SwiftData
 
 @Model
-class Account {
-    var id: UUID = UUID.init()
-    var name: String
+final class Account {
+    @Attribute(.unique) var name: String
     var startingBalance: Decimal = 0
     var currentBalance: Decimal
     var outstandingBalance: Decimal = 0
@@ -25,8 +24,7 @@ class Account {
     @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account)
     var transactions: [AccountTransaction]? = nil
     
-    init(id: UUID, name: String, startingBalance: Decimal, currentBalance: Decimal, outstandingBalance: Decimal, outstandingItemCount: Int, notes: String, createdOn: Date, transactions: [AccountTransaction]? = nil, sortIndex: Int = 255) {
-        self.id = id
+    init(name: String, startingBalance: Decimal, currentBalance: Decimal, outstandingBalance: Decimal, outstandingItemCount: Int, notes: String, createdOn: Date, transactions: [AccountTransaction]? = nil, sortIndex: Int = 255) {
         self.name = name
         self.startingBalance = startingBalance
         self.currentBalance = currentBalance

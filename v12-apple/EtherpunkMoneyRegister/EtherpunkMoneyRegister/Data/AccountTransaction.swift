@@ -10,8 +10,7 @@ import SwiftUI
 import SwiftData
 
 @Model
-class AccountTransaction {
-    var uuid: UUID = UUID.init()
+final class AccountTransaction {
     var name: String = ""
     var transactionType: TransactionType = TransactionType.debit
     var amount: Decimal = 0
@@ -34,8 +33,7 @@ class AccountTransaction {
     var tags: [Tag]? = nil
 
 
-    init(uuid: UUID, name: String, transactionType: TransactionType, amount: Decimal, balance: Decimal, pending: Date? = nil, cleared: Date? = nil, notes: String, confirmationNumber: String, bankTransactionText: String, fileCount: Int, account: Account, createdOn: Date, tags: [Tag]? = nil) {
-        self.uuid = uuid
+    init(name: String, transactionType: TransactionType, amount: Decimal, balance: Decimal, pending: Date? = nil, cleared: Date? = nil, notes: String, confirmationNumber: String, bankTransactionText: String, fileCount: Int, account: Account, createdOn: Date, tags: [Tag]? = nil) {
         self.name = name
         self.transactionType = transactionType
         self.amount = amount
