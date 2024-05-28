@@ -15,8 +15,18 @@ struct EditAccountView: View {
     @Binding var doSave: Bool
     @Bindable var account: Account
     
+    private var isNewAccount: Bool {
+        account.name == "" ? true : false
+    }
+    
     private var title: String {
-        account.name == "" ? "Add Account" : "Edit \(account.name)"
+        isNewAccount ? "Add Account" : "Edit \(account.name)"
+    }
+    
+    init(path: Binding<NavigationPath>, doSave: Binding<Bool>, account: Account) {
+        self._path = path
+        self._doSave = doSave
+        self.account = account
     }
         
     var body: some View {

@@ -17,12 +17,12 @@ struct TransactionListView: View {
     var account: Account
 
     var body: some View {
-        NavigationLink(value: NavData(navView: .EditAccount, account: account)) {
+        NavigationLink(value: NavData(navView: .editAccount, account: account)) {
             AccountListItemView(account: account)
         }
         // Should I use a lazyvstack?
         List(transactions) { item in
-            NavigationLink(value: NavData(navView: .TransactionDetail, transaction: item)) {
+            NavigationLink(value: NavData(navView: .transactionDetail, transaction: item)) {
                 TransactionListItemView(item: TransactionListItem(transaction: item))
             }
         }

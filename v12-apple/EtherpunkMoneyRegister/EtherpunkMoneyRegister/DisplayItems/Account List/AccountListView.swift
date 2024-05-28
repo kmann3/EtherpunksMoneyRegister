@@ -22,7 +22,7 @@ struct AccountListView: View {
         NavigationStack(path: $path) {
             List {
                 ForEach(items) { item in
-                    NavigationLink(value: NavData(navView: .TransactionList, account: item, transaction: nil)) {
+                    NavigationLink(value: NavData(navView: .transactionList, account: item, transaction: nil)) {
                         AccountListItemView(account: item)
                     }
                     .swipeActions(allowsFullSwipe: true) {
@@ -69,19 +69,27 @@ struct AccountListView: View {
             }
             .searchable(text: $searchText)
             .navigationDestination(for: NavData.self) { item in
-                if item.navView == .EditAccount && item.account != nil {
+                if item.navView == .createAccount && item.account != nil {
                     EditAccountView(path: $path, doSave: $doSave, account: item.account!)
-                        .navigationTitle("New Account")
                         .onDisappear {
-                            if(doSave == false) {
-                                deleteAccount(account: item.account!)
+                            if(doSave == true) {
+                                //save account
+                                modelContext.insert(item.account!)
                             }
                         }
-                } else if item.navView == .TransactionList && item.account != nil {
+                } else if item.navView == .editAccount && item.account != nil {
+                    EditAccountView(path: $path, doSave: $doSave, account: item.account!)
+                        .onDisappear {
+                            if(doSave == true) {
+                                //save account
+                                try? modelContext.save()
+                            }
+                        }
+                }else if item.navView == .transactionList && item.account != nil {
                     TransactionListView(account: item.account!)
-                } else if item.navView == .EditTransaction && item.transaction != nil {
+                } else if item.navView == .editTransaction && item.transaction != nil {
                     EditTransactionDetailView(transaction: item.transaction!)
-                } else if item.navView == .TransactionDetail && item.transaction != nil {
+                } else if item.navView == .transactionDetail && item.transaction != nil {
                     TransactionDetailView(transaction: item.transaction!)
                 }
             }
@@ -92,8 +100,7 @@ struct AccountListView: View {
     
     func createAccount() {
         let newAccount = Account(name: "", startingBalance: 0)
-        modelContext.insert(newAccount)
-        path.append(NavData(navView: .EditAccount, account: newAccount))
+        path.append(NavData(navView: .createAccount, account: newAccount))
     }
     
     func deleteAccount(account: Account) {
@@ -108,7 +115,7 @@ struct AccountListView: View {
         print("New \(transactionType) for: \(account.name)")
         let newTransaction: AccountTransaction = AccountTransaction(name: "", transactionType: transactionType, amount: 0, balance: account.currentBalance, pending: nil, cleared: nil, account: account)
         modelContext.insert(newTransaction)
-        path.append(NavData(navView: .EditTransaction, transaction: newTransaction))
+        path.append(NavData(navView: .editTransaction, transaction: newTransaction))
     }
 }
 
