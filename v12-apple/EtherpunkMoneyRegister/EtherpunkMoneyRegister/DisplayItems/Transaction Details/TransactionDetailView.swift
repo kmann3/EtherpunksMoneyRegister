@@ -8,12 +8,21 @@
 import SwiftUI
 
 struct TransactionDetailView: View {
-    var transaction: AccountTransaction
+    @Binding var path: NavigationPath
+    @Bindable var transaction: AccountTransaction
     
     var body: some View {
         Text("Transaction Details")
         Text("Name: \(transaction.name)")
         Text("Id: \(transaction.id)")
+        
+        .toolbar {
+            Button {
+                path.append(NavData(navView: .editTransaction, transaction: transaction))
+            } label: {
+                Label("Edit", systemImage: "pencil")
+            }
+        }
     }
 }
 
@@ -21,7 +30,7 @@ struct TransactionDetailView: View {
     do {
         let previewer = try Previewer()
         
-        return TransactionDetailView(transaction: previewer.burgerKingTransaction)
+        return TransactionDetailView(path:  .constant(NavigationPath()), transaction: previewer.burgerKingTransaction)
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")

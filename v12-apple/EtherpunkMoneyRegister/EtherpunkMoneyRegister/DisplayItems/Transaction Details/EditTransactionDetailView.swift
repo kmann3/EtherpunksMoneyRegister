@@ -8,7 +8,21 @@
 import SwiftUI
 
 struct EditTransactionDetailView: View {
-    var transaction: AccountTransaction
+    @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
+    @Binding var path: NavigationPath
+    @Binding var doSave: Bool
+    @Bindable var transaction: AccountTransaction
+    
+    private var title: String {
+        transaction.name == "" ? "Add Account" : "Edit \(transaction.name)"
+    }
+    
+    init(path: Binding<NavigationPath>, doSave: Binding<Bool>, transaction: AccountTransaction) {
+        self._path = path
+        self._doSave = doSave
+        self.transaction = transaction
+    }
     
     var body: some View {
         Text("Edit Transaction")
@@ -20,9 +34,10 @@ struct EditTransactionDetailView: View {
 
 #Preview {
     do {
-        let previewer = try Previewer()
         
-        return EditTransactionDetailView(transaction: previewer.burgerKingTransaction)
+        let previewer = try Previewer()
+        let doSave: Bool = false
+        return EditTransactionDetailView(path: .constant(NavigationPath()), doSave: .constant(doSave),  transaction: previewer.burgerKingTransaction)
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")

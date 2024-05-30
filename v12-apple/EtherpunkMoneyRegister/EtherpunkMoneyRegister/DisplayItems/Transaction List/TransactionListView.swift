@@ -27,16 +27,22 @@ struct TransactionListView: View {
             }
         }
         .toolbar {
-            Button {
-                createNewTransaction()
+            Menu {
+                Button {
+                    createNewTransaction(transactionType: .debit)
+                } label: {
+                    Label("Debit / Expense", systemImage: "creditcard")
+                }
+                Button {
+                    createNewTransaction(transactionType: .credit)
+                } label: {
+                    Label("Credit / Income / Deposit", systemImage: "banknote")
+                }
             } label: {
-                Image(systemName: "plus")
+                Label("Add New", systemImage: "plus")
             }
         }
         .searchable(text: $searchText)
-//        .navigationDestination(for: Account.self) { item in
-//            EditAccountView(path: $path, account: item)
-//        }
     }
     
     init(account: Account) {
@@ -50,8 +56,9 @@ struct TransactionListView: View {
         }, sort: sortOrder)
     }
     
-    func createNewTransaction() {
-        print("Make new transactioin")
+    func createNewTransaction(transactionType: TransactionType) {
+        let transaction = AccountTransaction(name: "", transactionType: transactionType, amount: 0, balance: account.currentBalance, pending: Date(), cleared: nil, account: account)
+        path.append(NavData(navView: .createTransaction, transaction: transaction))
     }
 }
 

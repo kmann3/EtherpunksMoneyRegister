@@ -70,6 +70,9 @@ struct AccountListView: View {
             .searchable(text: $searchText)
             .navigationDestination(for: NavData.self) { item in
                 if item.navView == .createAccount && item.account != nil {
+                    
+                    // CREATE NEW ACCOUNT
+                    
                     EditAccountView(path: $path, doSave: $doSave, account: item.account!)
                         .onDisappear {
                             if(doSave == true) {
@@ -78,6 +81,9 @@ struct AccountListView: View {
                             }
                         }
                 } else if item.navView == .editAccount && item.account != nil {
+                    
+                    // EDIT ACCOUNT
+                    
                     EditAccountView(path: $path, doSave: $doSave, account: item.account!)
                         .onDisappear {
                             if(doSave == true) {
@@ -86,11 +92,37 @@ struct AccountListView: View {
                             }
                         }
                 }else if item.navView == .transactionList && item.account != nil {
+                    
+                    // SHOW TRANSACTIONS FOR ACCOUNT
+                    
                     TransactionListView(account: item.account!)
+                } else if item.navView == .createTransaction && item.transaction != nil {
+                    
+                    // CREATE TRANSACTION
+                    
+                    EditTransactionDetailView(path: $path, doSave: $doSave, transaction: item.transaction!)
+                        .onDisappear {
+                            if(doSave == true) {
+                                // I think we need to add it to the context?
+                                modelContext.insert(item.transaction!)
+                                try? modelContext.save()
+                            }
+                        }
                 } else if item.navView == .editTransaction && item.transaction != nil {
-                    EditTransactionDetailView(transaction: item.transaction!)
+                    
+                    // EDIT TRANSACTION
+                    
+                    EditTransactionDetailView(path: $path, doSave: $doSave, transaction: item.transaction!)
+                        .onDisappear {
+                            if(doSave == true) {
+                                try? modelContext.save()
+                            }
+                        }
                 } else if item.navView == .transactionDetail && item.transaction != nil {
-                    TransactionDetailView(transaction: item.transaction!)
+                    
+                    // SHOW TRANSACTION DETAILS
+                    
+                    TransactionDetailView(path: $path, transaction: item.transaction!)
                 }
             }
             .navigationTitle("Account List")
@@ -105,10 +137,6 @@ struct AccountListView: View {
     
     func deleteAccount(account: Account) {
         modelContext.delete(account)
-    }
-    
-    func editAccount(account: Account) {
-        print(account.createdOn)        
     }
     
     func addNewTransaction(account: Account, transactionType: TransactionType) {
