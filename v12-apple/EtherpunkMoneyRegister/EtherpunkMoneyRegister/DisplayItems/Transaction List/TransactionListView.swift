@@ -9,43 +9,15 @@ import SwiftUI
 
 struct TransactionListView: View {
     
-    @Environment(\.modelContext) var modelContext
-    @State private var path = NavigationPath()
+    //@Environment(\.modelContext) var modelContext
+    @Binding private var path: NavigationPath
     @State private var searchText = ""
     @Query var transactions: [AccountTransaction]
     
-    var account: Account
+    @Bindable var account: Account
 
-    var body: some View {
-        NavigationLink(value: NavData(navView: .editAccount, account: account)) {
-            AccountListItemView(account: account)
-        }
-        // Should I use a lazyvstack?
-        List(transactions) { item in
-            NavigationLink(value: NavData(navView: .transactionDetail, transaction: item)) {
-                TransactionListItemView(item: TransactionListItem(transaction: item))
-            }
-        }
-        .toolbar {
-            Menu {
-                Button {
-                    createNewTransaction(transactionType: .debit)
-                } label: {
-                    Label("Debit / Expense", systemImage: "creditcard")
-                }
-                Button {
-                    createNewTransaction(transactionType: .credit)
-                } label: {
-                    Label("Credit / Income / Deposit", systemImage: "banknote")
-                }
-            } label: {
-                Label("Add New", systemImage: "plus")
-            }
-        }
-        .searchable(text: $searchText)
-    }
-    
-    init(account: Account) {
+    init(path: Binding<NavigationPath>, account: Account) {
+        self._path = path
         self.account = account
         let accountId = account.id
         
@@ -55,6 +27,61 @@ struct TransactionListView: View {
             transaction.account.persistentModelID == accountId || transaction.account.name.localizedStandardContains("Amegy")
         }, sort: sortOrder)
     }
+    
+    var body: some View {
+
+        List {
+            Section {
+                NavigationLink(value: NavData(navView: .editAccount, account: account)) {
+                    AccountListItemView(account: account)
+                }
+
+            }
+            
+            Section(header: Text("Transactions"), footer: Text("End of list")) {
+                ForEach(transactions) { item in
+                    NavigationLink(value: NavData(navView: .transactionDetail, transaction: item)) {
+                        TransactionListItemView(item: TransactionListItem(transaction: item))
+                    }
+                }
+            }
+        }
+        // Should I use a lazyvstack?
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Menu {
+                    Button {
+                        createNewTransaction(transactionType: .debit)
+                    } label: {
+                        Label("Debit / Expense", systemImage: "creditcard")
+                    }
+                    Button {
+                        createNewTransaction(transactionType: .credit)
+                    } label: {
+                        Label("Credit / Income / Deposit", systemImage: "banknote")
+                    }
+                    
+                    Divider()
+                    
+                    Button {
+                        //
+                    } label: {
+                        Label("Created On", systemImage: "calendar")
+                    }
+                    Button {
+                        //
+                    } label: {
+                        Label("Reserved and pending first", systemImage: "calendar.badge.exclamationmark")
+                    }
+                } label: {
+                    Label("Menu", systemImage: "ellipsis.circle")
+                }
+            }
+        }
+        .searchable(text: $searchText)
+        .navigationTitle("\(account.name)")
+    }
+
     
     func createNewTransaction(transactionType: TransactionType) {
         let transaction = AccountTransaction(name: "", transactionType: transactionType, amount: 0, balance: account.currentBalance, pending: Date(), cleared: nil, account: account)
@@ -66,7 +93,7 @@ struct TransactionListView: View {
     do {
         let previewer = try Previewer()
         
-        return TransactionListView(account: previewer.cuAccount)
+        return TransactionListView(path: .constant(NavigationPath()), account: previewer.cuAccount)
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")

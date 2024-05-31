@@ -15,7 +15,7 @@ struct EditTransactionDetailView: View {
     @Bindable var transaction: AccountTransaction
     
     private var title: String {
-        transaction.name == "" ? "Add Account" : "Edit \(transaction.name)"
+        transaction.name == "" ? "Add Transaction" : "Edit \(transaction.name)"
     }
     
     init(path: Binding<NavigationPath>, doSave: Binding<Bool>, transaction: AccountTransaction) {

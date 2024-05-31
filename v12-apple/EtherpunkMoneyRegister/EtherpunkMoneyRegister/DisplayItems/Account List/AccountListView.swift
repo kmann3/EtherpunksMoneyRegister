@@ -95,7 +95,7 @@ struct AccountListView: View {
                     
                     // SHOW TRANSACTIONS FOR ACCOUNT
                     
-                    TransactionListView(account: item.account!)
+                    TransactionListView(path: $path, account: item.account!)
                 } else if item.navView == .createTransaction && item.transaction != nil {
                     
                     // CREATE TRANSACTION

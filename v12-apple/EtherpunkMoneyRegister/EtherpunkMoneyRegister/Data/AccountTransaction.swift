@@ -23,8 +23,13 @@ final class AccountTransaction {
     // link to recurring transaction if needed
     var bankTransactionText: String = ""
     // Transaction Type Enum
-    var fileCount: Int = 0
-    // files
+    var fileCount: Int {
+        attachments == nil ? 0 : attachments!.count
+    }
+    
+    @Relationship(deleteRule: .cascade)
+    var attachments: [AccountTransactionFile]? = nil
+    
     @Relationship(deleteRule: .noAction)
     var account: Account
     var createdOn: Date = Date()
@@ -33,7 +38,7 @@ final class AccountTransaction {
     var tags: [Tag]? = nil
 
 
-    init(name: String, transactionType: TransactionType, amount: Decimal, balance: Decimal, pending: Date? = nil, cleared: Date? = nil, notes: String, confirmationNumber: String, bankTransactionText: String, fileCount: Int, account: Account, createdOn: Date, tags: [Tag]? = nil) {
+    init(name: String, transactionType: TransactionType, amount: Decimal, balance: Decimal, pending: Date? = nil, cleared: Date? = nil, notes: String, confirmationNumber: String, bankTransactionText: String, account: Account, createdOn: Date, tags: [Tag]? = nil) {
         self.name = name
         self.transactionType = transactionType
         self.amount = amount
@@ -43,7 +48,6 @@ final class AccountTransaction {
         self.notes = notes
         self.confirmationNumber = confirmationNumber
         self.bankTransactionText = bankTransactionText
-        self.fileCount = fileCount
         self.account = account
         self.createdOn = createdOn
         self.tags = tags

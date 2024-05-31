@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import SwiftData
 
 @MainActor
@@ -23,6 +24,7 @@ struct Previewer {
         let schema = Schema([
             Account.self,
             AccountTransaction.self,
+            AccountTransactionFile.self,
             Tag.self,
             RecurringTransaction.self,
             RecurringTransactionGroup.self])
@@ -54,8 +56,7 @@ struct Previewer {
         transactionAmount = -88.34
         balance = balance+transactionAmount
         let cvsTransaction: AccountTransaction = AccountTransaction(name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), account: cuAccount, tags: nil)
-        cvsTransaction.fileCount = 1
-        
+                
         transactionAmount = -10.81
         balance = balance + transactionAmount
         
@@ -84,7 +85,7 @@ struct Previewer {
         billGroup = RecurringTransactionGroup(name: "Bills", recurringTransactions: [discordRecurringTransaction])
         
         discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
-
+        
         container.mainContext.insert(cuAccount)
         container.mainContext.insert(burgerKingTransaction)
         container.mainContext.insert(wendysTransaction)
@@ -95,6 +96,14 @@ struct Previewer {
         container.mainContext.insert(boaAccount)
         container.mainContext.insert(axosAccount)
         container.mainContext.insert(discordRecurringTransaction)
+        
+        var myURL: URL
+        
+        
+        let fakeAttachment: AccountTransactionFile = AccountTransactionFile(name: "Logo", filename: "monkey.jpg", notes: "MY logo", createdOn: Date(), url: myURL, transaction: cvsTransaction)
+        container.mainContext.insert(fakeAttachment)
+
+
         //container.mainContext.insert(billGroup)
 
     }
@@ -117,5 +126,43 @@ struct Previewer {
 
         let date = calendar.date(from: components)
         return date!
+    }
+    
+    func downloadImageFromURL() -> URL? {
+        var monkeyUrl: String = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
+        
+        guard let url = URL(string: monkeyUrl) else {
+            return nil
+        }
+        
+        var foo: URL
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            foo = URL(fileURLWithPath: monkeyUrl)
+        }
+        
+        return foo
+        
+//        let task = URLSession.shared.downloadTask(with: url) { localURL, response, error in
+//            defer {
+//                DispatchQueue.main.async {
+//                    // show something
+//                }
+//            }
+//            
+//            guard error == nil, let localURL = localURL else {
+//                print("Download failed \(error?.localizedDescription ?? "Unknown error")")
+//                return
+//            }
+//            
+//            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+//            let destinationURL = documentsDirectory.appendingPathComponent(localURL.lastPathComponent)
+//            
+//            do {
+//                try FileManager.default.moveItem(at: localURL, to: destinationURL)
+//                completionBlock(destinationURL)
+//            } catch {
+//                print("Error moving file \(error)")
+//            }
+//        }
     }
 }

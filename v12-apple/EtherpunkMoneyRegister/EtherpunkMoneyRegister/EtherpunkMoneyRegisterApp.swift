@@ -17,6 +17,7 @@ struct EtherpunkMoneyRegisterApp: App {
         let schema = Schema([
             Account.self,
             AccountTransaction.self,
+            AccountTransactionFile.self,
             Tag.self,
             RecurringTransaction.self,
             RecurringTransactionGroup.self])

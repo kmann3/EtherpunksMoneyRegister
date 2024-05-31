@@ -37,11 +37,19 @@ struct EditAccountView: View {
             }
             HStack {
                 Text("Starting Balance:")
-                TextField("Amount", value: $account.startingBalance, format: .number.precision((.fractionLength(2))))
+                TextField("Amount", value: $account.startingBalance, format: .number.precision(.fractionLength(2)))
                     #if os(iOS)
                     .keyboardType(.decimalPad)
                     #endif
                     
+            }
+            HStack {
+                Text("Current Balance:")
+                Text(account.currentBalance, format: .number.precision(.fractionLength(2)))
+            }
+            HStack {
+                Text("Last Balanced:")
+                
             }
             HStack {
                 Text("Notes:")

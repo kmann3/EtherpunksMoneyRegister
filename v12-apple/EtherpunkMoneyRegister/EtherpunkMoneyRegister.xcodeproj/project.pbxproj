@@ -23,6 +23,7 @@
 		AA1097AB2BFA8C4B00F242E3 /* AccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */; };
 		AA1097AD2BFBA93600F242E3 /* AccountListItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097AC2BFBA93600F242E3 /* AccountListItemModel.swift */; };
 		AA2A4B6D2BFDAC0600FFA0A9 /* EditAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountView.swift */; };
+		AA57BC7F2C0977980053F706 /* AccountTransactionFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA57BC7E2C0977980053F706 /* AccountTransactionFile.swift */; };
 		AA658F3C2BFE50F400071C20 /* TransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA658F3B2BFE50F400071C20 /* TransactionDetailView.swift */; };
 		AA658F3E2BFE53C700071C20 /* EditTransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA658F3D2BFE53C700071C20 /* EditTransactionDetailView.swift */; };
 		AA658F402BFEABC700071C20 /* NavViewEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA658F3F2BFEABC700071C20 /* NavViewEnum.swift */; };
@@ -50,6 +51,7 @@
 		AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListItemView.swift; sourceTree = "<group>"; };
 		AA1097AC2BFBA93600F242E3 /* AccountListItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListItemModel.swift; sourceTree = "<group>"; };
 		AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountView.swift; sourceTree = "<group>"; };
+		AA57BC7E2C0977980053F706 /* AccountTransactionFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTransactionFile.swift; sourceTree = "<group>"; };
 		AA658F3B2BFE50F400071C20 /* TransactionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailView.swift; sourceTree = "<group>"; };
 		AA658F3D2BFE53C700071C20 /* EditTransactionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionDetailView.swift; sourceTree = "<group>"; };
 		AA658F3F2BFEABC700071C20 /* NavViewEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavViewEnum.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				AA0E1F042BF8F1B100E68AB0 /* Enums */,
 				AA0E1EF82BF85C2A00E68AB0 /* Account.swift */,
 				AA0E1EF62BF85BA300E68AB0 /* AccountTransaction.swift */,
+				AA57BC7E2C0977980053F706 /* AccountTransactionFile.swift */,
 				AA0E1EFC2BF8EC6900E68AB0 /* Tag.swift */,
 				AA0E1EFE2BF8EE0D00E68AB0 /* RecurringTransaction.swift */,
 				AA0E1F002BF8EE5100E68AB0 /* RecurringTransactionGroup.swift */,
@@ -90,6 +93,7 @@
 		AA0E1EF52BF85B8300E68AB0 /* DisplayItems */ = {
 			isa = PBXGroup;
 			children = (
+				AA57BC7D2C0974550053F706 /* Account Details */,
 				AA1097A72BFA795A00F242E3 /* Account List */,
 				AA658F3A2BFE50BD00071C20 /* Transaction Details */,
 				AA1097A62BFA795100F242E3 /* Transaction List */,
@@ -123,11 +127,18 @@
 			isa = PBXGroup;
 			children = (
 				AA1097A82BFA83DF00F242E3 /* AccountListView.swift */,
-				AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountView.swift */,
 				AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */,
 				AA1097AC2BFBA93600F242E3 /* AccountListItemModel.swift */,
 			);
 			path = "Account List";
+			sourceTree = "<group>";
+		};
+		AA57BC7D2C0974550053F706 /* Account Details */ = {
+			isa = PBXGroup;
+			children = (
+				AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountView.swift */,
+			);
+			path = "Account Details";
 			sourceTree = "<group>";
 		};
 		AA658F3A2BFE50BD00071C20 /* Transaction Details */ = {
@@ -252,6 +263,7 @@
 				AA1097AB2BFA8C4B00F242E3 /* AccountListItemView.swift in Sources */,
 				AA0E1EF22BF8546400E68AB0 /* TransactionListItemModel.swift in Sources */,
 				AA658F402BFEABC700071C20 /* NavViewEnum.swift in Sources */,
+				AA57BC7F2C0977980053F706 /* AccountTransactionFile.swift in Sources */,
 				AA1097A52BF94CFC00F242E3 /* Previewer.swift in Sources */,
 				AA0E1F032BF8EFFA00E68AB0 /* RecurringFrequencyEnum.swift in Sources */,
 				AA658F422BFEAC1A00071C20 /* NavData.swift in Sources */,

@@ -12,10 +12,17 @@ struct TransactionDetailView: View {
     @Bindable var transaction: AccountTransaction
     
     var body: some View {
-        Text("Transaction Details")
-        Text("Name: \(transaction.name)")
-        Text("Id: \(transaction.id)")
-        
+        VStack {
+            Text("Transaction Details")
+            Text("Name: \(transaction.name)")
+            Text("Type: \(transaction.transactionType)")
+            Text("Amount: ")
+            Text("Created On: ")
+            Text("Pending On: ")
+            Text("Cleared On: ")
+            Text("Attachments: ")
+
+        }
         .toolbar {
             Button {
                 path.append(NavData(navView: .editTransaction, transaction: transaction))
@@ -23,6 +30,7 @@ struct TransactionDetailView: View {
                 Label("Edit", systemImage: "pencil")
             }
         }
+        .navigationTitle("Details: \(transaction.name)")
     }
 }
 
