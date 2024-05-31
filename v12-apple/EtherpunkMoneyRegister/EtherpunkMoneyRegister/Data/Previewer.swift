@@ -16,6 +16,7 @@ struct Previewer {
     
     let cuAccount: Account
     let burgerKingTransaction: AccountTransaction
+    let cvsTransaction: AccountTransaction
     let billsTag: Tag
     let discordRecurringTransaction: RecurringTransaction
     let billGroup: RecurringTransactionGroup
@@ -55,7 +56,7 @@ struct Previewer {
         
         transactionAmount = -88.34
         balance = balance+transactionAmount
-        let cvsTransaction: AccountTransaction = AccountTransaction(name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), account: cuAccount, tags: nil)
+        cvsTransaction = AccountTransaction(name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), account: cuAccount, tags: nil)
                 
         transactionAmount = -10.81
         balance = balance + transactionAmount
@@ -85,11 +86,17 @@ struct Previewer {
         billGroup = RecurringTransactionGroup(name: "Bills", recurringTransactions: [discordRecurringTransaction])
         
         discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
+        let monkeyURL: URL? = downloadImageFromURL()
+        if(monkeyURL == nil) {
+            print("An error?")
+        }
+        let fakeAttachment: AccountTransactionFile = AccountTransactionFile(name: "Logo", filename: "monkey.jpg", notes: "MY logo", createdOn: Date(), url: monkeyURL!, transaction: cvsTransaction)
         
         container.mainContext.insert(cuAccount)
         container.mainContext.insert(burgerKingTransaction)
         container.mainContext.insert(wendysTransaction)
         container.mainContext.insert(cvsTransaction)
+        container.mainContext.insert(fakeAttachment)
         container.mainContext.insert(discordTransaction)
         container.mainContext.insert(fitnessTransaction)
         container.mainContext.insert(paydayTransaction)
@@ -97,14 +104,7 @@ struct Previewer {
         container.mainContext.insert(axosAccount)
         container.mainContext.insert(discordRecurringTransaction)
         
-        var myURL: URL
-        
-        
-        let fakeAttachment: AccountTransactionFile = AccountTransactionFile(name: "Logo", filename: "monkey.jpg", notes: "MY logo", createdOn: Date(), url: myURL, transaction: cvsTransaction)
-        container.mainContext.insert(fakeAttachment)
-
-
-        //container.mainContext.insert(billGroup)
+       //container.mainContext.insert(billGroup)
 
     }
     
@@ -129,18 +129,23 @@ struct Previewer {
     }
     
     func downloadImageFromURL() -> URL? {
-        var monkeyUrl: String = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
+        let monkeyUrl: String = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
         
         guard let url = URL(string: monkeyUrl) else {
             return nil
         }
         
-        var foo: URL
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            foo = URL(fileURLWithPath: monkeyUrl)
+        do {
+            let data = try Data(contentsOf: url)
+            
+            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let destinationURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
+            try data.write(to: destinationURL)
+            return destinationURL
+        } catch {
+            print("Error downloading file: \(error)")
+            return nil
         }
-        
-        return foo
         
 //        let task = URLSession.shared.downloadTask(with: url) { localURL, response, error in
 //            defer {

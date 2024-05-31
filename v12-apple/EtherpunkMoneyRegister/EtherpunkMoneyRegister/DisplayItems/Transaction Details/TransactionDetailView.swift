@@ -20,7 +20,7 @@ struct TransactionDetailView: View {
             Text("Created On: ")
             Text("Pending On: ")
             Text("Cleared On: ")
-            Text("Attachments: ")
+            Text("Attachments: \(transaction.fileCount)")
 
         }
         .toolbar {

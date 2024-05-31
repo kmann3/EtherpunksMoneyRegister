@@ -24,11 +24,11 @@ final class AccountTransaction {
     var bankTransactionText: String = ""
     // Transaction Type Enum
     var fileCount: Int {
-        attachments == nil ? 0 : attachments!.count
+        files == nil ? 0 : files!.count
     }
     
     @Relationship(deleteRule: .cascade)
-    var attachments: [AccountTransactionFile]? = nil
+    var files: [AccountTransactionFile]? = nil
     
     @Relationship(deleteRule: .noAction)
     var account: Account
