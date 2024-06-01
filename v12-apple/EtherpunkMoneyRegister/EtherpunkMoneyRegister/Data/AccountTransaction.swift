@@ -34,7 +34,7 @@ final class AccountTransaction {
     var createdOn: Date = Date()
     
     var fileCount: Int {
-        files == nil ? 0 : files!.count
+        files?.count ?? 0
     }
         
     var backgroundColor: Color {

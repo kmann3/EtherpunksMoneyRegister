@@ -21,6 +21,7 @@ struct AccountListView: View {
     var body: some View {
         NavigationStack(path: $path) {
             List {
+                // TODO: Link to all outstanding items
                 ForEach(items) { item in
                     NavigationLink(value: NavData(navView: .transactionList, account: item, transaction: nil)) {
                         AccountListItemView(account: item)

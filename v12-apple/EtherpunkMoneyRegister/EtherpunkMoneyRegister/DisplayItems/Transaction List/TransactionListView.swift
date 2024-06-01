@@ -8,8 +8,6 @@ import SwiftData
 import SwiftUI
 
 struct TransactionListView: View {
-    
-    //@Environment(\.modelContext) var modelContext
     @Binding private var path: NavigationPath
     @State private var searchText = ""
     @Query var transactions: [AccountTransaction]
