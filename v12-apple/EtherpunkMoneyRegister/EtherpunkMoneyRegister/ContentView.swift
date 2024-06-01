@@ -16,6 +16,7 @@ struct ContentView: View {
                     Label("Accounts", systemImage: "house.lodge")
                 }
             Text("List of tags. Ability to create, delete, and lookup related transactions")
+            // Should this just be in settings?
                 .tabItem {
                     Label("Tags", systemImage: "tag")
                 }
@@ -24,6 +25,8 @@ struct ContentView: View {
                     Label("Recurring", systemImage: "repeat")
                 }
             Text("Useful reports?")
+            // Generate a list based off certain tags
+            // Export a list of tax documents for itemizations
                 .tabItem {
                     Label("Reports", systemImage: "chart.line.uptrend.xyaxis")
                 }
