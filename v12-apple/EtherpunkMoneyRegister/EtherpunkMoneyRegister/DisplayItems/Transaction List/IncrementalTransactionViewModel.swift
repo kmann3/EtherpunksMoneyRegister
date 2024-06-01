@@ -41,15 +41,14 @@ class IncrementalTransactionViewModel: ObservableObject {
     }
     
     func fetchTransactions(offset: Int, limit: Int, sortDescriptor: [SortDescriptor<AccountTransaction>]) -> [AccountTransaction] {
+        let accountId = account.persistentModelID
         var fetchDescriptor = FetchDescriptor<AccountTransaction>(sortBy: sortDescriptor)
         fetchDescriptor.fetchOffset = offset
         fetchDescriptor.fetchLimit = limit
         fetchDescriptor.relationshipKeyPathsForPrefetching = [\.tags, \.fileCount]
-//        fetchDescriptor.predicate = #Predicate<AccountTransaction> { transaction in
-//            //transaction.account == account
-//            transaction.account.name.localizedStandardContains("Amegy")
-//            //transaction.amount > 0
-//        }
+        fetchDescriptor.predicate = #Predicate<AccountTransaction> { transaction in
+            transaction.account.persistentModelID == accountId || transaction.account.name.localizedStandardContains("Amegy")
+        }
         
         do {
             let transactions = try modelContext.fetch(fetchDescriptor)
