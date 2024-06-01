@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class TransactionListItem {
+class TransactionListItem2 {
     var transaction: AccountTransaction
     
     var backgroundColor: Color

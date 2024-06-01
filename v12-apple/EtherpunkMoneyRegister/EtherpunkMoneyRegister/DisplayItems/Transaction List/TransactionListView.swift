@@ -32,7 +32,7 @@ struct TransactionListView: View {
 
         List {
             Section {
-                NavigationLink(value: NavData(navView: .editAccount, account: account)) {
+                NavigationLink(value: NavData(navView: .accountEditor, account: account)) {
                     AccountListItemView(account: account)
                 }
 
@@ -41,7 +41,7 @@ struct TransactionListView: View {
             Section(header: Text("Transactions"), footer: Text("End of list")) {
                 ForEach(transactions) { item in
                     NavigationLink(value: NavData(navView: .transactionDetail, transaction: item)) {
-                        TransactionListItemView(item: TransactionListItem(transaction: item))
+                        TransactionListItemView(transaction: item)
                     }
                 }
             }
@@ -85,7 +85,7 @@ struct TransactionListView: View {
     
     func createNewTransaction(transactionType: TransactionType) {
         let transaction = AccountTransaction(name: "", transactionType: transactionType, amount: 0, balance: account.currentBalance, pending: Date(), cleared: nil, account: account)
-        path.append(NavData(navView: .createTransaction, transaction: transaction))
+        path.append(NavData(navView: .transactionCreator, transaction: transaction))
     }
 }
 

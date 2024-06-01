@@ -9,11 +9,22 @@ import Foundation
 
 enum NavView: Hashable{
     case accountList
-    case createAccount
-    case editAccount
+    case accountCreator
+    case accountEditor
+    
+    case tagDetail
+    case tagEditor
     
     case transactionList
     case transactionDetail
-    case createTransaction
-    case editTransaction
+    case transactionCreator
+    case transactionEditor
+    
+    case recurringTransactionDetail
+    case recurringTransactionEditor
+    case recurringTransactionList
+    
+    case recurringTransactionGroupDetail
+    case recurringTransactionGroupEditor
+    case recurringTransactionGroupList
 }

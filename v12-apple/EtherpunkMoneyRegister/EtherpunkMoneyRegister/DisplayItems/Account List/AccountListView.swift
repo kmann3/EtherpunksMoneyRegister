@@ -69,21 +69,17 @@ struct AccountListView: View {
             }
             .searchable(text: $searchText)
             .navigationDestination(for: NavData.self) { item in
-                if item.navView == .createAccount && item.account != nil {
+                
+                switch(item.navView) {
                     
-                    // CREATE NEW ACCOUNT
-                    
+                case .accountCreator:
                     EditAccountView(path: $path, doSave: $doSave, account: item.account!)
                         .onDisappear {
                             if(doSave == true) {
-                                //save account
                                 modelContext.insert(item.account!)
                             }
                         }
-                } else if item.navView == .editAccount && item.account != nil {
-                    
-                    // EDIT ACCOUNT
-                    
+                case .accountEditor:
                     EditAccountView(path: $path, doSave: $doSave, account: item.account!)
                         .onDisappear {
                             if(doSave == true) {
@@ -91,38 +87,49 @@ struct AccountListView: View {
                                 try? modelContext.save()
                             }
                         }
-                }else if item.navView == .transactionList && item.account != nil {
+
+                case .accountList:
+                    Text("That is this view. We should never reach here.")
                     
-                    // SHOW TRANSACTIONS FOR ACCOUNT
+                case.recurringTransactionDetail:
+                    Text("Recurring Transaction Detail")
+                case .recurringTransactionEditor:
+                    Text("Recurring Transaction Editor")
+                case .recurringTransactionList:
+                    Text("Recurring Transaction List")
                     
-                    TransactionListView(path: $path, account: item.account!)
-                } else if item.navView == .createTransaction && item.transaction != nil {
+                case.recurringTransactionGroupDetail:
+                    Text("Recurring Transaction Group Detail")
+                case.recurringTransactionGroupEditor:
+                    Text("Recurring Transaction Group Editor")
+                case .recurringTransactionGroupList:
+                    Text("Recurring Transaction Group List")
+
+                case .tagDetail:
+                    TagDetailView(path: $path, tag: item.tag!)
+
+                case .tagEditor:
+                    Text("Tag Editor")
                     
-                    // CREATE TRANSACTION
-                    
+                case .transactionCreator:
                     EditTransactionDetailView(path: $path, doSave: $doSave, transaction: item.transaction!)
                         .onDisappear {
                             if(doSave == true) {
-                                // I think we need to add it to the context?
                                 modelContext.insert(item.transaction!)
                                 try? modelContext.save()
                             }
                         }
-                } else if item.navView == .editTransaction && item.transaction != nil {
-                    
-                    // EDIT TRANSACTION
-                    
+                case .transactionDetail:
+                    TransactionDetailView(path: $path, transaction: item.transaction!)
+                case .transactionEditor:
                     EditTransactionDetailView(path: $path, doSave: $doSave, transaction: item.transaction!)
                         .onDisappear {
                             if(doSave == true) {
                                 try? modelContext.save()
                             }
                         }
-                } else if item.navView == .transactionDetail && item.transaction != nil {
-                    
-                    // SHOW TRANSACTION DETAILS
-                    
-                    TransactionDetailView(path: $path, transaction: item.transaction!)
+                case .transactionList:
+                    TransactionListView(path: $path, account: item.account!)
                 }
             }
             .navigationTitle("Account List")
@@ -132,7 +139,7 @@ struct AccountListView: View {
     
     func createAccount() {
         let newAccount = Account(name: "", startingBalance: 0)
-        path.append(NavData(navView: .createAccount, account: newAccount))
+        path.append(NavData(navView: .accountCreator, account: newAccount))
     }
     
     func deleteAccount(account: Account) {
@@ -143,7 +150,7 @@ struct AccountListView: View {
         print("New \(transactionType) for: \(account.name)")
         let newTransaction: AccountTransaction = AccountTransaction(name: "", transactionType: transactionType, amount: 0, balance: account.currentBalance, pending: nil, cleared: nil, account: account)
         modelContext.insert(newTransaction)
-        path.append(NavData(navView: .editTransaction, transaction: newTransaction))
+        path.append(NavData(navView: .transactionEditor, transaction: newTransaction))
     }
 }
 

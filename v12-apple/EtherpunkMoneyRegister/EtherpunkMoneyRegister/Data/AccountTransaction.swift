@@ -19,25 +19,53 @@ final class AccountTransaction {
     var cleared: Date? = nil
     var notes: String = ""
     var confirmationNumber: String = ""
-    // tags
-    // link to recurring transaction if needed
+    var recurringTransaction: RecurringTransaction? = nil
     var bankTransactionText: String = ""
-    // Transaction Type Enum
-    var fileCount: Int {
-        files == nil ? 0 : files!.count
-    }
     
     @Relationship(deleteRule: .cascade)
     var files: [AccountTransactionFile]? = nil
     
     @Relationship(deleteRule: .noAction)
     var account: Account
-    var createdOn: Date = Date()
     
     @Relationship(deleteRule: .noAction)
     var tags: [Tag]? = nil
+    
+    var createdOn: Date = Date()
+    
+    var fileCount: Int {
+        files == nil ? 0 : files!.count
+    }
+        
+    var backgroundColor: Color {
+        if(self.pending == nil && self.cleared == nil) {
+            Color(.sRGB, red: 255/255, green: 25/255, blue: 25/255, opacity: 0.5)
+        } else if (self.pending != nil && self.cleared == nil) {
+            Color(.sRGB, red: 255/255, green: 150/255, blue: 25/255, opacity: 0.5)
+        } else {
+            Color.clear
+        }
+    }
 
-
+    init(name: String, transactionType: TransactionType, amount: Decimal, balance: Decimal, pending: Date? = nil, cleared: Date? = nil, notes: String, confirmationNumber: String, recurringTransaction: RecurringTransaction? = nil, bankTransactionText: String, files: [AccountTransactionFile]? = nil, account: Account, tags: [Tag]? = nil, createdOn: Date) {
+        self.name = name
+        self.transactionType = transactionType
+        self.amount = amount
+        self.balance = balance
+        self.pending = pending
+        self.cleared = cleared
+        self.notes = notes
+        self.confirmationNumber = confirmationNumber
+        self.recurringTransaction = recurringTransaction
+        self.bankTransactionText = bankTransactionText
+        self.files = files
+        self.account = account
+        self.tags = tags
+        self.createdOn = createdOn
+        
+        VerifySignage()
+    }
+    
     init(name: String, transactionType: TransactionType, amount: Decimal, balance: Decimal, pending: Date? = nil, cleared: Date? = nil, notes: String, confirmationNumber: String, bankTransactionText: String, account: Account, createdOn: Date, tags: [Tag]? = nil) {
         self.name = name
         self.transactionType = transactionType

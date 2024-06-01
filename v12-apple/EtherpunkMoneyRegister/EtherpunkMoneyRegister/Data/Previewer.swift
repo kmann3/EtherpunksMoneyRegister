@@ -16,7 +16,7 @@ struct Previewer {
     
     let cuAccount: Account
     let burgerKingTransaction: AccountTransaction
-    let cvsTransaction: AccountTransaction
+    var cvsTransaction: AccountTransaction
     let billsTag: Tag
     let discordRecurringTransaction: RecurringTransaction
     let billGroup: RecurringTransactionGroup
@@ -43,6 +43,8 @@ struct Previewer {
         billsTag = Tag(name: "bills")
         let ffTag: Tag = Tag(name: "fast-food")
         let incomeTag: Tag = Tag(name: "income")
+        let medicalTag: Tag = Tag(name: "medical")
+        let pharmacyTag: Tag = Tag(name: "pharmacy")
         
         var balance: Decimal = 238.99
         
@@ -56,7 +58,7 @@ struct Previewer {
         
         transactionAmount = -88.34
         balance = balance+transactionAmount
-        cvsTransaction = AccountTransaction(name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), account: cuAccount, tags: nil)
+        cvsTransaction = AccountTransaction(name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), account: cuAccount, tags: [medicalTag, pharmacyTag])
                 
         transactionAmount = -10.81
         balance = balance + transactionAmount
@@ -90,7 +92,7 @@ struct Previewer {
         if(monkeyURL == nil) {
             print("An error?")
         }
-        let fakeAttachment: AccountTransactionFile = AccountTransactionFile(name: "Logo", filename: "monkey.jpg", notes: "MY logo", createdOn: Date(), url: monkeyURL!, transaction: cvsTransaction)
+        let fakeAttachment: AccountTransactionFile = AccountTransactionFile(name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true, transaction: cvsTransaction)
         
         container.mainContext.insert(cuAccount)
         container.mainContext.insert(burgerKingTransaction)
@@ -102,9 +104,9 @@ struct Previewer {
         container.mainContext.insert(paydayTransaction)
         container.mainContext.insert(boaAccount)
         container.mainContext.insert(axosAccount)
-        container.mainContext.insert(discordRecurringTransaction)
+        //container.mainContext.insert(discordRecurringTransaction)
         
-       //container.mainContext.insert(billGroup)
+       container.mainContext.insert(billGroup)
 
     }
     
