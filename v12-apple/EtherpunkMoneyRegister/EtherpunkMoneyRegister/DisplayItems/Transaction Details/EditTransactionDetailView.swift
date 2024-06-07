@@ -24,6 +24,7 @@ struct EditTransactionDetailView: View {
         self.transaction = transaction
     }
     
+    // IF IT IS A NEW CONNECTION TRY AND SNAG LOCATION TO INFER THE NAME?
     var body: some View {
         Text("Edit Transaction")
         Text("Name: \(transaction.name)")

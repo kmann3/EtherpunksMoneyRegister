@@ -22,7 +22,7 @@ final class AccountTransaction {
     var recurringTransaction: RecurringTransaction? = nil
     var bankTransactionText: String = ""
     
-    @Relationship(deleteRule: .cascade)
+    @Relationship(deleteRule: .cascade, inverse: \AccountTransactionFile.transaction)
     var files: [AccountTransactionFile]? = nil
     
     @Relationship(deleteRule: .noAction)

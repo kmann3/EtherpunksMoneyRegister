@@ -21,6 +21,7 @@
 		AA1097A92BFA83DF00F242E3 /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097A82BFA83DF00F242E3 /* AccountListView.swift */; };
 		AA1097AB2BFA8C4B00F242E3 /* AccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */; };
 		AA2A4B6D2BFDAC0600FFA0A9 /* EditAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountView.swift */; };
+		AA3EC5262C0BB82000D7118D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3EC5252C0BB82000D7118D /* SettingsView.swift */; };
 		AA57BC7F2C0977980053F706 /* AccountTransactionFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA57BC7E2C0977980053F706 /* AccountTransactionFile.swift */; };
 		AA658F3C2BFE50F400071C20 /* TransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA658F3B2BFE50F400071C20 /* TransactionDetailView.swift */; };
 		AA658F3E2BFE53C700071C20 /* EditTransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA658F3D2BFE53C700071C20 /* EditTransactionDetailView.swift */; };
@@ -49,6 +50,7 @@
 		AA1097A82BFA83DF00F242E3 /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
 		AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListItemView.swift; sourceTree = "<group>"; };
 		AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountView.swift; sourceTree = "<group>"; };
+		AA3EC5252C0BB82000D7118D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		AA57BC7E2C0977980053F706 /* AccountTransactionFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTransactionFile.swift; sourceTree = "<group>"; };
 		AA658F3B2BFE50F400071C20 /* TransactionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailView.swift; sourceTree = "<group>"; };
 		AA658F3D2BFE53C700071C20 /* EditTransactionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionDetailView.swift; sourceTree = "<group>"; };
@@ -133,6 +135,14 @@
 			path = "Account List";
 			sourceTree = "<group>";
 		};
+		AA3EC5242C0BB81300D7118D /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				AA3EC5252C0BB82000D7118D /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		AA57BC7D2C0974550053F706 /* Account Details */ = {
 			isa = PBXGroup;
 			children = (
@@ -179,6 +189,7 @@
 			children = (
 				AA0E1EF52BF85B8300E68AB0 /* DisplayItems */,
 				AA0E1EEE2BF8541100E68AB0 /* Data */,
+				AA3EC5242C0BB81300D7118D /* Settings */,
 				AAE814ED2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift */,
 				AAE814EF2BF853B400CA7DDD /* ContentView.swift */,
 				AAE814F12BF853B500CA7DDD /* Assets.xcassets */,
@@ -275,6 +286,7 @@
 				AA0E1F032BF8EFFA00E68AB0 /* RecurringFrequencyEnum.swift in Sources */,
 				AA658F422BFEAC1A00071C20 /* NavData.swift in Sources */,
 				AA0E1EF72BF85BA300E68AB0 /* AccountTransaction.swift in Sources */,
+				AA3EC5262C0BB82000D7118D /* SettingsView.swift in Sources */,
 				AA0E1EF42BF857F400E68AB0 /* TransactionListView.swift in Sources */,
 				AA658F3E2BFE53C700071C20 /* EditTransactionDetailView.swift in Sources */,
 				AA0E1EF02BF8543D00E68AB0 /* TransactionListItemView.swift in Sources */,

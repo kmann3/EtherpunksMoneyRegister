@@ -106,6 +106,8 @@ struct Previewer {
         container.mainContext.insert(axosAccount)
         //container.mainContext.insert(discordRecurringTransaction)
         
+        container.mainContext.insert(fakeAttachment)
+        
        container.mainContext.insert(billGroup)
 
     }
@@ -130,7 +132,7 @@ struct Previewer {
         return date!
     }
     
-    func downloadImageFromURL() -> URL? {
+    private func downloadImageFromURL() -> URL? {
         let monkeyUrl: String = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
         
         guard let url = URL(string: monkeyUrl) else {
@@ -148,28 +150,5 @@ struct Previewer {
             print("Error downloading file: \(error)")
             return nil
         }
-        
-//        let task = URLSession.shared.downloadTask(with: url) { localURL, response, error in
-//            defer {
-//                DispatchQueue.main.async {
-//                    // show something
-//                }
-//            }
-//            
-//            guard error == nil, let localURL = localURL else {
-//                print("Download failed \(error?.localizedDescription ?? "Unknown error")")
-//                return
-//            }
-//            
-//            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-//            let destinationURL = documentsDirectory.appendingPathComponent(localURL.lastPathComponent)
-//            
-//            do {
-//                try FileManager.default.moveItem(at: localURL, to: destinationURL)
-//                completionBlock(destinationURL)
-//            } catch {
-//                print("Error moving file \(error)")
-//            }
-//        }
     }
 }
