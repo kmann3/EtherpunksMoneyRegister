@@ -163,11 +163,12 @@ struct SettingsView: View {
             try modelContext.delete(model: Account.self)
             try modelContext.delete(model: AccountTransaction.self)
             try modelContext.delete(model: AccountTransactionFile.self)
+            try modelContext.delete(model: AppSettings.self)
             try modelContext.delete(model: Tag.self)
             try modelContext.delete(model: RecurringTransaction.self)
             try modelContext.delete(model: RecurringTransactionGroup.self)
         } catch {
-            print("Failed to clear all Country and City data.")
+            print("Failed to clear all data.")
         }
     }
 }

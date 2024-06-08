@@ -24,6 +24,10 @@ struct EtherpunkMoneyRegisterApp: App {
             RecurringTransactionGroup.self])
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         container = try! ModelContainer(for: schema, configurations: [configuration])
+        
+        #if DEBUG
+        seedData(container: container)
+        #endif
     }
         
     var body: some Scene {
@@ -31,5 +35,12 @@ struct EtherpunkMoneyRegisterApp: App {
             ContentView()
         }
         .modelContainer(container)
+    }
+    
+    @MainActor
+    func seedData(container: ModelContainer) {
+        container.mainContext.insert(Tag(name: "test"))
+        container.mainContext.insert(Account(name: "Test", startingBalance: 5))
+        try? container.mainContext.save()
     }
 }
