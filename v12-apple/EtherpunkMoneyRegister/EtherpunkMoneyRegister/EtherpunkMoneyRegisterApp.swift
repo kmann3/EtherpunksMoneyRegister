@@ -18,6 +18,7 @@ struct EtherpunkMoneyRegisterApp: App {
             Account.self,
             AccountTransaction.self,
             AccountTransactionFile.self,
+            AppSettings.self,
             Tag.self,
             RecurringTransaction.self,
             RecurringTransactionGroup.self])

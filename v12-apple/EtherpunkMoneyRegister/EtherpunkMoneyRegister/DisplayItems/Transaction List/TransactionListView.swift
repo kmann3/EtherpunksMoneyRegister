@@ -30,7 +30,7 @@ struct TransactionListView: View {
     var body: some View {
 
         List {
-            Section {
+            Section(header: Text("Account Details")) {
                 NavigationLink(value: NavData(navView: .accountEditor, account: account)) {
                     AccountListItemView(account: account)
                 }

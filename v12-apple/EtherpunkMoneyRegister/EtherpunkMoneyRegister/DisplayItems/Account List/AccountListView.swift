@@ -18,6 +18,10 @@ struct AccountListView: View {
     @Query(sort: [SortDescriptor(\Account.sortIndex, order: .forward), SortDescriptor(\Account.name, order: .forward)])
     var items: [Account]
     
+    @Query(sort: [SortDescriptor(\Tag.name, order: .forward)])
+    var availableTags: [Tag]
+    
+    
     var body: some View {
         NavigationStack(path: $path) {
             List {
@@ -113,22 +117,14 @@ struct AccountListView: View {
                     Text("Tag Editor")
                     
                 case .transactionCreator:
-                    EditTransactionDetailView(path: $path, doSave: $doSave, transaction: item.transaction!)
-                        .onDisappear {
-                            if(doSave == true) {
-                                modelContext.insert(item.transaction!)
-                                try? modelContext.save()
-                            }
-                        }
+                    EditTransactionDetailView(transaction: item.transaction!, availableTags: availableTags, path: $path)
+                    
                 case .transactionDetail:
                     TransactionDetailView(path: $path, transaction: item.transaction!)
+                    
                 case .transactionEditor:
-                    EditTransactionDetailView(path: $path, doSave: $doSave, transaction: item.transaction!)
-                        .onDisappear {
-                            if(doSave == true) {
-                                try? modelContext.save()
-                            }
-                        }
+                    EditTransactionDetailView(transaction: item.transaction!, availableTags: availableTags, path: $path)
+                    
                 case .transactionList:
                     TransactionListView(path: $path, account: item.account!)
                 }

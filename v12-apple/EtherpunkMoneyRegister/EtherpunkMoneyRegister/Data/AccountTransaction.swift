@@ -11,25 +11,25 @@ import SwiftData
 
 @Model
 final class AccountTransaction {
-    var name: String = ""
-    var transactionType: TransactionType = TransactionType.debit
-    var amount: Decimal = 0
+    var name: String
+    var transactionType: TransactionType
+    var amount: Decimal
     var balance: Decimal
-    var pending: Date? = nil
-    var cleared: Date? = nil
-    var notes: String = ""
-    var confirmationNumber: String = ""
-    var recurringTransaction: RecurringTransaction? = nil
-    var bankTransactionText: String = ""
+    var pending: Date?
+    var cleared: Date?
+    var notes: String
+    var confirmationNumber: String
+    var recurringTransaction: RecurringTransaction?
+    var bankTransactionText: String
     
     @Relationship(deleteRule: .cascade, inverse: \AccountTransactionFile.transaction)
-    var files: [AccountTransactionFile]? = nil
+    var files: [AccountTransactionFile]?
     
     @Relationship(deleteRule: .noAction)
     var account: Account
     
     @Relationship(deleteRule: .noAction)
-    var tags: [Tag]? = nil
+    var tags: [Tag]?
     
     var createdOn: Date = Date()
     
@@ -38,16 +38,27 @@ final class AccountTransaction {
     }
         
     var backgroundColor: Color {
-        if(self.pending == nil && self.cleared == nil) {
-            Color(.sRGB, red: 255/255, green: 25/255, blue: 25/255, opacity: 0.5)
-        } else if (self.pending != nil && self.cleared == nil) {
-            Color(.sRGB, red: 255/255, green: 150/255, blue: 25/255, opacity: 0.5)
-        } else {
+        switch transactionStatus {
+        case .cleared:
             Color.clear
+        case .pending:
+            Color(.sRGB, red: 255/255, green: 150/255, blue: 25/255, opacity: 0.5)
+        case .reserved:
+            Color(.sRGB, red: 255/255, green: 25/255, blue: 25/255, opacity: 0.5)
+        }
+    }
+    
+    var transactionStatus: TransactionStatus {
+        if(self.pending == nil && self.cleared == nil) {
+            return .reserved
+        } else if (self.pending != nil && self.cleared == nil) {
+            return .pending
+        } else {
+            return .cleared
         }
     }
 
-    init(name: String, transactionType: TransactionType, amount: Decimal, balance: Decimal, pending: Date? = nil, cleared: Date? = nil, notes: String, confirmationNumber: String, recurringTransaction: RecurringTransaction? = nil, bankTransactionText: String, files: [AccountTransactionFile]? = nil, account: Account, tags: [Tag]? = nil, createdOn: Date) {
+    init(name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal = 0, pending: Date? = nil, cleared: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransaction: RecurringTransaction? = nil, bankTransactionText: String = "", files: [AccountTransactionFile]? = nil, account: Account, tags: [Tag]? = nil, createdOn: Date = Date()) {
         self.name = name
         self.transactionType = transactionType
         self.amount = amount
@@ -64,36 +75,12 @@ final class AccountTransaction {
         self.createdOn = createdOn
         
         VerifySignage()
-    }
-    
-    init(name: String, transactionType: TransactionType, amount: Decimal, balance: Decimal, pending: Date? = nil, cleared: Date? = nil, notes: String, confirmationNumber: String, bankTransactionText: String, account: Account, createdOn: Date, tags: [Tag]? = nil) {
-        self.name = name
-        self.transactionType = transactionType
-        self.amount = amount
-        self.balance = balance
-        self.pending = pending
-        self.cleared = cleared
-        self.notes = notes
-        self.confirmationNumber = confirmationNumber
-        self.bankTransactionText = bankTransactionText
-        self.account = account
-        self.createdOn = createdOn
-        self.tags = tags
         
-        VerifySignage()
-    }
-    
-    init(name: String, transactionType: TransactionType, amount: Decimal, balance: Decimal, pending: Date?, cleared: Date?, account: Account, tags: [Tag]? = nil) {
-        self.name = name
-        self.transactionType = transactionType
-        self.amount = amount
-        self.balance = balance
-        self.pending = pending
-        self.cleared = cleared
-        self.account = account
-        self.tags = tags
-        
-        VerifySignage()
+        if(self.balance == 0 && self.amount != 0) {
+            // Probably a simple transaction
+            account.currentBalance += self.amount
+            self.balance = account.currentBalance
+        }
     }
     
     func VerifySignage() {

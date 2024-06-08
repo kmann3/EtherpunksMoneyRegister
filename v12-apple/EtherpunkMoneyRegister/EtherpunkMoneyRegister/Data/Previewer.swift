@@ -18,6 +18,8 @@ struct Previewer {
     let burgerKingTransaction: AccountTransaction
     var cvsTransaction: AccountTransaction
     let billsTag: Tag
+    let medicalTag: Tag
+    let pharmacyTag: Tag
     let discordRecurringTransaction: RecurringTransaction
     let billGroup: RecurringTransactionGroup
     
@@ -26,6 +28,7 @@ struct Previewer {
             Account.self,
             AccountTransaction.self,
             AccountTransactionFile.self,
+            AppSettings.self,
             Tag.self,
             RecurringTransaction.self,
             RecurringTransactionGroup.self])
@@ -41,10 +44,11 @@ struct Previewer {
         axosAccount.sortIndex = 255
         
         billsTag = Tag(name: "bills")
+        medicalTag = Tag(name: "medical")
         let ffTag: Tag = Tag(name: "fast-food")
         let incomeTag: Tag = Tag(name: "income")
-        let medicalTag: Tag = Tag(name: "medical")
-        let pharmacyTag: Tag = Tag(name: "pharmacy")
+        
+        pharmacyTag = Tag(name: "pharmacy")
         
         var balance: Decimal = 238.99
         

@@ -70,6 +70,20 @@ struct AccountListItemView: View {
                     .padding(.horizontal, 5)
             }
 
+            HStack {
+                Text("Last Balanced:")
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 5)
+                
+                Spacer()
+                //Text(clearedText, format: .dateTime.month().day())
+                Text(account.lastBalanced, format: .dateTime.month().day().year())
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 5)
+            }
+
         }
         .cornerRadius(10)
         .overlay(

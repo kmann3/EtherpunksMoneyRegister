@@ -31,29 +31,26 @@ struct EditAccountView: View {
         
     var body: some View {
         Form {
-            HStack {
-                Text("Name:")
-                TextField("Name", text: $account.name)
-            }
-            HStack {
-                Text("Starting Balance:")
-                TextField("Amount", value: $account.startingBalance, format: .number.precision(.fractionLength(2)))
+            Section(header: Text("Transaction Details")) {
+                TextField("Name:", text: $account.name)
+                TextField("Starting Balance:", value: $account.startingBalance, format: .number.precision(.fractionLength(2)))
                     #if os(iOS)
                     .keyboardType(.decimalPad)
                     #endif
-                    
-            }
-            HStack {
-                Text("Current Balance:")
-                Text(account.currentBalance, format: .number.precision(.fractionLength(2)))
-            }
-            HStack {
-                Text("Last Balanced:")
                 
+                TextField("Notes:", text: $account.notes)
             }
-            HStack {
-                Text("Notes:")
-                TextField("Name", text: $account.notes)
+            
+            Section(header: Text("Misc")) {
+                HStack {
+                    Text("Current Balance:")
+                    Text(account.currentBalance, format: .number.precision(.fractionLength(2)))
+                }
+                
+                HStack {
+                    Text("Last Balanced:")
+                    Text(account.lastBalanced, format: .dateTime.month().day().year())
+                }
             }
         }
         .navigationBarBackButtonHidden(true)
