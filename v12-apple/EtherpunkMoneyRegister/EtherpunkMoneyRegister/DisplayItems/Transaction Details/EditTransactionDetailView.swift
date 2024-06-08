@@ -221,9 +221,8 @@ struct EditTransactionDetailView: View {
         
         if(transactionType != transaction.transactionType) {
             // WE NEED TO REBALANCE
+            // Need to make a function where we can call up and reference a transaction of previous value and new value and have it go through the rest of the transactions
         }
-        
-        // SEE IF WE NEED TO Actually remove a file???
         
         transaction.name = transactionName
         transaction.amount = amount
