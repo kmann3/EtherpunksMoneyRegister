@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EditAccountView: View {
+struct EditAccountDetailsView: View {
     
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
@@ -89,7 +89,7 @@ struct EditAccountView: View {
     do {
         let previewer = try Previewer()
         let doSave: Bool = false
-        return EditAccountView(path: .constant(NavigationPath()), doSave: .constant(doSave),  account: previewer.cuAccount)
+        return EditAccountDetailsView(path: .constant(NavigationPath()), doSave: .constant(doSave),  account: previewer.cuAccount)
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")

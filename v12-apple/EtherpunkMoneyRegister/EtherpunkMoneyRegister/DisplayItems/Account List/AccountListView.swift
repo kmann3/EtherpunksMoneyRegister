@@ -78,14 +78,14 @@ struct AccountListView: View {
                 switch(item.navView) {
                     
                 case .accountCreator:
-                    EditAccountView(path: $path, doSave: $doSave, account: item.account!)
+                    EditAccountDetailsView(path: $path, doSave: $doSave, account: item.account!)
                         .onDisappear {
                             if(doSave == true) {
                                 modelContext.insert(item.account!)
                             }
                         }
                 case .accountEditor:
-                    EditAccountView(path: $path, doSave: $doSave, account: item.account!)
+                    EditAccountDetailsView(path: $path, doSave: $doSave, account: item.account!)
                         .onDisappear {
                             if(doSave == true) {
                                 //save account

@@ -13,6 +13,12 @@ struct NullableDatePicker: View {
     
     @State private var showingDatePicker = false
     
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter
+    }()
+    
     var body: some View {
         HStack {
             Text("\(name):")
@@ -51,6 +57,8 @@ struct NullableDatePicker: View {
         }
     }
 }
+
+
 
 #Preview {
     NullableDatePicker(name: "Pending", selectedDate: .constant(Date()))

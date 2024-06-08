@@ -21,6 +21,7 @@ final class AccountTransaction {
     var confirmationNumber: String
     var recurringTransaction: RecurringTransaction?
     var bankTransactionText: String
+    var isTaxRelated: Bool
     
     @Relationship(deleteRule: .cascade, inverse: \AccountTransactionFile.transaction)
     var files: [AccountTransactionFile]?
@@ -31,7 +32,7 @@ final class AccountTransaction {
     @Relationship(deleteRule: .noAction)
     var tags: [Tag]?
     
-    var createdOn: Date = Date()
+    var createdOn: Date
     
     var fileCount: Int {
         files?.count ?? 0
@@ -58,7 +59,7 @@ final class AccountTransaction {
         }
     }
 
-    init(name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal = 0, pending: Date? = nil, cleared: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransaction: RecurringTransaction? = nil, bankTransactionText: String = "", files: [AccountTransactionFile]? = nil, account: Account, tags: [Tag]? = nil, createdOn: Date = Date()) {
+    init(name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal = 0, pending: Date? = nil, cleared: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransaction: RecurringTransaction? = nil, bankTransactionText: String = "", files: [AccountTransactionFile]? = nil, account: Account, tags: [Tag]? = nil, isTaxRelated: Bool = false, createdOn: Date = Date()) {
         self.name = name
         self.transactionType = transactionType
         self.amount = amount
@@ -73,6 +74,7 @@ final class AccountTransaction {
         self.account = account
         self.tags = tags
         self.createdOn = createdOn
+        self.isTaxRelated = isTaxRelated
         
         VerifySignage()
         

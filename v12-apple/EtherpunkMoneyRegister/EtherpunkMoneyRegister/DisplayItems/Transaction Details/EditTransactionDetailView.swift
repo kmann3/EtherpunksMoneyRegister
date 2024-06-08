@@ -1,4 +1,5 @@
 import SwiftUI
+import QuickLook
 
 struct EditTransactionDetailView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -12,11 +13,22 @@ struct EditTransactionDetailView: View {
     @State private var transactionPendingDate: Date?
     @State private var transactionClearedDate: Date?
     @State private var selectedTags: [Tag]
+    @State private var transactionNotes: String
+    @State private var transactionFiles: [AccountTransactionFile]
+    @State private var transactionCreatedOnDate: Date
     
     @State private var availableTags: [Tag]
     
     @State private var newTagName: String = ""
+    @State private var url: URL?
+    @State private var isShowingDeleteActions = false
+    @State private var fileToDelete: Account? = nil
     
+    private let createdOnDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .full
+        return formatter
+    }()
     
     var transaction: AccountTransaction
     
@@ -32,6 +44,9 @@ struct EditTransactionDetailView: View {
         _transactionClearedDate = State(initialValue: transaction.cleared)
         _selectedTags = State(initialValue: transaction.tags ?? [])
         _availableTags = State(initialValue: availableTags)
+        _transactionNotes = State(initialValue: transaction.notes)
+        _transactionFiles = State(initialValue: transaction.files ?? [])
+        _transactionCreatedOnDate = State(initialValue: transaction.createdOn)
         
         if(transaction.name == "") {
             isNewTransaction = true
@@ -46,7 +61,8 @@ struct EditTransactionDetailView: View {
                         #if os(iOS)
                         .keyboardType(.decimalPad)
                         #endif
-                    NullableDatePicker(name: "Pending", selectedDate: $transactionPendingDate)
+                    // Transaction type
+                        NullableDatePicker(name: "Pending", selectedDate: $transactionPendingDate)
                     NullableDatePicker(name: "Cleared", selectedDate: $transactionClearedDate)
                 }
                 
@@ -69,25 +85,88 @@ struct EditTransactionDetailView: View {
                     }
                 }
                 
-                // Confirmation number
-                
-                // Notes
-                
-                // Transaction type
-                
-                // bank transaction text
+                Section(header: Text("Misc")) {
+                    // Is tax related
+                    
+                    // Confirmation number
+                    
+                    // Notes
+                    TextField("Notes", text: $transactionNotes, axis: .vertical)
+                        .lineLimit(2...4)
+                    // bank transaction text
+                }
                 
                 Section(header: Text("Files")) {
                     // Files Count
                     
-                    // List files
+                    HStack {
+                        Button(action: addNewDocument) {
+                            Text("Add Document")
+                        }
+                        
+                        Spacer()
+                        
+                        Button(action: addNewPhoto) {
+                            Text("Add Photo")
+                        }
+                        
+                    }
+                    
+                    List {
+                        if(transactionFiles.count > 0) {
+                            ForEach(transactionFiles) { file in
+                                VStack(alignment: .leading) {
+                                    if(file.name != file.filename) {
+                                        HStack {
+                                            Text("Name: \(file.name)")
+                                        }
+                                    }
+                                    HStack {
+                                        Text("Filename: \(file.filename)")
+                                        Button("Filename: \(file.filename)") {
+                                            url = file.url
+                                        }.quickLookPreview($url)
+                                    }
+                                    HStack{
+                                        Text("Created On: ")
+                                        Text(file.createdOn, format: .dateTime.month().day())
+                                        Text("@")
+                                        Text(file.createdOn, format: .dateTime.hour().minute().second())
+                                    }
+                                    HStack {
+                                        Text("Tax Document: \(file.isTaxRelated)")
+                                    }
+                                    HStack {
+                                        Text("Notes: \(file.notes)")
+                                    }
+                                }
+                                .swipeActions(allowsFullSwipe: true) {
+                                    Button(role: .destructive) {
+                                        if let index = transactionFiles.firstIndex(of: file) {
+                                            transactionFiles.remove(at: index)
+                                        }
+                                    } label: {
+                                        Label("Delete", systemImage: "trash.fill")
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
+                
                 
                 // Account
                 
                 // Recurring Transaction
                 
                 // Created On Read only
+                HStack {
+                    Text("Created on:")
+                    Text(transactionCreatedOnDate, format: .dateTime.month().day().year())
+                    Text("@")
+                    Text(transactionCreatedOnDate, format: .dateTime.hour().minute().second())
+                }
+                .listRowBackground(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 0.5))
             }
             #if os(iOS)
             .navigationBarTitle(isNewTransaction ? "New Transaction" : "Edit Transaction")
@@ -120,6 +199,14 @@ struct EditTransactionDetailView: View {
         newTagName = ""
     }
     
+    func addNewDocument() {
+        
+    }
+    
+    func addNewPhoto() {
+        
+    }
+    
     func saveTransaction() {
         guard let amount = Decimal(string: transactionAmount) else { return }
         
@@ -132,13 +219,22 @@ struct EditTransactionDetailView: View {
             transaction.balance = 0
         }
         
+        if(transactionType != transaction.transactionType) {
+            // WE NEED TO REBALANCE
+        }
+        
+        // SEE IF WE NEED TO Actually remove a file???
+        
         transaction.name = transactionName
         transaction.amount = amount
         transaction.pending = transactionPendingDate
         transaction.cleared = transactionClearedDate
         transaction.tags = selectedTags
+        transaction.notes = transactionNotes
         
+        // how do I know if the files are new? Or need to be removed?
         
+        transaction.files = transactionFiles
         
         do {
             if(isNewTransaction) {

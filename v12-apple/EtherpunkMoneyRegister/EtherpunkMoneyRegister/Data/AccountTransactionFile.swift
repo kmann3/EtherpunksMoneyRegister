@@ -14,26 +14,20 @@ final class AccountTransactionFile {
     var name: String = ""
     var filename: String = ""
     var notes: String = ""
-    var createdOn: Date = Date()
+    var createdOn: Date
     var url: URL
-    var isTaxRelated: Bool = false
+    var isTaxRelated: Bool
     
     @Relationship(deleteRule: .noAction)
     var transaction: AccountTransaction? = nil
     
-    init(name: String, filename: String, notes: String, createdOn: Date, url: URL, isTaxRelated: Bool, transaction: AccountTransaction) {
+    init(name: String = "", filename: String = "", notes: String = "", createdOn: Date = Date(), url: URL, isTaxRelated: Bool = false, transaction: AccountTransaction) {
         self.name = name
         self.filename = filename
         self.notes = notes
         self.createdOn = createdOn
         self.url = url
         self.transaction = transaction
-    }
-    
-    init(filename: String, url: URL, transaction: AccountTransaction) {
-        self.name = filename
-        self.filename = filename
-        self.url = url
-        self.transaction = transaction
+        self.isTaxRelated = isTaxRelated
     }
 }
