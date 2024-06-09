@@ -32,7 +32,7 @@ final class RecurringTransaction {
     
     var createdOn: Date = Date()
 
-    init(name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, tags: [Tag]? = nil, group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = nil, frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOn: Date) {
+    init(name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, tags: [Tag]? = [], group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = [], frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOn: Date) {
         self.name = name
         self.transactionType = transactionType
         self.amount = amount
@@ -46,38 +46,6 @@ final class RecurringTransaction {
         self.frequencyDayOfWeek = frequencyDayOfWeek
         self.frequencyDateValue = frequencyDateValue
         self.createdOn = createdOn
-        
-        VerifySignage()
-    }
-    
-    init(name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, tags: [Tag]? = nil, group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = nil, frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil) {
-        self.name = name
-        self.transactionType = transactionType
-        self.amount = amount
-        self.notes = notes
-        self.nextDueDate = nextDueDate
-        self.tags = tags
-        self.group = group
-        self.transactions = transactions
-        self.frequency = frequency
-        self.frequencyValue = frequencyValue
-        self.frequencyDayOfWeek = frequencyDayOfWeek
-        self.frequencyDateValue = frequencyDateValue
-        
-        VerifySignage()
-    }
-    init(name: String, transactionType: TransactionType, amount: Decimal, nextDueDate: Date? = nil, tags: [Tag]? = nil, group: RecurringTransactionGroup? = nil, frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil) {
-        self.name = name
-        self.transactionType = transactionType
-        self.amount = amount
-        self.notes = notes
-        self.nextDueDate = nextDueDate
-        self.tags = tags
-        self.group = group
-        self.frequency = frequency
-        self.frequencyValue = frequencyValue
-        self.frequencyDayOfWeek = frequencyDayOfWeek
-        self.frequencyDateValue = frequencyDateValue
         
         VerifySignage()
     }

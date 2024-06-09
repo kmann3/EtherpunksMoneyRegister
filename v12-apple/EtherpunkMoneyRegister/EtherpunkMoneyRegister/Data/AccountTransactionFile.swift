@@ -19,7 +19,7 @@ final class AccountTransactionFile {
     var isTaxRelated: Bool
     
     @Relationship(deleteRule: .noAction)
-    var transaction: AccountTransaction? = nil
+    var transaction: AccountTransaction?
     
     init(name: String = "", filename: String = "", notes: String = "", createdOn: Date = Date(), url: URL, isTaxRelated: Bool = false, transaction: AccountTransaction) {
         self.name = name

@@ -92,6 +92,7 @@ struct Previewer {
         billGroup = RecurringTransactionGroup(name: "Bills", recurringTransactions: [discordRecurringTransaction])
         
         discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
+        
         let monkeyURL: URL? = downloadImageFromURL()
         if(monkeyURL == nil) {
             print("An error?")
@@ -109,10 +110,8 @@ struct Previewer {
         container.mainContext.insert(boaAccount)
         container.mainContext.insert(axosAccount)
         //container.mainContext.insert(discordRecurringTransaction)
-        
-        container.mainContext.insert(fakeAttachment)
-        
-       container.mainContext.insert(billGroup)
+        //fitness
+        container.mainContext.insert(billGroup)
 
     }
     

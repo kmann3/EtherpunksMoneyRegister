@@ -93,7 +93,7 @@ final class AccountTransaction {
         }
     }
 
-    init(account: Account, name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal = 0, pending: Date? = nil, cleared: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransaction: RecurringTransaction? = nil, bankTransactionText: String = "", files: [AccountTransactionFile]? = nil, tags: [Tag]? = nil, isTaxRelated: Bool = false, dueDate: Date? = nil, createdOn: Date = Date()) {
+    init(account: Account, name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal = 0, pending: Date? = nil, cleared: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransaction: RecurringTransaction? = nil, bankTransactionText: String = "", files: [AccountTransactionFile]? = [], tags: [Tag]? = [], isTaxRelated: Bool = false, dueDate: Date? = nil, createdOn: Date = Date()) {
         self.name = name
         self.transactionType = transactionType
         self.amount = amount

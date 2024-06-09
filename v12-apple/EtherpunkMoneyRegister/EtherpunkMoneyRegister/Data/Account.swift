@@ -22,9 +22,9 @@ final class Account {
     var createdOn: Date = Date()
     
     @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account)
-    var transactions: [AccountTransaction]? = nil
+    var transactions: [AccountTransaction]?
     
-    init(name: String, startingBalance: Decimal, currentBalance: Decimal, outstandingBalance: Decimal, outstandingItemCount: Int, notes: String, createdOn: Date, transactions: [AccountTransaction]? = nil, sortIndex: Int = 255) {
+    init(name: String, startingBalance: Decimal, currentBalance: Decimal, outstandingBalance: Decimal, outstandingItemCount: Int, notes: String, createdOn: Date, transactions: [AccountTransaction]? = [], sortIndex: Int = 255) {
         self.name = name
         self.startingBalance = startingBalance
         self.currentBalance = currentBalance

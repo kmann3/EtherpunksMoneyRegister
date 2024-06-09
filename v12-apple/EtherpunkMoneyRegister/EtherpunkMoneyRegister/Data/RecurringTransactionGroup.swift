@@ -14,16 +14,11 @@ final class RecurringTransactionGroup {
     var createdOn: Date = Date();
     
     @Relationship(deleteRule: .cascade)
-    var recurringTransactions: [RecurringTransaction]? = nil
+    var recurringTransactions: [RecurringTransaction]?
     
-    init(name: String, createdOn: Date, recurringTransactions: [RecurringTransaction]? = nil) {
+    init(name: String, createdOn: Date = Date(), recurringTransactions: [RecurringTransaction]? = []) {
         self.name = name
         self.createdOn = createdOn
-        self.recurringTransactions = recurringTransactions
-    }
-    
-    init(name: String, recurringTransactions: [RecurringTransaction]? = nil) {
-        self.name = name
         self.recurringTransactions = recurringTransactions
     }
 }
