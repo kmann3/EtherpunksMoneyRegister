@@ -145,7 +145,7 @@ struct AccountListView: View {
     
     func addNewTransaction(account: Account, transactionType: TransactionType) {
         print("New \(transactionType) for: \(account.name)")
-        let newTransaction: AccountTransaction = AccountTransaction(name: "", transactionType: transactionType, amount: 0, balance: account.currentBalance, pending: nil, cleared: nil, account: account)
+        let newTransaction: AccountTransaction = AccountTransaction(account: account, transactionType: transactionType)
         modelContext.insert(newTransaction)
         path.append(NavData(navView: .transactionEditor, transaction: newTransaction))
     }

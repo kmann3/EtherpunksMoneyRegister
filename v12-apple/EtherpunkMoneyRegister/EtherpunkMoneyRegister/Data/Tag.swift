@@ -13,12 +13,12 @@ final class Tag {
     var name: String
     
     @Relationship(deleteRule: .noAction, inverse: \AccountTransaction.tags)
-    var transactions: [AccountTransaction]? = nil
+    var transactions: [AccountTransaction]? = []
     
     var createdOn: Date = Date()
     
     @Relationship(deleteRule: .noAction, inverse: \RecurringTransaction.tags)
-    var recurringTransaction: [RecurringTransaction]? = nil
+    var recurringTransaction: [RecurringTransaction]? = []
     
     init(name: String) {
         self.name = name

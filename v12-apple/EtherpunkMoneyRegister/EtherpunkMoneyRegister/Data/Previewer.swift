@@ -54,30 +54,30 @@ struct Previewer {
         
         var transactionAmount: Decimal = -12.39
         balance = balance+transactionAmount
-        burgerKingTransaction = AccountTransaction(name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), account: cuAccount, tags: [ffTag])
+        burgerKingTransaction = AccountTransaction(account: cuAccount,name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag])
 
         transactionAmount = -8.79
         balance = balance+transactionAmount
-        let wendysTransaction: AccountTransaction = AccountTransaction(name: "Wendys", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), account: cuAccount, tags: [ffTag])
+        let wendysTransaction: AccountTransaction = AccountTransaction(account: cuAccount,name: "Wendys", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag])
         
         transactionAmount = -88.34
         balance = balance+transactionAmount
-        cvsTransaction = AccountTransaction(name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), account: cuAccount, tags: [medicalTag, pharmacyTag])
+        cvsTransaction = AccountTransaction(account: cuAccount,name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [medicalTag, pharmacyTag])
                 
         transactionAmount = -10.81
         balance = balance + transactionAmount
         
-        let discordTransaction: AccountTransaction = AccountTransaction(name: "Discord", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: nil, account: cuAccount, tags: [billsTag])
+        let discordTransaction: AccountTransaction = AccountTransaction(account: cuAccount,name: "Discord", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: nil, tags: [billsTag])
         
         transactionAmount = -36.81
         balance = balance + transactionAmount
         
-        let fitnessTransaction: AccountTransaction = AccountTransaction(name: "Fitness", transactionType: .debit, amount: transactionAmount, balance: balance, pending: Date(), cleared: nil, account: cuAccount, tags: [billsTag])
+        let fitnessTransaction: AccountTransaction = AccountTransaction(account: cuAccount,name: "Fitness", transactionType: .debit, amount: transactionAmount, balance: balance, pending: Date(), cleared: nil, tags: [billsTag])
         
         transactionAmount = 2318.79
         balance = balance + transactionAmount
         
-        let paydayTransaction: AccountTransaction = AccountTransaction(name: "Payday", transactionType: .credit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), account: cuAccount, tags: [incomeTag])
+        let paydayTransaction: AccountTransaction = AccountTransaction(account: cuAccount,name: "Payday", transactionType: .credit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [incomeTag])
         
         let cuOutstandingAmount: Decimal = discordTransaction.amount + fitnessTransaction.amount
         
