@@ -44,6 +44,7 @@ struct SettingsView: View {
             
             do {
                 try data.write(to: destinationURL)
+                print("Destination: \(destinationURL)")
                 completion(destinationURL)
             } catch {
                 print("Error saving image data: \(error)")
@@ -93,6 +94,16 @@ struct SettingsView: View {
         let cvsTransaction = AccountTransaction(account: amegyAccount,name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date())
         modelContext.insert(cvsTransaction)
         cvsTransaction.tags = [medicalTag, pharmacyTag]
+        
+        downloadImageFromURL { monkeyURL in
+                if let monkeyURL = monkeyURL {
+                    cvsTransaction.files?.append(AccountTransactionFile(name: "Logo", filename: "monkey1.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", url: monkeyURL, isTaxRelated: true, transaction: cvsTransaction))
+//                    let fakeAttachment = AccountTransactionFile(name: "Logo", filename: "monkey1.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", url: monkeyURL, isTaxRelated: true, transaction: cvsTransaction)
+//                    modelContext.insert(fakeAttachment)
+                } else {
+                    print("Error: Could not download monkey from Etherpunk")
+                }
+            }
                
         transactionAmount = -10.81
         balance = balance + transactionAmount
@@ -131,15 +142,8 @@ struct SettingsView: View {
        
         modelContext.insert(billGroup)
         
-        downloadImageFromURL { monkeyURL in
-                if let monkeyURL = monkeyURL {
-                    let fakeAttachment = AccountTransactionFile(name: "Logo", filename: "monkey1.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", url: monkeyURL, isTaxRelated: true, transaction: cvsTransaction)
-                    modelContext.insert(fakeAttachment)
-                    try? modelContext.save()
-                } else {
-                    print("Error: Could not download monkey from Etherpunk")
-                }
-            }
+        try? modelContext.save()
+
     }
     
     private func getNextDueDate(day: Int) -> Date {

@@ -219,8 +219,8 @@
 			children = (
 				AA6224DE2C13FADB005B5F17 /* Test Area */,
 				AA0E1EF52BF85B8300E68AB0 /* DisplayItems */,
-				AA0E1EEE2BF8541100E68AB0 /* Data */,
 				AA3EC5242C0BB81300D7118D /* Settings */,
+				AA0E1EEE2BF8541100E68AB0 /* Data */,
 				AAE814ED2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift */,
 				AAE814EF2BF853B400CA7DDD /* ContentView.swift */,
 				AAE814F12BF853B500CA7DDD /* Assets.xcassets */,
