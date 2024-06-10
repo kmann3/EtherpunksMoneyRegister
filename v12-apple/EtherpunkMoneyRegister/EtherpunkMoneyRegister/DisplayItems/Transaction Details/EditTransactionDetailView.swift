@@ -4,7 +4,7 @@ import QuickLook
 struct EditTransactionDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.modelContext) var modelContext
-
+    
     @Binding var path: NavigationPath
     
     @State private var transactionName: String
@@ -54,141 +54,141 @@ struct EditTransactionDetailView: View {
     }
     
     var body: some View {
-            Form {
-                Section(header: Text("Transaction Details")) {
-                    TextField("Name", text: $transactionName)
-                    TextField("Amount", text: $transactionAmount)
-                        #if os(iOS)
-                        .keyboardType(.decimalPad)
-                        #endif
-                    // Transaction type
-                        NullableDatePicker(name: "Pending", selectedDate: $transactionPendingDate)
-                    NullableDatePicker(name: "Cleared", selectedDate: $transactionClearedDate)
-                }
-                
-                Section(header: Text("Tags")) {
-                    List(availableTags, id: \.self) { tag in
-                        MultipleSelectionRow(tag: tag, isSelected: selectedTags.contains(tag)) {
-                            if selectedTags.contains(tag) {
-                                selectedTags.removeAll { $0 == tag }
-                            } else {
-                                selectedTags.append(tag)
-                            }
-                        }
-                    }
-                    HStack {
-                        TextField("New Tag", text: $newTagName)
-                        Button(action: addNewTag) {
-                            Text("Add")
-                        }
-                        .disabled(newTagName.isEmpty)
-                    }
-                }
-                
-                Section(header: Text("Misc")) {
-                    // Is tax related
-                    
-                    // Confirmation number
-                    
-                    // Notes
-                    TextField("Notes", text: $transactionNotes, axis: .vertical)
-                        .lineLimit(2...4)
-                    // bank transaction text
-                }
-                
-                Section(header: Text("Files")) {
-                    // Files Count
-                    
-                    HStack {
-                        Button(action: addNewDocument) {
-                            Text("Add Document")
-                        }
-                        
-                        Spacer()
-                        
-                        Button(action: addNewPhoto) {
-                            Text("Add Photo")
-                        }
-                        
-                    }
-                    
-                    List {
-                        if(transactionFiles.count > 0) {
-                            ForEach(transactionFiles) { file in
-                                VStack(alignment: .leading) {
-                                    if(file.name != file.filename) {
-                                        HStack {
-                                            Text("Name: \(file.name)")
-                                        }
-                                    }
-                                    HStack {
-                                        Text("Filename: \(file.filename)")
-                                        Button("Filename: \(file.filename)") {
-                                            url = file.url
-                                        }.quickLookPreview($url)
-                                    }
-                                    HStack{
-                                        Text("Created On: ")
-                                        Text(file.createdOn, format: .dateTime.month().day())
-                                        Text("@")
-                                        Text(file.createdOn, format: .dateTime.hour().minute().second())
-                                    }
-                                    HStack {
-                                        Text("Tax Document: \(file.isTaxRelated)")
-                                    }
-                                    HStack {
-                                        Text("Notes: \(file.notes)")
-                                    }
-                                }
-                                .swipeActions(allowsFullSwipe: true) {
-                                    Button(role: .destructive) {
-                                        if let index = transactionFiles.firstIndex(of: file) {
-                                            transactionFiles.remove(at: index)
-                                        }
-                                    } label: {
-                                        Label("Delete", systemImage: "trash.fill")
-                                    }
-                                }
-                            }
+        Form {
+            Section(header: Text("Transaction Details")) {
+                TextField("Name", text: $transactionName)
+                TextField("Amount", text: $transactionAmount)
+#if os(iOS)
+                    .keyboardType(.decimalPad)
+#endif
+                // Transaction type
+                NullableDatePicker(name: "Pending", selectedDate: $transactionPendingDate)
+                NullableDatePicker(name: "Cleared", selectedDate: $transactionClearedDate)
+            }
+            
+            Section(header: Text("Tags")) {
+                List(availableTags, id: \.self) { tag in
+                    MultipleSelectionRow(tag: tag, isSelected: selectedTags.contains(tag)) {
+                        if selectedTags.contains(tag) {
+                            selectedTags.removeAll { $0 == tag }
+                        } else {
+                            selectedTags.append(tag)
                         }
                     }
                 }
-                
-                
-                // Account
-                
-                // Recurring Transaction
-                
-                // Created On Read only
                 HStack {
-                    Text("Created on:")
-                    Text(transactionCreatedOnDate, format: .dateTime.month().day().year())
-                    Text("@")
-                    Text(transactionCreatedOnDate, format: .dateTime.hour().minute().second())
+                    TextField("New Tag", text: $newTagName)
+                    Button(action: addNewTag) {
+                        Text("Add")
+                    }
+                    .disabled(newTagName.isEmpty)
                 }
-                .listRowBackground(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 0.5))
             }
-            #if os(iOS)
-            .navigationBarTitle(isNewTransaction ? "New Transaction" : "Edit Transaction")
-            .navigationBarTitleDisplayMode(.inline)
-            #endif
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button ("Save") {
-                        withAnimation {
-                            saveTransaction()
+            
+            Section(header: Text("Misc")) {
+                // Is tax related
+                
+                // Confirmation number
+                
+                // Notes
+                TextField("Notes", text: $transactionNotes, axis: .vertical)
+                    .lineLimit(2...4)
+                // bank transaction text
+            }
+            
+            Section(header: Text("Files")) {
+                // Files Count
+                
+                HStack {
+                    Button(action: addNewDocument) {
+                        Text("Add Document")
+                    }
+                    
+                    Spacer()
+                    
+                    Button(action: addNewPhoto) {
+                        Text("Add Photo")
+                    }
+                    
+                }
+                
+                List {
+                    if(transactionFiles.count > 0) {
+                        ForEach(transactionFiles) { file in
+                            VStack(alignment: .leading) {
+                                if(file.name != file.filename) {
+                                    HStack {
+                                        Text("Name: \(file.name)")
+                                    }
+                                }
+                                HStack {
+                                    Text("Filename: \(file.filename)")
+                                    Button("Filename: \(file.filename)") {
+                                        url = file.url
+                                    }.quickLookPreview($url)
+                                }
+                                HStack{
+                                    Text("Created On: ")
+                                    Text(file.createdOn, format: .dateTime.month().day())
+                                    Text("@")
+                                    Text(file.createdOn, format: .dateTime.hour().minute().second())
+                                }
+                                HStack {
+                                    Text("Tax Document: \(file.isTaxRelated)")
+                                }
+                                HStack {
+                                    Text("Notes: \(file.notes)")
+                                }
+                            }
+                            .swipeActions(allowsFullSwipe: true) {
+                                Button(role: .destructive) {
+                                    if let index = transactionFiles.firstIndex(of: file) {
+                                        transactionFiles.remove(at: index)
+                                    }
+                                } label: {
+                                    Label("Delete", systemImage: "trash.fill")
+                                }
+                            }
                         }
                     }
                 }
-
-                ToolbarItem(placement: .cancellationAction) {
-                    Button ("Cancel", role: .cancel) {
-                        presentationMode.wrappedValue.dismiss()
+            }
+            
+            
+            // Account
+            
+            // Recurring Transaction
+            
+            // Created On Read only
+            HStack {
+                Text("Created on:")
+                Text(transactionCreatedOnDate, format: .dateTime.month().day().year())
+                Text("@")
+                Text(transactionCreatedOnDate, format: .dateTime.hour().minute().second())
+            }
+            .listRowBackground(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 0.5))
+        }
+#if os(iOS)
+        .navigationBarTitle(isNewTransaction ? "New Transaction" : "Edit Transaction")
+        .navigationBarTitleDisplayMode(.inline)
+#endif
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button ("Save") {
+                    withAnimation {
+                        saveTransaction()
                     }
                 }
-                
             }
+            
+            ToolbarItem(placement: .cancellationAction) {
+                Button ("Cancel", role: .cancel) {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            }
+            
         }
+    }
     
     
     func addNewTag() {

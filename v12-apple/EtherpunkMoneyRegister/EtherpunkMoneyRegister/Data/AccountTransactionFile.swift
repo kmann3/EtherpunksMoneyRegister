@@ -15,13 +15,13 @@ final class AccountTransactionFile {
     var filename: String = ""
     var notes: String = ""
     var createdOn: Date
-    var url: URL
+    var url: URL?
     var isTaxRelated: Bool
     
     @Relationship(deleteRule: .noAction)
     var transaction: AccountTransaction?
     
-    init(name: String = "", filename: String = "", notes: String = "", createdOn: Date = Date(), url: URL, isTaxRelated: Bool = false, transaction: AccountTransaction) {
+    init(name: String = "", filename: String = "", notes: String = "", createdOn: Date = Date(), url: URL? = nil, isTaxRelated: Bool = false, transaction: AccountTransaction) {
         self.name = name
         self.filename = filename
         self.notes = notes

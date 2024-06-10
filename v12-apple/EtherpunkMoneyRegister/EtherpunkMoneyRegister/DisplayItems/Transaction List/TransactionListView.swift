@@ -83,7 +83,7 @@ struct TransactionListView: View {
 
     
     func createNewTransaction(transactionType: TransactionType) {
-        let transaction = AccountTransaction(account: self.account, transactionType: transactionType)
+        let transaction = AccountTransaction(account: account, transactionType: transactionType)
         path.append(NavData(navView: .transactionCreator, transaction: transaction))
     }
 }

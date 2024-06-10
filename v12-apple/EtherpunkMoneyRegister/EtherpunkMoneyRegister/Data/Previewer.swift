@@ -55,7 +55,7 @@ struct Previewer {
         var transactionAmount: Decimal = -12.39
         balance = balance+transactionAmount
         burgerKingTransaction = AccountTransaction(account: cuAccount,name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag])
-
+        
         transactionAmount = -8.79
         balance = balance+transactionAmount
         let wendysTransaction: AccountTransaction = AccountTransaction(account: cuAccount,name: "Wendys", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag])
@@ -63,7 +63,7 @@ struct Previewer {
         transactionAmount = -88.34
         balance = balance+transactionAmount
         cvsTransaction = AccountTransaction(account: cuAccount,name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [medicalTag, pharmacyTag])
-                
+        
         transactionAmount = -10.81
         balance = balance + transactionAmount
         
@@ -86,10 +86,14 @@ struct Previewer {
         cuAccount.currentBalance = balance
         boaAccount.currentBalance = 55.43
         axosAccount.currentBalance = axosAccount.startingBalance
-                
+        
         discordRecurringTransaction = RecurringTransaction(name: "Discord", transactionType: .debit, amount: -10.81, notes: "", nextDueDate: nil, tags: [billsTag], transactions: [discordTransaction], frequency: .monthly, createdOn: Date())
         
-        billGroup = RecurringTransactionGroup(name: "Bills", recurringTransactions: [discordRecurringTransaction])
+        let fitnessRecurringTransaction = RecurringTransaction(name: "Fitness", transactionType: .debit, amount: -33.49, notes: "Contract ends Mar 13 2025", nextDueDate: Date(), tags:[billsTag], transactions: [fitnessTransaction], frequency: .monthly, createdOn: Date())
+        
+        billGroup = RecurringTransactionGroup(name: "Bills", recurringTransactions: [discordRecurringTransaction, fitnessRecurringTransaction])
+        
+        cvsTransaction.isTaxRelated = true
         
         discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
         
@@ -97,7 +101,10 @@ struct Previewer {
         if(monkeyURL == nil) {
             print("An error?")
         }
+        
         let fakeAttachment: AccountTransactionFile = AccountTransactionFile(name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true, transaction: cvsTransaction)
+        
+        
         
         container.mainContext.insert(cuAccount)
         container.mainContext.insert(burgerKingTransaction)
@@ -109,31 +116,62 @@ struct Previewer {
         container.mainContext.insert(paydayTransaction)
         container.mainContext.insert(boaAccount)
         container.mainContext.insert(axosAccount)
-        //container.mainContext.insert(discordRecurringTransaction)
-        //fitness
         container.mainContext.insert(billGroup)
-
+        
     }
     
     private func getNextDueDate(day: Int) -> Date {
         let calendar = Calendar.current
-
+        
         let currentComponents = calendar.dateComponents([.year, .month, .day], from: Date())
-
+        
         var monthsToAdd: Int = 0
-
+        
         if(currentComponents.day! > 16) {
             monthsToAdd = 1
         }
-
-
+        
+        
         var components = calendar.dateComponents([.year, .month, .day], from: Date())
         components.month! += monthsToAdd
         components.day = 16
-
+        
         let date = calendar.date(from: components)
         return date!
     }
+    
+    func downloadImageFromURL(completion: @escaping (URL?) -> Void) {
+        let monkeyUrlString = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
+        
+        guard let url = URL(string: monkeyUrlString) else {
+            print("Invalid URL: \(monkeyUrlString)")
+            completion(nil)
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else {
+                print("Error downloading image: \(error?.localizedDescription ?? "Unknown error")")
+                completion(nil)
+                return
+            }
+            
+            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let destinationURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
+            
+            do {
+                try data.write(to: destinationURL)
+                print("Destination: \(destinationURL)")
+                completion(destinationURL)
+            } catch {
+                print("Error saving image data: \(error)")
+                completion(nil)
+            }
+        }
+        
+        task.resume()
+    }
+    
     
     private func downloadImageFromURL() -> URL? {
         let monkeyUrl: String = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"

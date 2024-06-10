@@ -9,23 +9,28 @@ import SwiftUI
 import QuickLook
 
 struct TransactionDetailView: View {
+    @Environment(\.modelContext) var modelContext
     @Binding var path: NavigationPath
     @Bindable var transaction: AccountTransaction
     
     @State var url: URL?
     
     var body: some View {
-        VStack(alignment: .leading) {
+        List {
             Text("Name: \(transaction.name)")
-            Text("Type: \(transaction.transactionType)")
+            Text("Type: \(transaction.transactionType == .debit ? "Debit" : "Credit")")
+            Text("Account: \(transaction.account.name)")
             HStack {
                 Text("Amount: ")
                 Text(transaction.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
             }
             if(transaction.tags != nil) {
-                HStack {
-                    Text("Tags: ")
-                    ForEach(transaction.tags!) { tag in
+                VStack {
+                    HStack {
+                        Text("Tags: ")
+                        Spacer()
+                    }
+                    ForEach(transaction.tags!.sorted(by: {$0.name < $1.name})) { tag in
                         NavigationLink(value: NavData(navView: .tagDetail, tag: tag)) {
                             Text(tag.name)
                         }
@@ -33,13 +38,11 @@ struct TransactionDetailView: View {
                     
                 }
             }
+            
             HStack {
-                Text("Created: ")
-                Text(transaction.createdOn, format: .dateTime.month().day())
-                Text("@")
-                Text(transaction.createdOn, format: .dateTime.hour().minute().second())
-
+                Text("Tax Related: \(transaction.isTaxRelated == true ? "Yes" : "No")")
             }
+            
             if(transaction.pending != nil) {
                 HStack {
                     Text("Pending: ")
@@ -48,7 +51,7 @@ struct TransactionDetailView: View {
                     Text(transaction.pending!, format: .dateTime.hour().minute().second())
                 }.background(transaction.backgroundColor)
             } else {
-                Text("Pending: <none>").background(transaction.backgroundColor)
+                Text("Pending: ").background(transaction.backgroundColor)
             }
             
             if(transaction.cleared != nil) {
@@ -59,7 +62,7 @@ struct TransactionDetailView: View {
                     Text(transaction.cleared!, format: .dateTime.hour().minute().second())
                 }.background(transaction.backgroundColor)
             } else {
-                Text("Cleared: <none>").background(transaction.backgroundColor)
+                Text("Cleared: ").background(transaction.backgroundColor)
             }
             
             if(transaction.recurringTransaction != nil) {
@@ -80,10 +83,23 @@ struct TransactionDetailView: View {
                 }
             }
             
-            Text("Attachments: \(transaction.fileCount)")
-            List {
+            Section(header: Text("Files")){
+                Text("Files: \(transaction.fileCount)")
+                
+                HStack {
+                    Button(action: addNewDocument) {
+                        Text("Add Document")
+                    }
+                    
+                    Spacer()
+                    
+                    Button(action: addNewPhoto) {
+                        Text("Add Photo")
+                    }
+                }
+                
                 if(transaction.fileCount > 0) {
-                    ForEach(transaction.files!) { file in
+                    ForEach(transaction.files!.sorted(by: { $0.createdOn < $1.createdOn })) { file in
                         VStack(alignment: .leading) {
                             if(file.name != file.filename) {
                                 HStack {
@@ -102,16 +118,38 @@ struct TransactionDetailView: View {
                                 Text(file.createdOn, format: .dateTime.hour().minute().second())
                             }
                             HStack {
-                                Text("Tax Document: \(file.isTaxRelated)")
+                                Text("Tax Document: \(file.isTaxRelated == true ? "Yes" : "No")")
                             }
                             HStack {
                                 Text("Notes: \(file.notes)")
                             }
-                        }
+                        }.padding()
                     }
                 }
+                
             }
             
+            
+            // Expected due date
+            // Confirmation
+            // Notes
+            // Recurring Transaction
+            
+            Section(header: Text("Misc")) {
+                
+                if(transaction.bankTransactionText != "") {
+                    HStack {
+                        Text("Bank Text: \(transaction.bankTransactionText)")
+                    }
+                }
+                
+                HStack {
+                    Text("Created On: ")
+                    Text(transaction.createdOn, format: .dateTime.month().day())
+                    Text("@")
+                    Text(transaction.createdOn, format: .dateTime.hour().minute().second())
+                }
+            }
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -121,7 +159,7 @@ struct TransactionDetailView: View {
                     } label: {
                         Label("Edit transaction", systemImage: "pencil")
                     }
-
+                    
                     Divider()
                     
                     Button {
@@ -149,12 +187,27 @@ struct TransactionDetailView: View {
         }
         .navigationTitle("Transaction Details")
     }
+    
+    func addNewDocument() {
+        
+    }
+    func addNewPhoto() {
+        
+    }
 }
+
+
 
 #Preview {
     do {
         let previewer = try Previewer()
-
+        
+        previewer.cvsTransaction.files?.append(AccountTransactionFile(name: "Receipt", filename: "receipt.jpg", isTaxRelated: true, transaction: previewer.cvsTransaction))
+        
+        previewer.cvsTransaction.files?.append(AccountTransactionFile(name: "Coupon", filename: "coupon.jpg", transaction: previewer.cvsTransaction))
+        
+        previewer.cvsTransaction.tags?.append(Tag(name: "TEST"))
+        
         return TransactionDetailView(path: .constant(NavigationPath()), transaction: previewer.cvsTransaction)
             .modelContainer(previewer.container)
     } catch {
