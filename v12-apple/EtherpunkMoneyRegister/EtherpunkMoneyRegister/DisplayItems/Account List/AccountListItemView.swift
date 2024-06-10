@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct AccountListItemView: View {
-    
     var account: Account
     
     var body: some View {
-        VStack{
-            HStack() {
+        VStack {
+            HStack {
                 Text(account.name)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .font(.title2)
@@ -21,7 +20,7 @@ struct AccountListItemView: View {
                     .padding(
                         EdgeInsets(
                             .init(top: 2, leading: 0, bottom: 5, trailing: 0)
-                            )
+                        )
                     )
                 Spacer()
             }
@@ -77,19 +76,18 @@ struct AccountListItemView: View {
                     .padding(.horizontal, 5)
                 
                 Spacer()
-                //Text(clearedText, format: .dateTime.month().day())
+                // Text(clearedText, format: .dateTime.month().day())
                 Text(account.lastBalanced, format: .dateTime.month().day().year())
                     .font(.headline)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 5)
             }
-
         }
         .cornerRadius(10)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
                 .stroke(Color(.sRGB, red: 125/255, green: 125/255, blue: 125/255, opacity: 0.5), lineWidth: 1)
-            )
+        )
     }
 }
 

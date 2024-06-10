@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum NavView: Hashable{
+enum NavView: Hashable {
     case accountList
     case accountCreator
     case accountEditor

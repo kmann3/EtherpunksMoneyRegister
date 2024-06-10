@@ -6,12 +6,11 @@
 //
 
 import Foundation
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @MainActor
 struct Previewer {
-    
     let container: ModelContainer
     
     let cuAccount: Account
@@ -31,13 +30,14 @@ struct Previewer {
             AppSettings.self,
             Tag.self,
             RecurringTransaction.self,
-            RecurringTransactionGroup.self])
+            RecurringTransactionGroup.self,
+        ])
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         container = try! ModelContainer(for: schema, configurations: config)
         
         cuAccount = Account(name: "Amegy Bank", startingBalance: 238.99)
-        let boaAccount: Account = Account(name: "Bank of America", startingBalance: 492)
-        let axosAccount: Account = Account(name: "Axos", startingBalance: 130494)
+        let boaAccount = Account(name: "Bank of America", startingBalance: 492)
+        let axosAccount = Account(name: "Axos", startingBalance: 130494)
         
         cuAccount.sortIndex = 0
         boaAccount.sortIndex = 255
@@ -45,39 +45,39 @@ struct Previewer {
         
         billsTag = Tag(name: "bills")
         medicalTag = Tag(name: "medical")
-        let ffTag: Tag = Tag(name: "fast-food")
-        let incomeTag: Tag = Tag(name: "income")
+        let ffTag = Tag(name: "fast-food")
+        let incomeTag = Tag(name: "income")
         
         pharmacyTag = Tag(name: "pharmacy")
         
         var balance: Decimal = 238.99
         
         var transactionAmount: Decimal = -12.39
-        balance = balance+transactionAmount
-        burgerKingTransaction = AccountTransaction(account: cuAccount,name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag])
+        balance = balance + transactionAmount
+        burgerKingTransaction = AccountTransaction(account: cuAccount, name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag])
         
         transactionAmount = -8.79
-        balance = balance+transactionAmount
-        let wendysTransaction: AccountTransaction = AccountTransaction(account: cuAccount,name: "Wendys", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag])
+        balance = balance + transactionAmount
+        let wendysTransaction = AccountTransaction(account: cuAccount, name: "Wendys", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag])
         
         transactionAmount = -88.34
-        balance = balance+transactionAmount
-        cvsTransaction = AccountTransaction(account: cuAccount,name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [medicalTag, pharmacyTag])
+        balance = balance + transactionAmount
+        cvsTransaction = AccountTransaction(account: cuAccount, name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [medicalTag, pharmacyTag])
         
         transactionAmount = -10.81
         balance = balance + transactionAmount
         
-        let discordTransaction: AccountTransaction = AccountTransaction(account: cuAccount,name: "Discord", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: nil, tags: [billsTag])
+        let discordTransaction = AccountTransaction(account: cuAccount, name: "Discord", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: nil, tags: [billsTag])
         
         transactionAmount = -36.81
         balance = balance + transactionAmount
         
-        let fitnessTransaction: AccountTransaction = AccountTransaction(account: cuAccount,name: "Fitness", transactionType: .debit, amount: transactionAmount, balance: balance, pending: Date(), cleared: nil, tags: [billsTag])
+        let fitnessTransaction = AccountTransaction(account: cuAccount, name: "Fitness", transactionType: .debit, amount: transactionAmount, balance: balance, pending: Date(), cleared: nil, tags: [billsTag])
         
         transactionAmount = 2318.79
         balance = balance + transactionAmount
         
-        let paydayTransaction: AccountTransaction = AccountTransaction(account: cuAccount,name: "Payday", transactionType: .credit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [incomeTag])
+        let paydayTransaction = AccountTransaction(account: cuAccount, name: "Payday", transactionType: .credit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [incomeTag])
         
         let cuOutstandingAmount: Decimal = discordTransaction.amount + fitnessTransaction.amount
         
@@ -89,7 +89,7 @@ struct Previewer {
         
         discordRecurringTransaction = RecurringTransaction(name: "Discord", transactionType: .debit, amount: -10.81, notes: "", nextDueDate: nil, tags: [billsTag], transactions: [discordTransaction], frequency: .monthly, createdOn: Date())
         
-        let fitnessRecurringTransaction = RecurringTransaction(name: "Fitness", transactionType: .debit, amount: -33.49, notes: "Contract ends Mar 13 2025", nextDueDate: Date(), tags:[billsTag], transactions: [fitnessTransaction], frequency: .monthly, createdOn: Date())
+        let fitnessRecurringTransaction = RecurringTransaction(name: "Fitness", transactionType: .debit, amount: -33.49, notes: "Contract ends Mar 13 2025", nextDueDate: Date(), tags: [billsTag], transactions: [fitnessTransaction], frequency: .monthly, createdOn: Date())
         
         billGroup = RecurringTransactionGroup(name: "Bills", recurringTransactions: [discordRecurringTransaction, fitnessRecurringTransaction])
         
@@ -98,13 +98,11 @@ struct Previewer {
         discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
         
         let monkeyURL: URL? = downloadImageFromURL()
-        if(monkeyURL == nil) {
+        if monkeyURL == nil {
             print("An error?")
         }
         
-        let fakeAttachment: AccountTransactionFile = AccountTransactionFile(name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true, transaction: cvsTransaction)
-        
-        
+        let fakeAttachment = AccountTransactionFile(name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true, transaction: cvsTransaction)
         
         container.mainContext.insert(cuAccount)
         container.mainContext.insert(burgerKingTransaction)
@@ -117,7 +115,6 @@ struct Previewer {
         container.mainContext.insert(boaAccount)
         container.mainContext.insert(axosAccount)
         container.mainContext.insert(billGroup)
-        
     }
     
     private func getNextDueDate(day: Int) -> Date {
@@ -125,12 +122,11 @@ struct Previewer {
         
         let currentComponents = calendar.dateComponents([.year, .month, .day], from: Date())
         
-        var monthsToAdd: Int = 0
+        var monthsToAdd = 0
         
-        if(currentComponents.day! > 16) {
+        if currentComponents.day! > 16 {
             monthsToAdd = 1
         }
-        
         
         var components = calendar.dateComponents([.year, .month, .day], from: Date())
         components.month! += monthsToAdd
@@ -149,7 +145,7 @@ struct Previewer {
             return
         }
         
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        let task = URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data = data, error == nil else {
                 print("Error downloading image: \(error?.localizedDescription ?? "Unknown error")")
                 completion(nil)
@@ -172,9 +168,8 @@ struct Previewer {
         task.resume()
     }
     
-    
     private func downloadImageFromURL() -> URL? {
-        let monkeyUrl: String = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
+        let monkeyUrl = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
         
         guard let url = URL(string: monkeyUrl) else {
             return nil

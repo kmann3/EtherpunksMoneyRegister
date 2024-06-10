@@ -7,8 +7,8 @@
 
 // Eventually this will be needed once there are a lot of transactions to load but right now this seems to be giving XCode grief.
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 class IncrementalTransactionViewModel: ObservableObject {
     @Environment(\.modelContext) var modelContext
@@ -18,7 +18,6 @@ class IncrementalTransactionViewModel: ObservableObject {
     private var currentPage = 0
     private let transactionsPerPage = 20
     private var account: Account
-
 
     init(sortDescriptor: [SortDescriptor<AccountTransaction>], account: Account) {
         self.sortDescriptor = sortDescriptor
@@ -39,7 +38,7 @@ class IncrementalTransactionViewModel: ObservableObject {
             }
         }
     }
-    
+
     func fetchTransactions(offset: Int, limit: Int, sortDescriptor: [SortDescriptor<AccountTransaction>]) -> [AccountTransaction] {
         let accountId = account.persistentModelID
         var fetchDescriptor = FetchDescriptor<AccountTransaction>(sortBy: sortDescriptor)
@@ -49,7 +48,7 @@ class IncrementalTransactionViewModel: ObservableObject {
         fetchDescriptor.predicate = #Predicate<AccountTransaction> { transaction in
             transaction.account.persistentModelID == accountId || transaction.account.name.localizedStandardContains("Amegy")
         }
-        
+
         do {
             let transactions = try modelContext.fetch(fetchDescriptor)
             return transactions

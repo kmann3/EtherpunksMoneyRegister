@@ -14,7 +14,7 @@ final class RecurringTransaction {
     var transactionType: TransactionType = TransactionType.debit
     var amount: Decimal = 0
     var notes: String = ""
-    var nextDueDate: Date? = nil
+    var nextDueDate: Date?
     
     @Relationship(deleteRule: .noAction)
     var tags: [Tag]?
@@ -26,9 +26,9 @@ final class RecurringTransaction {
     
     var frequency: RecurringFrequency = RecurringFrequency.unknown
     
-    var frequencyValue: Int? = nil
-    var frequencyDayOfWeek: DayOfWeek? = nil
-    var frequencyDateValue: Date? = nil
+    var frequencyValue: Int?
+    var frequencyDayOfWeek: DayOfWeek?
+    var frequencyDateValue: Date?
     
     var createdOn: Date = Date()
 
@@ -47,7 +47,7 @@ final class RecurringTransaction {
         self.frequencyDateValue = frequencyDateValue
         self.createdOn = createdOn
         
-        VerifySignage()
+        self.VerifySignage()
     }
     
     enum BumpDateError: Error {
@@ -56,48 +56,42 @@ final class RecurringTransaction {
     }
     
     func BumpNextDueDate() throws {
-        
-        if(self.nextDueDate == nil) {
+        if self.nextDueDate == nil {
             throw BumpDateError.missingNextDueDate
         }
         
         let calendar = Calendar.current
         
-        switch(frequency) {
+        switch self.frequency {
         case .unknown:
-            break;
+            break
             
         case .irregular:
-            break;
+            break
             
         case .yearly:
             self.nextDueDate = calendar.date(byAdding: .year, value: 1, to: self.nextDueDate!)
-            break;
             
         case .monthly:
             // what if it ends on a holiday or a weekend
             self.nextDueDate = calendar.date(byAdding: .month, value: 1, to: self.nextDueDate!)
-            break;
 
         case .weekly:
             self.nextDueDate = calendar.date(byAdding: .day, value: 7, to: self.nextDueDate!)
-            break;
             
         case .xdays:
-            if(self.frequencyValue == nil){
+            if self.frequencyValue == nil {
                 throw BumpDateError.missingFrequencyValues
             }
             
             self.nextDueDate = calendar.date(byAdding: .day, value: self.frequencyValue!, to: self.nextDueDate!)
-            break;
             
         case .xmonths:
-            if(self.frequencyValue == nil){
+            if self.frequencyValue == nil {
                 throw BumpDateError.missingFrequencyValues
             }
             
             self.nextDueDate = calendar.date(byAdding: .month, value: self.frequencyValue!, to: self.nextDueDate!)
-            break;
             
         case .xweekOnYDayOfWeek:
             let nextMonth = calendar.date(byAdding: .month, value: 1, to: self.nextDueDate!)
@@ -113,22 +107,16 @@ final class RecurringTransaction {
             difference += (self.frequencyValue! - 1) * 7
 
             self.nextDueDate = calendar.date(byAdding: .day, value: difference, to: startOfMonth!)
-            break;
         }
-        
-        
     }
     
     func VerifySignage() {
-        switch(self.transactionType) {
-            case .credit:
-                self.amount = abs(self.amount)
-                break;
+        switch self.transactionType {
+        case .credit:
+            self.amount = abs(self.amount)
             
-            case .debit:
-                self.amount = -abs(self.amount)
-                break;
-            
+        case .debit:
+            self.amount = -abs(self.amount)
         }
     }
 }

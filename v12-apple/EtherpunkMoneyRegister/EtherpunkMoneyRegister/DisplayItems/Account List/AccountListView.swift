@@ -21,7 +21,6 @@ struct AccountListView: View {
     @Query(sort: [SortDescriptor(\Tag.name, order: .forward)])
     var availableTags: [Tag]
     
-    
     var body: some View {
         NavigationStack(path: $path) {
             List {
@@ -75,20 +74,19 @@ struct AccountListView: View {
             .searchable(text: $searchText)
             .navigationDestination(for: NavData.self) { item in
                 
-                switch(item.navView) {
-                    
+                switch item.navView {
                 case .accountCreator:
                     EditAccountDetailsView(path: $path, doSave: $doSave, account: item.account!)
                         .onDisappear {
-                            if(doSave == true) {
+                            if doSave == true {
                                 modelContext.insert(item.account!)
                             }
                         }
                 case .accountEditor:
                     EditAccountDetailsView(path: $path, doSave: $doSave, account: item.account!)
                         .onDisappear {
-                            if(doSave == true) {
-                                //save account
+                            if doSave == true {
+                                // save account
                                 try? modelContext.save()
                             }
                         }
@@ -96,16 +94,16 @@ struct AccountListView: View {
                 case .accountList:
                     Text("That is this view. We should never reach here.")
                     
-                case.recurringTransactionDetail:
+                case .recurringTransactionDetail:
                     Text("Recurring Transaction Detail")
                 case .recurringTransactionEditor:
                     Text("Recurring Transaction Editor")
                 case .recurringTransactionList:
                     Text("Recurring Transaction List")
                     
-                case.recurringTransactionGroupDetail:
+                case .recurringTransactionGroupDetail:
                     Text("Recurring Transaction Group Detail")
-                case.recurringTransactionGroupEditor:
+                case .recurringTransactionGroupEditor:
                     Text("Recurring Transaction Group Editor")
                 case .recurringTransactionGroupList:
                     Text("Recurring Transaction Group List")
@@ -131,7 +129,6 @@ struct AccountListView: View {
             }
             .navigationTitle("Account List")
         }
-
     }
     
     func createAccount() {
@@ -145,7 +142,7 @@ struct AccountListView: View {
     
     func addNewTransaction(account: Account, transactionType: TransactionType) {
         print("New \(transactionType) for: \(account.name)")
-        let newTransaction: AccountTransaction = AccountTransaction(account: account, transactionType: transactionType)
+        let newTransaction = AccountTransaction(account: account, transactionType: transactionType)
         modelContext.insert(newTransaction)
         path.append(NavData(navView: .transactionEditor, transaction: newTransaction))
     }

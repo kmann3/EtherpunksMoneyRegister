@@ -5,15 +5,14 @@
 //  Created by Kennith Mann on 5/17/24.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct EtherpunkMoneyRegisterApp: App {
     var container: ModelContainer
-    
+
     init() {
-        
         let schema = Schema([
             Account.self,
             AccountTransaction.self,
@@ -21,11 +20,12 @@ struct EtherpunkMoneyRegisterApp: App {
             AppSettings.self,
             Tag.self,
             RecurringTransaction.self,
-            RecurringTransactionGroup.self])
+            RecurringTransactionGroup.self,
+        ])
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         container = try! ModelContainer(for: schema, configurations: [configuration])
     }
-        
+
     var body: some Scene {
         WindowGroup {
             ContentView()

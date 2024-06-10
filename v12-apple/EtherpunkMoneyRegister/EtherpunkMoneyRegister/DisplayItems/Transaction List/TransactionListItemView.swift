@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TransactionListItemView: View {
-    
     let transaction: AccountTransaction
     
     var body: some View {
@@ -16,7 +15,7 @@ struct TransactionListItemView: View {
             HStack(spacing: 0) {
                 Text(transaction.name)
                 Spacer()
-                if(transaction.amount > 0) {
+                if transaction.amount > 0 {
                     Text(transaction.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                         .foregroundStyle(.green)
                 } else {
@@ -25,9 +24,9 @@ struct TransactionListItemView: View {
             }
             
             HStack(spacing: 0) {
-                if(transaction.pending == nil && transaction.cleared == nil) {
+                if transaction.pending == nil && transaction.cleared == nil {
                     Text("Reserved")
-                } else if (transaction.pending != nil && transaction.cleared == nil) {
+                } else if transaction.pending != nil && transaction.cleared == nil {
                     Text("Pending")
                 } else {
                     if let clearedText: Date = self.transaction.cleared?.advanced(by: 0) {
@@ -42,20 +41,18 @@ struct TransactionListItemView: View {
             }
             
             HStack(spacing: 0) {
-                if(transaction.tags != nil) {
-                    ForEach(transaction.tags!){ tag in
+                if transaction.tags != nil {
+                    ForEach(transaction.tags!) { tag in
                         Text("\(tag.name) ")
                             .font(.callout)
                     }
                     Spacer()
-                    if(transaction.fileCount > 0) {
+                    if transaction.fileCount > 0 {
                         Text(Image(systemName: "paperclip"))
                             .font(.caption2)
                     }
-                    
                 }
             }
-            
         }
         .background(transaction.backgroundColor)
     }

@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @Model
 final class AccountTransactionFile {
@@ -17,10 +17,10 @@ final class AccountTransactionFile {
     var createdOn: Date
     var url: URL?
     var isTaxRelated: Bool
-    
+
     @Relationship(deleteRule: .noAction)
     var transaction: AccountTransaction?
-    
+
     init(name: String = "", filename: String = "", notes: String = "", createdOn: Date = Date(), url: URL? = nil, isTaxRelated: Bool = false, transaction: AccountTransaction) {
         self.name = name
         self.filename = filename

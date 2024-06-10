@@ -6,12 +6,11 @@
 //
 
 import Foundation
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @Model
 final class AccountTransaction {
-    
     /// The name of the transaction.
     var name: String
     
@@ -44,7 +43,7 @@ final class AccountTransaction {
     
     /// The bank's description of the transaction. This isn't used just yet but in the future it will be used for import purposes.
     /// Example: CA 408 536 6000 ADOBE / Withdrawal @ CA 408 536 6000 ADOBE *PHOTOGPHY PUSADOBE *PHOTOGPH Trace #70108
-    // TODO Implement import from bank
+    // TODO: Implement import from bank
     var bankTransactionText: String
     
     /// A flag for if this transaction should be marked for tax purposes so for next tax season you can pull all tax related items for the year requested into one batch.
@@ -67,12 +66,12 @@ final class AccountTransaction {
     
     /// The amount of files associated with the transaction.
     var fileCount: Int {
-        files?.count ?? 0
+        self.files?.count ?? 0
     }
     
     /// The background color indicating the status of the transaction.
     var backgroundColor: Color {
-        switch transactionStatus {
+        switch self.transactionStatus {
         case .cleared:
             Color.clear
         case .pending:
@@ -84,9 +83,9 @@ final class AccountTransaction {
     
     /// The inferred status of the transaction.
     var transactionStatus: TransactionStatus {
-        if(self.pending == nil && self.cleared == nil) {
+        if self.pending == nil && self.cleared == nil {
             return .reserved
-        } else if (self.pending != nil && self.cleared == nil) {
+        } else if self.pending != nil && self.cleared == nil {
             return .pending
         } else {
             return .cleared
@@ -111,7 +110,7 @@ final class AccountTransaction {
         self.isTaxRelated = isTaxRelated
         self.dueDate = dueDate
         
-        VerifySignage()
+        self.VerifySignage()
         
 //        if(self.balance == 0 && self.amount != 0) {
 //            // Probably a simple transaction
@@ -121,14 +120,12 @@ final class AccountTransaction {
     }
     
     func VerifySignage() {
-        switch(self.transactionType) {
-            case .credit:
-                self.amount = abs(self.amount)
-                break;
+        switch self.transactionType {
+        case .credit:
+            self.amount = abs(self.amount)
             
-            case .debit:
+        case .debit:
             self.amount = -abs(self.amount)
-                break;
         }
     }
 }

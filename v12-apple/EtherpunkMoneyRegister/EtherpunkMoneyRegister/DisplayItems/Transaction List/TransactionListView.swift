@@ -8,7 +8,6 @@ import SwiftData
 import SwiftUI
 
 struct TransactionListView: View {
-
     @Binding private var path: NavigationPath
     @State private var searchText = ""
     @Query var transactions: [AccountTransaction]
@@ -28,13 +27,11 @@ struct TransactionListView: View {
     }
     
     var body: some View {
-
         List {
             Section(header: Text("Account Details")) {
                 NavigationLink(value: NavData(navView: .accountEditor, account: account)) {
                     AccountListItemView(account: account)
                 }
-
             }
             
             Section(header: Text("Transactions"), footer: Text("End of list")) {
@@ -81,7 +78,6 @@ struct TransactionListView: View {
         .navigationTitle("\(account.name)")
     }
 
-    
     func createNewTransaction(transactionType: TransactionType) {
         let transaction = AccountTransaction(account: account, transactionType: transactionType)
         path.append(NavData(navView: .transactionCreator, transaction: transaction))

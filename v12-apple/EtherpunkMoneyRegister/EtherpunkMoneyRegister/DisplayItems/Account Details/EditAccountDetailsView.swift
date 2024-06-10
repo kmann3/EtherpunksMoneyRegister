@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct EditAccountDetailsView: View {
-    
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     @Binding var path: NavigationPath
@@ -34,9 +33,9 @@ struct EditAccountDetailsView: View {
             Section(header: Text("Transaction Details")) {
                 TextField("Name:", text: $account.name)
                 TextField("Starting Balance:", value: $account.startingBalance, format: .number.precision(.fractionLength(2)))
-                    #if os(iOS)
+                #if os(iOS)
                     .keyboardType(.decimalPad)
-                    #endif
+                #endif
                 
                 TextField("Notes:", text: $account.notes)
             }
@@ -56,26 +55,25 @@ struct EditAccountDetailsView: View {
         .navigationBarBackButtonHidden(true)
         .navigationTitle(title)
         #if os(iOS)
-        .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.inline)
         #endif
-        .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-                Button ("Save") {
-                    withAnimation {
-                        save()
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") {
+                        withAnimation {
+                            save()
+                            dismiss()
+                        }
+                    }
+                }
+        
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel", role: .cancel) {
+                        doSave = false
                         dismiss()
                     }
                 }
             }
-        
-            ToolbarItem(placement: .cancellationAction) {
-                Button ("Cancel", role: .cancel) {
-                    doSave = false
-                    dismiss()
-                }
-            }
-            
-        }
     }
     
     private func save() {
@@ -89,7 +87,7 @@ struct EditAccountDetailsView: View {
     do {
         let previewer = try Previewer()
         let doSave: Bool = false
-        return EditAccountDetailsView(path: .constant(NavigationPath()), doSave: .constant(doSave),  account: previewer.cuAccount)
+        return EditAccountDetailsView(path: .constant(NavigationPath()), doSave: .constant(doSave), account: previewer.cuAccount)
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")

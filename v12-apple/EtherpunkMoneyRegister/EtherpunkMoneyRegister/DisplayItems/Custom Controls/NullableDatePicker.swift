@@ -10,25 +10,25 @@ import SwiftUI
 struct NullableDatePicker: View {
     @State var name: String
     @Binding var selectedDate: Date?
-    
+
     @State private var showingDatePicker = false
-    
+
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         return formatter
     }()
-    
+
     var body: some View {
         HStack {
             Text("\(name):")
             if let selectedDate = selectedDate {
                 Text("\(dateFormatter.string(from: selectedDate))")
-                
+
                 Button("Change") {
                     showingDatePicker = true
                 }
-                
+
                 Button(action: {
                     self.selectedDate = nil
                 }) {
@@ -40,7 +40,7 @@ struct NullableDatePicker: View {
                     showingDatePicker = true
                 }
             }
-            
+
             if showingDatePicker {
                 DatePicker(
                     "",
@@ -57,8 +57,6 @@ struct NullableDatePicker: View {
         }
     }
 }
-
-
 
 #Preview {
     NullableDatePicker(name: "Pending", selectedDate: .constant(Date()))

@@ -1,5 +1,5 @@
-import SwiftUI
 import QuickLook
+import SwiftUI
 
 struct EditTransactionDetailView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -36,7 +36,7 @@ struct EditTransactionDetailView: View {
     
     init(transaction: AccountTransaction, availableTags: [Tag], path: Binding<NavigationPath>) {
         self.transaction = transaction
-        self._path = path
+        _path = path
         _transactionName = State(initialValue: transaction.name)
         _transactionAmount = State(initialValue: "\(transaction.amount)")
         _transactionType = State(initialValue: transaction.transactionType)
@@ -48,7 +48,7 @@ struct EditTransactionDetailView: View {
         _transactionFiles = State(initialValue: transaction.files ?? [])
         _transactionCreatedOnDate = State(initialValue: transaction.createdOn)
         
-        if(transaction.name == "") {
+        if transaction.name == "" {
             isNewTransaction = true
         }
     }
@@ -92,7 +92,7 @@ struct EditTransactionDetailView: View {
                 
                 // Notes
                 TextField("Notes", text: $transactionNotes, axis: .vertical)
-                    .lineLimit(2...4)
+                    .lineLimit(2 ... 4)
                 // bank transaction text
             }
             
@@ -109,14 +109,13 @@ struct EditTransactionDetailView: View {
                     Button(action: addNewPhoto) {
                         Text("Add Photo")
                     }
-                    
                 }
                 
                 List {
-                    if(transactionFiles.count > 0) {
+                    if transactionFiles.count > 0 {
                         ForEach(transactionFiles) { file in
                             VStack(alignment: .leading) {
-                                if(file.name != file.filename) {
+                                if file.name != file.filename {
                                     HStack {
                                         Text("Name: \(file.name)")
                                     }
@@ -127,7 +126,7 @@ struct EditTransactionDetailView: View {
                                         url = file.url
                                     }.quickLookPreview($url)
                                 }
-                                HStack{
+                                HStack {
                                     Text("Created On: ")
                                     Text(file.createdOn, format: .dateTime.month().day())
                                     Text("@")
@@ -154,7 +153,6 @@ struct EditTransactionDetailView: View {
                 }
             }
             
-            
             // Account
             
             // Recurring Transaction
@@ -174,7 +172,7 @@ struct EditTransactionDetailView: View {
 #endif
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                Button ("Save") {
+                Button("Save") {
                     withAnimation {
                         saveTransaction()
                     }
@@ -182,14 +180,12 @@ struct EditTransactionDetailView: View {
             }
             
             ToolbarItem(placement: .cancellationAction) {
-                Button ("Cancel", role: .cancel) {
+                Button("Cancel", role: .cancel) {
                     presentationMode.wrappedValue.dismiss()
                 }
             }
-            
         }
     }
-    
     
     func addNewTag() {
         let newTag = Tag(name: newTagName)
@@ -199,13 +195,9 @@ struct EditTransactionDetailView: View {
         newTagName = ""
     }
     
-    func addNewDocument() {
-        
-    }
+    func addNewDocument() {}
     
-    func addNewPhoto() {
-        
-    }
+    func addNewPhoto() {}
     
     func saveTransaction() {
         guard let amount = Decimal(string: transactionAmount) else { return }
@@ -213,13 +205,13 @@ struct EditTransactionDetailView: View {
         // CHECK TO SEE IF THE AMOUNT HERE HAS CHANGED FROM THE TRANSACTION AMOUNT
         // IF IT HAS THEN WE NEED TO RE-CALCULATE THE BALANCE!
         
-        if(amount != transaction.amount) {
+        if amount != transaction.amount {
             print("NEED TO CHANGE BALANCE")
             // Setting to zero to make sure it's stupidly obvious things need to change
             transaction.balance = 0
         }
         
-        if(transactionType != transaction.transactionType) {
+        if transactionType != transaction.transactionType {
             // WE NEED TO REBALANCE
             // Need to make a function where we can call up and reference a transaction of previous value and new value and have it go through the rest of the transactions
         }
@@ -236,7 +228,7 @@ struct EditTransactionDetailView: View {
         transaction.files = transactionFiles
         
         do {
-            if(isNewTransaction) {
+            if isNewTransaction {
                 modelContext.insert(transaction)
             }
             try modelContext.save()
@@ -268,9 +260,7 @@ struct MultipleSelectionRow: View {
 }
 
 #Preview {
-    
     do {
-        
         let previewer = try Previewer()
         return EditTransactionDetailView(transaction: previewer.cvsTransaction, availableTags: [previewer.billsTag, previewer.medicalTag, previewer.pharmacyTag], path: .constant(NavigationPath()))
             .modelContainer(previewer.container)

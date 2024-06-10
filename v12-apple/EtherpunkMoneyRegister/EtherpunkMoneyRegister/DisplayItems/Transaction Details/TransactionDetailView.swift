@@ -5,8 +5,8 @@
 //  Created by Kennith Mann on 5/22/24.
 //
 
-import SwiftUI
 import QuickLook
+import SwiftUI
 
 struct TransactionDetailView: View {
     @Environment(\.modelContext) var modelContext
@@ -24,18 +24,17 @@ struct TransactionDetailView: View {
                 Text("Amount: ")
                 Text(transaction.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
             }
-            if(transaction.tags != nil) {
+            if transaction.tags != nil {
                 VStack {
                     HStack {
                         Text("Tags: ")
                         Spacer()
                     }
-                    ForEach(transaction.tags!.sorted(by: {$0.name < $1.name})) { tag in
+                    ForEach(transaction.tags!.sorted(by: { $0.name < $1.name })) { tag in
                         NavigationLink(value: NavData(navView: .tagDetail, tag: tag)) {
                             Text(tag.name)
                         }
                     }
-                    
                 }
             }
             
@@ -43,7 +42,7 @@ struct TransactionDetailView: View {
                 Text("Tax Related: \(transaction.isTaxRelated == true ? "Yes" : "No")")
             }
             
-            if(transaction.pending != nil) {
+            if transaction.pending != nil {
                 HStack {
                     Text("Pending: ")
                     Text(transaction.pending!, format: .dateTime.month().day())
@@ -54,7 +53,7 @@ struct TransactionDetailView: View {
                 Text("Pending: ").background(transaction.backgroundColor)
             }
             
-            if(transaction.cleared != nil) {
+            if transaction.cleared != nil {
                 HStack {
                     Text("Cleared: ")
                     Text(transaction.cleared!, format: .dateTime.month().day())
@@ -65,7 +64,7 @@ struct TransactionDetailView: View {
                 Text("Cleared: ").background(transaction.backgroundColor)
             }
             
-            if(transaction.recurringTransaction != nil) {
+            if transaction.recurringTransaction != nil {
                 HStack {
                     Text("Recurring Transaction: ")
                     NavigationLink(value: NavData(navView: .recurringTransactionDetail, recurringTransaction: transaction.recurringTransaction!)) {
@@ -74,7 +73,7 @@ struct TransactionDetailView: View {
                 }
             }
             
-            if(transaction.recurringTransaction != nil && transaction.recurringTransaction?.group != nil) {
+            if transaction.recurringTransaction != nil && transaction.recurringTransaction?.group != nil {
                 HStack {
                     Text("Recurring Transaction Group: ")
                     NavigationLink(value: NavData(navView: .recurringTransactionGroupDetail, recurringTransactionGroup: transaction.recurringTransaction!.group)) {
@@ -83,7 +82,7 @@ struct TransactionDetailView: View {
                 }
             }
             
-            Section(header: Text("Files")){
+            Section(header: Text("Files")) {
                 Text("Files: \(transaction.fileCount)")
                 
                 HStack {
@@ -98,10 +97,10 @@ struct TransactionDetailView: View {
                     }
                 }
                 
-                if(transaction.fileCount > 0) {
+                if transaction.fileCount > 0 {
                     ForEach(transaction.files!.sorted(by: { $0.createdOn < $1.createdOn })) { file in
                         VStack(alignment: .leading) {
-                            if(file.name != file.filename) {
+                            if file.name != file.filename {
                                 HStack {
                                     Text("Name: \(file.name)")
                                 }
@@ -111,7 +110,7 @@ struct TransactionDetailView: View {
                                     url = file.url
                                 }.quickLookPreview($url)
                             }
-                            HStack{
+                            HStack {
                                 Text("Created On: ")
                                 Text(file.createdOn, format: .dateTime.month().day())
                                 Text("@")
@@ -126,9 +125,7 @@ struct TransactionDetailView: View {
                         }.padding()
                     }
                 }
-                
             }
-            
             
             // Expected due date
             // Confirmation
@@ -136,8 +133,7 @@ struct TransactionDetailView: View {
             // Recurring Transaction
             
             Section(header: Text("Misc")) {
-                
-                if(transaction.bankTransactionText != "") {
+                if transaction.bankTransactionText != "" {
                     HStack {
                         Text("Bank Text: \(transaction.bankTransactionText)")
                     }
@@ -162,22 +158,16 @@ struct TransactionDetailView: View {
                     
                     Divider()
                     
-                    Button {
-                        
-                    } label: {
+                    Button {} label: {
                         Label("Attach file", systemImage: "doc")
                     }
-                    Button {
-                        
-                    } label: {
+                    Button {} label: {
                         Label("Attach photo", systemImage: "photo")
                     }
                     
                     Divider()
                     
-                    Button {
-                        
-                    } label: {
+                    Button {} label: {
                         Label("Create Recurring Transaction", systemImage: "repeat")
                     }
                 } label: {
@@ -188,15 +178,10 @@ struct TransactionDetailView: View {
         .navigationTitle("Transaction Details")
     }
     
-    func addNewDocument() {
-        
-    }
-    func addNewPhoto() {
-        
-    }
+    func addNewDocument() {}
+
+    func addNewPhoto() {}
 }
-
-
 
 #Preview {
     do {
