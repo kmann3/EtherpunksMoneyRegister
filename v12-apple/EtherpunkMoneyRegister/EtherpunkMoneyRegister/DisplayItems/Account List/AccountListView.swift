@@ -116,13 +116,13 @@ struct AccountListView: View {
                     
                 case .transactionCreator:
                     EditTransactionDetailView(transaction: item.transaction!, availableTags: availableTags, path: $path)
-                    
+
                 case .transactionDetail:
                     TransactionDetailView(path: $path, transaction: item.transaction!)
                     
                 case .transactionEditor:
                     EditTransactionDetailView(transaction: item.transaction!, availableTags: availableTags, path: $path)
-                    
+
                 case .transactionList:
                     TransactionListView(path: $path, account: item.account!)
                 }

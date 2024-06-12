@@ -10,7 +10,7 @@ import SwiftData
 import SwiftUI
 
 @Model
-final class AccountTransaction {
+final class AccountTransaction : Identifiable {
     /// The name of the transaction.
     var name: String
     
@@ -111,12 +111,6 @@ final class AccountTransaction {
         self.dueDate = dueDate
         
         self.VerifySignage()
-        
-//        if(self.balance == 0 && self.amount != 0) {
-//            // Probably a simple transaction
-//            account.currentBalance += self.amount
-//            self.balance = account.currentBalance
-//        }
     }
     
     func VerifySignage() {

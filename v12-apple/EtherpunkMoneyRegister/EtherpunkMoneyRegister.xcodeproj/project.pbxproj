@@ -33,7 +33,6 @@
 		AA658F402BFEABC700071C20 /* NavViewEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA658F3F2BFEABC700071C20 /* NavViewEnum.swift */; };
 		AA658F422BFEAC1A00071C20 /* NavData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA658F412BFEAC1A00071C20 /* NavData.swift */; };
 		AA826CC42C0A2558003F2564 /* TagDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA826CC32C0A2558003F2564 /* TagDetailView.swift */; };
-		AA826CC62C0B014D003F2564 /* IncrementalTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA826CC52C0B014D003F2564 /* IncrementalTransactionViewModel.swift */; };
 		AAE814EE2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE814ED2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift */; };
 		AAE814F02BF853B400CA7DDD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE814EF2BF853B400CA7DDD /* ContentView.swift */; };
 		AAE814F22BF853B500CA7DDD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAE814F12BF853B500CA7DDD /* Assets.xcassets */; };
@@ -67,7 +66,6 @@
 		AA658F3F2BFEABC700071C20 /* NavViewEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavViewEnum.swift; sourceTree = "<group>"; };
 		AA658F412BFEAC1A00071C20 /* NavData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavData.swift; sourceTree = "<group>"; };
 		AA826CC32C0A2558003F2564 /* TagDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDetailView.swift; sourceTree = "<group>"; };
-		AA826CC52C0B014D003F2564 /* IncrementalTransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncrementalTransactionViewModel.swift; sourceTree = "<group>"; };
 		AAE814EA2BF853B400CA7DDD /* EtherpunkMoneyRegister.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtherpunkMoneyRegister.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAE814ED2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterApp.swift; sourceTree = "<group>"; };
 		AAE814EF2BF853B400CA7DDD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -134,7 +132,6 @@
 			children = (
 				AA0E1EF32BF857F400E68AB0 /* TransactionListView.swift */,
 				AA0E1EEF2BF8543D00E68AB0 /* TransactionListItemView.swift */,
-				AA826CC52C0B014D003F2564 /* IncrementalTransactionViewModel.swift */,
 			);
 			path = "Transaction List";
 			sourceTree = "<group>";
@@ -329,7 +326,6 @@
 				AA826CC42C0A2558003F2564 /* TagDetailView.swift in Sources */,
 				AA2A4B6D2BFDAC0600FFA0A9 /* EditAccountDetailsView.swift in Sources */,
 				AA6224DD2C13F7A3005B5F17 /* transactionStatusEnum.swift in Sources */,
-				AA826CC62C0B014D003F2564 /* IncrementalTransactionViewModel.swift in Sources */,
 				AA658F3C2BFE50F400071C20 /* TransactionDetailView.swift in Sources */,
 				AA6224E22C13FE87005B5F17 /* NullableDatePickerTest.swift in Sources */,
 				AA1097A32BF906B800F242E3 /* DayOfWeekEnum.swift in Sources */,

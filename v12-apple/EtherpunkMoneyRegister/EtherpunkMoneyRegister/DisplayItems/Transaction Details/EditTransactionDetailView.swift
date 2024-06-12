@@ -7,6 +7,7 @@ struct EditTransactionDetailView: View {
     
     @Binding var path: NavigationPath
     
+    @State private var transactionAccount: Account
     @State private var transactionName: String
     @State private var transactionAmount: String
     @State private var transactionType: TransactionType
@@ -16,7 +17,9 @@ struct EditTransactionDetailView: View {
     @State private var transactionNotes: String
     @State private var transactionFiles: [AccountTransactionFile]
     @State private var transactionCreatedOnDate: Date
-    
+    @State private var transactionIsTaxRelated: Bool
+    @State private var transactionConfirmationNumber: String
+
     @State private var availableTags: [Tag]
     
     @State private var newTagName: String = ""
@@ -31,12 +34,13 @@ struct EditTransactionDetailView: View {
     }()
     
     var transaction: AccountTransaction
-    
+
     var isNewTransaction: Bool = false
     
     init(transaction: AccountTransaction, availableTags: [Tag], path: Binding<NavigationPath>) {
         self.transaction = transaction
         _path = path
+        _transactionAccount = State(initialValue: transaction.account)
         _transactionName = State(initialValue: transaction.name)
         _transactionAmount = State(initialValue: "\(transaction.amount)")
         _transactionType = State(initialValue: transaction.transactionType)
@@ -47,7 +51,9 @@ struct EditTransactionDetailView: View {
         _transactionNotes = State(initialValue: transaction.notes)
         _transactionFiles = State(initialValue: transaction.files ?? [])
         _transactionCreatedOnDate = State(initialValue: transaction.createdOn)
-        
+        _transactionIsTaxRelated = State(initialValue: transaction.isTaxRelated)
+        _transactionConfirmationNumber = State(initialValue: transaction.confirmationNumber)
+
         if transaction.name == "" {
             isNewTransaction = true
         }
@@ -66,7 +72,7 @@ struct EditTransactionDetailView: View {
                 NullableDatePicker(name: "Cleared", selectedDate: $transactionClearedDate)
             }
             
-            Section(header: Text("Tags")) {
+            Section(header: Text("Tags (\(selectedTags.count))")) {
                 List(availableTags, id: \.self) { tag in
                     MultipleSelectionRow(tag: tag, isSelected: selectedTags.contains(tag)) {
                         if selectedTags.contains(tag) {
@@ -86,18 +92,14 @@ struct EditTransactionDetailView: View {
             }
             
             Section(header: Text("Misc")) {
-                // Is tax related
-                
-                // Confirmation number
-                
-                // Notes
+                Toggle("Is tax related?", isOn: $transactionIsTaxRelated)
+                TextField("Confirmation Number", text: $transactionConfirmationNumber)
                 TextField("Notes", text: $transactionNotes, axis: .vertical)
                     .lineLimit(2 ... 4)
                 // bank transaction text
             }
             
-            Section(header: Text("Files")) {
-                // Files Count
+            Section(header: Text("Files (\(transactionFiles.count))")) {
                 
                 HStack {
                     Button(action: addNewDocument) {
@@ -154,15 +156,21 @@ struct EditTransactionDetailView: View {
             }
             
             // Account
+            Text("Account")
             
             // Recurring Transaction
+            Text("Recurring Transaction")
+            // IF it's a recurring transaction - see if they want to put in a due date
+            
             
             // Created On Read only
             HStack {
                 Text("Created on:")
-                Text(transactionCreatedOnDate, format: .dateTime.month().day().year())
-                Text("@")
-                Text(transactionCreatedOnDate, format: .dateTime.hour().minute().second())
+                VStack {
+                    Text(transactionCreatedOnDate, format: .dateTime.month().day().year())
+                    Text("@")
+                    Text(transactionCreatedOnDate, format: .dateTime.hour().minute().second())
+                }
             }
             .listRowBackground(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 0.5))
         }
@@ -204,7 +212,11 @@ struct EditTransactionDetailView: View {
         
         // CHECK TO SEE IF THE AMOUNT HERE HAS CHANGED FROM THE TRANSACTION AMOUNT
         // IF IT HAS THEN WE NEED TO RE-CALCULATE THE BALANCE!
-        
+
+        if transactionAccount != transaction.account {
+            // We changed the account the transaction belongs to. 
+        }
+
         if amount != transaction.amount {
             print("NEED TO CHANGE BALANCE")
             // Setting to zero to make sure it's stupidly obvious things need to change
@@ -222,7 +234,8 @@ struct EditTransactionDetailView: View {
         transaction.cleared = transactionClearedDate
         transaction.tags = selectedTags
         transaction.notes = transactionNotes
-        
+        transaction.isTaxRelated = transactionIsTaxRelated
+
         // how do I know if the files are new? Or need to be removed?
         
         transaction.files = transactionFiles
@@ -262,7 +275,7 @@ struct MultipleSelectionRow: View {
 #Preview {
     do {
         let previewer = try Previewer()
-        return EditTransactionDetailView(transaction: previewer.cvsTransaction, availableTags: [previewer.billsTag, previewer.medicalTag, previewer.pharmacyTag], path: .constant(NavigationPath()))
+        return EditTransactionDetailView( transaction: previewer.cvsTransaction, availableTags: [previewer.billsTag, previewer.medicalTag, previewer.pharmacyTag], path: .constant(NavigationPath()))
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")
