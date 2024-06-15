@@ -53,7 +53,100 @@ struct Previewer {
         pharmacyTag = Tag(name: "pharmacy")
         
         var balance: Decimal = 238.99
-        
+
+        for index in (1...8) {
+            var tmpIndex = 15+index
+            if tmpIndex >= 254 {
+                tmpIndex = 254
+            }
+            let newAccount = Account(name: "Ack\(index)", startingBalance: 0, sortIndex: tmpIndex)
+            container.mainContext.insert(newAccount)
+        }
+
+        let calendar = Calendar.current
+
+        //let currentComponents = calendar.dateComponents([.year, .month, .day], from: Date())
+
+        var transactionCount: Int = 0
+        let amountOfYearsToGenerate: Int = 10
+        for index in (1...(amountOfYearsToGenerate*356)).reversed() {
+
+            // 20% chance nothing happens that day
+            if Int.random(in: 0..<5) == 0 {
+                continue
+            }
+
+            var components = calendar.dateComponents([.year, .month, .day], from: Date())
+            components.day! -= index
+            components.second = 0
+            var date = calendar.date(from: components)!
+
+            components.second! += 1
+            date = calendar.date(from: components)!
+
+            // Random number of transaction in a day - between 0 and 4
+            for _ in 0...Int.random(in: 0..<5) {
+                transactionCount += 1
+                var randomAmount: Double = 0
+                if(Int.random(in:0..<10) < 9) {
+                    // 90% chance it's under $20
+                    randomAmount = Double.random(in: 3...20)
+                } else {
+                    // 10% it's under $100
+                    randomAmount = Double.random(in: 20...100)
+                }
+
+                randomAmount = (randomAmount*100).rounded() / 100
+
+                var decimalAmount = Decimal(randomAmount)
+
+                if decimalAmount > balance {
+                    // do a small deposit to make sure we can cover it
+                    transactionCount += 1
+                    var randomDeposit = Double.random(in: 110...150)
+                    randomDeposit = (randomDeposit*100).rounded() / 100
+                    components.second! += 1
+                    date = calendar.date(from: components)!
+
+                    let deposit = Decimal(randomDeposit)
+                    balance += deposit
+                    container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Mom misc", transactionType: .credit, amount: deposit, balance: balance, cleared: date, createdOn: date))
+                }
+
+                components.second! += 1
+                date = calendar.date(from: components)!
+
+                decimalAmount = -decimalAmount
+                balance += decimalAmount
+                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Random Transaction \(transactionCount)", transactionType: .debit, amount: decimalAmount, balance: balance, cleared: date, createdOn: date))
+            }
+
+            if Int.random(in: 0...99) < 4 {
+                // Small chance we make a random deposit of less than $100
+                transactionCount += 1
+                var randomAmount = Double.random(in: 20...250)
+                randomAmount = (randomAmount*100).rounded() / 100
+                let decimalAmount = Decimal(randomAmount)
+                components.second! += 1
+                date = calendar.date(from: components)!
+
+                balance += decimalAmount
+                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Cash depo", transactionType: .credit, amount: decimalAmount, balance: balance, cleared: date, createdOn: date))
+
+            }
+
+            if Int.random(in: 0...99) < 2 {
+                // let's make an income deposit
+                transactionCount += 1
+                let deposit: Decimal = 2013.73
+                components.second! += 1
+                date = calendar.date(from: components)!
+
+                balance += deposit
+                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Paycheck", transactionType: .credit, amount: deposit, balance: balance, cleared: date, createdOn: date))
+            }
+        }
+
         var transactionAmount: Decimal = -12.39
         balance = balance + transactionAmount
         burgerKingTransaction = AccountTransaction(account: cuAccount, name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag])
@@ -117,14 +210,7 @@ struct Previewer {
         container.mainContext.insert(axosAccount)
         container.mainContext.insert(billGroup)
 
-        for index in (1...15) {
-            var tmpIndex = 15+index
-            if tmpIndex >= 254 {
-                tmpIndex = 254
-            }
-            let newAccount = Account(name: "Ack\(index)", startingBalance: 0, sortIndex: tmpIndex)
-            container.mainContext.insert(newAccount)
-        }
+
     }
     
     private func getNextDueDate(day: Int) -> Date {

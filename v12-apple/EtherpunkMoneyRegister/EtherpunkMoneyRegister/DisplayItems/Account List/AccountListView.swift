@@ -164,7 +164,6 @@ struct AccountListView: View {
         DispatchQueue.global().async {
                 do {
                     let newAccounts = try modelContext.fetch(fetchDescriptor)
-                    print("Getting more")
                     DispatchQueue.main.async {
                         accounts.append(contentsOf: newAccounts)
                         isLoading = false

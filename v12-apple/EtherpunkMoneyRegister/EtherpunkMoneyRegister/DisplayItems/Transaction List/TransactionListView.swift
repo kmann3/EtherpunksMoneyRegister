@@ -8,24 +8,24 @@ import SwiftData
 import SwiftUI
 
 struct TransactionListView: View {
+    @Environment(\.modelContext) var modelContext
     @Binding private var path: NavigationPath
 
     // TODO: Implement transaction search
     @State private var searchText = ""
-    @Query var transactions: [AccountTransaction]
-    
+    @State var transactions: [AccountTransaction] = []
+    @State private var isLoading = false
+    @State private var hasMoreTransactions = true
+    @State private var currentPage = 0
+    @State private var transactionsPerPage = 10
+
     @Bindable var account: Account
 
     init(path: Binding<NavigationPath>, account: Account) {
         self._path = path
         self.account = account
-        let accountId = account.id
-        
-        let sortOrder = [SortDescriptor(\AccountTransaction.createdOn, order: .reverse)]
-        
-        _transactions = Query(filter: #Predicate<AccountTransaction> { transaction in
-            transaction.account!.id == accountId || transaction.account!.name.localizedStandardContains("Amegy")
-        }, sort: sortOrder)
+        //let accountId = account.id
+        //let sortOrder = [SortDescriptor(\AccountTransaction.createdOn, order: .reverse)]
     }
     
     var body: some View {
@@ -40,9 +40,15 @@ struct TransactionListView: View {
                 ForEach(transactions) { item in
                     NavigationLink(value: NavData(navView: .transactionDetail, transaction: item)) {
                         TransactionListItemView(transaction: item)
+                            .onAppear {
+                                fetchItemsIfNecessary(transaction: item)
+                            }
                     }
                 }
             }
+        }
+        .onAppear {
+            performFetch()
         }
         // Should I use a lazyvstack?
         .toolbar {
@@ -83,6 +89,37 @@ struct TransactionListView: View {
     func createNewTransaction(transactionType: TransactionType) {
         let transaction = AccountTransaction(account: account, transactionType: transactionType)
         path.append(NavData(navView: .transactionCreator, transaction: transaction))
+    }
+
+    private func performFetch(currentPage: Int = 0) {
+        var fetchDescriptor = FetchDescriptor<AccountTransaction>()
+        fetchDescriptor.fetchLimit = transactionsPerPage
+        fetchDescriptor.fetchOffset = self.currentPage * transactionsPerPage
+        fetchDescriptor.sortBy = [.init(\.createdOn, order: .reverse)]
+
+        guard !isLoading && hasMoreTransactions else { return }
+        isLoading = true
+        DispatchQueue.global().async {
+                do {
+                    let newTransactions = try modelContext.fetch(fetchDescriptor)
+                    DispatchQueue.main.async {
+                        transactions.append(contentsOf: newTransactions)
+                        isLoading = false
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        print("Error fetching transactions: \(error.localizedDescription)")
+                        isLoading = false
+                    }
+                }
+            }
+    }
+
+    private func fetchItemsIfNecessary(transaction: AccountTransaction) {
+        if let lastTransaction = transactions.last, lastTransaction == transaction {
+            currentPage += 1
+            performFetch()
+        }
     }
 }
 
