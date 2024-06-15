@@ -9,52 +9,61 @@ import SwiftUI
 
 struct AccountListView: View {
     @Environment(\.modelContext) var modelContext
+
+    // TODO: Implement account search
     @State private var searchText = ""
+
     @State private var path = NavigationPath()
     @State private var isShowingDeleteActions = false
     @State private var accountToDelete: Account? = nil
-    @State private var doSave: Bool = false
-    
-    @Query(sort: [SortDescriptor(\Account.sortIndex, order: .forward), SortDescriptor(\Account.name, order: .forward)])
-    var items: [Account]
-    
+    @State private var accounts: [Account] = []
+    @State private var isLoading = false
+    @State private var hasMoreAccounts = true
+    @State private var currentPage = 0
+    @State private var accountsPerPage = 10
+
     @Query(sort: [SortDescriptor(\Tag.name, order: .forward)])
     var availableTags: [Tag]
-    
+
     var body: some View {
         NavigationStack(path: $path) {
             List {
-                // TODO: Link to all outstanding items
-                ForEach(items) { item in
-                    NavigationLink(value: NavData(navView: .transactionList, account: item, transaction: nil)) {
-                        AccountListItemView(account: item)
+                ForEach(accounts) { account in
+                    NavigationLink(value: NavData(navView: .transactionList, account: account, transaction: nil)) {
+                        AccountListItemView(account: account)
+                            .onAppear {
+                                fetchItemsIfNecessary(account: account)
+                            }
                     }
                     .swipeActions(allowsFullSwipe: true) {
                         Button {
-                            addNewTransaction(account: item, transactionType: .debit)
+                            addNewTransaction(account: account, transactionType: .debit)
                         } label: {
                             Label("New Debit", systemImage: "creditcard")
                         }
                         .tint(.cyan)
-            
+
                         Button {
-                            addNewTransaction(account: item, transactionType: .credit)
+                            addNewTransaction(account: account, transactionType: .credit)
                         } label: {
                             Label("New Credit", systemImage: "banknote")
                         }
                         .tint(.indigo)
-            
+
                         Button(role: .destructive) {
-                            accountToDelete = item
+                            accountToDelete = account
                             isShowingDeleteActions = true
                         } label: {
                             Label("Delete", systemImage: "trash.fill")
                         }
                     }
+
+                    if isLoading {
+                        ProgressView()
+                    }
                 }
-                .listRowSeparator(.hidden)
+                Text("End of list")
             }
-            .listStyle(.plain)
             .toolbar {
                 Button {
                     createAccount()
@@ -73,34 +82,24 @@ struct AccountListView: View {
             }
             .searchable(text: $searchText)
             .navigationDestination(for: NavData.self) { item in
-                
+
                 switch item.navView {
                 case .accountCreator:
-                    EditAccountDetailsView(path: $path, doSave: $doSave, account: item.account!)
-                        .onDisappear {
-                            if doSave == true {
-                                modelContext.insert(item.account!)
-                            }
-                        }
+                    Text("New Account")
+
                 case .accountEditor:
-                    EditAccountDetailsView(path: $path, doSave: $doSave, account: item.account!)
-                        .onDisappear {
-                            if doSave == true {
-                                // save account
-                                try? modelContext.save()
-                            }
-                        }
+                    Text("Edit Account")
 
                 case .accountList:
                     Text("That is this view. We should never reach here.")
-                    
+
                 case .recurringTransactionDetail:
                     Text("Recurring Transaction Detail")
                 case .recurringTransactionEditor:
                     Text("Recurring Transaction Editor")
                 case .recurringTransactionList:
                     Text("Recurring Transaction List")
-                    
+
                 case .recurringTransactionGroupDetail:
                     Text("Recurring Transaction Group Detail")
                 case .recurringTransactionGroupEditor:
@@ -113,13 +112,13 @@ struct AccountListView: View {
 
                 case .tagEditor:
                     Text("Tag Editor")
-                    
+
                 case .transactionCreator:
                     EditTransactionDetailView(transaction: item.transaction!, availableTags: availableTags, path: $path)
 
                 case .transactionDetail:
                     TransactionDetailView(path: $path, transaction: item.transaction!)
-                    
+
                 case .transactionEditor:
                     EditTransactionDetailView(transaction: item.transaction!, availableTags: availableTags, path: $path)
 
@@ -127,31 +126,70 @@ struct AccountListView: View {
                     TransactionListView(path: $path, account: item.account!)
                 }
             }
+            .onAppear {
+                performFetch()
+            }
             .navigationTitle("Account List")
+            .listRowSeparator(.hidden)
         }
     }
-    
-    func createAccount() {
+
+    private func createAccount() {
         let newAccount = Account(name: "", startingBalance: 0)
         path.append(NavData(navView: .accountCreator, account: newAccount))
     }
-    
+
     func deleteAccount(account: Account) {
         modelContext.delete(account)
     }
-    
-    func addNewTransaction(account: Account, transactionType: TransactionType) {
+
+    private func addNewTransaction(account: Account, transactionType: TransactionType) {
         print("New \(transactionType) for: \(account.name)")
         let newTransaction = AccountTransaction(account: account, transactionType: transactionType)
         modelContext.insert(newTransaction)
         path.append(NavData(navView: .transactionEditor, transaction: newTransaction))
+    }
+
+    private func performFetch(currentPage: Int = 0) {
+        var fetchDescriptor = FetchDescriptor<Account>()
+        fetchDescriptor.fetchLimit = accountsPerPage
+        fetchDescriptor.fetchOffset = self.currentPage * accountsPerPage
+        fetchDescriptor.sortBy = [
+                .init(\.sortIndex, order: .forward),
+                .init(\.name, order: .forward)
+            ]
+
+        guard !isLoading && hasMoreAccounts else { return }
+        isLoading = true
+        DispatchQueue.global().async {
+                do {
+                    let newAccounts = try modelContext.fetch(fetchDescriptor)
+                    print("Getting more")
+                    DispatchQueue.main.async {
+                        accounts.append(contentsOf: newAccounts)
+                        isLoading = false
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        print("Error fetching accounts: \(error.localizedDescription)")
+                        isLoading = false
+                    }
+                }
+            }
+    }
+
+    private func fetchItemsIfNecessary(account: Account) {
+        if let lastAccount = accounts.last, lastAccount == account {
+            currentPage += 1
+            performFetch()
+        }
     }
 }
 
 #Preview {
     do {
         let previewer = try Previewer()
-        
+
         return AccountListView()
             .modelContainer(previewer.container)
     } catch {

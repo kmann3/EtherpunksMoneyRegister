@@ -11,8 +11,10 @@ import SwiftUI
 @main
 struct EtherpunkMoneyRegisterApp: App {
     var container: ModelContainer
+    var previewer: Previewer
 
     init() {
+        try! self.previewer = Previewer()
         let schema = Schema([
             Account.self,
             AccountTransaction.self,
@@ -30,6 +32,6 @@ struct EtherpunkMoneyRegisterApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(container)
+        .modelContainer(previewer.container)
     }
 }

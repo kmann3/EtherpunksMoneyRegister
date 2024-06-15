@@ -19,7 +19,7 @@ struct TransactionDetailView: View {
         List {
             Text("Name: \(transaction.name)")
             Text("Type: \(transaction.transactionType == .debit ? "Debit" : "Credit")")
-            Text("Account: \(transaction.account.name)")
+            Text("Account: \(transaction.account!.name)")
             HStack {
                 Text("Amount: ")
                 Text(transaction.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))

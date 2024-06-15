@@ -40,7 +40,7 @@ struct EditTransactionDetailView: View {
     init(transaction: AccountTransaction, availableTags: [Tag], path: Binding<NavigationPath>) {
         self.transaction = transaction
         _path = path
-        _transactionAccount = State(initialValue: transaction.account)
+        _transactionAccount = State(initialValue: transaction.account!)
         _transactionName = State(initialValue: transaction.name)
         _transactionAmount = State(initialValue: "\(transaction.amount)")
         _transactionType = State(initialValue: transaction.transactionType)

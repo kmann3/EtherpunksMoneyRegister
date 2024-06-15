@@ -11,9 +11,10 @@ import SwiftUI
 
 @Model
 final class AccountTransactionFile {
-    var name: String = ""
-    var filename: String = ""
-    var notes: String = ""
+    var id: UUID
+    var name: String
+    var filename: String
+    var notes: String
     var createdOn: Date
     var url: URL?
     var isTaxRelated: Bool
@@ -21,7 +22,8 @@ final class AccountTransactionFile {
     @Relationship(deleteRule: .noAction)
     var transaction: AccountTransaction?
 
-    init(name: String = "", filename: String = "", notes: String = "", createdOn: Date = Date(), url: URL? = nil, isTaxRelated: Bool = false, transaction: AccountTransaction) {
+    init(id: UUID = UUID(), name: String = "", filename: String = "", notes: String = "", createdOn: Date = Date(), url: URL? = nil, isTaxRelated: Bool = false, transaction: AccountTransaction? = nil) {
+        self.id = id
         self.name = name
         self.filename = filename
         self.notes = notes

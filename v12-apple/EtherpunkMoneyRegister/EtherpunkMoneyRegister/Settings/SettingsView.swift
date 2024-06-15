@@ -63,7 +63,9 @@ struct SettingsView: View {
         var balance: Decimal = 238.99
         let amegyAccount = Account(name: "Amegy Bank", startingBalance: balance)
         modelContext.insert(amegyAccount)
-        
+
+        try? modelContext.save()
+
         let billsTag = Tag(name: "bills")
         let ffTag = Tag(name: "fast-food")
         let incomeTag = Tag(name: "income")
@@ -78,7 +80,9 @@ struct SettingsView: View {
         modelContext.insert(Tag(name: "copay"))
         modelContext.insert(Tag(name: "fuel"))
         modelContext.insert(Tag(name: "groceries"))
-        
+
+        try? modelContext.save()
+
         var transactionAmount: Decimal = -12.39
         balance = balance + transactionAmount
         let burgerKingTransaction = AccountTransaction(account: amegyAccount, name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), isTaxRelated: false)

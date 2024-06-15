@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TransactionListView: View {
     @Binding private var path: NavigationPath
+
+    // TODO: Implement transaction search
     @State private var searchText = ""
     @Query var transactions: [AccountTransaction]
     
@@ -22,7 +24,7 @@ struct TransactionListView: View {
         let sortOrder = [SortDescriptor(\AccountTransaction.createdOn, order: .reverse)]
         
         _transactions = Query(filter: #Predicate<AccountTransaction> { transaction in
-            transaction.account.persistentModelID == accountId || transaction.account.name.localizedStandardContains("Amegy")
+            transaction.account!.id == accountId || transaction.account!.name.localizedStandardContains("Amegy")
         }, sort: sortOrder)
     }
     

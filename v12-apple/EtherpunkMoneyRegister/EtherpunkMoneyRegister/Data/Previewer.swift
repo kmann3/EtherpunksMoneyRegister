@@ -38,7 +38,9 @@ struct Previewer {
         cuAccount = Account(name: "Amegy Bank", startingBalance: 238.99)
         let boaAccount = Account(name: "Bank of America", startingBalance: 492)
         let axosAccount = Account(name: "Axos", startingBalance: 130494)
-        
+
+        container.mainContext.insert(cuAccount)
+
         cuAccount.sortIndex = 0
         boaAccount.sortIndex = 255
         axosAccount.sortIndex = 255
@@ -103,8 +105,7 @@ struct Previewer {
         }
         
         let fakeAttachment = AccountTransactionFile(name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true, transaction: cvsTransaction)
-        
-        container.mainContext.insert(cuAccount)
+
         container.mainContext.insert(burgerKingTransaction)
         container.mainContext.insert(wendysTransaction)
         container.mainContext.insert(cvsTransaction)
@@ -115,6 +116,15 @@ struct Previewer {
         container.mainContext.insert(boaAccount)
         container.mainContext.insert(axosAccount)
         container.mainContext.insert(billGroup)
+
+        for index in (1...15) {
+            var tmpIndex = 15+index
+            if tmpIndex >= 254 {
+                tmpIndex = 254
+            }
+            let newAccount = Account(name: "Ack\(index)", startingBalance: 0, sortIndex: tmpIndex)
+            container.mainContext.insert(newAccount)
+        }
     }
     
     private func getNextDueDate(day: Int) -> Date {

@@ -10,35 +10,45 @@ import SwiftData
 
 @Model
 final class Account {
-    @Attribute(.unique) var name: String
-    var startingBalance: Decimal = 0
+    var id: UUID
+    var name: String
+    var startingBalance: Decimal
     var currentBalance: Decimal
-    var outstandingBalance: Decimal = 0
-    var outstandingItemCount: Int = 0
-    var notes: String = ""
-    var lastBalanced: Date = Date()
-    var sortIndex: Int = 255
-    
-    var createdOn: Date = Date()
-    
+    var outstandingBalance: Decimal
+    var outstandingItemCount: Int
+    var notes: String
+    var lastBalanced: Date
+    var sortIndex: Int
+    var createdOn: Date
+
     @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account)
     var transactions: [AccountTransaction]?
-    
-    init(name: String, startingBalance: Decimal, currentBalance: Decimal, outstandingBalance: Decimal, outstandingItemCount: Int, notes: String, createdOn: Date, transactions: [AccountTransaction]? = [], sortIndex: Int = 255) {
+
+    init(id: UUID = UUID(), name: String, startingBalance: Decimal, currentBalance: Decimal, outstandingBalance: Decimal, outstandingItemCount: Int, notes: String, lastBalanced: Date = Date(), sortIndex: Int = 255, createdOn: Date = Date(), transactions: [AccountTransaction]? = []) {
+        self.id = id
         self.name = name
         self.startingBalance = startingBalance
         self.currentBalance = currentBalance
         self.outstandingBalance = outstandingBalance
         self.outstandingItemCount = outstandingItemCount
         self.notes = notes
+        self.lastBalanced = lastBalanced
+        self.sortIndex = sortIndex
         self.createdOn = createdOn
         self.transactions = transactions
-        self.sortIndex = sortIndex
     }
-    
-    init(name: String, startingBalance: Decimal) {
+
+    init(id: UUID = UUID(), name: String, startingBalance: Decimal, sortIndex: Int = 255) {
+        self.id = id
         self.name = name
         self.startingBalance = startingBalance
         self.currentBalance = startingBalance
+        self.outstandingBalance = 0
+        self.outstandingItemCount = 0
+        self.notes = ""
+        self.lastBalanced = Date()
+        self.sortIndex = sortIndex
+        self.createdOn = Date()
+        self.transactions = []
     }
 }
