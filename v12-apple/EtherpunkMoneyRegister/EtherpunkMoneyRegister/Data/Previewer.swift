@@ -34,8 +34,11 @@ struct Previewer {
         ])
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         container = try! ModelContainer(for: schema, configurations: config)
-        
+
+        let specificUUID = UUID(uuidString: "12345678-1234-1234-1234-123456789abc")
         cuAccount = Account(name: "Amegy Bank", startingBalance: 238.99)
+        cuAccount.id = specificUUID!
+
         let boaAccount = Account(name: "Bank of America", startingBalance: 492)
         let axosAccount = Account(name: "Axos", startingBalance: 130494)
 

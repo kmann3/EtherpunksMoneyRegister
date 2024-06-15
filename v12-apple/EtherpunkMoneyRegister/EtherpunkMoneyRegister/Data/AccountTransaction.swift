@@ -28,6 +28,9 @@ final class AccountTransaction {
     var files: [AccountTransactionFile]?
     @Relationship(deleteRule: .noAction)
     var account: Account?
+
+    // The id of the account this belongs to. This is required because predicates don't allow you to filter on other models.
+    var accountId: UUID
     @Relationship(deleteRule: .noAction)
     var tags: [Tag]?
     var createdOn: Date
@@ -78,6 +81,8 @@ final class AccountTransaction {
         self.files = files
         self.tags = tags
         self.createdOn = createdOn
+
+        self.accountId = account.id
 
         self.VerifySignage()
     }

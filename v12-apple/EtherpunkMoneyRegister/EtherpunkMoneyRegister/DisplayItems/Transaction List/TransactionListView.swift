@@ -24,8 +24,6 @@ struct TransactionListView: View {
     init(path: Binding<NavigationPath>, account: Account) {
         self._path = path
         self.account = account
-        //let accountId = account.id
-        //let sortOrder = [SortDescriptor(\AccountTransaction.createdOn, order: .reverse)]
     }
     
     var body: some View {
@@ -92,7 +90,17 @@ struct TransactionListView: View {
     }
 
     private func performFetch(currentPage: Int = 0) {
-        var fetchDescriptor = FetchDescriptor<AccountTransaction>()
+        let accountId: UUID = self.account.id
+        let testUUID = UUID(uuidString: "12345678-1234-1234-1234-123456789abc")
+        let predicate = #Predicate<AccountTransaction> { transaction in
+            if transaction.accountId == accountId || transaction.accountId == testUUID! {
+                return true
+            } else {
+                return false
+            }
+        }
+
+        var fetchDescriptor = FetchDescriptor<AccountTransaction>(predicate: predicate)
         fetchDescriptor.fetchLimit = transactionsPerPage
         fetchDescriptor.fetchOffset = self.currentPage * transactionsPerPage
         fetchDescriptor.sortBy = [.init(\.createdOn, order: .reverse)]
