@@ -11,7 +11,6 @@ struct TransactionListView: View {
     @Environment(\.modelContext) var modelContext
     @Binding private var path: NavigationPath
 
-    // TODO: Implement transaction search
     @State private var searchText = ""
     @State var accountTransactions: [AccountTransaction] = []
     @State private var isLoading = false
@@ -30,7 +29,6 @@ struct TransactionListView: View {
     }
     
     var body: some View {
-        // Should I use a LazyVStack?
         List {
             Section(header: Text("Account Details")) {
                 NavigationLink(value: NavData(navView: .accountEditor, account: account)) {
@@ -94,6 +92,7 @@ struct TransactionListView: View {
                     }
                 }
             }
+            // For some reason this does not take up the full screen like it should.
             .frame(minHeight: 400)
         }
         .onSubmit(of: .search) {
