@@ -13,20 +13,24 @@ struct TransactionListView: View {
 
     // TODO: Implement transaction search
     @State private var searchText = ""
-    @State var transactions: [AccountTransaction] = []
+    @State var accountTransactions: [AccountTransaction] = []
     @State private var isLoading = false
     @State private var hasMoreTransactions = true
-    @State private var currentPage = 0
+    @State private var currentAccountTransactionPage = 0
+    @State private var currentSearchPage = 0
     @State private var transactionsPerPage = 10
+
+    @State private var searchTransactionsResult: [AccountTransaction] = []
 
     @Bindable var account: Account
 
-    init(path: Binding<NavigationPath>, account: Account) {
+    init(path: Binding<NavigationPath>, accountToLoad: Account) {
         self._path = path
-        self.account = account
+        self.account = accountToLoad
     }
     
     var body: some View {
+        // Should I use a LazyVStack?
         List {
             Section(header: Text("Account Details")) {
                 NavigationLink(value: NavData(navView: .accountEditor, account: account)) {
@@ -35,20 +39,19 @@ struct TransactionListView: View {
             }
             
             Section(header: Text("Transactions"), footer: Text("End of list")) {
-                ForEach(transactions) { item in
-                    NavigationLink(value: NavData(navView: .transactionDetail, transaction: item)) {
-                        TransactionListItemView(transaction: item)
+                ForEach(accountTransactions) { transaction in
+                    NavigationLink(value: NavData(navView: .transactionDetail, transaction: transaction)) {
+                        TransactionListItemView(transaction: transaction)
                             .onAppear {
-                                fetchItemsIfNecessary(transaction: item)
+                                fetchAccountTransactionsIfNecessary(transaction: transaction)
                             }
                     }
                 }
             }
         }
         .onAppear {
-            performFetch()
+            performAccountTransactionFetch()
         }
-        // Should I use a lazyvstack?
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
@@ -80,8 +83,22 @@ struct TransactionListView: View {
                 }
             }
         }
-        .searchable(text: $searchText)
         .navigationTitle("\(account.name)")
+        .searchable(text: $searchText) {
+            List {
+                Section(header: Text("Results (\(searchTransactionsResult.count))")) {
+                    ForEach(searchTransactionsResult) { transaction in
+                        NavigationLink(value: NavData(navView: .transactionDetail, transaction: transaction)) {
+                            TransactionListItemView(transaction: transaction)
+                        }
+                    }
+                }
+            }
+            .frame(minHeight: 400)
+        }
+        .onSubmit(of: .search) {
+            performSearchTransactionFetch()
+        }
     }
 
     func createNewTransaction(transactionType: TransactionType) {
@@ -89,8 +106,10 @@ struct TransactionListView: View {
         path.append(NavData(navView: .transactionCreator, transaction: transaction))
     }
 
-    private func performFetch(currentPage: Int = 0) {
+    private func performAccountTransactionFetch(currentPage: Int = 0) {
         let accountId: UUID = self.account.id
+
+        // TODO: Remove this test UUID
         let testUUID = UUID(uuidString: "12345678-1234-1234-1234-123456789abc")
         let predicate = #Predicate<AccountTransaction> { transaction in
             if transaction.accountId == accountId || transaction.accountId == testUUID! {
@@ -102,7 +121,7 @@ struct TransactionListView: View {
 
         var fetchDescriptor = FetchDescriptor<AccountTransaction>(predicate: predicate)
         fetchDescriptor.fetchLimit = transactionsPerPage
-        fetchDescriptor.fetchOffset = self.currentPage * transactionsPerPage
+        fetchDescriptor.fetchOffset = self.currentAccountTransactionPage * transactionsPerPage
         fetchDescriptor.sortBy = [.init(\.createdOn, order: .reverse)]
 
         guard !isLoading && hasMoreTransactions else { return }
@@ -111,7 +130,7 @@ struct TransactionListView: View {
                 do {
                     let newTransactions = try modelContext.fetch(fetchDescriptor)
                     DispatchQueue.main.async {
-                        transactions.append(contentsOf: newTransactions)
+                        accountTransactions.append(contentsOf: newTransactions)
                         isLoading = false
                     }
                 } catch {
@@ -123,10 +142,56 @@ struct TransactionListView: View {
             }
     }
 
-    private func fetchItemsIfNecessary(transaction: AccountTransaction) {
-        if let lastTransaction = transactions.last, lastTransaction == transaction {
-            currentPage += 1
-            performFetch()
+    private func fetchAccountTransactionsIfNecessary(transaction: AccountTransaction) {
+        if let lastTransaction = accountTransactions.last, lastTransaction == transaction {
+            currentAccountTransactionPage += 1
+            performAccountTransactionFetch()
+        }
+    }
+
+    private func performSearchTransactionFetch() {
+        let accountId: UUID = self.account.id
+
+        // TODO: Remove this test UUID
+        // TODO: Add ability to search for amounts. For some reason it REALLY doesn't like doing that.
+        let testUUID = UUID(uuidString: "12345678-1234-1234-1234-123456789abc")
+        let predicate = #Predicate<AccountTransaction> { transaction in
+            if (transaction.accountId == accountId || transaction.accountId == testUUID!) &&
+                (transaction.name.localizedStandardContains(searchText) ||
+                 transaction.notes.localizedStandardContains(searchText) ||
+                 transaction.confirmationNumber.localizedStandardContains(searchText)
+            ) {
+                return true
+            } else {
+                return false
+            }
+        }
+
+        var fetchDescriptor = FetchDescriptor<AccountTransaction>(predicate: predicate)
+        fetchDescriptor.sortBy = [.init(\.createdOn, order: .reverse)]
+
+        guard !isLoading && hasMoreTransactions else { return }
+        isLoading = true
+        DispatchQueue.global().async {
+                do {
+                    let newTransactions = try modelContext.fetch(fetchDescriptor)
+                    DispatchQueue.main.async {
+                        searchTransactionsResult = newTransactions
+                        isLoading = false
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        print("Error fetching transactions: \(error.localizedDescription)")
+                        isLoading = false
+                    }
+                }
+            }
+    }
+
+    private func fetchSearchTransactionsIfNecessary(transaction: AccountTransaction) {
+        if let lastTransaction = searchTransactionsResult.last, lastTransaction == transaction {
+            currentSearchPage += 1
+            performSearchTransactionFetch()
         }
     }
 }
@@ -135,7 +200,7 @@ struct TransactionListView: View {
     do {
         let previewer = try Previewer()
         
-        return TransactionListView(path: .constant(NavigationPath()), account: previewer.cuAccount)
+        return TransactionListView(path: .constant(NavigationPath()), accountToLoad: previewer.cuAccount)
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")

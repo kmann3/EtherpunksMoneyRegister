@@ -123,7 +123,7 @@ struct AccountListView: View {
                     EditTransactionDetailView(transaction: item.transaction!, availableTags: availableTags, path: $path)
 
                 case .transactionList:
-                    TransactionListView(path: $path, account: item.account!)
+                    TransactionListView(path: $path, accountToLoad: item.account!)
                 }
             }
             .onAppear {
