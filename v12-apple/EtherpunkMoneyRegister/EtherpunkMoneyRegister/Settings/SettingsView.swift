@@ -18,13 +18,21 @@ struct SettingsView: View {
             Section(header: Text("Notifications")) {
                 Button("Alerts for upcoming transactions") {}
                 Button("Alerts for empty transactions") {}
+                Button("Alerts for unbalanced accounts") {}
             }
             Section(header: Text("Data")) {
-                Button("Export Data") {
-                    // I have no idea what this will look like
-                }
+                Button("Export Data") {}
                 Button("Generate Fake Data") { generateData() }
-                Button("Delete ALL Data") { purgeData() }
+                Button("Archive Data") {}
+                Spacer()
+                Button(action: {purgeData()}) {
+                    HStack {
+                        Image(systemName: "exclamationmark.triangle")
+                        Text("Delete All Data")
+                        Image(systemName: "exclamationmark.triangle")
+                    }
+                }
+                .foregroundColor(.red)
             }
             Section(header: Text("Defaults")) {
                 Button("Default Account") {}

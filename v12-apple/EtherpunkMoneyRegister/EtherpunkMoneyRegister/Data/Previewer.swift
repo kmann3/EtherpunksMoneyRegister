@@ -35,6 +35,8 @@ struct Previewer {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         container = try! ModelContainer(for: schema, configurations: config)
 
+        print("Generating fake data. This may take a little bit.")
+
         let specificUUID = UUID(uuidString: "12345678-1234-1234-1234-123456789abc")
         cuAccount = Account(name: "Amegy Bank", startingBalance: 238.99)
         cuAccount.id = specificUUID!
@@ -213,7 +215,8 @@ struct Previewer {
         container.mainContext.insert(axosAccount)
         container.mainContext.insert(billGroup)
 
-
+        print("Done generating fake data.")
+        print("Fake transactions created: \(transactionCount)")
     }
     
     private func getNextDueDate(day: Int) -> Date {
