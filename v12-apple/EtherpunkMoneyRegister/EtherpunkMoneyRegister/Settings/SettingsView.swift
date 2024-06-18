@@ -12,14 +12,24 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.modelContext) var modelContext
     @State private var path = NavigationPath()
-    @State private var doSave: Bool = false
-    
+
     var body: some View {
-        VStack {
-            Button("Generate Data") { generateData() }
-                .buttonStyle(.borderedProminent)
-            Divider()
-            Button("Delete ALL Data") { purgeData() }
+        List {
+            Section(header: Text("Notifications")) {
+                Button("Alerts for upcoming transactions") {}
+                Button("Alerts for empty transactions") {}
+            }
+            Section(header: Text("Data")) {
+                Button("Export Data") {
+                    // I have no idea what this will look like
+                }
+                Button("Generate Fake Data") { generateData() }
+                Button("Delete ALL Data") { purgeData() }
+            }
+            Section(header: Text("Defaults")) {
+                Button("Default Account") {}
+                Button("Default Pending/Cleared") {}
+            }
         }
     }
     

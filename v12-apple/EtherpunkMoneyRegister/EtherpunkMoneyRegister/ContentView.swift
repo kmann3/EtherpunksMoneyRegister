@@ -23,9 +23,7 @@ struct ContentView: View {
                 .tabItem {
                     Label("Recurring", systemImage: "repeat")
                 }
-            Text("Useful reports?")
-                // Generate a list based off certain tags
-                // Export a list of tax documents for itemizations
+            ReportsView()
                 .tabItem {
                     Label("Reports", systemImage: "chart.line.uptrend.xyaxis")
                 }
