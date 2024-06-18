@@ -57,12 +57,12 @@ struct Previewer {
         
         var balance: Decimal = 238.99
 
-        for index in (1...8) {
+        for index in (1...3) {
             var tmpIndex = 15+index
-            if tmpIndex >= 254 {
-                tmpIndex = 254
+            if tmpIndex >= 253 {
+                tmpIndex = 253
             }
-            let newAccount = Account(name: "Ack\(index)", startingBalance: 0, sortIndex: tmpIndex)
+            let newAccount = Account(name: "Fake Account-\(index)", startingBalance: 0, sortIndex: tmpIndex)
             container.mainContext.insert(newAccount)
         }
 
@@ -113,7 +113,7 @@ struct Previewer {
 
                     let deposit = Decimal(randomDeposit)
                     balance += deposit
-                    container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Mom misc", transactionType: .credit, amount: deposit, balance: balance, cleared: date, createdOn: date))
+                    container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Misc", transactionType: .credit, amount: deposit, balance: balance, cleared: date, createdOn: date))
                 }
 
                 components.second! += 1
@@ -121,7 +121,7 @@ struct Previewer {
 
                 decimalAmount = -decimalAmount
                 balance += decimalAmount
-                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Random Transaction \(transactionCount)", transactionType: .debit, amount: decimalAmount, balance: balance, cleared: date, createdOn: date))
+                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Fake Transaction \(transactionCount)", transactionType: .debit, amount: decimalAmount, balance: balance, cleared: date, createdOn: date))
             }
 
             if Int.random(in: 0...99) < 4 {
