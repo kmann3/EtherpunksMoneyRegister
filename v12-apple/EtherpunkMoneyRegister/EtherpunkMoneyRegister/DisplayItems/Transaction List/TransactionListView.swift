@@ -6,6 +6,7 @@
 //
 import SwiftData
 import SwiftUI
+import Foundation
 
 struct TransactionListView: View {
     @Environment(\.modelContext) var modelContext
@@ -67,19 +68,13 @@ struct TransactionListView: View {
                     }
 
                     Divider()
-                    
-                    Section(header: Text("Sort by")) {
-                        Button {
-                            //
-                        } label: {
-                            Label("Created On", systemImage: "calendar")
-                        }
-                        Button {
-                            //
-                        } label: {
-                            Label("Reserved and pending first", systemImage: "calendar.badge.exclamationmark")
-                        }
+
+                    Section(header: Text("Actions")) {
+                        // TODO: Create action to let the user know this will update the Last Balanced value and call the account currently balanced
+                        Button("Balanced"){}
                     }
+
+                    
                 } label: {
                     Label("Menu", systemImage: "ellipsis.circle")
                 }
@@ -96,7 +91,7 @@ struct TransactionListView: View {
                     }
                 }
             }
-            // For some reason this does not take up the full screen like it should.
+            // TODO: For some reason this does not take up the full screen like it should and I have no idea what a reasonable value looks like so 400 seems like a good start.
             .frame(minHeight: 400)
         }
         .onSubmit(of: .search) {
