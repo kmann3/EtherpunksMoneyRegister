@@ -53,28 +53,32 @@ struct TransactionListView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
-                    Button {
-                        createNewTransaction(transactionType: .debit)
-                    } label: {
-                        Label("Debit / Expense", systemImage: "creditcard")
+                    Section(header: Text("New Transaction")) {
+                        Button {
+                            createNewTransaction(transactionType: .debit)
+                        } label: {
+                            Label("Debit / Expense", systemImage: "creditcard")
+                        }
+                        Button {
+                            createNewTransaction(transactionType: .credit)
+                        } label: {
+                            Label("Credit / Income / Deposit", systemImage: "banknote")
+                        }
                     }
-                    Button {
-                        createNewTransaction(transactionType: .credit)
-                    } label: {
-                        Label("Credit / Income / Deposit", systemImage: "banknote")
-                    }
-                    
+
                     Divider()
                     
-                    Button {
-                        //
-                    } label: {
-                        Label("Created On", systemImage: "calendar")
-                    }
-                    Button {
-                        //
-                    } label: {
-                        Label("Reserved and pending first", systemImage: "calendar.badge.exclamationmark")
+                    Section(header: Text("Sort by")) {
+                        Button {
+                            //
+                        } label: {
+                            Label("Created On", systemImage: "calendar")
+                        }
+                        Button {
+                            //
+                        } label: {
+                            Label("Reserved and pending first", systemImage: "calendar.badge.exclamationmark")
+                        }
                     }
                 } label: {
                     Label("Menu", systemImage: "ellipsis.circle")
