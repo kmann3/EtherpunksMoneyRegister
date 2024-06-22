@@ -71,6 +71,7 @@ struct TransactionListView: View {
 
                     Section(header: Text("Actions")) {
                         // TODO: Create action to let the user know this will update the Last Balanced value and call the account currently balanced
+                        // TODO: Should we keep a history of when accounts are balanced? So a user can roll back?
                         Button("Balanced"){}
                     }
 
