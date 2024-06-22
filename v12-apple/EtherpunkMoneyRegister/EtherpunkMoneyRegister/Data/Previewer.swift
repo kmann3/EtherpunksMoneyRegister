@@ -35,13 +35,14 @@ struct Previewer {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         container = try! ModelContainer(for: schema, configurations: config)
 
+        print("Database Location: \(container.mainContext.sqliteCommand)")
         print("Generating fake data. This may take a little bit.")
 
         let specificUUID = UUID(uuidString: "12345678-1234-1234-1234-123456789abc")
         cuAccount = Account(name: "Amegy Bank", startingBalance: 238.99)
         cuAccount.id = specificUUID!
 
-        let boaAccount = Account(name: "Bank of America", startingBalance: 492)
+        let boaAccount = Account(name: "Bank of America", startingBalance: 493)
         let axosAccount = Account(name: "Axos", startingBalance: 130494)
 
         container.mainContext.insert(cuAccount)
@@ -73,7 +74,7 @@ struct Previewer {
         //let currentComponents = calendar.dateComponents([.year, .month, .day], from: Date())
 
         var transactionCount: Int = 0
-        let amountOfYearsToGenerate: Int = 10
+        let amountOfYearsToGenerate: Int = 3
         for index in (1...(amountOfYearsToGenerate*356)).reversed() {
 
             // 20% chance nothing happens that day
@@ -107,7 +108,7 @@ struct Previewer {
 
                 if decimalAmount > balance {
                     // do a small deposit to make sure we can cover it
-                    transactionCount += 1
+
                     var randomDeposit = Double.random(in: 110...150)
                     randomDeposit = (randomDeposit*100).rounded() / 100
                     components.second! += 1
@@ -115,6 +116,7 @@ struct Previewer {
 
                     let deposit = Decimal(randomDeposit)
                     balance += deposit
+                    transactionCount += 1
                     container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Misc", transactionType: .credit, amount: deposit, balance: balance, cleared: date, createdOn: date))
                 }
 
@@ -123,12 +125,13 @@ struct Previewer {
 
                 decimalAmount = -decimalAmount
                 balance += decimalAmount
+                transactionCount += 1
                 container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Fake Transaction \(transactionCount)", transactionType: .debit, amount: decimalAmount, balance: balance, cleared: date, createdOn: date))
             }
 
             if Int.random(in: 0...99) < 4 {
                 // Small chance we make a random deposit of less than $100
-                transactionCount += 1
+
                 var randomAmount = Double.random(in: 20...250)
                 randomAmount = (randomAmount*100).rounded() / 100
                 let decimalAmount = Decimal(randomAmount)
@@ -136,47 +139,52 @@ struct Previewer {
                 date = calendar.date(from: components)!
 
                 balance += decimalAmount
+                transactionCount += 1
                 container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Cash depo", transactionType: .credit, amount: decimalAmount, balance: balance, cleared: date, createdOn: date))
 
             }
 
             if Int.random(in: 0...99) < 2 {
                 // let's make an income deposit
-                transactionCount += 1
+
                 let deposit: Decimal = 2013.73
                 components.second! += 1
                 date = calendar.date(from: components)!
 
                 balance += deposit
+                transactionCount += 1
                 container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Paycheck", transactionType: .credit, amount: deposit, balance: balance, cleared: date, createdOn: date))
             }
         }
 
         var transactionAmount: Decimal = -12.39
         balance = balance + transactionAmount
+        transactionCount += 1
         burgerKingTransaction = AccountTransaction(account: cuAccount, name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag])
         
         transactionAmount = -8.79
         balance = balance + transactionAmount
+        transactionCount += 1
         let wendysTransaction = AccountTransaction(account: cuAccount, name: "Wendys", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag])
         
         transactionAmount = -88.34
         balance = balance + transactionAmount
+        transactionCount += 1
         cvsTransaction = AccountTransaction(account: cuAccount, name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [medicalTag, pharmacyTag])
         
         transactionAmount = -10.81
         balance = balance + transactionAmount
-        
+        transactionCount += 1
         let discordTransaction = AccountTransaction(account: cuAccount, name: "Discord", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: nil, tags: [billsTag])
         
         transactionAmount = -36.81
         balance = balance + transactionAmount
-        
+        transactionCount += 1
         let fitnessTransaction = AccountTransaction(account: cuAccount, name: "Fitness", transactionType: .debit, amount: transactionAmount, balance: balance, pending: Date(), cleared: nil, tags: [billsTag])
         
         transactionAmount = 2318.79
         balance = balance + transactionAmount
-        
+        transactionCount += 1
         let paydayTransaction = AccountTransaction(account: cuAccount, name: "Payday", transactionType: .credit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [incomeTag])
         
         let cuOutstandingAmount: Decimal = discordTransaction.amount + fitnessTransaction.amount
@@ -184,6 +192,7 @@ struct Previewer {
         cuAccount.outstandingBalance = cuOutstandingAmount
         cuAccount.outstandingItemCount = 2
         cuAccount.currentBalance = balance
+        cuAccount.transactionCount = transactionCount
         boaAccount.currentBalance = 55.43
         axosAccount.currentBalance = axosAccount.startingBalance
         
@@ -287,6 +296,16 @@ struct Previewer {
         } catch {
             print("Error downloading file: \(error)")
             return nil
+        }
+    }
+}
+
+extension ModelContext {
+    var sqliteCommand: String {
+        if let url = container.configurations.first?.url.path(percentEncoded: false) {
+            "sqlite3 \"\(url)\""
+        } else {
+            "No SQLite database found."
         }
     }
 }

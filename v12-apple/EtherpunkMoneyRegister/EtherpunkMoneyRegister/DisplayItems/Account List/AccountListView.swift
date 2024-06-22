@@ -86,12 +86,12 @@ struct AccountListView: View {
                 switch item.navView {
                 case .accountCreator:
                     Text("New Account")
-
                 case .accountEditor:
                     Text("Edit Account")
-
                 case .accountList:
                     Text("That is this view. We should never reach here.")
+                case .accountDeletor:
+                    Text("Delete account with transaction count > 0")
 
                 case .recurringTransactionDetail:
                     Text("Recurring Transaction Detail")
@@ -140,7 +140,15 @@ struct AccountListView: View {
     }
 
     func deleteAccount(account: Account) {
+        if(account.transactions != nil) {
+            print("Transactions: \(account.transactions!.count)")
+        } else {
+            print("Unknown transaction count")
+        }
         modelContext.delete(account)
+        currentPage = 0
+        accounts = []
+        performFetch()
     }
 
     private func addNewTransaction(account: Account, transactionType: TransactionType) {
@@ -154,6 +162,7 @@ struct AccountListView: View {
         var fetchDescriptor = FetchDescriptor<Account>()
         fetchDescriptor.fetchLimit = accountsPerPage
         fetchDescriptor.fetchOffset = self.currentPage * accountsPerPage
+        fetchDescriptor.relationshipKeyPathsForPrefetching = [\Account.transactions]
         fetchDescriptor.sortBy = [
                 .init(\.sortIndex, order: .forward),
                 .init(\.name, order: .forward)

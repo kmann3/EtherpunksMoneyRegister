@@ -21,6 +21,8 @@ final class Account {
     var sortIndex: Int
     var createdOn: Date
 
+    var transactionCount: Int
+
     @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account)
     var transactions: [AccountTransaction]?
 
@@ -36,6 +38,12 @@ final class Account {
         self.sortIndex = sortIndex
         self.createdOn = createdOn
         self.transactions = transactions
+
+        if(transactions == nil || transactions!.isEmpty) {
+            self.transactionCount = 0
+        } else {
+            self.transactionCount = transactions!.count
+        }
     }
 
     init(id: UUID = UUID(), name: String, startingBalance: Decimal, sortIndex: Int = 255) {
@@ -50,5 +58,6 @@ final class Account {
         self.sortIndex = sortIndex
         self.createdOn = Date()
         self.transactions = []
+        self.transactionCount = 0
     }
 }

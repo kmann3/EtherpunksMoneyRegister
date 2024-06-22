@@ -11,7 +11,8 @@ enum NavView: Hashable {
     case accountList
     case accountCreator
     case accountEditor
-    
+    case accountDeletor
+
     case tagDetail
     case tagEditor
     

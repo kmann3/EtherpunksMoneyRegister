@@ -151,14 +151,23 @@ struct TransactionListView: View {
     private func performSearchTransactionFetch() {
         let accountId: UUID = self.account.id
 
+        var isAmount = false
+        var amountToSearchPositive: Decimal = 0
+        var amountToSearchNegative: Decimal = 0
+        if let amount = Decimal(string: searchText) {
+            isAmount = true
+            amountToSearchNegative = -abs(amount)
+            amountToSearchPositive = abs(amount)
+        }
+
         // TODO: Remove this test UUID
-        // TODO: Add ability to search for amounts. For some reason it REALLY doesn't like doing that.
         let testUUID = UUID(uuidString: "12345678-1234-1234-1234-123456789abc")
         let predicate = #Predicate<AccountTransaction> { transaction in
             if (transaction.accountId == accountId || transaction.accountId == testUUID!) &&
                 (transaction.name.localizedStandardContains(searchText) ||
                  transaction.notes.localizedStandardContains(searchText) ||
-                 transaction.confirmationNumber.localizedStandardContains(searchText)
+                 transaction.confirmationNumber.localizedStandardContains(searchText) ||
+                 (isAmount == true && (transaction.amount == amountToSearchNegative) || (transaction.amount == amountToSearchPositive))
             ) {
                 return true
             } else {
