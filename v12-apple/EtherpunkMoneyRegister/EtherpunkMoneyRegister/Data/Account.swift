@@ -10,18 +10,18 @@ import SwiftData
 
 @Model
 final class Account {
-    var id: UUID
-    var name: String
-    var startingBalance: Decimal
-    var currentBalance: Decimal
-    var outstandingBalance: Decimal
-    var outstandingItemCount: Int
-    var notes: String
-    var lastBalanced: Date
-    var sortIndex: Int
-    var createdOn: Date
+    var id: UUID = UUID()
+    var name: String = ""
+    var startingBalance: Decimal = 0
+    var currentBalance: Decimal = 0
+    var outstandingBalance: Decimal = 0
+    var outstandingItemCount: Int = 0
+    var notes: String = ""
+    var lastBalanced: Date = Date()
+    var sortIndex: Int = 255
+    var createdOn: Date = Date()
 
-    var transactionCount: Int
+    var transactionCount: Int = 0
 
     @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account)
     var transactions: [AccountTransaction]?

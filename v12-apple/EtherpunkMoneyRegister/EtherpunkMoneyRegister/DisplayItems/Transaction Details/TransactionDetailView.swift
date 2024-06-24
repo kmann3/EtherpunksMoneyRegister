@@ -41,7 +41,17 @@ struct TransactionDetailView: View {
             HStack {
                 Text("Tax Related: \(transaction.isTaxRelated == true ? "Yes" : "No")")
             }
-            
+            HStack {
+                if(transaction.balancedOn != nil) {
+                    Text("Balanced On: ")
+                    Text(transaction.balancedOn!, format: .dateTime.month().day())
+                    Text("@")
+                    Text(transaction.balancedOn!, format: .dateTime.hour().minute().second())
+                } else {
+                    Text("Balanced On: nil")
+                }
+            }
+
             if transaction.pending != nil {
                 HStack {
                     Text("Pending: ")
@@ -131,14 +141,7 @@ struct TransactionDetailView: View {
             // Confirmation
             // Notes
             // Recurring Transaction
-            
             Section(header: Text("Misc")) {
-                if transaction.bankTransactionText != "" {
-                    HStack {
-                        Text("Bank Text: \(transaction.bankTransactionText)")
-                    }
-                }
-                
                 HStack {
                     Text("Created On: ")
                     Text(transaction.createdOn, format: .dateTime.month().day())

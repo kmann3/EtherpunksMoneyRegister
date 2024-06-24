@@ -70,9 +70,9 @@ struct TransactionListView: View {
                     Divider()
 
                     Section(header: Text("Actions")) {
-                        // TODO: Create action to let the user know this will update the Last Balanced value and call the account currently balanced
-                        // TODO: Should we keep a history of when accounts are balanced? So a user can roll back?
-                        Button("Balanced"){}
+                        Button("Mark Account as Balanced"){
+                            balanceAccount()
+                        }
                     }
 
                     
@@ -103,6 +103,47 @@ struct TransactionListView: View {
     func createNewTransaction(transactionType: TransactionType) {
         let transaction = AccountTransaction(account: account, transactionType: transactionType)
         path.append(NavData(navView: .transactionCreator, transaction: transaction))
+    }
+
+    func balanceAccount() {
+        // TODO: Should we keep a history of when accounts are balanced? So a user can roll back?
+        let accountId: UUID = self.account.id
+
+        // TODO: Remove this test UUID
+        let testUUID = UUID(uuidString: "12345678-1234-1234-1234-123456789abc")
+        let predicate = #Predicate<AccountTransaction> { transaction in
+            if (transaction.accountId == accountId || transaction.accountId == testUUID!) && transaction.balancedOn == nil {
+                return true
+            } else {
+                return false
+            }
+        }
+
+        let fetchDescriptor = FetchDescriptor<AccountTransaction>(predicate: predicate)
+        guard !isLoading && hasMoreTransactions else { return }
+        isLoading = true
+        let now = Date()
+        DispatchQueue.global().async {
+                do {
+                    let newTransactions = try modelContext.fetch(fetchDescriptor)
+                    for transaction in newTransactions {
+                        transaction.balancedOn = now
+                    }
+                    account.lastBalanced = Date()
+                    try! modelContext.save()
+                    currentAccountTransactionPage = 0
+                    accountTransactions = []
+                    isLoading = false
+                    performAccountTransactionFetch()
+                } catch {
+                    DispatchQueue.main.async {
+                        print("Error fetching transactions: \(error.localizedDescription)")
+                        isLoading = false
+                    }
+                }
+        }
+
+
     }
 
     private func performAccountTransactionFetch(currentPage: Int = 0) {

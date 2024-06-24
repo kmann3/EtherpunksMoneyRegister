@@ -11,29 +11,29 @@ import SwiftUI
 
 @Model
 final class AccountTransaction {
-    var id: UUID
-    var name: String
-    var transactionType: TransactionType
-    var amount: Decimal
-    var balance: Decimal
-    var pending: Date?
-    var cleared: Date?
-    var notes: String
-    var confirmationNumber: String
-    var recurringTransaction: RecurringTransaction?
-    var dueDate: Date?
-    var bankTransactionText: String
-    var isTaxRelated: Bool
+    var id: UUID = UUID()
+    var name: String = ""
+    var transactionType: TransactionType = TransactionType.debit
+    var amount: Decimal = 0
+    var balance: Decimal = 0
+    var pending: Date? = nil
+    var cleared: Date? = nil
+    var notes: String = ""
+    var confirmationNumber: String = ""
+    var recurringTransaction: RecurringTransaction? = nil
+    var dueDate: Date? = nil
+    var isTaxRelated: Bool = false
     @Relationship(deleteRule: .cascade, inverse: \AccountTransactionFile.transaction)
-    var files: [AccountTransactionFile]?
+    var files: [AccountTransactionFile]? = nil
     @Relationship(deleteRule: .noAction)
-    var account: Account?
+    var account: Account? = nil
 
     // The id of the account this belongs to. This is required because predicates don't allow you to filter on other models.
     var accountId: UUID
     @Relationship(deleteRule: .noAction)
-    var tags: [Tag]?
-    var createdOn: Date
+    var tags: [Tag]? = nil
+    var balancedOn: Date? = nil
+    var createdOn: Date = Date()
 
     /// The amount of files associated with the transaction.
     var fileCount: Int {
@@ -63,7 +63,7 @@ final class AccountTransaction {
         }
     }
 
-    init(id: UUID = UUID(), account: Account, name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal = 0, pending: Date? = nil, cleared: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransaction: RecurringTransaction? = nil, bankTransactionText: String = "", files: [AccountTransactionFile]? = [], tags: [Tag]? = [], isTaxRelated: Bool = false, dueDate: Date? = nil, createdOn: Date = Date()) {
+    init(id: UUID = UUID(), account: Account, name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal = 0, pending: Date? = nil, cleared: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransaction: RecurringTransaction? = nil, files: [AccountTransactionFile]? = [], tags: [Tag]? = [], isTaxRelated: Bool = false, dueDate: Date? = nil, balancedOn: Date? = nil, createdOn: Date = Date()) {
         self.id = id
         self.account = account
         self.name = name
@@ -76,10 +76,10 @@ final class AccountTransaction {
         self.confirmationNumber = confirmationNumber
         self.recurringTransaction = recurringTransaction
         self.dueDate = dueDate
-        self.bankTransactionText = bankTransactionText
         self.isTaxRelated = isTaxRelated
         self.files = files
         self.tags = tags
+        self.balancedOn = balancedOn
         self.createdOn = createdOn
 
         self.accountId = account.id

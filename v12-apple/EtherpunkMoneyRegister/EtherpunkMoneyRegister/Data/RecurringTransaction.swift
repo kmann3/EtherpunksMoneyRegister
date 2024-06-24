@@ -10,28 +10,28 @@ import SwiftData
 
 @Model
 final class RecurringTransaction {
-    var id: UUID
-    var name: String
-    var transactionType: TransactionType
-    var amount: Decimal
-    var notes: String
-    var nextDueDate: Date?
+    var id: UUID = UUID()
+    var name: String = ""
+    var transactionType: TransactionType = TransactionType.debit
+    var amount: Decimal = 0
+    var notes: String = ""
+    var nextDueDate: Date? = nil
 
     @Relationship(deleteRule: .noAction)
-    var tags: [Tag]?
+    var tags: [Tag]? = nil
 
-    var group: RecurringTransactionGroup?
+    var group: RecurringTransactionGroup? = nil
 
     @Relationship(deleteRule: .noAction)
-    var transactions: [AccountTransaction]?
+    var transactions: [AccountTransaction]? = nil
 
-    var frequency: RecurringFrequency
+    var frequency: RecurringFrequency = RecurringFrequency.unknown
 
-    var frequencyValue: Int?
-    var frequencyDayOfWeek: DayOfWeek?
-    var frequencyDateValue: Date?
+    var frequencyValue: Int? = nil
+    var frequencyDayOfWeek: DayOfWeek? = nil
+    var frequencyDateValue: Date? = nil
 
-    var createdOn: Date
+    var createdOn: Date = Date()
 
     init(id: UUID = UUID(), name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, tags: [Tag]? = [], group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = [], frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOn: Date = Date()) {
         self.id = id

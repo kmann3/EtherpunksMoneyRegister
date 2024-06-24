@@ -140,10 +140,8 @@ struct AccountListView: View {
     }
 
     func deleteAccount(account: Account) {
-        if(account.transactions != nil) {
-            print("Transactions: \(account.transactions!.count)")
-        } else {
-            print("Unknown transaction count")
+        if(account.transactionCount > 0) {
+            // TODO: Redirect them to let them know this is going to delete data they cannot get back
         }
         modelContext.delete(account)
         currentPage = 0

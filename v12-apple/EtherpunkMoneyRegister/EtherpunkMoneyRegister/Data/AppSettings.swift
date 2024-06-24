@@ -11,7 +11,7 @@ import SwiftUI
 
 @Model
 final class AppSettings {
-    var notificationsEnabled: Bool
+    var notificationsEnabled: Bool = true
 
     // TBI: Language / currency defaults?
     // var language: String

@@ -74,7 +74,7 @@ struct Previewer {
         //let currentComponents = calendar.dateComponents([.year, .month, .day], from: Date())
 
         var transactionCount: Int = 0
-        let amountOfYearsToGenerate: Int = 3
+        let amountOfYearsToGenerate: Int = 1
         for index in (1...(amountOfYearsToGenerate*356)).reversed() {
 
             // 20% chance nothing happens that day
@@ -117,7 +117,7 @@ struct Previewer {
                     let deposit = Decimal(randomDeposit)
                     balance += deposit
                     transactionCount += 1
-                    container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Misc", transactionType: .credit, amount: deposit, balance: balance, cleared: date, createdOn: date))
+                    container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Misc", transactionType: .credit, amount: deposit, balance: balance, cleared: date, balancedOn: date, createdOn: date))
                 }
 
                 components.second! += 1
@@ -126,7 +126,7 @@ struct Previewer {
                 decimalAmount = -decimalAmount
                 balance += decimalAmount
                 transactionCount += 1
-                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Fake Transaction \(transactionCount)", transactionType: .debit, amount: decimalAmount, balance: balance, cleared: date, createdOn: date))
+                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Fake Transaction \(transactionCount)", transactionType: .debit, amount: decimalAmount, balance: balance, cleared: date, balancedOn: date, createdOn: date))
             }
 
             if Int.random(in: 0...99) < 4 {
@@ -140,7 +140,7 @@ struct Previewer {
 
                 balance += decimalAmount
                 transactionCount += 1
-                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Cash depo", transactionType: .credit, amount: decimalAmount, balance: balance, cleared: date, createdOn: date))
+                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Cash depo", transactionType: .credit, amount: decimalAmount, balance: balance, cleared: date, balancedOn: date, createdOn: date))
 
             }
 
@@ -153,35 +153,35 @@ struct Previewer {
 
                 balance += deposit
                 transactionCount += 1
-                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Paycheck", transactionType: .credit, amount: deposit, balance: balance, cleared: date, createdOn: date))
+                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Paycheck", transactionType: .credit, amount: deposit, balance: balance, cleared: date, balancedOn: date, createdOn: date))
             }
         }
 
         var transactionAmount: Decimal = -12.39
         balance = balance + transactionAmount
         transactionCount += 1
-        burgerKingTransaction = AccountTransaction(account: cuAccount, name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag])
-        
+        burgerKingTransaction = AccountTransaction(account: cuAccount, name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag], balancedOn: Date())
+
         transactionAmount = -8.79
         balance = balance + transactionAmount
         transactionCount += 1
         let wendysTransaction = AccountTransaction(account: cuAccount, name: "Wendys", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag])
-        
+
         transactionAmount = -88.34
         balance = balance + transactionAmount
         transactionCount += 1
-        cvsTransaction = AccountTransaction(account: cuAccount, name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [medicalTag, pharmacyTag])
-        
+        cvsTransaction = AccountTransaction(account: cuAccount, name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [medicalTag, pharmacyTag], balancedOn: Date())
+
         transactionAmount = -10.81
         balance = balance + transactionAmount
         transactionCount += 1
         let discordTransaction = AccountTransaction(account: cuAccount, name: "Discord", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: nil, tags: [billsTag])
-        
+
         transactionAmount = -36.81
         balance = balance + transactionAmount
         transactionCount += 1
         let fitnessTransaction = AccountTransaction(account: cuAccount, name: "Fitness", transactionType: .debit, amount: transactionAmount, balance: balance, pending: Date(), cleared: nil, tags: [billsTag])
-        
+
         transactionAmount = 2318.79
         balance = balance + transactionAmount
         transactionCount += 1

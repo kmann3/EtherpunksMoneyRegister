@@ -10,9 +10,9 @@ import SwiftData
 
 @Model
 final class RecurringTransactionGroup {
-    var id: UUID
-    var name: String
-    var createdOn: Date
+    var id: UUID = UUID()
+    var name: String = ""
+    var createdOn: Date = Date()
 
     @Relationship(deleteRule: .cascade)
     var recurringTransactions: [RecurringTransaction]?
