@@ -26,8 +26,6 @@
 		AA57BC7F2C0977980053F706 /* AccountTransactionFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA57BC7E2C0977980053F706 /* AccountTransactionFile.swift */; };
 		AA6224DB2C13685F005B5F17 /* EditTransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6224DA2C13685F005B5F17 /* EditTransactionDetailView.swift */; };
 		AA6224DD2C13F7A3005B5F17 /* transactionStatusEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6224DC2C13F7A3005B5F17 /* transactionStatusEnum.swift */; };
-		AA6224E02C13FAE4005B5F17 /* ColorPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6224DF2C13FAE4005B5F17 /* ColorPreview.swift */; };
-		AA6224E22C13FE87005B5F17 /* NullableDatePickerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6224E12C13FE87005B5F17 /* NullableDatePickerTest.swift */; };
 		AA6224E52C14058B005B5F17 /* NullableDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6224E42C14058B005B5F17 /* NullableDatePicker.swift */; };
 		AA6224E72C1436BB005B5F17 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6224E62C1436BB005B5F17 /* AppSettings.swift */; };
 		AA658F3C2BFE50F400071C20 /* TransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA658F3B2BFE50F400071C20 /* TransactionDetailView.swift */; };
@@ -60,8 +58,6 @@
 		AA57BC7E2C0977980053F706 /* AccountTransactionFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTransactionFile.swift; sourceTree = "<group>"; };
 		AA6224DA2C13685F005B5F17 /* EditTransactionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionDetailView.swift; sourceTree = "<group>"; };
 		AA6224DC2C13F7A3005B5F17 /* transactionStatusEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = transactionStatusEnum.swift; sourceTree = "<group>"; };
-		AA6224DF2C13FAE4005B5F17 /* ColorPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPreview.swift; sourceTree = "<group>"; };
-		AA6224E12C13FE87005B5F17 /* NullableDatePickerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullableDatePickerTest.swift; sourceTree = "<group>"; };
 		AA6224E42C14058B005B5F17 /* NullableDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullableDatePicker.swift; sourceTree = "<group>"; };
 		AA6224E62C1436BB005B5F17 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		AA658F3B2BFE50F400071C20 /* TransactionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailView.swift; sourceTree = "<group>"; };
@@ -171,15 +167,6 @@
 			path = "Account Details";
 			sourceTree = "<group>";
 		};
-		AA6224DE2C13FADB005B5F17 /* Test Area */ = {
-			isa = PBXGroup;
-			children = (
-				AA6224DF2C13FAE4005B5F17 /* ColorPreview.swift */,
-				AA6224E12C13FE87005B5F17 /* NullableDatePickerTest.swift */,
-			);
-			path = "Test Area";
-			sourceTree = "<group>";
-		};
 		AA6224E32C140580005B5F17 /* Custom Controls */ = {
 			isa = PBXGroup;
 			children = (
@@ -224,7 +211,6 @@
 		AAE814EC2BF853B400CA7DDD /* EtherpunkMoneyRegister */ = {
 			isa = PBXGroup;
 			children = (
-				AA6224DE2C13FADB005B5F17 /* Test Area */,
 				AA0E1EF52BF85B8300E68AB0 /* DisplayItems */,
 				AA3658E62C2187A000A3D629 /* Reports */,
 				AA3EC5242C0BB81300D7118D /* Settings */,
@@ -339,10 +325,8 @@
 				AA2A4B6D2BFDAC0600FFA0A9 /* EditAccountDetailsView.swift in Sources */,
 				AA6224DD2C13F7A3005B5F17 /* transactionStatusEnum.swift in Sources */,
 				AA658F3C2BFE50F400071C20 /* TransactionDetailView.swift in Sources */,
-				AA6224E22C13FE87005B5F17 /* NullableDatePickerTest.swift in Sources */,
 				AA1097A32BF906B800F242E3 /* DayOfWeekEnum.swift in Sources */,
 				AAE814EE2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift in Sources */,
-				AA6224E02C13FAE4005B5F17 /* ColorPreview.swift in Sources */,
 				AA0E1F012BF8EE5100E68AB0 /* RecurringTransactionGroup.swift in Sources */,
 				AA0E1EF92BF85C2A00E68AB0 /* Account.swift in Sources */,
 			);
