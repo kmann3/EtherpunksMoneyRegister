@@ -142,11 +142,12 @@ struct AccountListView: View {
     func deleteAccount(account: Account) {
         if(account.transactionCount > 0) {
             // TODO: Redirect them to let them know this is going to delete data they cannot get back
+        } else {
+            modelContext.delete(account)
+            currentPage = 0
+            accounts = []
+            performFetch()
         }
-        modelContext.delete(account)
-        currentPage = 0
-        accounts = []
-        performFetch()
     }
 
     private func addNewTransaction(account: Account, transactionType: TransactionType) {

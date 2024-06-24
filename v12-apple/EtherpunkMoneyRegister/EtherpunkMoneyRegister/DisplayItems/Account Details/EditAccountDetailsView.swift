@@ -8,24 +8,22 @@
 import SwiftUI
 
 struct EditAccountDetailsView: View {
+    @Environment(\.presentationMode) var presentationMode
     @Environment(\.modelContext) var modelContext
-    @Environment(\.dismiss) var dismiss
+
     @Binding var path: NavigationPath
-    @Binding var doSave: Bool
-    @Bindable var account: Account
-    
-    private var isNewAccount: Bool {
-        account.name == "" ? true : false
-    }
-    
+
+    @State private var account: Account
+    @State private var accountName: String
+
     private var title: String {
-        isNewAccount ? "Add Account" : "Edit \(account.name)"
+        account.name == "" ? "Add Account" : "Edit \(account.name)"
     }
     
     init(path: Binding<NavigationPath>, doSave: Binding<Bool>, account: Account) {
         self._path = path
-        self._doSave = doSave
         self.account = account
+        _accountName = State(initialValue: account.name)
     }
         
     var body: some View {
