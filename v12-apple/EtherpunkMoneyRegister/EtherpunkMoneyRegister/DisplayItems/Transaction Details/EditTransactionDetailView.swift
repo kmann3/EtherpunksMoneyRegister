@@ -13,14 +13,14 @@ struct EditTransactionDetailView: View {
     @State private var transactionType: TransactionType
     @State private var transactionPendingDate: Date?
     @State private var transactionClearedDate: Date?
-    @State private var selectedTags: [Tag]
+    @State private var selectedTags: [TransactionTag]
     @State private var transactionNotes: String
-    @State private var transactionFiles: [AccountTransactionFile]
+    @State private var transactionFiles: [TransactionFile]
     @State private var transactionCreatedOnDate: Date
     @State private var transactionIsTaxRelated: Bool
     @State private var transactionConfirmationNumber: String
 
-    @State private var availableTags: [Tag]
+    @State private var availableTags: [TransactionTag]
     
     @State private var newTagName: String = ""
     @State private var url: URL?
@@ -37,7 +37,7 @@ struct EditTransactionDetailView: View {
 
     var isNewTransaction: Bool = false
     
-    init(transaction: AccountTransaction, availableTags: [Tag], path: Binding<NavigationPath>) {
+    init(transaction: AccountTransaction, availableTags: [TransactionTag], path: Binding<NavigationPath>) {
         self.transaction = transaction
         _path = path
         _transactionAccount = State(initialValue: transaction.account!)
@@ -196,7 +196,7 @@ struct EditTransactionDetailView: View {
     }
     
     func addNewTag() {
-        let newTag = Tag(name: newTagName)
+        let newTag = TransactionTag(name: newTagName)
         availableTags.append(newTag)
         selectedTags.append(newTag)
         modelContext.insert(newTag)
@@ -253,7 +253,7 @@ struct EditTransactionDetailView: View {
 }
 
 struct MultipleSelectionRow: View {
-    var tag: Tag
+    var tag: TransactionTag
     var isSelected: Bool
     var action: () -> Void
     

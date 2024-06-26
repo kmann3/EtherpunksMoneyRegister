@@ -22,8 +22,8 @@ struct AccountListView: View {
     @State private var currentPage = 0
     @State private var accountsPerPage = 10
 
-    @Query(sort: [SortDescriptor(\Tag.name, order: .forward)])
-    var availableTags: [Tag]
+    @Query(sort: [SortDescriptor(\TransactionTag.name, order: .forward)])
+    var availableTransactionTags: [TransactionTag]
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -114,13 +114,13 @@ struct AccountListView: View {
                     Text("Tag Editor")
 
                 case .transactionCreator:
-                    EditTransactionDetailView(transaction: item.transaction!, availableTags: availableTags, path: $path)
+                    EditTransactionDetailView(transaction: item.transaction!, availableTags: availableTransactionTags, path: $path)
 
                 case .transactionDetail:
                     TransactionDetailView(path: $path, transaction: item.transaction!)
 
                 case .transactionEditor:
-                    EditTransactionDetailView(transaction: item.transaction!, availableTags: availableTags, path: $path)
+                    EditTransactionDetailView(transaction: item.transaction!, availableTags: availableTransactionTags, path: $path)
 
                 case .transactionList:
                     TransactionListView(path: $path, accountToLoad: item.account!)

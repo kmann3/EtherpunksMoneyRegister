@@ -10,7 +10,7 @@ import SwiftData
 import SwiftUI
 
 @Model
-final class AccountTransactionFile {
+final class TransactionFile {
     var id: UUID = UUID()
     var name: String = ""
     var filename: String = ""
@@ -34,4 +34,10 @@ final class AccountTransactionFile {
         self.transaction = transaction
         self.isTaxRelated = isTaxRelated
     }
+
+    // other types of files?
+    // Account - contracts, opening papers, statements
+    // Recurring Transactions - contracts
+
+    // Files might also have different tags such as: receipt, documentation, confirmation
 }

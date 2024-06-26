@@ -84,20 +84,20 @@ struct SettingsView: View {
 
         try? modelContext.save()
 
-        let billsTag = Tag(name: "bills")
-        let ffTag = Tag(name: "fast-food")
-        let incomeTag = Tag(name: "income")
-        let medicalTag = Tag(name: "medical")
-        let pharmacyTag = Tag(name: "pharmacy")
-        
+        let billsTag = TransactionTag(name: "bills")
+        let ffTag = TransactionTag(name: "fast-food")
+        let incomeTag = TransactionTag(name: "income")
+        let medicalTag = TransactionTag(name: "medical")
+        let pharmacyTag = TransactionTag(name: "pharmacy")
+
         modelContext.insert(billsTag)
         modelContext.insert(ffTag)
         modelContext.insert(incomeTag)
         modelContext.insert(medicalTag)
         modelContext.insert(pharmacyTag)
-        modelContext.insert(Tag(name: "copay"))
-        modelContext.insert(Tag(name: "fuel"))
-        modelContext.insert(Tag(name: "groceries"))
+        modelContext.insert(TransactionTag(name: "copay"))
+        modelContext.insert(TransactionTag(name: "fuel"))
+        modelContext.insert(TransactionTag(name: "groceries"))
 
         try? modelContext.save()
 
@@ -121,8 +121,8 @@ struct SettingsView: View {
         
         downloadImageFromURL { monkeyURL in
             if let monkeyURL = monkeyURL {
-                cvsTransaction.files?.append(AccountTransactionFile(name: "LogoOld", filename: "monkey1.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: dateFormatter.date(from: "2016-04-14T10:44:00-0500")!, url: monkeyURL, isTaxRelated: true, transaction: cvsTransaction))
-                cvsTransaction.files?.append(AccountTransactionFile(name: "LogoNew", filename: "monkey1.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", url: monkeyURL, isTaxRelated: true, transaction: cvsTransaction))
+                cvsTransaction.files?.append(TransactionFile(name: "LogoOld", filename: "monkey1.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: dateFormatter.date(from: "2016-04-14T10:44:00-0500")!, url: monkeyURL, isTaxRelated: true, transaction: cvsTransaction))
+                cvsTransaction.files?.append(TransactionFile(name: "LogoNew", filename: "monkey1.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", url: monkeyURL, isTaxRelated: true, transaction: cvsTransaction))
             } else {
                 print("Error: Could not download monkey from Etherpunk")
             }
@@ -190,9 +190,9 @@ struct SettingsView: View {
         do {
             try modelContext.delete(model: Account.self)
             try modelContext.delete(model: AccountTransaction.self)
-            try modelContext.delete(model: AccountTransactionFile.self)
+            try modelContext.delete(model: TransactionFile.self)
             try modelContext.delete(model: AppSettings.self)
-            try modelContext.delete(model: Tag.self)
+            try modelContext.delete(model: TransactionTag.self)
             try modelContext.delete(model: RecurringTransaction.self)
             try modelContext.delete(model: RecurringTransactionGroup.self)
         } catch {

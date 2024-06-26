@@ -15,15 +15,19 @@ struct EditAccountDetailsView: View {
 
     @State private var account: Account
     @State private var accountName: String
+    @State private var accountStartingBalance: String
 
-    private var title: String {
-        account.name == "" ? "Add Account" : "Edit \(account.name)"
-    }
-    
+    private var isNewAccount: Bool = false
+
     init(path: Binding<NavigationPath>, doSave: Binding<Bool>, account: Account) {
         self._path = path
         self.account = account
         _accountName = State(initialValue: account.name)
+        _accountStartingBalance = State(initialValue: "\(account.startingBalance)")
+
+        if account.name == "" {
+            isNewAccount = true
+        }
     }
         
     var body: some View {
@@ -51,33 +55,45 @@ struct EditAccountDetailsView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle(title)
+        .navigationTitle(isNewAccount ? "New Account" : "Edit \(account.name)")
         #if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(.inline)
         #endif
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
-                        withAnimation {
-                            save()
-                            dismiss()
-                        }
-                    }
-                }
-        
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel", role: .cancel) {
-                        doSave = false
-                        dismiss()
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Save") {
+                    withAnimation {
+                        saveAccount()
                     }
                 }
             }
+
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel", role: .cancel) {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            }
+        }
     }
     
-    private func save() {
-        doSave = true
-        account.currentBalance = account.startingBalance
-        account.lastBalanced = Date()
+    private func saveAccount() {
+        guard let startingBalance = Decimal(string: accountStartingBalance) else { return }
+
+        if startingBalance != account.startingBalance {
+            // We will need to do some adjusting on ALL the balances in the entire account
+            //account.currentBalance = account.startingBalance
+        }
+
+        account.name = accountName
+        do {
+            if isNewAccount {
+                modelContext.insert(account)
+            }
+            try modelContext.save()
+            presentationMode.wrappedValue.dismiss()
+        } catch {
+            print("Error saving transaction: \(error)")
+        }
     }
 }
 

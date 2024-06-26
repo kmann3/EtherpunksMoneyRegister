@@ -16,9 +16,9 @@ struct Previewer {
     let cuAccount: Account
     let burgerKingTransaction: AccountTransaction
     var cvsTransaction: AccountTransaction
-    let billsTag: Tag
-    let medicalTag: Tag
-    let pharmacyTag: Tag
+    let billsTag: TransactionTag
+    let medicalTag: TransactionTag
+    let pharmacyTag: TransactionTag
     let discordRecurringTransaction: RecurringTransaction
     let billGroup: RecurringTransactionGroup
     
@@ -26,9 +26,9 @@ struct Previewer {
         let schema = Schema([
             Account.self,
             AccountTransaction.self,
-            AccountTransactionFile.self,
+            TransactionFile.self,
             AppSettings.self,
-            Tag.self,
+            TransactionTag.self,
             RecurringTransaction.self,
             RecurringTransactionGroup.self,
         ])
@@ -51,13 +51,13 @@ struct Previewer {
         boaAccount.sortIndex = 255
         axosAccount.sortIndex = 255
         
-        billsTag = Tag(name: "bills")
-        medicalTag = Tag(name: "medical")
-        let ffTag = Tag(name: "fast-food")
-        let incomeTag = Tag(name: "income")
-        
-        pharmacyTag = Tag(name: "pharmacy")
-        
+        billsTag = TransactionTag(name: "bills")
+        medicalTag = TransactionTag(name: "medical")
+        let ffTag = TransactionTag(name: "fast-food")
+        let incomeTag = TransactionTag(name: "income")
+
+        pharmacyTag = TransactionTag(name: "pharmacy")
+
         var balance: Decimal = 238.99
 
         for index in (1...3) {
@@ -211,7 +211,7 @@ struct Previewer {
             print("An error?")
         }
         
-        let fakeAttachment = AccountTransactionFile(name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true, transaction: cvsTransaction)
+        let fakeAttachment = TransactionFile(name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true, transaction: cvsTransaction)
 
         container.mainContext.insert(burgerKingTransaction)
         container.mainContext.insert(wendysTransaction)

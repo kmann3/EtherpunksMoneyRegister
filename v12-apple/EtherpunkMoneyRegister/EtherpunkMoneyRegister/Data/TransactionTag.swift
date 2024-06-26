@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Tag {
+final class TransactionTag {
     var name: String = ""
 
     @Relationship(deleteRule: .noAction, inverse: \AccountTransaction.tags)
@@ -20,10 +20,15 @@ final class Tag {
 
     var createdOn: Date = Date()
 
-    init(name: String, transactions: [AccountTransaction]? = [], createdOn: Date = Date(), recurringTransaction: [RecurringTransaction]? = []) {
+    init(
+        name: String = "",
+        transactions: [AccountTransaction]? = nil,
+        recurringTransaction: [RecurringTransaction]? = nil,
+        createdOn: Date = Date()
+    ) {
         self.name = name
         self.transactions = transactions
-        self.createdOn = createdOn
         self.recurringTransaction = recurringTransaction
+        self.createdOn = createdOn
     }
 }

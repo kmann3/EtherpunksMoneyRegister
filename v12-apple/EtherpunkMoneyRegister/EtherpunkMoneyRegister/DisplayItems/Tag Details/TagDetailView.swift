@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TagDetailView: View {
     @Binding var path: NavigationPath
-    @Bindable var tag: Tag
+    @Bindable var tag: TransactionTag
 
     var body: some View {
         VStack {

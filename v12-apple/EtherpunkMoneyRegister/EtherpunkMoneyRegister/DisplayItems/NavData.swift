@@ -12,11 +12,11 @@ class NavData: Hashable {
     var navView: NavView
     var account: Account? = nil
     var transaction: AccountTransaction? = nil
-    var tag: Tag? = nil
+    var tag: TransactionTag? = nil
     var recurringTransaction: RecurringTransaction? = nil
     var recurringTransactionGroup: RecurringTransactionGroup? = nil
     
-    init(navView: NavView, account: Account? = nil, transaction: AccountTransaction? = nil, tag: Tag? = nil, recurringTransaction: RecurringTransaction? = nil, recurringTransactionGroup: RecurringTransactionGroup? = nil) {
+    init(navView: NavView, account: Account? = nil, transaction: AccountTransaction? = nil, tag: TransactionTag? = nil, recurringTransaction: RecurringTransaction? = nil, recurringTransactionGroup: RecurringTransactionGroup? = nil) {
         self.navView = navView
         self.account = account
         self.transaction = transaction

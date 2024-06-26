@@ -190,12 +190,12 @@ struct TransactionDetailView: View {
     do {
         let previewer = try Previewer()
         
-        previewer.cvsTransaction.files?.append(AccountTransactionFile(name: "Receipt", filename: "receipt.jpg", isTaxRelated: true, transaction: previewer.cvsTransaction))
+        previewer.cvsTransaction.files?.append(TransactionFile(name: "Receipt", filename: "receipt.jpg", isTaxRelated: true, transaction: previewer.cvsTransaction))
         
-        previewer.cvsTransaction.files?.append(AccountTransactionFile(name: "Coupon", filename: "coupon.jpg", transaction: previewer.cvsTransaction))
+        previewer.cvsTransaction.files?.append(TransactionFile(name: "Coupon", filename: "coupon.jpg", transaction: previewer.cvsTransaction))
         
-        previewer.cvsTransaction.tags?.append(Tag(name: "TEST"))
-        
+        previewer.cvsTransaction.tags?.append(TransactionTag(name: "Test"))
+
         return TransactionDetailView(path: .constant(NavigationPath()), transaction: previewer.cvsTransaction)
             .modelContainer(previewer.container)
     } catch {

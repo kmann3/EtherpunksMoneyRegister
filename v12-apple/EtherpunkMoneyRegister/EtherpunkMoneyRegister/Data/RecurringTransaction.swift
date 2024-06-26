@@ -18,7 +18,7 @@ final class RecurringTransaction {
     var nextDueDate: Date? = nil
 
     @Relationship(deleteRule: .noAction)
-    var tags: [Tag]? = nil
+    var tags: [TransactionTag]? = nil
 
     var group: RecurringTransactionGroup? = nil
 
@@ -33,7 +33,7 @@ final class RecurringTransaction {
 
     var createdOn: Date = Date()
 
-    init(id: UUID = UUID(), name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, tags: [Tag]? = [], group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = [], frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOn: Date = Date()) {
+    init(id: UUID = UUID(), name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, tags: [TransactionTag]? = [], group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = [], frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOn: Date = Date()) {
         self.id = id
         self.name = name
         self.transactionType = transactionType
