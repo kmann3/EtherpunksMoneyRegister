@@ -12,10 +12,10 @@ import SwiftData
 final class TransactionTag {
     var name: String = ""
 
-    @Relationship(deleteRule: .noAction, inverse: \AccountTransaction.tags)
+    @Relationship(deleteRule: .noAction, inverse: \AccountTransaction.transactionTags)
     var transactions: [AccountTransaction]? = nil
 
-    @Relationship(deleteRule: .noAction, inverse: \RecurringTransaction.tags)
+    @Relationship(deleteRule: .noAction, inverse: \RecurringTransaction.transactionTags)
     var recurringTransaction: [RecurringTransaction]? = nil
 
     var createdOn: Date = Date()

@@ -46,7 +46,7 @@ struct EditTransactionDetailView: View {
         _transactionType = State(initialValue: transaction.transactionType)
         _transactionPendingDate = State(initialValue: transaction.pending)
         _transactionClearedDate = State(initialValue: transaction.cleared)
-        _selectedTags = State(initialValue: transaction.tags ?? [])
+        _selectedTags = State(initialValue: transaction.transactionTags ?? [])
         _availableTags = State(initialValue: availableTags)
         _transactionNotes = State(initialValue: transaction.notes)
         _transactionFiles = State(initialValue: transaction.files ?? [])
@@ -149,6 +149,13 @@ struct EditTransactionDetailView: View {
                                 } label: {
                                     Label("Delete", systemImage: "trash.fill")
                                 }
+
+                                Button() {
+
+                                } label: {
+                                    Label("Edit", systemImage: "pencil")
+                                }
+                                .tint(.indigo)
                             }
                         }
                     }
@@ -232,7 +239,7 @@ struct EditTransactionDetailView: View {
         transaction.amount = amount
         transaction.pending = transactionPendingDate
         transaction.cleared = transactionClearedDate
-        transaction.tags = selectedTags
+        transaction.transactionTags = selectedTags
         transaction.notes = transactionNotes
         transaction.isTaxRelated = transactionIsTaxRelated
 
@@ -275,7 +282,7 @@ struct MultipleSelectionRow: View {
 #Preview {
     do {
         let previewer = try Previewer()
-        return EditTransactionDetailView( transaction: previewer.cvsTransaction, availableTags: [previewer.billsTag, previewer.medicalTag, previewer.pharmacyTag], path: .constant(NavigationPath()))
+        return EditTransactionDetailView(transaction: previewer.cvsTransaction, availableTags: [previewer.billsTag, previewer.medicalTag, previewer.pharmacyTag], path: .constant(NavigationPath()))
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")

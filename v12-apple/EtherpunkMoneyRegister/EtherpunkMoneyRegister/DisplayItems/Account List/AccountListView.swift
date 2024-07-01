@@ -108,7 +108,7 @@ struct AccountListView: View {
                     Text("Recurring Transaction Group List")
 
                 case .tagDetail:
-                    TagDetailView(path: $path, tag: item.tag!)
+                    TagDetailView(path: $path, tag: item.transactionTag!)
 
                 case .tagEditor:
                     Text("Tag Editor")

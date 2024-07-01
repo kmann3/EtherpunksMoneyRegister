@@ -31,7 +31,7 @@ final class AccountTransaction {
     // The id of the account this belongs to. This is required because predicates don't allow you to filter on other models.
     var accountId: UUID
     @Relationship(deleteRule: .noAction)
-    var tags: [TransactionTag]? = nil
+    var transactionTags: [TransactionTag]? = nil
     var balancedOn: Date? = nil
     var createdOn: Date = Date()
 
@@ -63,7 +63,7 @@ final class AccountTransaction {
         }
     }
 
-    init(id: UUID = UUID(), account: Account, name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal = 0, pending: Date? = nil, cleared: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransaction: RecurringTransaction? = nil, files: [TransactionFile]? = [], tags: [TransactionTag]? = [], isTaxRelated: Bool = false, dueDate: Date? = nil, balancedOn: Date? = nil, createdOn: Date = Date()) {
+    init(id: UUID = UUID(), account: Account, name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal = 0, pending: Date? = nil, cleared: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransaction: RecurringTransaction? = nil, files: [TransactionFile]? = [], transactionTags: [TransactionTag]? = [], isTaxRelated: Bool = false, dueDate: Date? = nil, balancedOn: Date? = nil, createdOn: Date = Date()) {
         self.id = id
         self.account = account
         self.name = name
@@ -78,7 +78,7 @@ final class AccountTransaction {
         self.dueDate = dueDate
         self.isTaxRelated = isTaxRelated
         self.files = files
-        self.tags = tags
+        self.transactionTags = transactionTags
         self.balancedOn = balancedOn
         self.createdOn = createdOn
 
@@ -94,5 +94,13 @@ final class AccountTransaction {
         case .debit:
             self.amount = -abs(self.amount)
         }
+    }
+
+    func SaveTransaction(modelContext: ModelContext, transaction: AccountTransaction, name: String, amount: Decimal) {
+        transaction.name = name
+
+        try? modelContext.save()
+
+        // perhaps we open with async stuff and return the transaction?
     }
 }

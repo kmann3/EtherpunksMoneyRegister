@@ -35,6 +35,9 @@ struct Previewer {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         container = try! ModelContainer(for: schema, configurations: config)
 
+        print("-----------------")
+        print(Date())
+        print("-----------------")
         print("Database Location: \(container.mainContext.sqliteCommand)")
         print("Generating fake data. This may take a little bit.")
 
@@ -160,33 +163,33 @@ struct Previewer {
         var transactionAmount: Decimal = -12.39
         balance = balance + transactionAmount
         transactionCount += 1
-        burgerKingTransaction = AccountTransaction(account: cuAccount, name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag], balancedOn: Date())
+        burgerKingTransaction = AccountTransaction(account: cuAccount, name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), transactionTags: [ffTag], balancedOn: Date())
 
         transactionAmount = -8.79
         balance = balance + transactionAmount
         transactionCount += 1
-        let wendysTransaction = AccountTransaction(account: cuAccount, name: "Wendys", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [ffTag])
+        let wendysTransaction = AccountTransaction(account: cuAccount, name: "Wendys", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), transactionTags: [ffTag])
 
         transactionAmount = -88.34
         balance = balance + transactionAmount
         transactionCount += 1
-        cvsTransaction = AccountTransaction(account: cuAccount, name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [medicalTag, pharmacyTag], balancedOn: Date())
+        cvsTransaction = AccountTransaction(account: cuAccount, name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), transactionTags: [medicalTag, pharmacyTag], balancedOn: Date())
 
         transactionAmount = -10.81
         balance = balance + transactionAmount
         transactionCount += 1
-        let discordTransaction = AccountTransaction(account: cuAccount, name: "Discord", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: nil, tags: [billsTag])
+        let discordTransaction = AccountTransaction(account: cuAccount, name: "Discord", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: nil, transactionTags: [billsTag])
 
         transactionAmount = -36.81
         balance = balance + transactionAmount
         transactionCount += 1
-        let fitnessTransaction = AccountTransaction(account: cuAccount, name: "Fitness", transactionType: .debit, amount: transactionAmount, balance: balance, pending: Date(), cleared: nil, tags: [billsTag])
+        let fitnessTransaction = AccountTransaction(account: cuAccount, name: "Fitness", transactionType: .debit, amount: transactionAmount, balance: balance, pending: Date(), cleared: nil, transactionTags: [billsTag])
 
         transactionAmount = 2318.79
         balance = balance + transactionAmount
         transactionCount += 1
-        let paydayTransaction = AccountTransaction(account: cuAccount, name: "Payday", transactionType: .credit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), tags: [incomeTag])
-        
+        let paydayTransaction = AccountTransaction(account: cuAccount, name: "Payday", transactionType: .credit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), transactionTags: [incomeTag])
+
         let cuOutstandingAmount: Decimal = discordTransaction.amount + fitnessTransaction.amount
         
         cuAccount.outstandingBalance = cuOutstandingAmount
@@ -196,9 +199,9 @@ struct Previewer {
         boaAccount.currentBalance = 55.43
         axosAccount.currentBalance = axosAccount.startingBalance
         
-        discordRecurringTransaction = RecurringTransaction(name: "Discord", transactionType: .debit, amount: -10.81, notes: "", nextDueDate: nil, tags: [billsTag], transactions: [discordTransaction], frequency: .monthly, createdOn: Date())
-        
-        let fitnessRecurringTransaction = RecurringTransaction(name: "Fitness", transactionType: .debit, amount: -33.49, notes: "Contract ends Mar 13 2025", nextDueDate: Date(), tags: [billsTag], transactions: [fitnessTransaction], frequency: .monthly, createdOn: Date())
+        discordRecurringTransaction = RecurringTransaction(name: "Discord", transactionType: .debit, amount: -10.81, notes: "", nextDueDate: nil, transactionTags: [billsTag], transactions: [discordTransaction], frequency: .monthly, createdOn: Date())
+
+        let fitnessRecurringTransaction = RecurringTransaction(name: "Fitness", transactionType: .debit, amount: -33.49, notes: "Contract ends Mar 13 2025", nextDueDate: Date(), transactionTags: [billsTag], transactions: [fitnessTransaction], frequency: .monthly, createdOn: Date())
         
         billGroup = RecurringTransactionGroup(name: "Bills", recurringTransactions: [discordRecurringTransaction, fitnessRecurringTransaction])
         
@@ -210,13 +213,15 @@ struct Previewer {
         if monkeyURL == nil {
             print("An error?")
         }
-        
-        let fakeAttachment = TransactionFile(name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true, transaction: cvsTransaction)
+
+        let fakeAttachment = TransactionFile(id: UUID(), name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true)
+
+        cvsTransaction.files?.append(fakeAttachment)
 
         container.mainContext.insert(burgerKingTransaction)
         container.mainContext.insert(wendysTransaction)
         container.mainContext.insert(cvsTransaction)
-        container.mainContext.insert(fakeAttachment)
+        //container.mainContext.insert(fakeAttachment)
         container.mainContext.insert(discordTransaction)
         container.mainContext.insert(fitnessTransaction)
         container.mainContext.insert(paydayTransaction)

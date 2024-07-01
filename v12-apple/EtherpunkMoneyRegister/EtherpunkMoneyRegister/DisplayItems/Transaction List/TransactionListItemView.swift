@@ -46,8 +46,8 @@ struct TransactionListItemView: View {
             }
             
             HStack(spacing: 0) {
-                if transaction.tags != nil {
-                    ForEach(transaction.tags!) { tag in
+                if transaction.transactionTags != nil {
+                    ForEach(transaction.transactionTags!) { tag in
                         Text("\(tag.name) ")
                             .font(.callout)
                     }

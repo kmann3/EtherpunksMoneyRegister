@@ -105,20 +105,20 @@ struct SettingsView: View {
         balance = balance + transactionAmount
         let burgerKingTransaction = AccountTransaction(account: amegyAccount, name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), isTaxRelated: false)
         modelContext.insert(burgerKingTransaction)
-        burgerKingTransaction.tags = [ffTag]
-        
+        burgerKingTransaction.transactionTags = [ffTag]
+
         transactionAmount = -8.79
         balance = balance + transactionAmount
         let wendysTransaction = AccountTransaction(account: amegyAccount, name: "Wendys", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date())
         modelContext.insert(wendysTransaction)
-        wendysTransaction.tags = [ffTag]
-        
+        wendysTransaction.transactionTags = [ffTag]
+
         transactionAmount = -88.34
         balance = balance + transactionAmount
         let cvsTransaction = AccountTransaction(account: amegyAccount, name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date())
         modelContext.insert(cvsTransaction)
-        cvsTransaction.tags = [medicalTag, pharmacyTag]
-        
+        cvsTransaction.transactionTags = [medicalTag, pharmacyTag]
+
         downloadImageFromURL { monkeyURL in
             if let monkeyURL = monkeyURL {
                 cvsTransaction.files?.append(TransactionFile(name: "LogoOld", filename: "monkey1.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: dateFormatter.date(from: "2016-04-14T10:44:00-0500")!, url: monkeyURL, isTaxRelated: true, transaction: cvsTransaction))
@@ -133,29 +133,29 @@ struct SettingsView: View {
         
         let discordTransaction = AccountTransaction(account: amegyAccount, name: "Discord", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: nil)
         modelContext.insert(discordTransaction)
-        discordTransaction.tags = [billsTag]
-        
+        discordTransaction.transactionTags = [billsTag]
+
         transactionAmount = -36.81
         balance = balance + transactionAmount
         
         let fitnessTransaction = AccountTransaction(account: amegyAccount, name: "Fitness", transactionType: .debit, amount: transactionAmount, balance: balance, pending: Date(), cleared: nil)
         modelContext.insert(fitnessTransaction)
-        fitnessTransaction.tags = [billsTag]
-        
+        fitnessTransaction.transactionTags = [billsTag]
+
         transactionAmount = 2318.79
         balance = balance + transactionAmount
         
         let paydayTransaction = AccountTransaction(account: amegyAccount, name: "Payday", transactionType: .credit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date())
         modelContext.insert(paydayTransaction)
-        paydayTransaction.tags = [incomeTag]
-        
+        paydayTransaction.transactionTags = [incomeTag]
+
         let cuOutstandingAmount: Decimal = discordTransaction.amount + fitnessTransaction.amount
         
         amegyAccount.outstandingBalance = cuOutstandingAmount
         amegyAccount.outstandingItemCount = 2
         amegyAccount.currentBalance = balance
         
-        let discordRecurringTransaction = RecurringTransaction(name: "Discord", transactionType: .debit, amount: -10.81, notes: "", nextDueDate: nil, tags: [billsTag], transactions: [discordTransaction], frequency: .monthly, createdOn: Date())
+        let discordRecurringTransaction = RecurringTransaction(name: "Discord", transactionType: .debit, amount: -10.81, notes: "", nextDueDate: nil, transactionTags: [billsTag], transactions: [discordTransaction], frequency: .monthly, createdOn: Date())
         discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
         
         modelContext.insert(discordRecurringTransaction)

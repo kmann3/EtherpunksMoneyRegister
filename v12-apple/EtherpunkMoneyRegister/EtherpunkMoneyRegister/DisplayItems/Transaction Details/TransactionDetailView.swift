@@ -24,14 +24,14 @@ struct TransactionDetailView: View {
                 Text("Amount: ")
                 Text(transaction.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
             }
-            if transaction.tags != nil {
+            if transaction.transactionTags != nil {
                 VStack {
                     HStack {
                         Text("Tags: ")
                         Spacer()
                     }
-                    ForEach(transaction.tags!.sorted(by: { $0.name < $1.name })) { tag in
-                        NavigationLink(value: NavData(navView: .tagDetail, tag: tag)) {
+                    ForEach(transaction.transactionTags!.sorted(by: { $0.name < $1.name })) { tag in
+                        NavigationLink(value: NavData(navView: .tagDetail, transactionTag: tag)) {
                             Text(tag.name)
                         }
                     }
@@ -194,7 +194,7 @@ struct TransactionDetailView: View {
         
         previewer.cvsTransaction.files?.append(TransactionFile(name: "Coupon", filename: "coupon.jpg", transaction: previewer.cvsTransaction))
         
-        previewer.cvsTransaction.tags?.append(TransactionTag(name: "Test"))
+        previewer.cvsTransaction.transactionTags?.append(TransactionTag(name: "Test"))
 
         return TransactionDetailView(path: .constant(NavigationPath()), transaction: previewer.cvsTransaction)
             .modelContainer(previewer.container)
