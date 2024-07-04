@@ -88,6 +88,9 @@ struct AccountListView: View {
                     Text("New Account")
                 case .accountEditor:
                     EditAccountDetailsView(account: item.account!, path: $path)
+                        .onDisappear {
+                            print("Account Balance: \(item.account!.startingBalance)")
+                        }
                 case .accountList:
                     Text("That is this view. We should never reach here.")
                 case .accountDeletor:
@@ -117,13 +120,13 @@ struct AccountListView: View {
                     EditTransactionDetailView(transaction: item.transaction!, availableTags: availableTransactionTags, path: $path)
 
                 case .transactionDetail:
-                    TransactionDetailView(path: $path, transaction: item.transaction!)
+                    TransactionDetailView(transaction: item.transaction!, path: $path)
 
                 case .transactionEditor:
                     EditTransactionDetailView(transaction: item.transaction!, availableTags: availableTransactionTags, path: $path)
 
                 case .transactionList:
-                    TransactionListView(path: $path, accountToLoad: item.account!)
+                    TransactionListView(accountToLoad: item.account!, path: $path)
                 }
             }
             .onAppear {

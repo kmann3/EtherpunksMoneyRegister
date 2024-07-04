@@ -10,9 +10,9 @@ import SwiftUI
 
 struct TransactionDetailView: View {
     @Environment(\.modelContext) var modelContext
-    @Binding var path: NavigationPath
     @Bindable var transaction: AccountTransaction
-    
+    @Binding var path: NavigationPath
+
     @State var url: URL?
     
     var body: some View {
@@ -196,7 +196,7 @@ struct TransactionDetailView: View {
         
         previewer.cvsTransaction.transactionTags?.append(TransactionTag(name: "Test"))
 
-        return TransactionDetailView(path: .constant(NavigationPath()), transaction: previewer.cvsTransaction)
+        return TransactionDetailView(transaction: previewer.cvsTransaction, path: .constant(NavigationPath()))
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")

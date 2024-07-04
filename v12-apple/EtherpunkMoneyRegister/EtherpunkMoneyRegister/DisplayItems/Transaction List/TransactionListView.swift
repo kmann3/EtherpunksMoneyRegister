@@ -24,9 +24,9 @@ struct TransactionListView: View {
 
     @Bindable var account: Account
 
-    init(path: Binding<NavigationPath>, accountToLoad: Account) {
-        self._path = path
+    init(accountToLoad: Account, path: Binding<NavigationPath>) {
         self.account = accountToLoad
+        self._path = path
     }
     
     var body: some View {
@@ -35,9 +35,6 @@ struct TransactionListView: View {
                 NavigationLink(value: NavData(navView: .accountEditor, account: account)) {
                     AccountListItemView(account: account)
                 }
-                .onDisappear(perform: {
-                    print("Close")
-                })
             }
             
             Section(header: Text("Transactions"), footer: Text("End of list")) {
@@ -250,7 +247,7 @@ struct TransactionListView: View {
     do {
         let previewer = try Previewer()
         
-        return TransactionListView(path: .constant(NavigationPath()), accountToLoad: previewer.cuAccount)
+        return TransactionListView(accountToLoad: previewer.cuAccount, path: .constant(NavigationPath()))
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")
