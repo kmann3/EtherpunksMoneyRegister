@@ -87,7 +87,7 @@ struct AccountListView: View {
                 case .accountCreator:
                     Text("New Account")
                 case .accountEditor:
-                    Text("Edit Account")
+                    EditAccountDetailsView(account: item.account!, path: $path)
                 case .accountList:
                     Text("That is this view. We should never reach here.")
                 case .accountDeletor:

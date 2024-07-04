@@ -60,4 +60,52 @@ final class Account {
         self.transactions = []
         self.transactionCount = 0
     }
+
+    func RebalanceAccount(amount: Decimal, date: Date? = nil, modelContext: ModelContext) {
+
+        if(self.transactionCount == 0) {
+            print("Empty")
+            return
+        }
+
+        let accountId: UUID = self.id
+
+        var predicate: Predicate<AccountTransaction>
+
+        if(date == nil) {
+            // We probably changed the starting balance and need to readjust all transactions
+            predicate = #Predicate<AccountTransaction> { transaction in
+                if transaction.accountId == accountId {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        } else {
+
+            // We probably either adjusted the amount of an older transaction or moved one transaction to a new account
+            predicate = #Predicate<AccountTransaction> { transaction in
+                if transaction.accountId == accountId && transaction.createdOn >= date! {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        }
+
+        let fetchDescriptor = FetchDescriptor<AccountTransaction>(predicate: predicate)
+        DispatchQueue.global().async {
+                do {
+                    let newTransactions = try modelContext.fetch(fetchDescriptor)
+                    for transaction in newTransactions {
+                        transaction.balance = transaction.balance + amount
+                    }
+                    try! modelContext.save()
+                } catch {
+                    DispatchQueue.main.async {
+                        print("Error fetching transactions: \(error.localizedDescription)")
+                    }
+                }
+        }
+    }
 }

@@ -9,6 +9,7 @@ import Foundation
 import SwiftData
 import SwiftUI
 
+/// Should this class be in user settings?
 @Model
 final class AppSettings {
     var notificationsEnabled: Bool = true

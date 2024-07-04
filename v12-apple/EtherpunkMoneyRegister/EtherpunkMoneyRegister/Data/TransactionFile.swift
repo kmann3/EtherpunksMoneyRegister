@@ -19,11 +19,12 @@ final class TransactionFile {
     var url: URL? = nil
     var data: Data? = nil
     var isTaxRelated: Bool = false
+    var fileType: FileType? = nil
 
     @Relationship(deleteRule: .noAction)
     var transaction: AccountTransaction?
 
-    init(id: UUID = UUID(), name: String = "", filename: String = "", notes: String = "", createdOn: Date = Date(), url: URL? = nil, data: Data? = nil, isTaxRelated: Bool = false, transaction: AccountTransaction? = nil) {
+    init(id: UUID = UUID(), name: String = "", filename: String = "", notes: String = "", createdOn: Date = Date(), url: URL? = nil, data: Data? = nil, fileType: FileType? = nil ,isTaxRelated: Bool = false, transaction: AccountTransaction? = nil) {
         self.id = id
         self.name = name
         self.filename = filename
@@ -33,6 +34,7 @@ final class TransactionFile {
         self.data = data
         self.transaction = transaction
         self.isTaxRelated = isTaxRelated
+        self.fileType = fileType
     }
 
     // other types of files?

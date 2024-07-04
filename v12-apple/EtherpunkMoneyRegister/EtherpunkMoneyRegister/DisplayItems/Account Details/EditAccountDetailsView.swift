@@ -19,7 +19,7 @@ struct EditAccountDetailsView: View {
 
     private var isNewAccount: Bool = false
 
-    init(path: Binding<NavigationPath>, doSave: Binding<Bool>, account: Account) {
+    init(account: Account, path: Binding<NavigationPath>) {
         self._path = path
         self.account = account
         _accountName = State(initialValue: account.name)
@@ -52,6 +52,10 @@ struct EditAccountDetailsView: View {
                     Text("Last Balanced:")
                     Text(account.lastBalanced, format: .dateTime.month().day().year())
                 }
+
+                HStack {
+                    Text("Transaction Count: \(account.transactionCount)")
+                }
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -80,8 +84,13 @@ struct EditAccountDetailsView: View {
         guard let startingBalance = Decimal(string: accountStartingBalance) else { return }
 
         if startingBalance != account.startingBalance {
-            // We will need to do some adjusting on ALL the balances in the entire account
-            //account.currentBalance = account.startingBalance
+            let difference: Decimal = account.startingBalance - startingBalance
+            print(difference)
+            account.currentBalance = account.currentBalance + difference
+            account.startingBalance = startingBalance
+
+
+            account.RebalanceAccount(amount: difference, modelContext: modelContext)
         }
 
         account.name = accountName
@@ -100,8 +109,7 @@ struct EditAccountDetailsView: View {
 #Preview {
     do {
         let previewer = try Previewer()
-        let doSave: Bool = false
-        return EditAccountDetailsView(path: .constant(NavigationPath()), doSave: .constant(doSave), account: previewer.cuAccount)
+        return EditAccountDetailsView(account: previewer.cuAccount, path: .constant(NavigationPath()))
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")

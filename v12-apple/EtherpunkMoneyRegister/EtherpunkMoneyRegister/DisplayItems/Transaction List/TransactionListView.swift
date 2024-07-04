@@ -35,6 +35,9 @@ struct TransactionListView: View {
                 NavigationLink(value: NavData(navView: .accountEditor, account: account)) {
                     AccountListItemView(account: account)
                 }
+                .onDisappear(perform: {
+                    print("Close")
+                })
             }
             
             Section(header: Text("Transactions"), footer: Text("End of list")) {
@@ -142,8 +145,6 @@ struct TransactionListView: View {
                     }
                 }
         }
-
-
     }
 
     private func performAccountTransactionFetch(currentPage: Int = 0) {
