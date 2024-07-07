@@ -14,13 +14,9 @@ struct ContentView: View {
                 .tabItem {
                     Label("Accounts", systemImage: "house.lodge")
                 }
-            Text("List of tags. Ability to create, delete, and lookup related transactions")
+            InternalView()
                 .tabItem {
-                    Label("Tags", systemImage: "tag")
-                }
-            Text("CRUD recurring transactions and show history")
-                .tabItem {
-                    Label("Recurring", systemImage: "repeat")
+                    Label("Internal", systemImage: "list.bullet.clipboard")
                 }
             ReportsView()
                 .tabItem {

@@ -90,7 +90,7 @@ struct EditAccountDetailsView: View {
             account.startingBalance = startingBalance
 
 
-            account.RebalanceAccount(amount: difference, modelContext: modelContext)
+            account.rebalance(amount: difference, modelContext: modelContext)
         }
 
         account.name = accountName
