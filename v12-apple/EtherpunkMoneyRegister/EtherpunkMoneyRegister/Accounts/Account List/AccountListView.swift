@@ -85,12 +85,9 @@ struct AccountListView: View {
 
                 switch item.navView {
                 case .accountCreator:
-                    Text("New Account")
+                    EditAccountDetailsView(account: Account(name: "", startingBalance: 0), path: $path)
                 case .accountEditor:
                     EditAccountDetailsView(account: item.account!, path: $path)
-                        .onDisappear {
-                            print("Account Balance: \(item.account!.startingBalance)")
-                        }
                 case .accountList:
                     Text("That is this view. We should never reach here.")
                 case .accountDeletor:
