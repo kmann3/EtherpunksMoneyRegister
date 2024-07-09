@@ -16,6 +16,7 @@ struct EditAccountDetailsView: View {
     @State private var account: Account
     @State private var accountName: String
     @State private var accountStartingBalance: String
+    @State private var accountNotes: String
 
     private var isNewAccount: Bool = false
 
@@ -24,6 +25,7 @@ struct EditAccountDetailsView: View {
         self.account = account
         _accountName = State(initialValue: account.name)
         _accountStartingBalance = State(initialValue: "\(account.startingBalance)")
+        _accountNotes = State(initialValue: account.notes)
 
         if account.name == "" {
             isNewAccount = true
@@ -40,14 +42,17 @@ struct EditAccountDetailsView: View {
                 #endif
                 
                 TextField("Notes:", text: $account.notes)
+
+                Text("Show above: ")
             }
             
             Section(header: Text("Misc")) {
                 HStack {
                     Text("Current Balance:")
                     Text(account.currentBalance, format: .number.precision(.fractionLength(2)))
+
                 }
-                
+
                 HStack {
                     Text("Last Balanced:")
                     Text(account.lastBalanced, format: .dateTime.month().day().year())
@@ -56,6 +61,9 @@ struct EditAccountDetailsView: View {
                 HStack {
                     Text("Transaction Count: \(account.transactionCount)")
                 }
+
+                Text("Taxable Items:")
+                Text("Attachment count:")
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -82,18 +90,19 @@ struct EditAccountDetailsView: View {
     
     private func saveAccount() {
         guard let startingBalance = Decimal(string: accountStartingBalance) else { return }
-
+        
         if startingBalance != account.startingBalance {
             let difference: Decimal = account.startingBalance - startingBalance
             print(difference)
             account.currentBalance = account.currentBalance + difference
             account.startingBalance = startingBalance
-
-
+            
+            
             account.rebalance(amount: difference, modelContext: modelContext)
         }
-
+        
         account.name = accountName
+        account.notes = accountNotes
         do {
             if isNewAccount {
                 modelContext.insert(account)
