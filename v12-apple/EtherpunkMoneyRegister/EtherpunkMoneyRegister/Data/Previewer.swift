@@ -214,9 +214,11 @@ struct Previewer {
             print("An error?")
         }
 
-        let fakeAttachment = TransactionFile(id: UUID(), name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true)
-
-        cvsTransaction.files?.append(fakeAttachment)
+        if monkeyURL == nil {
+            let fakeAttachment = TransactionFile(id: UUID(), name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true)
+            
+            cvsTransaction.files?.append(fakeAttachment)
+        }
 
         container.mainContext.insert(burgerKingTransaction)
         container.mainContext.insert(wendysTransaction)
