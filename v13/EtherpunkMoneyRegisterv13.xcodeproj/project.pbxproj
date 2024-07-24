@@ -1,0 +1,626 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AA18E03F2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13App.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E03E2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13App.swift */; };
+		AA18E0412C4A4C5D005F30F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E0402C4A4C5D005F30F3 /* ContentView.swift */; };
+		AA18E0432C4A4C5E005F30F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA18E0422C4A4C5E005F30F3 /* Assets.xcassets */; };
+		AA18E0472C4A4C5E005F30F3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA18E0462C4A4C5E005F30F3 /* Preview Assets.xcassets */; };
+		AA18E0512C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E0502C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.swift */; };
+		AA18E05B2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E05A2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.swift */; };
+		AA18E05D2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E05C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITestsLaunchTests.swift */; };
+		AA18E06A2C4A516F005F30F3 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E0692C4A516F005F30F3 /* AppSettings.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AA18E04D2C4A4C5E005F30F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA18E0332C4A4C5D005F30F3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA18E03A2C4A4C5D005F30F3;
+			remoteInfo = EtherpunkMoneyRegisterv13;
+		};
+		AA18E0572C4A4C5E005F30F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA18E0332C4A4C5D005F30F3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA18E03A2C4A4C5D005F30F3;
+			remoteInfo = EtherpunkMoneyRegisterv13;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AA18E03B2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtherpunkMoneyRegisterv13.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA18E03E2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterv13App.swift; sourceTree = "<group>"; };
+		AA18E0402C4A4C5D005F30F3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		AA18E0422C4A4C5E005F30F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AA18E0442C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EtherpunkMoneyRegisterv13.entitlements; sourceTree = "<group>"; };
+		AA18E0462C4A4C5E005F30F3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		AA18E04C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EtherpunkMoneyRegisterv13Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA18E0502C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterv13Tests.swift; sourceTree = "<group>"; };
+		AA18E0562C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EtherpunkMoneyRegisterv13UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA18E05A2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterv13UITests.swift; sourceTree = "<group>"; };
+		AA18E05C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterv13UITestsLaunchTests.swift; sourceTree = "<group>"; };
+		AA18E0692C4A516F005F30F3 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AA18E0382C4A4C5D005F30F3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA18E0492C4A4C5E005F30F3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA18E0532C4A4C5E005F30F3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AA18E0322C4A4C5D005F30F3 = {
+			isa = PBXGroup;
+			children = (
+				AA18E03D2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13 */,
+				AA18E04F2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests */,
+				AA18E0592C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests */,
+				AA18E03C2C4A4C5D005F30F3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AA18E03C2C4A4C5D005F30F3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AA18E03B2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13.app */,
+				AA18E04C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.xctest */,
+				AA18E0562C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AA18E03D2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13 */ = {
+			isa = PBXGroup;
+			children = (
+				AA18E03E2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13App.swift */,
+				AA18E0402C4A4C5D005F30F3 /* ContentView.swift */,
+				AA18E0422C4A4C5E005F30F3 /* Assets.xcassets */,
+				AA18E0442C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13.entitlements */,
+				AA18E0452C4A4C5E005F30F3 /* Preview Content */,
+				AA18E0692C4A516F005F30F3 /* AppSettings.swift */,
+			);
+			path = EtherpunkMoneyRegisterv13;
+			sourceTree = "<group>";
+		};
+		AA18E0452C4A4C5E005F30F3 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				AA18E0462C4A4C5E005F30F3 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AA18E04F2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests */ = {
+			isa = PBXGroup;
+			children = (
+				AA18E0502C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.swift */,
+			);
+			path = EtherpunkMoneyRegisterv13Tests;
+			sourceTree = "<group>";
+		};
+		AA18E0592C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests */ = {
+			isa = PBXGroup;
+			children = (
+				AA18E05A2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.swift */,
+				AA18E05C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITestsLaunchTests.swift */,
+			);
+			path = EtherpunkMoneyRegisterv13UITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AA18E03A2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA18E0602C4A4C5E005F30F3 /* Build configuration list for PBXNativeTarget "EtherpunkMoneyRegisterv13" */;
+			buildPhases = (
+				AA18E0372C4A4C5D005F30F3 /* Sources */,
+				AA18E0382C4A4C5D005F30F3 /* Frameworks */,
+				AA18E0392C4A4C5D005F30F3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EtherpunkMoneyRegisterv13;
+			productName = EtherpunkMoneyRegisterv13;
+			productReference = AA18E03B2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AA18E04B2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA18E0632C4A4C5E005F30F3 /* Build configuration list for PBXNativeTarget "EtherpunkMoneyRegisterv13Tests" */;
+			buildPhases = (
+				AA18E0482C4A4C5E005F30F3 /* Sources */,
+				AA18E0492C4A4C5E005F30F3 /* Frameworks */,
+				AA18E04A2C4A4C5E005F30F3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AA18E04E2C4A4C5E005F30F3 /* PBXTargetDependency */,
+			);
+			name = EtherpunkMoneyRegisterv13Tests;
+			productName = EtherpunkMoneyRegisterv13Tests;
+			productReference = AA18E04C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		AA18E0552C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA18E0662C4A4C5E005F30F3 /* Build configuration list for PBXNativeTarget "EtherpunkMoneyRegisterv13UITests" */;
+			buildPhases = (
+				AA18E0522C4A4C5E005F30F3 /* Sources */,
+				AA18E0532C4A4C5E005F30F3 /* Frameworks */,
+				AA18E0542C4A4C5E005F30F3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AA18E0582C4A4C5E005F30F3 /* PBXTargetDependency */,
+			);
+			name = EtherpunkMoneyRegisterv13UITests;
+			productName = EtherpunkMoneyRegisterv13UITests;
+			productReference = AA18E0562C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AA18E0332C4A4C5D005F30F3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1530;
+				LastUpgradeCheck = 1530;
+				TargetAttributes = {
+					AA18E03A2C4A4C5D005F30F3 = {
+						CreatedOnToolsVersion = 15.3;
+					};
+					AA18E04B2C4A4C5E005F30F3 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = AA18E03A2C4A4C5D005F30F3;
+					};
+					AA18E0552C4A4C5E005F30F3 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = AA18E03A2C4A4C5D005F30F3;
+					};
+				};
+			};
+			buildConfigurationList = AA18E0362C4A4C5D005F30F3 /* Build configuration list for PBXProject "EtherpunkMoneyRegisterv13" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AA18E0322C4A4C5D005F30F3;
+			productRefGroup = AA18E03C2C4A4C5D005F30F3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AA18E03A2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13 */,
+				AA18E04B2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests */,
+				AA18E0552C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AA18E0392C4A4C5D005F30F3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA18E0472C4A4C5E005F30F3 /* Preview Assets.xcassets in Resources */,
+				AA18E0432C4A4C5E005F30F3 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA18E04A2C4A4C5E005F30F3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA18E0542C4A4C5E005F30F3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AA18E0372C4A4C5D005F30F3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA18E0412C4A4C5D005F30F3 /* ContentView.swift in Sources */,
+				AA18E03F2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13App.swift in Sources */,
+				AA18E06A2C4A516F005F30F3 /* AppSettings.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA18E0482C4A4C5E005F30F3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA18E0512C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA18E0522C4A4C5E005F30F3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA18E05D2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITestsLaunchTests.swift in Sources */,
+				AA18E05B2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AA18E04E2C4A4C5E005F30F3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AA18E03A2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13 */;
+			targetProxy = AA18E04D2C4A4C5E005F30F3 /* PBXContainerItemProxy */;
+		};
+		AA18E0582C4A4C5E005F30F3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AA18E03A2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13 */;
+			targetProxy = AA18E0572C4A4C5E005F30F3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		AA18E05E2C4A4C5E005F30F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AA18E05F2C4A4C5E005F30F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		AA18E0612C4A4C5E005F30F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = EtherpunkMoneyRegisterv13/EtherpunkMoneyRegisterv13.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"EtherpunkMoneyRegisterv13/Preview Content\"";
+				DEVELOPMENT_TEAM = SNH2E6X8CL;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.etherpunk.EtherpunkMoneyRegisterv13;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AA18E0622C4A4C5E005F30F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = EtherpunkMoneyRegisterv13/EtherpunkMoneyRegisterv13.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"EtherpunkMoneyRegisterv13/Preview Content\"";
+				DEVELOPMENT_TEAM = SNH2E6X8CL;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.etherpunk.EtherpunkMoneyRegisterv13;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		AA18E0642C4A4C5E005F30F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SNH2E6X8CL;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.etherpunk.EtherpunkMoneyRegisterv13Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EtherpunkMoneyRegisterv13.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EtherpunkMoneyRegisterv13";
+			};
+			name = Debug;
+		};
+		AA18E0652C4A4C5E005F30F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SNH2E6X8CL;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.etherpunk.EtherpunkMoneyRegisterv13Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EtherpunkMoneyRegisterv13.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EtherpunkMoneyRegisterv13";
+			};
+			name = Release;
+		};
+		AA18E0672C4A4C5E005F30F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SNH2E6X8CL;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.etherpunk.EtherpunkMoneyRegisterv13UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = EtherpunkMoneyRegisterv13;
+			};
+			name = Debug;
+		};
+		AA18E0682C4A4C5E005F30F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SNH2E6X8CL;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.etherpunk.EtherpunkMoneyRegisterv13UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = EtherpunkMoneyRegisterv13;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AA18E0362C4A4C5D005F30F3 /* Build configuration list for PBXProject "EtherpunkMoneyRegisterv13" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA18E05E2C4A4C5E005F30F3 /* Debug */,
+				AA18E05F2C4A4C5E005F30F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA18E0602C4A4C5E005F30F3 /* Build configuration list for PBXNativeTarget "EtherpunkMoneyRegisterv13" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA18E0612C4A4C5E005F30F3 /* Debug */,
+				AA18E0622C4A4C5E005F30F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA18E0632C4A4C5E005F30F3 /* Build configuration list for PBXNativeTarget "EtherpunkMoneyRegisterv13Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA18E0642C4A4C5E005F30F3 /* Debug */,
+				AA18E0652C4A4C5E005F30F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA18E0662C4A4C5E005F30F3 /* Build configuration list for PBXNativeTarget "EtherpunkMoneyRegisterv13UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA18E0672C4A4C5E005F30F3 /* Debug */,
+				AA18E0682C4A4C5E005F30F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AA18E0332C4A4C5D005F30F3 /* Project object */;
+}

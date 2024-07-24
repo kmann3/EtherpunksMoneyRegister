@@ -62,7 +62,11 @@ struct AccountListView: View {
                         ProgressView()
                     }
                 }
-                Text("End of list")
+                HStack {
+                    Spacer()
+                    Text("End of list")
+                    Spacer()
+                }
             }
             .toolbar {
                 Button {

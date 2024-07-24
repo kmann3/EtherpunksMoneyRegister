@@ -1,31 +1,36 @@
 //
 //  ContentView.swift
-//  EtherpunkMoneyRegister
+//  EtherpunkMoneyRegisterv13
 //
-//  Created by Kennith Mann on 5/17/24.
+//  Created by Kennith Mann on 7/19/24.
 //
 
 import SwiftUI
 
 struct ContentView: View {
+    var appSettings: AppSettings = AppSettings()
+
     init() {
-        // if there are no accounts - default to prompting the user to make one.
+        appSettings.LoadAppData()
+        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        print(appVersion)
     }
+
     var body: some View {
         TabView {
-            AccountListView()
+            Text("")
                 .tabItem {
                     Label("Accounts", systemImage: "house.lodge")
                 }
-            InternalView()
+            Text("")
                 .tabItem {
                     Label("Internal", systemImage: "list.bullet.clipboard")
                 }
-            ReportsView()
+            Text("")
                 .tabItem {
                     Label("Reports", systemImage: "chart.line.uptrend.xyaxis")
                 }
-            SettingsView()
+            Text("")
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }
@@ -35,15 +40,8 @@ struct ContentView: View {
             ToolbarItem {
                 Menu {
                     Section("Primary Actions") {
-                        Button("New Database") {  }
-                        Button("Open Database") {  }
-                    }
-
-                    Divider()
-
-                    Button(role: .destructive) {
-                    } label: {
-                        Label("Delete", systemImage: "trash")
+                        Button("New Database") { newDatabase() }
+                        Button("Open Database") { openDatabase() }
                     }
                 } label: {
                     Label("Menu", systemImage: "ellipsis.circle")
@@ -61,12 +59,14 @@ struct ContentView: View {
         if panel.runModal() == .OK {
             if let url = panel.url {
                 print("Selected file: \(url.path)")
-                // Handle the selected file URL
+                // Update app db to show this as most recently opened item
+                // open file
             }
         }
     }
 
     private func newDatabase() {
+        // Prompt for location
         let panel = NSOpenPanel()
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
@@ -76,21 +76,15 @@ struct ContentView: View {
 
         if panel.runModal() == .OK {
             if let url = panel.url {
-                print("Selected file: \(url.path)")
-                // Handle the selected file URL
+                //print("Selected file: \(url.path)")
+
+                // Create new database
+                // update app database to add this as a recently opened item
             }
         }
-
     }
 }
 
 #Preview {
-    do {
-        let previewer = try Previewer()
-
-        return ContentView()
-            .modelContainer(previewer.container)
-    } catch {
-        return Text("Failed: \(error.localizedDescription)")
-    }
+    ContentView()
 }

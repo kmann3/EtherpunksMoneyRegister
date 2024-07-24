@@ -63,14 +63,14 @@ struct Previewer {
 
         var balance: Decimal = 238.99
 
-        for index in (1...3) {
-            var tmpIndex = 15+index
-            if tmpIndex >= 253 {
-                tmpIndex = 253
-            }
-            let newAccount = Account(name: "Fake Account-\(index)", startingBalance: 0, sortIndex: tmpIndex)
-            container.mainContext.insert(newAccount)
-        }
+//        for index in (1...3) {
+//            var tmpIndex = 15+index
+//            if tmpIndex >= 253 {
+//                tmpIndex = 253
+//            }
+//            let newAccount = Account(name: "Fake Account-\(index)", startingBalance: 0, sortIndex: tmpIndex)
+//            container.mainContext.insert(newAccount)
+//        }
 
         let calendar = Calendar.current
 

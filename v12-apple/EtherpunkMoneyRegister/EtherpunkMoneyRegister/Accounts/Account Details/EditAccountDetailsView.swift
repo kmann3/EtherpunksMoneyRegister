@@ -62,7 +62,7 @@ struct EditAccountDetailsView: View {
                     Text("Transaction Count: \(account.transactionCount)")
                 }
 
-                Text("Taxable Items:")
+                Text("Taxable transactions:")
                 Text("Attachment count:")
             }
         }

@@ -101,11 +101,11 @@
 				AA0E1EF82BF85C2A00E68AB0 /* Account.swift */,
 				AA0E1EF62BF85BA300E68AB0 /* AccountTransaction.swift */,
 				AA6224E62C1436BB005B5F17 /* AppSettings.swift */,
-				AA1097A42BF94CFC00F242E3 /* Previewer.swift */,
 				AA0E1EFE2BF8EE0D00E68AB0 /* RecurringTransaction.swift */,
 				AA0E1F002BF8EE5100E68AB0 /* RecurringTransactionGroup.swift */,
 				AA57BC7E2C0977980053F706 /* TransactionFile.swift */,
 				AA0E1EFC2BF8EC6900E68AB0 /* TransactionTag.swift */,
+				AA1097A42BF94CFC00F242E3 /* Previewer.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";

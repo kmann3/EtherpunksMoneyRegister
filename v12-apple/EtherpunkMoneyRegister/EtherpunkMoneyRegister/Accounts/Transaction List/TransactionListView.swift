@@ -112,7 +112,7 @@ struct TransactionListView: View {
         // TODO: Remove this test UUID
         let testUUID = UUID(uuidString: "12345678-1234-1234-1234-123456789abc")
         let predicate = #Predicate<AccountTransaction> { transaction in
-            if (transaction.accountId == accountId || transaction.accountId == testUUID!) && transaction.balancedOn == nil {
+            if (transaction.accountId == accountId || transaction.accountId == testUUID!) && transaction.pending == nil {
                 return true
             } else {
                 return false

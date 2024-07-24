@@ -173,11 +173,9 @@ struct EditTransactionDetailView: View {
             // Created On Read only
             HStack {
                 Text("Created on:")
-                VStack {
                     Text(transactionCreatedOnDate, format: .dateTime.month().day().year())
                     Text("@")
                     Text(transactionCreatedOnDate, format: .dateTime.hour().minute().second())
-                }
             }
             .listRowBackground(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 0.5))
         }
@@ -297,7 +295,7 @@ struct MultipleSelectionRow: View {
     }
 }
 
-#Preview {
+#Preview(traits: .fixedLayout(width: 600, height: 700)) {
     do {
         let previewer = try Previewer()
         return EditTransactionDetailView(transaction: previewer.cvsTransaction, availableTags: [previewer.billsTag, previewer.medicalTag, previewer.pharmacyTag], path: .constant(NavigationPath()))

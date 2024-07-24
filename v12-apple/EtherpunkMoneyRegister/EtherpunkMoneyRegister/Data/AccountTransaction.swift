@@ -103,4 +103,11 @@ final class AccountTransaction {
 
         // perhaps we open with async stuff and return the transaction?
     }
+//
+//    func getFileCount(modelContext: ModelContext) -> Int {
+//
+//        let descriptor = FetchDescriptor<TransactionFile>(predicate: #Predicate { $0.transactionId! == self.id })
+//
+//        return (try? modelContext.fetchCount(descriptor)) ?? 0
+//    }
 }
