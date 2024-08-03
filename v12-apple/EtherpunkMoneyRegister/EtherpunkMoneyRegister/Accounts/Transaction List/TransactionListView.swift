@@ -10,6 +10,7 @@ import Foundation
 
 struct TransactionListView: View {
     @Environment(\.modelContext) var modelContext
+    @EnvironmentObject var container: AppStateContainer
     @Binding private var path: NavigationPath
 
     @State private var searchText = ""
@@ -27,6 +28,7 @@ struct TransactionListView: View {
     init(accountToLoad: Account, path: Binding<NavigationPath>) {
         self.account = accountToLoad
         self._path = path
+        print(container.loadedSqliteDbPath)
     }
     
     var body: some View {

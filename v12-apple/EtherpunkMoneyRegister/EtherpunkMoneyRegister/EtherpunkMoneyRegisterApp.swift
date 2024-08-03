@@ -10,6 +10,7 @@ import SwiftUI
 
 @main
 struct EtherpunkMoneyRegisterApp: App {
+    @StateObject var appStateContainer = AppStateContainer()
     var container: ModelContainer
     var previewer: Previewer
 
@@ -31,7 +32,25 @@ struct EtherpunkMoneyRegisterApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(appStateContainer)
+                .environmentObject(appStateContainer.tabViewState)
         }
         .modelContainer(previewer.container)
+//        .commands {
+//            CommandGroup(replacing: .newItem) {
+//                            Button("New") {}
+//                            Button("Open") {}
+//                            
+//                            Divider()
+//
+//                            Button("Save As") {}
+//                            Divider()
+//
+//                            Menu("Export") {
+//                            Button("Excel") {}
+//                            Button("CSV") {}
+//                        }
+//                    }
+//                }
     }
 }

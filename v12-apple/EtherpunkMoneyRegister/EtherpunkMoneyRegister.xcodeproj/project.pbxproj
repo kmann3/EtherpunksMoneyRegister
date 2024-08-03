@@ -20,7 +20,7 @@
 		AA1097A52BF94CFC00F242E3 /* Previewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097A42BF94CFC00F242E3 /* Previewer.swift */; };
 		AA1097A92BFA83DF00F242E3 /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097A82BFA83DF00F242E3 /* AccountListView.swift */; };
 		AA1097AB2BFA8C4B00F242E3 /* AccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */; };
-		AA10C6D92C3A62C200B5B75C /* InternalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA10C6D82C3A62C200B5B75C /* InternalView.swift */; };
+		AA10C6D92C3A62C200B5B75C /* RelativeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA10C6D82C3A62C200B5B75C /* RelativeView.swift */; };
 		AA10C6DD2C3A6A3400B5B75C /* TaxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA10C6DC2C3A6A3400B5B75C /* TaxView.swift */; };
 		AA2A4B6D2BFDAC0600FFA0A9 /* EditAccountDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountDetailsView.swift */; };
 		AA3658E82C2187B300A3D629 /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3658E72C2187B300A3D629 /* ReportsView.swift */; };
@@ -34,6 +34,8 @@
 		AA658F402BFEABC700071C20 /* NavViewEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA658F3F2BFEABC700071C20 /* NavViewEnum.swift */; };
 		AA658F422BFEAC1A00071C20 /* NavData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA658F412BFEAC1A00071C20 /* NavData.swift */; };
 		AA826CC42C0A2558003F2564 /* TagDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA826CC32C0A2558003F2564 /* TagDetailView.swift */; };
+		AA8562B52C5E40850018E7AA /* AppContainerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8562B42C5E40850018E7AA /* AppContainerState.swift */; };
+		AA8562B72C5E414D0018E7AA /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8562B62C5E414D0018E7AA /* Tab.swift */; };
 		AA93212F2C35D38900F906D9 /* FileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA93212E2C35D38900F906D9 /* FileType.swift */; };
 		AA9321312C36946100F906D9 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9321302C36946100F906D9 /* Currency.swift */; };
 		AA9321342C36951B00F906D9 /* CurrencyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9321332C36951B00F906D9 /* CurrencyCode.swift */; };
@@ -57,7 +59,7 @@
 		AA1097A42BF94CFC00F242E3 /* Previewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Previewer.swift; sourceTree = "<group>"; };
 		AA1097A82BFA83DF00F242E3 /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
 		AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListItemView.swift; sourceTree = "<group>"; };
-		AA10C6D82C3A62C200B5B75C /* InternalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalView.swift; sourceTree = "<group>"; };
+		AA10C6D82C3A62C200B5B75C /* RelativeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelativeView.swift; sourceTree = "<group>"; };
 		AA10C6DC2C3A6A3400B5B75C /* TaxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxView.swift; sourceTree = "<group>"; };
 		AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountDetailsView.swift; sourceTree = "<group>"; };
 		AA3658E72C2187B300A3D629 /* ReportsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsView.swift; sourceTree = "<group>"; };
@@ -71,6 +73,8 @@
 		AA658F3F2BFEABC700071C20 /* NavViewEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavViewEnum.swift; sourceTree = "<group>"; };
 		AA658F412BFEAC1A00071C20 /* NavData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavData.swift; sourceTree = "<group>"; };
 		AA826CC32C0A2558003F2564 /* TagDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDetailView.swift; sourceTree = "<group>"; };
+		AA8562B42C5E40850018E7AA /* AppContainerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainerState.swift; sourceTree = "<group>"; };
+		AA8562B62C5E414D0018E7AA /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		AA93212E2C35D38900F906D9 /* FileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileType.swift; sourceTree = "<group>"; };
 		AA9321302C36946100F906D9 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		AA9321332C36951B00F906D9 /* CurrencyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCode.swift; sourceTree = "<group>"; };
@@ -96,6 +100,7 @@
 		AA0E1EEE2BF8541100E68AB0 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				AA8562B32C5E40760018E7AA /* AppState */,
 				AA9321322C36947E00F906D9 /* DataTypes */,
 				AA0E1F042BF8F1B100E68AB0 /* Enums */,
 				AA0E1EF82BF85C2A00E68AB0 /* Account.swift */,
@@ -114,10 +119,11 @@
 			isa = PBXGroup;
 			children = (
 				AA57BC7D2C0974550053F706 /* Account Details */,
-				AA1097A72BFA795A00F242E3 /* Account List */,
 				AA826CC22C0A254A003F2564 /* Tag Details */,
 				AA658F3A2BFE50BD00071C20 /* Transaction Details */,
 				AA1097A62BFA795100F242E3 /* Transaction List */,
+				AA1097A82BFA83DF00F242E3 /* AccountListView.swift */,
+				AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */,
 				AA658F412BFEAC1A00071C20 /* NavData.swift */,
 			);
 			path = Accounts;
@@ -132,6 +138,7 @@
 				AA0E1F022BF8EFFA00E68AB0 /* RecurringFrequencyEnum.swift */,
 				AA6224DC2C13F7A3005B5F17 /* TransactionStatusEnum.swift */,
 				AA0E1EFA2BF85F5C00E68AB0 /* TransactionTypeEnum.swift */,
+				AA8562B62C5E414D0018E7AA /* Tab.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -145,23 +152,14 @@
 			path = "Transaction List";
 			sourceTree = "<group>";
 		};
-		AA1097A72BFA795A00F242E3 /* Account List */ = {
-			isa = PBXGroup;
-			children = (
-				AA1097A82BFA83DF00F242E3 /* AccountListView.swift */,
-				AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */,
-			);
-			path = "Account List";
-			sourceTree = "<group>";
-		};
-		AA10C6D72C3A629E00B5B75C /* Internal */ = {
+		AA10C6D72C3A629E00B5B75C /* Relative */ = {
 			isa = PBXGroup;
 			children = (
 				AA10C6DA2C3A669700B5B75C /* Recurring Transactions */,
 				AA10C6DB2C3A66A200B5B75C /* Tags */,
-				AA10C6D82C3A62C200B5B75C /* InternalView.swift */,
+				AA10C6D82C3A62C200B5B75C /* RelativeView.swift */,
 			);
-			path = Internal;
+			path = Relative;
 			sourceTree = "<group>";
 		};
 		AA10C6DA2C3A669700B5B75C /* Recurring Transactions */ = {
@@ -228,6 +226,14 @@
 			path = "Tag Details";
 			sourceTree = "<group>";
 		};
+		AA8562B32C5E40760018E7AA /* AppState */ = {
+			isa = PBXGroup;
+			children = (
+				AA8562B42C5E40850018E7AA /* AppContainerState.swift */,
+			);
+			path = AppState;
+			sourceTree = "<group>";
+		};
 		AA9321322C36947E00F906D9 /* DataTypes */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,7 +264,7 @@
 			children = (
 				AA6224E32C140580005B5F17 /* Custom Controls */,
 				AA0E1EF52BF85B8300E68AB0 /* Accounts */,
-				AA10C6D72C3A629E00B5B75C /* Internal */,
+				AA10C6D72C3A629E00B5B75C /* Relative */,
 				AA3658E62C2187A000A3D629 /* Reports */,
 				AA3EC5242C0BB81300D7118D /* Settings */,
 				AA0E1EEE2BF8541100E68AB0 /* Data */,
@@ -350,6 +356,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AAE814F02BF853B400CA7DDD /* ContentView.swift in Sources */,
+				AA8562B72C5E414D0018E7AA /* Tab.swift in Sources */,
 				AA6224E52C14058B005B5F17 /* NullableDatePicker.swift in Sources */,
 				AA3658E82C2187B300A3D629 /* ReportsView.swift in Sources */,
 				AA6224DB2C13685F005B5F17 /* EditTransactionDetailView.swift in Sources */,
@@ -357,12 +364,13 @@
 				AA9321312C36946100F906D9 /* Currency.swift in Sources */,
 				AA1097AB2BFA8C4B00F242E3 /* AccountListItemView.swift in Sources */,
 				AA658F402BFEABC700071C20 /* NavViewEnum.swift in Sources */,
+				AA8562B52C5E40850018E7AA /* AppContainerState.swift in Sources */,
 				AA93212F2C35D38900F906D9 /* FileType.swift in Sources */,
 				AA57BC7F2C0977980053F706 /* TransactionFile.swift in Sources */,
 				AA1097A52BF94CFC00F242E3 /* Previewer.swift in Sources */,
 				AA6224E72C1436BB005B5F17 /* AppSettings.swift in Sources */,
 				AA0E1F032BF8EFFA00E68AB0 /* RecurringFrequencyEnum.swift in Sources */,
-				AA10C6D92C3A62C200B5B75C /* InternalView.swift in Sources */,
+				AA10C6D92C3A62C200B5B75C /* RelativeView.swift in Sources */,
 				AA658F422BFEAC1A00071C20 /* NavData.swift in Sources */,
 				AA0E1EF72BF85BA300E68AB0 /* AccountTransaction.swift in Sources */,
 				AA10C6DD2C3A6A3400B5B75C /* TaxView.swift in Sources */,

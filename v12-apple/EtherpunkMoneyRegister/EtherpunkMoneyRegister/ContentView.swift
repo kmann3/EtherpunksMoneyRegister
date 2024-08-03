@@ -8,18 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var container: AppStateContainer
+    @EnvironmentObject var state: TabViewState
+
     init() {
         // if there are no accounts - default to prompting the user to make one.
     }
     var body: some View {
-        TabView {
+        TabView(selection: $state.selectedTab) {
             AccountListView()
+                .tabItem { Label("Accounts", systemImage: "house.lodge") }
+                .tag(Tab.accounts)
+            RelativeView()
                 .tabItem {
-                    Label("Accounts", systemImage: "house.lodge")
-                }
-            InternalView()
-                .tabItem {
-                    Label("Internal", systemImage: "list.bullet.clipboard")
+                    Label("Relative Data", systemImage: "list.bullet.clipboard")
                 }
             ReportsView()
                 .tabItem {
@@ -32,11 +34,11 @@ struct ContentView: View {
 
         }
         .toolbar {
-            ToolbarItem {
+            ToolbarItem (placement: .primaryAction) {
                 Menu {
                     Section("Primary Actions") {
-                        Button("New Database") {  }
-                        Button("Open Database") {  }
+                        Button("New Database") { }
+                        Button("Open Database") { }
                     }
 
                     Divider()
@@ -50,36 +52,39 @@ struct ContentView: View {
                 }
             }
         }
+        .onAppear {
+            // We need to query the database and pre-load settings
+        }
     }
 
     private func openDatabase() {
-        let panel = NSOpenPanel()
-        panel.canChooseFiles = true
-        panel.canChooseDirectories = false
-        panel.allowsMultipleSelection = false
-
-        if panel.runModal() == .OK {
-            if let url = panel.url {
-                print("Selected file: \(url.path)")
-                // Handle the selected file URL
-            }
-        }
+//        let panel = NSOpenPanel()
+//        panel.canChooseFiles = true
+//        panel.canChooseDirectories = false
+//        panel.allowsMultipleSelection = false
+//
+//        if panel.runModal() == .OK {
+//            if let url = panel.url {
+//                print("Selected file: \(url.path)")
+//                // Handle the selected file URL
+//            }
+//        }
     }
 
     private func newDatabase() {
-        let panel = NSOpenPanel()
-        panel.canChooseFiles = false
-        panel.canChooseDirectories = true
-        panel.allowsMultipleSelection = false
-        panel.message = "Please selecte an empty directory which will store the information. \n If the directory is not empty, a default one will be created for you falled 'EMR'"
-        panel.canCreateDirectories = true
-
-        if panel.runModal() == .OK {
-            if let url = panel.url {
-                print("Selected file: \(url.path)")
-                // Handle the selected file URL
-            }
-        }
+//        let panel = NSOpenPanel()
+//        panel.canChooseFiles = false
+//        panel.canChooseDirectories = true
+//        panel.allowsMultipleSelection = false
+//        panel.message = "Please selecte an empty directory which will store the information. \n If the directory is not empty, a default one will be created for you falled 'EMR'"
+//        panel.canCreateDirectories = true
+//
+//        if panel.runModal() == .OK {
+//            if let url = panel.url {
+//                print("Selected file: \(url.path)")
+//                // Handle the selected file URL
+//            }
+//        }
 
     }
 }
@@ -89,6 +94,16 @@ struct ContentView: View {
         let previewer = try Previewer()
 
         return ContentView()
+            .environmentObject({ () -> AppStateContainer in
+                let container = AppStateContainer()
+                container.loadedSqliteDbPath = "Old"
+                return container
+            }() )
+            .environmentObject({ () -> TabViewState in
+                let tabs = TabViewState()
+                tabs.selectedTab = .accounts
+                return tabs
+            }() )
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")

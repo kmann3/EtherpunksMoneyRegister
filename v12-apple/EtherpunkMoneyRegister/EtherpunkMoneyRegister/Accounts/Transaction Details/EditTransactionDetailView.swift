@@ -176,7 +176,7 @@ struct EditTransactionDetailView: View {
                     Text(transactionCreatedOnDate, format: .dateTime.month().day().year())
                     Text("@")
                     Text(transactionCreatedOnDate, format: .dateTime.hour().minute().second())
-            }
+                 }
             .listRowBackground(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 0.5))
         }
 #if os(iOS)
