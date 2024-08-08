@@ -28,7 +28,7 @@ struct TransactionListView: View {
     init(accountToLoad: Account, path: Binding<NavigationPath>) {
         self.account = accountToLoad
         self._path = path
-        print(container.loadedSqliteDbPath)
+        //print(container.loadedSqliteDbPath)
     }
     
     var body: some View {
@@ -58,7 +58,8 @@ struct TransactionListView: View {
                 Menu {
                     Section(header: Text("New Transaction")) {
                         Button {
-                            createNewTransaction(transactionType: .debit)
+                            print(container.loadedSqliteDbPath)
+                            //createNewTransaction(transactionType: .debit)
                         } label: {
                             Label("Debit / Expense", systemImage: "creditcard")
                         }

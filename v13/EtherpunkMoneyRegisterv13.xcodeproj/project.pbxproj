@@ -14,7 +14,25 @@
 		AA18E0512C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E0502C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.swift */; };
 		AA18E05B2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E05A2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.swift */; };
 		AA18E05D2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E05C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITestsLaunchTests.swift */; };
-		AA18E06A2C4A516F005F30F3 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E0692C4A516F005F30F3 /* AppSettings.swift */; };
+		AA18E06A2C4A516F005F30F3 /* AppSettingsTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E0692C4A516F005F30F3 /* AppSettingsTwo.swift */; };
+		AAF22D062C64D0B9003EE8EB /* AppContainerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF02C64D0B9003EE8EB /* AppContainerState.swift */; };
+		AAF22D072C64D0B9003EE8EB /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF22C64D0B9003EE8EB /* Currency.swift */; };
+		AAF22D082C64D0B9003EE8EB /* CurrencyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF32C64D0B9003EE8EB /* CurrencyCode.swift */; };
+		AAF22D092C64D0B9003EE8EB /* DayOfWeekEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF52C64D0B9003EE8EB /* DayOfWeekEnum.swift */; };
+		AAF22D0A2C64D0B9003EE8EB /* FileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF62C64D0B9003EE8EB /* FileType.swift */; };
+		AAF22D0B2C64D0B9003EE8EB /* NavViewEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF72C64D0B9003EE8EB /* NavViewEnum.swift */; };
+		AAF22D0C2C64D0B9003EE8EB /* RecurringFrequencyEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF82C64D0B9003EE8EB /* RecurringFrequencyEnum.swift */; };
+		AAF22D0D2C64D0B9003EE8EB /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF92C64D0B9003EE8EB /* Tab.swift */; };
+		AAF22D0E2C64D0B9003EE8EB /* TransactionStatusEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CFA2C64D0B9003EE8EB /* TransactionStatusEnum.swift */; };
+		AAF22D0F2C64D0B9003EE8EB /* TransactionTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CFB2C64D0B9003EE8EB /* TransactionTypeEnum.swift */; };
+		AAF22D102C64D0B9003EE8EB /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CFD2C64D0B9003EE8EB /* Account.swift */; };
+		AAF22D112C64D0B9003EE8EB /* AccountTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CFE2C64D0B9003EE8EB /* AccountTransaction.swift */; };
+		AAF22D122C64D0B9003EE8EB /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CFF2C64D0B9003EE8EB /* AppSettings.swift */; };
+		AAF22D132C64D0B9003EE8EB /* Previewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D002C64D0B9003EE8EB /* Previewer.swift */; };
+		AAF22D142C64D0B9003EE8EB /* RecurringTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D012C64D0B9003EE8EB /* RecurringTransaction.swift */; };
+		AAF22D152C64D0B9003EE8EB /* RecurringTransactionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D022C64D0B9003EE8EB /* RecurringTransactionGroup.swift */; };
+		AAF22D162C64D0B9003EE8EB /* TransactionFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D032C64D0B9003EE8EB /* TransactionFile.swift */; };
+		AAF22D172C64D0B9003EE8EB /* TransactionTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D042C64D0B9003EE8EB /* TransactionTag.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,7 +64,26 @@
 		AA18E0562C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EtherpunkMoneyRegisterv13UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA18E05A2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterv13UITests.swift; sourceTree = "<group>"; };
 		AA18E05C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterv13UITestsLaunchTests.swift; sourceTree = "<group>"; };
-		AA18E0692C4A516F005F30F3 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		AA18E0692C4A516F005F30F3 /* AppSettingsTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTwo.swift; sourceTree = "<group>"; };
+		AAF22CEF2C609E27003EE8EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AAF22CF02C64D0B9003EE8EB /* AppContainerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppContainerState.swift; sourceTree = "<group>"; };
+		AAF22CF22C64D0B9003EE8EB /* Currency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		AAF22CF32C64D0B9003EE8EB /* CurrencyCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyCode.swift; sourceTree = "<group>"; };
+		AAF22CF52C64D0B9003EE8EB /* DayOfWeekEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayOfWeekEnum.swift; sourceTree = "<group>"; };
+		AAF22CF62C64D0B9003EE8EB /* FileType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileType.swift; sourceTree = "<group>"; };
+		AAF22CF72C64D0B9003EE8EB /* NavViewEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavViewEnum.swift; sourceTree = "<group>"; };
+		AAF22CF82C64D0B9003EE8EB /* RecurringFrequencyEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurringFrequencyEnum.swift; sourceTree = "<group>"; };
+		AAF22CF92C64D0B9003EE8EB /* Tab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
+		AAF22CFA2C64D0B9003EE8EB /* TransactionStatusEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionStatusEnum.swift; sourceTree = "<group>"; };
+		AAF22CFB2C64D0B9003EE8EB /* TransactionTypeEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionTypeEnum.swift; sourceTree = "<group>"; };
+		AAF22CFD2C64D0B9003EE8EB /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		AAF22CFE2C64D0B9003EE8EB /* AccountTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTransaction.swift; sourceTree = "<group>"; };
+		AAF22CFF2C64D0B9003EE8EB /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		AAF22D002C64D0B9003EE8EB /* Previewer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Previewer.swift; sourceTree = "<group>"; };
+		AAF22D012C64D0B9003EE8EB /* RecurringTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurringTransaction.swift; sourceTree = "<group>"; };
+		AAF22D022C64D0B9003EE8EB /* RecurringTransactionGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurringTransactionGroup.swift; sourceTree = "<group>"; };
+		AAF22D032C64D0B9003EE8EB /* TransactionFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionFile.swift; sourceTree = "<group>"; };
+		AAF22D042C64D0B9003EE8EB /* TransactionTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionTag.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,12 +134,14 @@
 		AA18E03D2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13 */ = {
 			isa = PBXGroup;
 			children = (
+				AAF22D052C64D0B9003EE8EB /* Data */,
+				AAF22CEF2C609E27003EE8EB /* Info.plist */,
 				AA18E03E2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13App.swift */,
 				AA18E0402C4A4C5D005F30F3 /* ContentView.swift */,
 				AA18E0422C4A4C5E005F30F3 /* Assets.xcassets */,
 				AA18E0442C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13.entitlements */,
 				AA18E0452C4A4C5E005F30F3 /* Preview Content */,
-				AA18E0692C4A516F005F30F3 /* AppSettings.swift */,
+				AA18E0692C4A516F005F30F3 /* AppSettingsTwo.swift */,
 			);
 			path = EtherpunkMoneyRegisterv13;
 			sourceTree = "<group>";
@@ -130,6 +169,55 @@
 				AA18E05C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITestsLaunchTests.swift */,
 			);
 			path = EtherpunkMoneyRegisterv13UITests;
+			sourceTree = "<group>";
+		};
+		AAF22CF12C64D0B9003EE8EB /* AppState */ = {
+			isa = PBXGroup;
+			children = (
+				AAF22CF02C64D0B9003EE8EB /* AppContainerState.swift */,
+			);
+			path = AppState;
+			sourceTree = "<group>";
+		};
+		AAF22CF42C64D0B9003EE8EB /* DataTypes */ = {
+			isa = PBXGroup;
+			children = (
+				AAF22CF22C64D0B9003EE8EB /* Currency.swift */,
+				AAF22CF32C64D0B9003EE8EB /* CurrencyCode.swift */,
+			);
+			path = DataTypes;
+			sourceTree = "<group>";
+		};
+		AAF22CFC2C64D0B9003EE8EB /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				AAF22CF52C64D0B9003EE8EB /* DayOfWeekEnum.swift */,
+				AAF22CF62C64D0B9003EE8EB /* FileType.swift */,
+				AAF22CF72C64D0B9003EE8EB /* NavViewEnum.swift */,
+				AAF22CF82C64D0B9003EE8EB /* RecurringFrequencyEnum.swift */,
+				AAF22CF92C64D0B9003EE8EB /* Tab.swift */,
+				AAF22CFA2C64D0B9003EE8EB /* TransactionStatusEnum.swift */,
+				AAF22CFB2C64D0B9003EE8EB /* TransactionTypeEnum.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
+		AAF22D052C64D0B9003EE8EB /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				AAF22CF12C64D0B9003EE8EB /* AppState */,
+				AAF22CF42C64D0B9003EE8EB /* DataTypes */,
+				AAF22CFC2C64D0B9003EE8EB /* Enums */,
+				AAF22CFD2C64D0B9003EE8EB /* Account.swift */,
+				AAF22CFE2C64D0B9003EE8EB /* AccountTransaction.swift */,
+				AAF22CFF2C64D0B9003EE8EB /* AppSettings.swift */,
+				AAF22D002C64D0B9003EE8EB /* Previewer.swift */,
+				AAF22D012C64D0B9003EE8EB /* RecurringTransaction.swift */,
+				AAF22D022C64D0B9003EE8EB /* RecurringTransactionGroup.swift */,
+				AAF22D032C64D0B9003EE8EB /* TransactionFile.swift */,
+				AAF22D042C64D0B9003EE8EB /* TransactionTag.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,8 +351,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA18E0412C4A4C5D005F30F3 /* ContentView.swift in Sources */,
+				AAF22D0E2C64D0B9003EE8EB /* TransactionStatusEnum.swift in Sources */,
+				AAF22D112C64D0B9003EE8EB /* AccountTransaction.swift in Sources */,
+				AAF22D0B2C64D0B9003EE8EB /* NavViewEnum.swift in Sources */,
+				AAF22D092C64D0B9003EE8EB /* DayOfWeekEnum.swift in Sources */,
+				AAF22D072C64D0B9003EE8EB /* Currency.swift in Sources */,
+				AAF22D152C64D0B9003EE8EB /* RecurringTransactionGroup.swift in Sources */,
+				AAF22D0A2C64D0B9003EE8EB /* FileType.swift in Sources */,
+				AAF22D132C64D0B9003EE8EB /* Previewer.swift in Sources */,
+				AAF22D0D2C64D0B9003EE8EB /* Tab.swift in Sources */,
+				AAF22D0F2C64D0B9003EE8EB /* TransactionTypeEnum.swift in Sources */,
+				AAF22D142C64D0B9003EE8EB /* RecurringTransaction.swift in Sources */,
 				AA18E03F2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13App.swift in Sources */,
-				AA18E06A2C4A516F005F30F3 /* AppSettings.swift in Sources */,
+				AAF22D082C64D0B9003EE8EB /* CurrencyCode.swift in Sources */,
+				AAF22D162C64D0B9003EE8EB /* TransactionFile.swift in Sources */,
+				AAF22D0C2C64D0B9003EE8EB /* RecurringFrequencyEnum.swift in Sources */,
+				AA18E06A2C4A516F005F30F3 /* AppSettingsTwo.swift in Sources */,
+				AAF22D172C64D0B9003EE8EB /* TransactionTag.swift in Sources */,
+				AAF22D062C64D0B9003EE8EB /* AppContainerState.swift in Sources */,
+				AAF22D122C64D0B9003EE8EB /* AppSettings.swift in Sources */,
+				AAF22D102C64D0B9003EE8EB /* Account.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +534,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EtherpunkMoneyRegisterv13/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -442,7 +549,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.4;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.etherpunk.EtherpunkMoneyRegisterv13;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -466,6 +573,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EtherpunkMoneyRegisterv13/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -480,7 +588,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.4;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.etherpunk.EtherpunkMoneyRegisterv13;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;

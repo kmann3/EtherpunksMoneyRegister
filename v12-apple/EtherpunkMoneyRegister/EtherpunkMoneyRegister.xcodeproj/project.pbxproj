@@ -20,7 +20,7 @@
 		AA1097A52BF94CFC00F242E3 /* Previewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097A42BF94CFC00F242E3 /* Previewer.swift */; };
 		AA1097A92BFA83DF00F242E3 /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097A82BFA83DF00F242E3 /* AccountListView.swift */; };
 		AA1097AB2BFA8C4B00F242E3 /* AccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */; };
-		AA10C6D92C3A62C200B5B75C /* RelativeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA10C6D82C3A62C200B5B75C /* RelativeView.swift */; };
+		AA10C6D92C3A62C200B5B75C /* MetadataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA10C6D82C3A62C200B5B75C /* MetadataView.swift */; };
 		AA10C6DD2C3A6A3400B5B75C /* TaxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA10C6DC2C3A6A3400B5B75C /* TaxView.swift */; };
 		AA2A4B6D2BFDAC0600FFA0A9 /* EditAccountDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountDetailsView.swift */; };
 		AA3658E82C2187B300A3D629 /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3658E72C2187B300A3D629 /* ReportsView.swift */; };
@@ -59,7 +59,7 @@
 		AA1097A42BF94CFC00F242E3 /* Previewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Previewer.swift; sourceTree = "<group>"; };
 		AA1097A82BFA83DF00F242E3 /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
 		AA1097AA2BFA8C4B00F242E3 /* AccountListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListItemView.swift; sourceTree = "<group>"; };
-		AA10C6D82C3A62C200B5B75C /* RelativeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelativeView.swift; sourceTree = "<group>"; };
+		AA10C6D82C3A62C200B5B75C /* MetadataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataView.swift; sourceTree = "<group>"; };
 		AA10C6DC2C3A6A3400B5B75C /* TaxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxView.swift; sourceTree = "<group>"; };
 		AA2A4B6C2BFDAC0600FFA0A9 /* EditAccountDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountDetailsView.swift; sourceTree = "<group>"; };
 		AA3658E72C2187B300A3D629 /* ReportsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsView.swift; sourceTree = "<group>"; };
@@ -152,14 +152,14 @@
 			path = "Transaction List";
 			sourceTree = "<group>";
 		};
-		AA10C6D72C3A629E00B5B75C /* Relative */ = {
+		AA10C6D72C3A629E00B5B75C /* Metadata */ = {
 			isa = PBXGroup;
 			children = (
 				AA10C6DA2C3A669700B5B75C /* Recurring Transactions */,
 				AA10C6DB2C3A66A200B5B75C /* Tags */,
-				AA10C6D82C3A62C200B5B75C /* RelativeView.swift */,
+				AA10C6D82C3A62C200B5B75C /* MetadataView.swift */,
 			);
-			path = Relative;
+			path = Metadata;
 			sourceTree = "<group>";
 		};
 		AA10C6DA2C3A669700B5B75C /* Recurring Transactions */ = {
@@ -264,7 +264,7 @@
 			children = (
 				AA6224E32C140580005B5F17 /* Custom Controls */,
 				AA0E1EF52BF85B8300E68AB0 /* Accounts */,
-				AA10C6D72C3A629E00B5B75C /* Relative */,
+				AA10C6D72C3A629E00B5B75C /* Metadata */,
 				AA3658E62C2187A000A3D629 /* Reports */,
 				AA3EC5242C0BB81300D7118D /* Settings */,
 				AA0E1EEE2BF8541100E68AB0 /* Data */,
@@ -370,7 +370,7 @@
 				AA1097A52BF94CFC00F242E3 /* Previewer.swift in Sources */,
 				AA6224E72C1436BB005B5F17 /* AppSettings.swift in Sources */,
 				AA0E1F032BF8EFFA00E68AB0 /* RecurringFrequencyEnum.swift in Sources */,
-				AA10C6D92C3A62C200B5B75C /* RelativeView.swift in Sources */,
+				AA10C6D92C3A62C200B5B75C /* MetadataView.swift in Sources */,
 				AA658F422BFEAC1A00071C20 /* NavData.swift in Sources */,
 				AA0E1EF72BF85BA300E68AB0 /* AccountTransaction.swift in Sources */,
 				AA10C6DD2C3A6A3400B5B75C /* TaxView.swift in Sources */,

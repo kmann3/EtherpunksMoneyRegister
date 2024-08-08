@@ -1,21 +1,22 @@
 //
-//  AppSettings.swift
-//  EtherpunkMoneyRegisterv13
+//  AppWideState.swift
+//  EtherpunkMoneyRegister
 //
-//  Created by Kennith Mann on 7/19/24.
+//  Created by Kennith Mann on 8/3/24.
 //
 
 import Foundation
 import SQLite3
 
-class AppSettings: ObservableObject {
-    // @Published var loadedDatabasePointer: OpaquePointer? = nil
-    @Published var loadedDatabasePath: URL? = nil
+class AppStateContainer: ObservableObject {
+    var tabViewState = TabViewState()
+    var loadedSqliteDbPath: URL? = nil
+    var defaultAccount: Account? = nil
 
-    public func LoadAppData() {
+    public func loadAppData() {
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let url = NSURL(fileURLWithPath: path)
-        if let pathComponent = url.appendingPathComponent("emr_appdata.sqlite3") {
+        if let pathComponent = url.appendingPathComponent("emr_appdata.sqlite3.emr") {
             let filePath = pathComponent.path
             let fileManager = FileManager.default
             if fileManager.fileExists(atPath: filePath) {
@@ -31,11 +32,22 @@ class AppSettings: ObservableObject {
         }
     }
 
+    public func createNewUserDatabase(location: String) {
+
+    }
+
+    public func openUserDatabase(location: String) {
+
+    }
+
     private func createNewAppDatabase(appDatabasePath: URL) {
-        loadedDatabasePath = appDatabasePath
+        loadedSqliteDbPath = appDatabasePath
         if let db = openDatabase(at: appDatabasePath.path) {
-            createTable(db: db)
-            closeDatabase(db: db)
+            defer {
+                closeDatabase(db: db)
+            }
+            createTables(db: db)
+            insertVersionData(db: db)
         }
     }
 
@@ -49,9 +61,14 @@ class AppSettings: ObservableObject {
         return db
     }
 
-    private func createTable(db: OpaquePointer?) {
+    private func createTables(db: OpaquePointer?) {
+        createFileEntryTabe(db: db)
+        createVersionTable(db: db)
+    }
+
+    private func createFileEntryTabe(db: OpaquePointer?) {
         let createEntryTableSqlString = """
-        CREATE TABLE IF NOT EXISTS RecentEntries(
+        CREATE TABLE IF NOT EXISTS RecentFileEntries(
         Path TEXT,
         CreatedOn TEXT);
         """
@@ -59,15 +76,17 @@ class AppSettings: ObservableObject {
         var createEntryTableStatement: OpaquePointer? = nil
         if sqlite3_prepare_v2(db, createEntryTableSqlString, -1, &createEntryTableStatement, nil) == SQLITE_OK {
             if sqlite3_step(createEntryTableStatement) == SQLITE_DONE {
-                print("Entry table created.")
+                print("RecentFileEntries table created.")
             } else {
-                print("Entry table could not be created.")
+                print("RecentFileEntries table could not be created.")
             }
         } else {
             print("CREATE TABLE statement could not be prepared.")
         }
         sqlite3_finalize(createEntryTableStatement)
+    }
 
+    private func createVersionTable(db: OpaquePointer?) {
         let createVersionTableSqlString = """
         CREATE TABLE IF NOT EXISTS Version(
         VersionNumber INTEGER);
@@ -84,7 +103,9 @@ class AppSettings: ObservableObject {
             print("CREATE Version TABLE statement could not be prepared.")
         }
         sqlite3_finalize(createVersionTableStatement)
+    }
 
+    private func insertVersionData(db: OpaquePointer?) {
         let version: Int32 = 1
 
         let setCurrentVersionSqlString = "INSERT INTO Version (VersionNumber) VALUES (?);"
@@ -103,44 +124,6 @@ class AppSettings: ObservableObject {
         }
 
         sqlite3_finalize(setCurrentVersionStatement)
-
-//        // we now, of course, add this new database to the entry list
-//        let path: String = loadedDatabasePath!.path()
-//        var createdOn: String {
-//            let date = Date()
-//            let formatter = DateFormatter()
-//            formatter.dateFormat = "yyyy-MM-dd:HH.mm.ss"
-//            return formatter.string(from: date)
-//        }
-//
-//        let addNewEntryString = "INSERT INTO RecentEntries (Path, CreatedOn) VALUES (?, ?);"
-//        print(addNewEntryString)
-//        var addnewEntryStatement: OpaquePointer?
-//        if sqlite3_prepare_v2(db, addNewEntryString, -1, &addnewEntryStatement, nil) ==
-//            SQLITE_OK
-//        {
-//            let path: NSString = path as NSString
-//            var createdOn: NSString {
-//                let date = Date()
-//                let formatter = DateFormatter()
-//                formatter.dateFormat = "yyyy-MM-dd:HH.mm.ss"
-//                return formatter.string(from: date) as NSString
-//            }
-//            sqlite3_bind_text(addnewEntryStatement, 1, path.utf8String, -1, nil)
-//            sqlite3_bind_text(addnewEntryStatement, 2, createdOn.utf8String, -1, nil)
-//
-//            if sqlite3_step(addnewEntryStatement) == SQLITE_DONE {
-//                print("\nSuccessfully inserted row.")
-//            } else {
-//                print("\nCould not insert row.")
-//            }
-//        } else {
-//            let errorMessage = String(cString: sqlite3_errmsg(db))
-//                print("\nQuery is not prepared! \(errorMessage)")
-//            print("\nINSERT statement is not prepared.")
-//        }
-//
-//        sqlite3_finalize(addnewEntryStatement)
     }
 
     private func closeDatabase(db: OpaquePointer?) {
@@ -150,4 +133,8 @@ class AppSettings: ObservableObject {
             print("Database closed successfully")
         }
     }
+}
+
+class TabViewState: ObservableObject {
+    @Published var selectedTab: Tab = .accounts
 }

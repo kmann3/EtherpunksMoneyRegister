@@ -8,39 +8,38 @@
 import SwiftUI
 
 struct ContentView: View {
-    var appSettings: AppSettings = AppSettings()
-
-    init() {
-        appSettings.LoadAppData()
-        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-        print(appVersion)
-    }
+    @EnvironmentObject var container: AppStateContainer
+    @EnvironmentObject var tabState: TabViewState
 
     var body: some View {
-        TabView {
-            Text("")
+        TabView(selection: $tabState.selectedTab) {
+            Text("Accounts")
                 .tabItem {
                     Label("Accounts", systemImage: "house.lodge")
                 }
-            Text("")
+                .tag(Tab.accounts)
+            Text("Metadata")
                 .tabItem {
-                    Label("Internal", systemImage: "list.bullet.clipboard")
+                    Label("Metadata", systemImage: "list.bullet.clipboard")
                 }
-            Text("")
+                .tag(Tab.metadata)
+            Text("Reports")
                 .tabItem {
                     Label("Reports", systemImage: "chart.line.uptrend.xyaxis")
                 }
-            Text("")
+                .tag(Tab.reports)
+            Text("Settings")
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }
+                .tag(Tab.settings)
 
         }
         .toolbar {
             ToolbarItem {
                 Menu {
                     Section("Primary Actions") {
-                        Button("New Database") { newDatabase() }
+                        Button("New Database")  { newDatabase()  }
                         Button("Open Database") { openDatabase() }
                     }
                 } label: {
@@ -48,6 +47,12 @@ struct ContentView: View {
                 }
             }
         }
+        .onAppear() {
+            initApp()
+        }
+    }
+    private func initApp() {
+        
     }
 
     private func openDatabase() {
@@ -76,7 +81,7 @@ struct ContentView: View {
 
         if panel.runModal() == .OK {
             if let url = panel.url {
-                //print("Selected file: \(url.path)")
+                print("Selected file: \(url.path)")
 
                 // Create new database
                 // update app database to add this as a recently opened item

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RelativeView: View {
+struct MetadataView: View {
     var body: some View {
         List {
             
@@ -81,5 +81,5 @@ struct RelativeView: View {
 }
 
 #Preview {
-    RelativeView()
+    MetadataView()
 }
