@@ -59,7 +59,7 @@ struct ContentView: View {
             // We need to query the database and pre-load settings
             initApp()
             //container.begin()
-            container.loadedSqliteDbPath = "FOO"
+            //container.loadedSqliteDbPath = "FOO"
         }
     }
 
@@ -70,13 +70,14 @@ struct ContentView: View {
     }
 
     private func initApp() {
+        container.loadedSqliteDbPath = ""
         // get the app's db location and pull settings
         let fileManager = FileManager.default
 
         // Get the app's Application Support directory
         if let appSupportDirectory = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
             // Create a subdirectory for your app within Application Support
-            let appDataDirectory = appSupportDirectory.appendingPathComponent(Bundle.main.bundleIdentifier ?? "YourAppName", isDirectory: true)
+            let appDataDirectory = appSupportDirectory.appendingPathComponent(Bundle.main.bundleIdentifier ?? "com.etherpunk.EtherpunkMoneyRegister", isDirectory: true)
 
             if(directoryExists(at: appDataDirectory)) {
                 print("exists")
@@ -142,16 +143,6 @@ struct ContentView: View {
         return ContentView()
             .environmentObject(tabState)
             .environmentObject(appState)
-//            .environmentObject({ () -> AppStateContainer in
-//                let container = AppStateContainer()
-//                container.loadedSqliteDbPath = "Old"
-//                return container
-//            }() )
-//            .environmentObject({ () -> TabViewState in
-//                let tabs = TabViewState()
-//                tabs.selectedTab = .accounts
-//                return tabs
-//            }() )
             .modelContainer(previewer.container)
     } catch {
         return Text("Failed: \(error.localizedDescription)")

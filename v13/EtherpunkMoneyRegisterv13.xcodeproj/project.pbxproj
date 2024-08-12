@@ -11,9 +11,6 @@
 		AA18E0412C4A4C5D005F30F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E0402C4A4C5D005F30F3 /* ContentView.swift */; };
 		AA18E0432C4A4C5E005F30F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA18E0422C4A4C5E005F30F3 /* Assets.xcassets */; };
 		AA18E0472C4A4C5E005F30F3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA18E0462C4A4C5E005F30F3 /* Preview Assets.xcassets */; };
-		AA18E0512C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E0502C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.swift */; };
-		AA18E05B2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E05A2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.swift */; };
-		AA18E05D2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E05C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITestsLaunchTests.swift */; };
 		AA18E06A2C4A516F005F30F3 /* AppSettingsTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E0692C4A516F005F30F3 /* AppSettingsTwo.swift */; };
 		AAF22D062C64D0B9003EE8EB /* AppContainerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF02C64D0B9003EE8EB /* AppContainerState.swift */; };
 		AAF22D072C64D0B9003EE8EB /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF22C64D0B9003EE8EB /* Currency.swift */; };
@@ -33,6 +30,7 @@
 		AAF22D152C64D0B9003EE8EB /* RecurringTransactionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D022C64D0B9003EE8EB /* RecurringTransactionGroup.swift */; };
 		AAF22D162C64D0B9003EE8EB /* TransactionFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D032C64D0B9003EE8EB /* TransactionFile.swift */; };
 		AAF22D172C64D0B9003EE8EB /* TransactionTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D042C64D0B9003EE8EB /* TransactionTag.swift */; };
+		AAF22D1A2C66A524003EE8EB /* DbController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D192C66A524003EE8EB /* DbController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,10 +58,7 @@
 		AA18E0442C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EtherpunkMoneyRegisterv13.entitlements; sourceTree = "<group>"; };
 		AA18E0462C4A4C5E005F30F3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AA18E04C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EtherpunkMoneyRegisterv13Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA18E0502C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterv13Tests.swift; sourceTree = "<group>"; };
 		AA18E0562C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EtherpunkMoneyRegisterv13UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA18E05A2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterv13UITests.swift; sourceTree = "<group>"; };
-		AA18E05C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterv13UITestsLaunchTests.swift; sourceTree = "<group>"; };
 		AA18E0692C4A516F005F30F3 /* AppSettingsTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTwo.swift; sourceTree = "<group>"; };
 		AAF22CEF2C609E27003EE8EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AAF22CF02C64D0B9003EE8EB /* AppContainerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppContainerState.swift; sourceTree = "<group>"; };
@@ -84,6 +79,7 @@
 		AAF22D022C64D0B9003EE8EB /* RecurringTransactionGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurringTransactionGroup.swift; sourceTree = "<group>"; };
 		AAF22D032C64D0B9003EE8EB /* TransactionFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionFile.swift; sourceTree = "<group>"; };
 		AAF22D042C64D0B9003EE8EB /* TransactionTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionTag.swift; sourceTree = "<group>"; };
+		AAF22D192C66A524003EE8EB /* DbController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DbController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,8 +111,6 @@
 			isa = PBXGroup;
 			children = (
 				AA18E03D2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13 */,
-				AA18E04F2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests */,
-				AA18E0592C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests */,
 				AA18E03C2C4A4C5D005F30F3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -154,23 +148,6 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		AA18E04F2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests */ = {
-			isa = PBXGroup;
-			children = (
-				AA18E0502C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.swift */,
-			);
-			path = EtherpunkMoneyRegisterv13Tests;
-			sourceTree = "<group>";
-		};
-		AA18E0592C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests */ = {
-			isa = PBXGroup;
-			children = (
-				AA18E05A2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.swift */,
-				AA18E05C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITestsLaunchTests.swift */,
-			);
-			path = EtherpunkMoneyRegisterv13UITests;
-			sourceTree = "<group>";
-		};
 		AAF22CF12C64D0B9003EE8EB /* AppState */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				AAF22CF12C64D0B9003EE8EB /* AppState */,
+				AAF22D182C66A50B003EE8EB /* Controller */,
 				AAF22CF42C64D0B9003EE8EB /* DataTypes */,
 				AAF22CFC2C64D0B9003EE8EB /* Enums */,
 				AAF22CFD2C64D0B9003EE8EB /* Account.swift */,
@@ -218,6 +196,14 @@
 				AAF22D042C64D0B9003EE8EB /* TransactionTag.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		AAF22D182C66A50B003EE8EB /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				AAF22D192C66A524003EE8EB /* DbController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -355,6 +341,7 @@
 				AAF22D112C64D0B9003EE8EB /* AccountTransaction.swift in Sources */,
 				AAF22D0B2C64D0B9003EE8EB /* NavViewEnum.swift in Sources */,
 				AAF22D092C64D0B9003EE8EB /* DayOfWeekEnum.swift in Sources */,
+				AAF22D1A2C66A524003EE8EB /* DbController.swift in Sources */,
 				AAF22D072C64D0B9003EE8EB /* Currency.swift in Sources */,
 				AAF22D152C64D0B9003EE8EB /* RecurringTransactionGroup.swift in Sources */,
 				AAF22D0A2C64D0B9003EE8EB /* FileType.swift in Sources */,
@@ -378,7 +365,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA18E0512C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,8 +372,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA18E05D2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITestsLaunchTests.swift in Sources */,
-				AA18E05B2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

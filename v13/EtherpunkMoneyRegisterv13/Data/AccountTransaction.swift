@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SQLite3
 import SwiftData
 import SwiftUI
 
@@ -96,13 +97,69 @@ final class AccountTransaction {
         }
     }
 
-    func SaveTransaction(modelContext: ModelContext, transaction: AccountTransaction, name: String, amount: Decimal) {
-        transaction.name = name
+    public static func createAccountTransactionTable(db: OpaquePointer?) {
+        let createEntryTableSqlString = """
+        CREATE TABLE "AccountTransaction" (
+            "Id"    VARCHAR,
+            "Name"    VARCHAR,
+            "AccountId"    VARCHAR,
+            "TransactionType"    VARCHAR
+            "IsTaxRelated"    INTEGER,
+            "RecurringTransactionId"    VARCHAR,
+            "BalancedOn"    TIMESTAMP,
+            "ClearedOn"    TIMESTAMP,
+            "DueDate"    TIMESTAMP,
+            "Pending"    TIMESTAMP,
+            "Amount"    DECIMAL,
+            "Balance"    DECIMAL,
+            "ConfirmationNumber"    VARCHAR,
+            "Notes"    VARCHAR,
+            "CreatedOn"    TIMESTAMP,
+            PRIMARY KEY("Id")
+        );
+        """
 
-        try? modelContext.save()
-
-        // perhaps we open with async stuff and return the transaction?
+        var createEntryTableStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, createEntryTableSqlString, -1, &createEntryTableStatement, nil) == SQLITE_OK {
+            if sqlite3_step(createEntryTableStatement) == SQLITE_DONE {
+                print("AccountTransaction table created.")
+            } else {
+                print("AccountTransaction table could not be created.")
+            }
+        } else {
+            print("CREATE TABLE AccountTransaction statement could not be prepared.")
+        }
+        sqlite3_finalize(createEntryTableStatement)
     }
+
+    public func getTransactions(appContainer: AppStateContainer, currentPage: Int = 0) throws -> [AccountTransaction] {
+
+        if(appContainer.loadedSqliteDbPath == nil) {
+            throw SqlError.databaseNotFound
+        }
+
+        if let db = DbController.openDatabase(at: appContainer.loadedSqliteDbPath!.path) {
+            defer {
+                DbController.closeDatabase(db: db)
+            }
+
+            print("Hello")
+            //createTables(db: db)
+            //insertVersionData(db: db)
+
+            return []
+        } else {
+            throw SqlError.openDatabaseError
+        }
+    }
+
+//    func SaveTransaction(modelContext: ModelContext, transaction: AccountTransaction, name: String, amount: Decimal) {
+//        transaction.name = name
+//
+//        try? modelContext.save()
+//
+//        // perhaps we open with async stuff and return the transaction?
+//    }
 //
 //    func getFileCount(modelContext: ModelContext) -> Int {
 //

@@ -9,7 +9,6 @@ import Foundation
 import SQLite3
 
 class AppStateContainer: ObservableObject {
-    var tabViewState = TabViewState()
     var loadedSqliteDbPath: URL? = nil
     var defaultAccount: Account? = nil
 
@@ -21,7 +20,7 @@ class AppStateContainer: ObservableObject {
             let fileManager = FileManager.default
             if fileManager.fileExists(atPath: filePath) {
                 // Then we open it and see if we have a default entry or a recent entry
-                print("FILE AVAILABLE at: \(filePath)")
+                print("FILE AVAILABLE at: \(filePath); Let's query it.")
             } else {
                 // Then we create it, and keep the path as nil so we know there isn't one made - probably a first time install
                 print("FILE NOT AVAILABLE - Creating new file at: \(filePath)")
@@ -64,6 +63,7 @@ class AppStateContainer: ObservableObject {
     private func createTables(db: OpaquePointer?) {
         createFileEntryTabe(db: db)
         createVersionTable(db: db)
+        insertVersionData(db: db)
     }
 
     private func createFileEntryTabe(db: OpaquePointer?) {
@@ -133,8 +133,4 @@ class AppStateContainer: ObservableObject {
             print("Database closed successfully")
         }
     }
-}
-
-class TabViewState: ObservableObject {
-    @Published var selectedTab: Tab = .accounts
 }

@@ -9,10 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var container: AppStateContainer
-    @EnvironmentObject var tabState: TabViewState
+    @State var tabState: Tab = .accounts
 
     var body: some View {
-        TabView(selection: $tabState.selectedTab) {
+        TabView(selection: $tabState) {
             Text("Accounts")
                 .tabItem {
                     Label("Accounts", systemImage: "house.lodge")
@@ -56,6 +56,7 @@ struct ContentView: View {
     }
 
     private func openDatabase() {
+        #if os(macOS)
         let panel = NSOpenPanel()
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
@@ -68,9 +69,14 @@ struct ContentView: View {
                 // open file
             }
         }
+        #elseif os(iOS)
+        print("openDatabase not implemented for iOS")
+        #endif
     }
 
     private func newDatabase() {
+        //macOS, iOS, watchOS, tvOS, visionOS, Linux, Windows
+#if os(macOS)
         // Prompt for location
         let panel = NSOpenPanel()
         panel.canChooseFiles = false
@@ -87,9 +93,22 @@ struct ContentView: View {
                 // update app database to add this as a recently opened item
             }
         }
+#elseif os(iOS)
+        // show iPad and iOS
+        print ("not macos?")
+        #else
+        print("do nothing?")
+#endif
+
     }
 }
 
 #Preview {
-    ContentView()
+    do {
+        return ContentView()
+            .environmentObject(AppStateContainer())
+            .modelContainer(try Previewer().container)
+    } catch {
+        return Text("Failed: \(error.localizedDescription)")
+    }
 }

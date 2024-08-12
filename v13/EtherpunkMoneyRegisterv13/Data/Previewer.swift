@@ -211,19 +211,16 @@ struct Previewer {
         
         let monkeyURL: URL? = downloadImageFromURL()
         if monkeyURL == nil {
-            print("An error?")
-        }
-
-        if monkeyURL == nil {
-            let fakeAttachment = TransactionFile(id: UUID(), name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true)
+            print("An error? Is the Internet down? SSL cert?")
+        } else {
+            let fakeAttachment = TransactionFile(id: UUID(), name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true, transactionId: cvsTransaction.id)
             
-            cvsTransaction.files?.append(fakeAttachment)
+            cvsTransaction.files!.append(fakeAttachment)
         }
 
         container.mainContext.insert(burgerKingTransaction)
         container.mainContext.insert(wendysTransaction)
         container.mainContext.insert(cvsTransaction)
-        //container.mainContext.insert(fakeAttachment)
         container.mainContext.insert(discordTransaction)
         container.mainContext.insert(fitnessTransaction)
         container.mainContext.insert(paydayTransaction)
@@ -275,7 +272,6 @@ struct Previewer {
             
             do {
                 try data.write(to: destinationURL)
-                print("Destination: \(destinationURL)")
                 completion(destinationURL)
             } catch {
                 print("Error saving image data: \(error)")
@@ -290,14 +286,17 @@ struct Previewer {
         let monkeyUrl = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
         
         guard let url = URL(string: monkeyUrl) else {
+            print("Issue with URL from string")
             return nil
         }
         
         do {
+
             let data = try Data(contentsOf: url)
-            
+
             let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
             let destinationURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
+
             try data.write(to: destinationURL)
             return destinationURL
         } catch {

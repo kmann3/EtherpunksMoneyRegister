@@ -32,7 +32,7 @@ struct Previewer {
             RecurringTransaction.self,
             RecurringTransactionGroup.self,
         ])
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let config = ModelConfiguration(isStoredInMemoryOnly: false)
         container = try! ModelContainer(for: schema, configurations: config)
 
         print("-----------------")
