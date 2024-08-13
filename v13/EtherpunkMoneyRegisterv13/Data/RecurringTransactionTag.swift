@@ -1,31 +1,31 @@
 //
-//  Tag.swift
-//  EtherpunkMoneyRegister
+//  RecurringTransactionTag.swift
+//  EtherpunkMoneyRegisterv13
 //
-//  Created by Kennith Mann on 5/18/24.
+//  Created by Kennith Mann on 8/12/24.
 //
 
 import Foundation
 import SQLite3
 
-final class TransactionTag {
+final class RecurringTransactionTag {
     var name: String = ""
-    var transactions: [AccountTransaction]? = nil
+    var recurringTransactions: [RecurringTransaction]? = nil
     var createdOn: Date = Date()
 
     init(
         name: String = "",
-        transactions: [AccountTransaction]? = nil,
+        recurringTransactions: [RecurringTransaction]? = nil,
         createdOn: Date = Date()
     ) {
         self.name = name
-        self.transactions = transactions
+        self.recurringTransactions = recurringTransactions
         self.createdOn = createdOn
     }
 
     public static func createTable(db: OpaquePointer?) {
         let createTableSqlString = """
-        CREATE TABLE "TransactionTag" (
+        CREATE TABLE "RecurringTransactionTag" (
             "Id" TEXT,
             "Name" TEXT,
             "CreatedOn" TEXT,
@@ -37,22 +37,22 @@ final class TransactionTag {
         if sqlite3_prepare_v2(db, createTableSqlString, -1, &createTableStatement, nil) == SQLITE_OK {
             let response = sqlite3_step(createTableStatement)
             if response != SQLITE_DONE {
-                print("TransactionTag table could not be created. Error: \(response)")
+                print("RecurringTransactionTag table could not be created. Error: \(response)")
                 return
             }
         } else {
-            print("CREATE TABLE TransactionTag statement could not be prepared.")
+            print("CREATE TABLE RecurringTransactionTag statement could not be prepared.")
             return
         }
         sqlite3_finalize(createTableStatement)
-        print("TransactionTag table created")
+        print("RecurringTransactionTag table created")
 
         // Now we make the link table
 
         let createLinkTableSqlString = """
-        CREATE TABLE "Link_Transaction_TransactionTag" (
-            "TransactionId" TEXT,
-            "TransactionTagId" TEXT,
+        CREATE TABLE "Link_RecurringTransaction_RecurringTransactionTag" (
+            "RecurringTransactionId" TEXT,
+            "RecurringTransactionTagId" TEXT,
             "CreatedOn" TEXT
         );
         """
@@ -61,14 +61,14 @@ final class TransactionTag {
         if sqlite3_prepare_v2(db, createLinkTableSqlString, -1, &createLinkTableStatement, nil) == SQLITE_OK {
             let response = sqlite3_step(createLinkTableStatement)
             if response != SQLITE_DONE {
-                print("Link_Transaction_TransactionTag table could not be created. Error: \(response)")
+                print("Link_RecurringTransaction_RecurringTransactionTag table could not be created. Error: \(response)")
                 return
             }
         } else {
-            print("CREATE TABLE Link_Transaction_TransactionTag statement could not be prepared.")
+            print("CREATE TABLE Link_RecurringTransaction_RecurringTransactionTag statement could not be prepared.")
             return
         }
         sqlite3_finalize(createLinkTableStatement)
-        print("Link_Transaction_TransactionTag table created")
+        print("Link_RecurringTransaction_RecurringTransactionTag table created")
     }
 }

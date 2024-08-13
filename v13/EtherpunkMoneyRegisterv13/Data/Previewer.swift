@@ -22,215 +22,215 @@ struct Previewer {
     let discordRecurringTransaction: RecurringTransaction
     let billGroup: RecurringTransactionGroup
     
-    init() throws {
-        let schema = Schema([
-            Account.self,
-            AccountTransaction.self,
-            TransactionFile.self,
-            AppSettings.self,
-            TransactionTag.self,
-            RecurringTransaction.self,
-            RecurringTransactionGroup.self,
-        ])
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        container = try! ModelContainer(for: schema, configurations: config)
-
-        print("-----------------")
-        print(Date())
-        print("-----------------")
-        print("Database Location: \(container.mainContext.sqliteCommand)")
-        print("Generating fake data. This may take a little bit.")
-
-        let specificUUID = UUID(uuidString: "12345678-1234-1234-1234-123456789abc")
-        cuAccount = Account(name: "Amegy Bank", startingBalance: 238.99)
-        cuAccount.id = specificUUID!
-
-        let boaAccount = Account(name: "Bank of America", startingBalance: 493)
-        let axosAccount = Account(name: "Axos", startingBalance: 130494)
-
-        container.mainContext.insert(cuAccount)
-
-        cuAccount.sortIndex = 0
-        boaAccount.sortIndex = 255
-        axosAccount.sortIndex = 255
-        
-        billsTag = TransactionTag(name: "bills")
-        medicalTag = TransactionTag(name: "medical")
-        let ffTag = TransactionTag(name: "fast-food")
-        let incomeTag = TransactionTag(name: "income")
-
-        pharmacyTag = TransactionTag(name: "pharmacy")
-
-        var balance: Decimal = 238.99
-
-//        for index in (1...3) {
-//            var tmpIndex = 15+index
-//            if tmpIndex >= 253 {
-//                tmpIndex = 253
+//    init() throws {
+//        let schema = Schema([
+//            Account.self,
+//            AccountTransaction.self,
+//            TransactionFile.self,
+//            //AppSettings.self,
+//            TransactionTag.self,
+//            RecurringTransaction.self,
+//            RecurringTransactionGroup.self,
+//        ])
+//        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+//        container = try! ModelContainer(for: schema, configurations: config)
+//
+//        print("-----------------")
+//        print(Date())
+//        print("-----------------")
+//        print("Database Location: \(container.mainContext.sqliteCommand)")
+//        print("Generating fake data. This may take a little bit.")
+//
+//        let specificUUID = UUID(uuidString: "12345678-1234-1234-1234-123456789abc")
+//        cuAccount = Account(name: "Amegy Bank", startingBalance: 238.99)
+//        cuAccount.id = specificUUID!
+//
+//        let boaAccount = Account(name: "Bank of America", startingBalance: 493)
+//        let axosAccount = Account(name: "Axos", startingBalance: 130494)
+//
+//        container.mainContext.insert(cuAccount)
+//
+//        cuAccount.sortIndex = 0
+//        boaAccount.sortIndex = 255
+//        axosAccount.sortIndex = 255
+//        
+//        billsTag = TransactionTag(name: "bills")
+//        medicalTag = TransactionTag(name: "medical")
+//        let ffTag = TransactionTag(name: "fast-food")
+//        let incomeTag = TransactionTag(name: "income")
+//
+//        pharmacyTag = TransactionTag(name: "pharmacy")
+//
+//        var balance: Decimal = 238.99
+//
+////        for index in (1...3) {
+////            var tmpIndex = 15+index
+////            if tmpIndex >= 253 {
+////                tmpIndex = 253
+////            }
+////            let newAccount = Account(name: "Fake Account-\(index)", startingBalance: 0, sortIndex: tmpIndex)
+////            container.mainContext.insert(newAccount)
+////        }
+//
+//        let calendar = Calendar.current
+//
+//        //let currentComponents = calendar.dateComponents([.year, .month, .day], from: Date())
+//
+//        var transactionCount: Int = 0
+//        let amountOfYearsToGenerate: Int = 1
+//        for index in (1...(amountOfYearsToGenerate*356)).reversed() {
+//
+//            // 20% chance nothing happens that day
+//            if Int.random(in: 0..<5) == 0 {
+//                continue
 //            }
-//            let newAccount = Account(name: "Fake Account-\(index)", startingBalance: 0, sortIndex: tmpIndex)
-//            container.mainContext.insert(newAccount)
+//
+//            var components = calendar.dateComponents([.year, .month, .day], from: Date())
+//            components.day! -= index
+//            components.second = 0
+//            var date = calendar.date(from: components)!
+//
+//            components.second! += 1
+//            date = calendar.date(from: components)!
+//
+//            // Random number of transaction in a day - between 0 and 4
+//            for _ in 0...Int.random(in: 0..<5) {
+//                transactionCount += 1
+//                var randomAmount: Double = 0
+//                if(Int.random(in:0..<10) < 9) {
+//                    // 90% chance it's under $20
+//                    randomAmount = Double.random(in: 3...20)
+//                } else {
+//                    // 10% it's under $100
+//                    randomAmount = Double.random(in: 20...100)
+//                }
+//
+//                randomAmount = (randomAmount*100).rounded() / 100
+//
+//                var decimalAmount = Decimal(randomAmount)
+//
+//                if decimalAmount > balance {
+//                    // do a small deposit to make sure we can cover it
+//
+//                    var randomDeposit = Double.random(in: 110...150)
+//                    randomDeposit = (randomDeposit*100).rounded() / 100
+//                    components.second! += 1
+//                    date = calendar.date(from: components)!
+//
+//                    let deposit = Decimal(randomDeposit)
+//                    balance += deposit
+//                    transactionCount += 1
+//                    container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Misc", transactionType: .credit, amount: deposit, balance: balance, cleared: date, balancedOn: date, createdOn: date))
+//                }
+//
+//                components.second! += 1
+//                date = calendar.date(from: components)!
+//
+//                decimalAmount = -decimalAmount
+//                balance += decimalAmount
+//                transactionCount += 1
+//                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Fake Transaction \(transactionCount)", transactionType: .debit, amount: decimalAmount, balance: balance, cleared: date, balancedOn: date, createdOn: date))
+//            }
+//
+//            if Int.random(in: 0...99) < 4 {
+//                // Small chance we make a random deposit of less than $100
+//
+//                var randomAmount = Double.random(in: 20...250)
+//                randomAmount = (randomAmount*100).rounded() / 100
+//                let decimalAmount = Decimal(randomAmount)
+//                components.second! += 1
+//                date = calendar.date(from: components)!
+//
+//                balance += decimalAmount
+//                transactionCount += 1
+//                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Cash depo", transactionType: .credit, amount: decimalAmount, balance: balance, cleared: date, balancedOn: date, createdOn: date))
+//
+//            }
+//
+//            if Int.random(in: 0...99) < 2 {
+//                // let's make an income deposit
+//
+//                let deposit: Decimal = 2013.73
+//                components.second! += 1
+//                date = calendar.date(from: components)!
+//
+//                balance += deposit
+//                transactionCount += 1
+//                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Paycheck", transactionType: .credit, amount: deposit, balance: balance, cleared: date, balancedOn: date, createdOn: date))
+//            }
 //        }
-
-        let calendar = Calendar.current
-
-        //let currentComponents = calendar.dateComponents([.year, .month, .day], from: Date())
-
-        var transactionCount: Int = 0
-        let amountOfYearsToGenerate: Int = 1
-        for index in (1...(amountOfYearsToGenerate*356)).reversed() {
-
-            // 20% chance nothing happens that day
-            if Int.random(in: 0..<5) == 0 {
-                continue
-            }
-
-            var components = calendar.dateComponents([.year, .month, .day], from: Date())
-            components.day! -= index
-            components.second = 0
-            var date = calendar.date(from: components)!
-
-            components.second! += 1
-            date = calendar.date(from: components)!
-
-            // Random number of transaction in a day - between 0 and 4
-            for _ in 0...Int.random(in: 0..<5) {
-                transactionCount += 1
-                var randomAmount: Double = 0
-                if(Int.random(in:0..<10) < 9) {
-                    // 90% chance it's under $20
-                    randomAmount = Double.random(in: 3...20)
-                } else {
-                    // 10% it's under $100
-                    randomAmount = Double.random(in: 20...100)
-                }
-
-                randomAmount = (randomAmount*100).rounded() / 100
-
-                var decimalAmount = Decimal(randomAmount)
-
-                if decimalAmount > balance {
-                    // do a small deposit to make sure we can cover it
-
-                    var randomDeposit = Double.random(in: 110...150)
-                    randomDeposit = (randomDeposit*100).rounded() / 100
-                    components.second! += 1
-                    date = calendar.date(from: components)!
-
-                    let deposit = Decimal(randomDeposit)
-                    balance += deposit
-                    transactionCount += 1
-                    container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Misc", transactionType: .credit, amount: deposit, balance: balance, cleared: date, balancedOn: date, createdOn: date))
-                }
-
-                components.second! += 1
-                date = calendar.date(from: components)!
-
-                decimalAmount = -decimalAmount
-                balance += decimalAmount
-                transactionCount += 1
-                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Fake Transaction \(transactionCount)", transactionType: .debit, amount: decimalAmount, balance: balance, cleared: date, balancedOn: date, createdOn: date))
-            }
-
-            if Int.random(in: 0...99) < 4 {
-                // Small chance we make a random deposit of less than $100
-
-                var randomAmount = Double.random(in: 20...250)
-                randomAmount = (randomAmount*100).rounded() / 100
-                let decimalAmount = Decimal(randomAmount)
-                components.second! += 1
-                date = calendar.date(from: components)!
-
-                balance += decimalAmount
-                transactionCount += 1
-                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Cash depo", transactionType: .credit, amount: decimalAmount, balance: balance, cleared: date, balancedOn: date, createdOn: date))
-
-            }
-
-            if Int.random(in: 0...99) < 2 {
-                // let's make an income deposit
-
-                let deposit: Decimal = 2013.73
-                components.second! += 1
-                date = calendar.date(from: components)!
-
-                balance += deposit
-                transactionCount += 1
-                container.mainContext.insert(AccountTransaction(account: cuAccount, name: "Paycheck", transactionType: .credit, amount: deposit, balance: balance, cleared: date, balancedOn: date, createdOn: date))
-            }
-        }
-
-        var transactionAmount: Decimal = -12.39
-        balance = balance + transactionAmount
-        transactionCount += 1
-        burgerKingTransaction = AccountTransaction(account: cuAccount, name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), transactionTags: [ffTag], balancedOn: Date())
-
-        transactionAmount = -8.79
-        balance = balance + transactionAmount
-        transactionCount += 1
-        let wendysTransaction = AccountTransaction(account: cuAccount, name: "Wendys", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), transactionTags: [ffTag])
-
-        transactionAmount = -88.34
-        balance = balance + transactionAmount
-        transactionCount += 1
-        cvsTransaction = AccountTransaction(account: cuAccount, name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), transactionTags: [medicalTag, pharmacyTag], balancedOn: Date())
-
-        transactionAmount = -10.81
-        balance = balance + transactionAmount
-        transactionCount += 1
-        let discordTransaction = AccountTransaction(account: cuAccount, name: "Discord", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: nil, transactionTags: [billsTag])
-
-        transactionAmount = -36.81
-        balance = balance + transactionAmount
-        transactionCount += 1
-        let fitnessTransaction = AccountTransaction(account: cuAccount, name: "Fitness", transactionType: .debit, amount: transactionAmount, balance: balance, pending: Date(), cleared: nil, transactionTags: [billsTag])
-
-        transactionAmount = 2318.79
-        balance = balance + transactionAmount
-        transactionCount += 1
-        let paydayTransaction = AccountTransaction(account: cuAccount, name: "Payday", transactionType: .credit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), transactionTags: [incomeTag])
-
-        let cuOutstandingAmount: Decimal = discordTransaction.amount + fitnessTransaction.amount
-        
-        cuAccount.outstandingBalance = cuOutstandingAmount
-        cuAccount.outstandingItemCount = 2
-        cuAccount.currentBalance = balance
-        cuAccount.transactionCount = transactionCount
-        boaAccount.currentBalance = 55.43
-        axosAccount.currentBalance = axosAccount.startingBalance
-        
-        discordRecurringTransaction = RecurringTransaction(name: "Discord", transactionType: .debit, amount: -10.81, notes: "", nextDueDate: nil, transactionTags: [billsTag], transactions: [discordTransaction], frequency: .monthly, createdOn: Date())
-
-        let fitnessRecurringTransaction = RecurringTransaction(name: "Fitness", transactionType: .debit, amount: -33.49, notes: "Contract ends Mar 13 2025", nextDueDate: Date(), transactionTags: [billsTag], transactions: [fitnessTransaction], frequency: .monthly, createdOn: Date())
-        
-        billGroup = RecurringTransactionGroup(name: "Bills", recurringTransactions: [discordRecurringTransaction, fitnessRecurringTransaction])
-        
-        cvsTransaction.isTaxRelated = true
-        
-        discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
-        
-        let monkeyURL: URL? = downloadImageFromURL()
-        if monkeyURL == nil {
-            print("An error? Is the Internet down? SSL cert?")
-        } else {
-            let fakeAttachment = TransactionFile(id: UUID(), name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true, transactionId: cvsTransaction.id)
-            
-            cvsTransaction.files!.append(fakeAttachment)
-        }
-
-        container.mainContext.insert(burgerKingTransaction)
-        container.mainContext.insert(wendysTransaction)
-        container.mainContext.insert(cvsTransaction)
-        container.mainContext.insert(discordTransaction)
-        container.mainContext.insert(fitnessTransaction)
-        container.mainContext.insert(paydayTransaction)
-        container.mainContext.insert(boaAccount)
-        container.mainContext.insert(axosAccount)
-        container.mainContext.insert(billGroup)
-
-        print("Done generating fake data.")
-        print("Fake transactions created: \(transactionCount)")
-    }
+//
+//        var transactionAmount: Decimal = -12.39
+//        balance = balance + transactionAmount
+//        transactionCount += 1
+//        burgerKingTransaction = AccountTransaction(account: cuAccount, name: "Burger King", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), transactionTags: [ffTag], balancedOn: Date())
+//
+//        transactionAmount = -8.79
+//        balance = balance + transactionAmount
+//        transactionCount += 1
+//        let wendysTransaction = AccountTransaction(account: cuAccount, name: "Wendys", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), transactionTags: [ffTag])
+//
+//        transactionAmount = -88.34
+//        balance = balance + transactionAmount
+//        transactionCount += 1
+//        cvsTransaction = AccountTransaction(account: cuAccount, name: "CVS", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), transactionTags: [medicalTag, pharmacyTag], balancedOn: Date())
+//
+//        transactionAmount = -10.81
+//        balance = balance + transactionAmount
+//        transactionCount += 1
+//        let discordTransaction = AccountTransaction(account: cuAccount, name: "Discord", transactionType: .debit, amount: transactionAmount, balance: balance, pending: nil, cleared: nil, transactionTags: [billsTag])
+//
+//        transactionAmount = -36.81
+//        balance = balance + transactionAmount
+//        transactionCount += 1
+//        let fitnessTransaction = AccountTransaction(account: cuAccount, name: "Fitness", transactionType: .debit, amount: transactionAmount, balance: balance, pending: Date(), cleared: nil, transactionTags: [billsTag])
+//
+//        transactionAmount = 2318.79
+//        balance = balance + transactionAmount
+//        transactionCount += 1
+//        let paydayTransaction = AccountTransaction(account: cuAccount, name: "Payday", transactionType: .credit, amount: transactionAmount, balance: balance, pending: nil, cleared: Date(), transactionTags: [incomeTag])
+//
+//        let cuOutstandingAmount: Decimal = discordTransaction.amount + fitnessTransaction.amount
+//        
+//        cuAccount.outstandingBalance = cuOutstandingAmount
+//        cuAccount.outstandingItemCount = 2
+//        cuAccount.currentBalance = balance
+//        cuAccount.transactionCount = transactionCount
+//        boaAccount.currentBalance = 55.43
+//        axosAccount.currentBalance = axosAccount.startingBalance
+//        
+//        discordRecurringTransaction = RecurringTransaction(name: "Discord", transactionType: .debit, amount: -10.81, notes: "", nextDueDate: nil, transactionTags: [billsTag], transactions: [discordTransaction], frequency: .monthly, createdOn: Date())
+//
+//        let fitnessRecurringTransaction = RecurringTransaction(name: "Fitness", transactionType: .debit, amount: -33.49, notes: "Contract ends Mar 13 2025", nextDueDate: Date(), transactionTags: [billsTag], transactions: [fitnessTransaction], frequency: .monthly, createdOn: Date())
+//        
+//        billGroup = RecurringTransactionGroup(name: "Bills", recurringTransactions: [discordRecurringTransaction, fitnessRecurringTransaction])
+//        
+//        cvsTransaction.isTaxRelated = true
+//        
+//        discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
+//        
+//        let monkeyURL: URL? = downloadImageFromURL()
+//        if monkeyURL == nil {
+//            print("An error? Is the Internet down? SSL cert?")
+//        } else {
+//            let fakeAttachment = TransactionFile(id: UUID(), name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true, transactionId: cvsTransaction.id)
+//            
+//            cvsTransaction.files!.append(fakeAttachment)
+//        }
+//
+//        container.mainContext.insert(burgerKingTransaction)
+//        container.mainContext.insert(wendysTransaction)
+//        container.mainContext.insert(cvsTransaction)
+//        container.mainContext.insert(discordTransaction)
+//        container.mainContext.insert(fitnessTransaction)
+//        container.mainContext.insert(paydayTransaction)
+//        container.mainContext.insert(boaAccount)
+//        container.mainContext.insert(axosAccount)
+//        container.mainContext.insert(billGroup)
+//
+//        print("Done generating fake data.")
+//        print("Fake transactions created: \(transactionCount)")
+//    }
     
     private func getNextDueDate(day: Int) -> Date {
         let calendar = Calendar.current

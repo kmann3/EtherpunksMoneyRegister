@@ -6,9 +6,8 @@
 //
 
 import Foundation
-import SwiftData
+import SQLite3
 
-@Model
 final class RecurringTransaction {
     var id: UUID = UUID()
     var name: String = ""
@@ -16,21 +15,13 @@ final class RecurringTransaction {
     var amount: Decimal = 0
     var notes: String = ""
     var nextDueDate: Date? = nil
-
-    @Relationship(deleteRule: .noAction)
     var transactionTags: [TransactionTag]? = nil
-
     var group: RecurringTransactionGroup? = nil
-
-    @Relationship(deleteRule: .noAction)
     var transactions: [AccountTransaction]? = nil
-
     var frequency: RecurringFrequency = RecurringFrequency.unknown
-
     var frequencyValue: Int? = nil
     var frequencyDayOfWeek: DayOfWeek? = nil
     var frequencyDateValue: Date? = nil
-
     var createdOn: Date = Date()
 
     init(id: UUID = UUID(), name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, transactionTags: [TransactionTag]? = [], group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = [], frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOn: Date = Date()) {
@@ -104,5 +95,39 @@ final class RecurringTransaction {
         case .debit:
             self.amount = -abs(self.amount)
         }
+    }
+
+    public static func createTable(db: OpaquePointer?) {
+        let createTableSqlString = """
+        CREATE TABLE "RecurringTransaction" (
+            "Id" TEXT,
+            "Name" TEXT,
+            "TransactionType" TEXT,
+            "Amount" REAL,
+            "Notes" TEXT,
+            "NextDueDate" TEXT,
+            "RecurringTransactionGroupId" TEXT,
+            "Frequency" TEXT,
+            "FrequencyValue" INTEGER,
+            "FrequencyDayOfWeek" TEXT,
+            "FrqeuencyDateValue" TEXT,
+            "CreatedOn" TEXT,
+            PRIMARY KEY("Id")
+        );
+        """
+
+        var createTableStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, createTableSqlString, -1, &createTableStatement, nil) == SQLITE_OK {
+            let response = sqlite3_step(createTableStatement)
+            if response != SQLITE_DONE {
+                print("RecurringTransaction table could not be created. Error: \(response)")
+                return
+            }
+        } else {
+            print("CREATE TABLE RecurringTransaction statement could not be prepared.")
+            return
+        }
+        sqlite3_finalize(createTableStatement)
+        print("RecurringTransaction table created")
     }
 }

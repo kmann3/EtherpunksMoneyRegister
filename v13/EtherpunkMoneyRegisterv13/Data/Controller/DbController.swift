@@ -10,8 +10,19 @@ import SQLite3
 
 class DbController {
 
-    public static func createDatabase() {
-        
+    public static func createDatabase(path: String) {
+        let db = openDatabase(at: path)
+        defer {
+            closeDatabase(db: db)
+        }
+
+        Account.createTable(db: db)
+        AccountTransaction.createTable(db: db)
+        RecurringTransaction.createTable(db: db)
+        RecurringTransactionGroup.createTable(db: db)
+        RecurringTransactionTag.createTable(db: db)
+        TransactionFile.createTable(db: db)
+        TransactionTag.createTable(db: db)
     }
 
     public static func closeDatabase(db: OpaquePointer?) {

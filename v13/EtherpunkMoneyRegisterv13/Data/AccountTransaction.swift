@@ -7,10 +7,8 @@
 
 import Foundation
 import SQLite3
-import SwiftData
 import SwiftUI
 
-@Model
 final class AccountTransaction {
     var id: UUID = UUID()
     var name: String = ""
@@ -24,14 +22,11 @@ final class AccountTransaction {
     var recurringTransaction: RecurringTransaction? = nil
     var dueDate: Date? = nil
     var isTaxRelated: Bool = false
-    @Relationship(deleteRule: .cascade, inverse: \TransactionFile.transaction)
     var files: [TransactionFile]? = nil
-    @Relationship(deleteRule: .noAction)
     var account: Account? = nil
 
     // The id of the account this belongs to. This is required because predicates don't allow you to filter on other models.
     var accountId: UUID
-    @Relationship(deleteRule: .noAction)
     var transactionTags: [TransactionTag]? = nil
     var balancedOn: Date? = nil
     var createdOn: Date = Date()
@@ -97,39 +92,41 @@ final class AccountTransaction {
         }
     }
 
-    public static func createAccountTransactionTable(db: OpaquePointer?) {
-        let createEntryTableSqlString = """
+    public static func createTable(db: OpaquePointer?) {
+        let createTableSqlString = """
         CREATE TABLE "AccountTransaction" (
-            "Id"    VARCHAR,
-            "Name"    VARCHAR,
-            "AccountId"    VARCHAR,
-            "TransactionType"    VARCHAR
-            "IsTaxRelated"    INTEGER,
-            "RecurringTransactionId"    VARCHAR,
-            "BalancedOn"    TIMESTAMP,
-            "ClearedOn"    TIMESTAMP,
-            "DueDate"    TIMESTAMP,
-            "Pending"    TIMESTAMP,
-            "Amount"    DECIMAL,
-            "Balance"    DECIMAL,
-            "ConfirmationNumber"    VARCHAR,
-            "Notes"    VARCHAR,
-            "CreatedOn"    TIMESTAMP,
+            "Id" TEXT,
+            "Name" TEXT,
+            "AccountId" TEXT,
+            "TransactionType" TEXT,
+            "IsTaxRelated" INTEGER,
+            "RecurringTransactionId" TEXT,
+            "BalancedOn" TEXT,
+            "ClearedOn" TEXT,
+            "DueDate" TEXT,
+            "Pending" TEXT,
+            "Amount" REAL,
+            "Balance" REAL,
+            "ConfirmationNumber" TEXT,
+            "Notes" TEXT,
+            "CreatedOn" TEXT,
             PRIMARY KEY("Id")
         );
         """
 
-        var createEntryTableStatement: OpaquePointer? = nil
-        if sqlite3_prepare_v2(db, createEntryTableSqlString, -1, &createEntryTableStatement, nil) == SQLITE_OK {
-            if sqlite3_step(createEntryTableStatement) == SQLITE_DONE {
-                print("AccountTransaction table created.")
-            } else {
-                print("AccountTransaction table could not be created.")
+        var createTableStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, createTableSqlString, -1, &createTableStatement, nil) == SQLITE_OK {
+            let response = sqlite3_step(createTableStatement)
+            if response != SQLITE_DONE {
+                print("AccountTransaction table could not be created. Error: \(response)")
+                return
             }
         } else {
             print("CREATE TABLE AccountTransaction statement could not be prepared.")
+            return
         }
-        sqlite3_finalize(createEntryTableStatement)
+        sqlite3_finalize(createTableStatement)
+        print("AccountTransaction table created")
     }
 
     public func getTransactions(appContainer: AppStateContainer, currentPage: Int = 0) throws -> [AccountTransaction] {

@@ -6,9 +6,8 @@
 //
 
 import Foundation
-import SwiftData
+import SQLite3
 
-@Model
 final class Account {
     var id: UUID = UUID()
     var name: String = ""
@@ -23,7 +22,6 @@ final class Account {
 
     var transactionCount: Int = 0
 
-    @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account)
     var transactions: [AccountTransaction]?
 
     init(id: UUID = UUID(), name: String, startingBalance: Decimal, currentBalance: Decimal, outstandingBalance: Decimal, outstandingItemCount: Int, notes: String, lastBalanced: Date = Date(), sortIndex: Int = 255, createdOn: Date = Date(), transactions: [AccountTransaction]? = []) {
@@ -60,66 +58,97 @@ final class Account {
         self.transactions = []
         self.transactionCount = 0
     }
+    public static func createTable(db: OpaquePointer?) {
+        let createTableSqlString = """
+        CREATE TABLE "Account" (
+            "Id" TEXT,
+            "Name" TEXT,
+            "StartingBalance" REAL,
+            "CurrentBalance" REAL,
+            "OutstandingBalance" REAL,
+            "OutstandingItemCount" INTEGER,
+            "Notes" TEXT,
+            "LastBalanced" TEXT,
+            "SortIndex" INTEGER,
+            "CreatedOn" TEXT,
+            PRIMARY KEY("Id")
+        );
+        """
 
-    func update(isNew: Bool, name: String, startingBalance: Decimal, notes: String, modelContext: ModelContext) {
-        if startingBalance != self.startingBalance {
-            let difference: Decimal = self.startingBalance - startingBalance
-            self.currentBalance += difference
-            self.startingBalance = startingBalance
-            self.rebalance(amount: difference, modelContext: modelContext)
-        }
-
-        self.name = name
-        do {
-            if isNew {
-                modelContext.insert(self)
-            }
-            try modelContext.save()
-        } catch {
-            print("Error saving account: \(error)")
-        }
-    }
-
-    func rebalance(amount: Decimal, dateToBegin: Date? = nil, modelContext: ModelContext) {
-
-        if(self.transactionCount == 0) {
-            print("Empty")
-            return
-        }
-
-        debugPrint("Begin predicate")
-
-        let accountId: UUID = self.id
-
-        var predicate: Predicate<AccountTransaction>
-
-        if let dateToBegin = dateToBegin {
-            // We probably either adjusted the amount of an older transaction or moved one transaction to a new account
-            predicate = #Predicate<AccountTransaction> { transaction in
-                transaction.accountId == accountId && transaction.createdOn >= dateToBegin
+        var createTableStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, createTableSqlString, -1, &createTableStatement, nil) == SQLITE_OK {
+            let response = sqlite3_step(createTableStatement)
+            if response != SQLITE_DONE {
+                print("Account table could not be created. Error: \(response)")
+                return
             }
         } else {
-            // We probably changed the starting balance and need to readjust all transactions
-            predicate = #Predicate<AccountTransaction> { transaction in
-                transaction.accountId == accountId
-            }
+            print("CREATE TABLE Account statement could not be prepared.")
+            return
         }
-
-        let fetchDescriptor = FetchDescriptor<AccountTransaction>(predicate: predicate)
-
-        do {
-            let newTransactions = try modelContext.fetch(fetchDescriptor)
-            debugPrint("Begin loop")
-            for transaction in newTransactions {
-                debugPrint("Transaction: \(transaction.name)")
-                transaction.balance += amount
-            }
-            try modelContext.save()
-        } catch {
-            DispatchQueue.main.async {
-                print("Error fetching transactions: \(error.localizedDescription)")
-            }
-        }
-
+        sqlite3_finalize(createTableStatement)
+        print("Account table created")
     }
+
+//    func update(isNew: Bool, name: String, startingBalance: Decimal, notes: String, modelContext: ModelContext) {
+//        if startingBalance != self.startingBalance {
+//            let difference: Decimal = self.startingBalance - startingBalance
+//            self.currentBalance += difference
+//            self.startingBalance = startingBalance
+//            self.rebalance(amount: difference, modelContext: modelContext)
+//        }
+//
+//        self.name = name
+//        do {
+//            if isNew {
+//                modelContext.insert(self)
+//            }
+//            try modelContext.save()
+//        } catch {
+//            print("Error saving account: \(error)")
+//        }
+//    }
+//
+//    func rebalance(amount: Decimal, dateToBegin: Date? = nil, modelContext: ModelContext) {
+//
+//        if(self.transactionCount == 0) {
+//            print("Empty")
+//            return
+//        }
+//
+//        debugPrint("Begin predicate")
+//
+//        let accountId: UUID = self.id
+//
+//        var predicate: Predicate<AccountTransaction>
+//
+//        if let dateToBegin = dateToBegin {
+//            // We probably either adjusted the amount of an older transaction or moved one transaction to a new account
+//            predicate = #Predicate<AccountTransaction> { transaction in
+//                transaction.accountId == accountId && transaction.createdOn >= dateToBegin
+//            }
+//        } else {
+//            // We probably changed the starting balance and need to readjust all transactions
+//            predicate = #Predicate<AccountTransaction> { transaction in
+//                transaction.accountId == accountId
+//            }
+//        }
+//
+//        let fetchDescriptor = FetchDescriptor<AccountTransaction>(predicate: predicate)
+//
+//        do {
+//            let newTransactions = try modelContext.fetch(fetchDescriptor)
+//            debugPrint("Begin loop")
+//            for transaction in newTransactions {
+//                debugPrint("Transaction: \(transaction.name)")
+//                transaction.balance += amount
+//            }
+//            try modelContext.save()
+//        } catch {
+//            DispatchQueue.main.async {
+//                print("Error fetching transactions: \(error.localizedDescription)")
+//            }
+//        }
+//
+//    }
 }

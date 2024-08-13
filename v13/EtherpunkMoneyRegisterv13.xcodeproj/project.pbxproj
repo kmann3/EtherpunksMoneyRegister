@@ -12,6 +12,8 @@
 		AA18E0432C4A4C5E005F30F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA18E0422C4A4C5E005F30F3 /* Assets.xcassets */; };
 		AA18E0472C4A4C5E005F30F3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA18E0462C4A4C5E005F30F3 /* Preview Assets.xcassets */; };
 		AA18E06A2C4A516F005F30F3 /* AppSettingsTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E0692C4A516F005F30F3 /* AppSettingsTwo.swift */; };
+		AA799D932C6A777C00B73E39 /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799D922C6A777C00B73E39 /* AccountListView.swift */; };
+		AA799D952C6B18F100B73E39 /* RecurringTransactionTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799D942C6B18F100B73E39 /* RecurringTransactionTag.swift */; };
 		AAF22D062C64D0B9003EE8EB /* AppContainerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF02C64D0B9003EE8EB /* AppContainerState.swift */; };
 		AAF22D072C64D0B9003EE8EB /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF22C64D0B9003EE8EB /* Currency.swift */; };
 		AAF22D082C64D0B9003EE8EB /* CurrencyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF32C64D0B9003EE8EB /* CurrencyCode.swift */; };
@@ -24,7 +26,6 @@
 		AAF22D0F2C64D0B9003EE8EB /* TransactionTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CFB2C64D0B9003EE8EB /* TransactionTypeEnum.swift */; };
 		AAF22D102C64D0B9003EE8EB /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CFD2C64D0B9003EE8EB /* Account.swift */; };
 		AAF22D112C64D0B9003EE8EB /* AccountTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CFE2C64D0B9003EE8EB /* AccountTransaction.swift */; };
-		AAF22D122C64D0B9003EE8EB /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CFF2C64D0B9003EE8EB /* AppSettings.swift */; };
 		AAF22D132C64D0B9003EE8EB /* Previewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D002C64D0B9003EE8EB /* Previewer.swift */; };
 		AAF22D142C64D0B9003EE8EB /* RecurringTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D012C64D0B9003EE8EB /* RecurringTransaction.swift */; };
 		AAF22D152C64D0B9003EE8EB /* RecurringTransactionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D022C64D0B9003EE8EB /* RecurringTransactionGroup.swift */; };
@@ -33,23 +34,6 @@
 		AAF22D1A2C66A524003EE8EB /* DbController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D192C66A524003EE8EB /* DbController.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		AA18E04D2C4A4C5E005F30F3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AA18E0332C4A4C5D005F30F3 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = AA18E03A2C4A4C5D005F30F3;
-			remoteInfo = EtherpunkMoneyRegisterv13;
-		};
-		AA18E0572C4A4C5E005F30F3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AA18E0332C4A4C5D005F30F3 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = AA18E03A2C4A4C5D005F30F3;
-			remoteInfo = EtherpunkMoneyRegisterv13;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		AA18E03B2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtherpunkMoneyRegisterv13.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA18E03E2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterv13App.swift; sourceTree = "<group>"; };
@@ -57,9 +41,9 @@
 		AA18E0422C4A4C5E005F30F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA18E0442C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EtherpunkMoneyRegisterv13.entitlements; sourceTree = "<group>"; };
 		AA18E0462C4A4C5E005F30F3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		AA18E04C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EtherpunkMoneyRegisterv13Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA18E0562C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EtherpunkMoneyRegisterv13UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA18E0692C4A516F005F30F3 /* AppSettingsTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTwo.swift; sourceTree = "<group>"; };
+		AA799D922C6A777C00B73E39 /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
+		AA799D942C6B18F100B73E39 /* RecurringTransactionTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurringTransactionTag.swift; sourceTree = "<group>"; };
 		AAF22CEF2C609E27003EE8EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AAF22CF02C64D0B9003EE8EB /* AppContainerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppContainerState.swift; sourceTree = "<group>"; };
 		AAF22CF22C64D0B9003EE8EB /* Currency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
@@ -73,7 +57,6 @@
 		AAF22CFB2C64D0B9003EE8EB /* TransactionTypeEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionTypeEnum.swift; sourceTree = "<group>"; };
 		AAF22CFD2C64D0B9003EE8EB /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		AAF22CFE2C64D0B9003EE8EB /* AccountTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTransaction.swift; sourceTree = "<group>"; };
-		AAF22CFF2C64D0B9003EE8EB /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		AAF22D002C64D0B9003EE8EB /* Previewer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Previewer.swift; sourceTree = "<group>"; };
 		AAF22D012C64D0B9003EE8EB /* RecurringTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurringTransaction.swift; sourceTree = "<group>"; };
 		AAF22D022C64D0B9003EE8EB /* RecurringTransactionGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurringTransactionGroup.swift; sourceTree = "<group>"; };
@@ -84,20 +67,6 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		AA18E0382C4A4C5D005F30F3 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA18E0492C4A4C5E005F30F3 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA18E0532C4A4C5E005F30F3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -119,8 +88,6 @@
 			isa = PBXGroup;
 			children = (
 				AA18E03B2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13.app */,
-				AA18E04C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.xctest */,
-				AA18E0562C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -128,6 +95,7 @@
 		AA18E03D2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13 */ = {
 			isa = PBXGroup;
 			children = (
+				AA799D902C6A773C00B73E39 /* Views */,
 				AAF22D052C64D0B9003EE8EB /* Data */,
 				AAF22CEF2C609E27003EE8EB /* Info.plist */,
 				AA18E03E2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13App.swift */,
@@ -146,6 +114,22 @@
 				AA18E0462C4A4C5E005F30F3 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AA799D902C6A773C00B73E39 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				AA799D912C6A775400B73E39 /* Accounts */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		AA799D912C6A775400B73E39 /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				AA799D922C6A777C00B73E39 /* AccountListView.swift */,
+			);
+			path = Accounts;
 			sourceTree = "<group>";
 		};
 		AAF22CF12C64D0B9003EE8EB /* AppState */ = {
@@ -188,12 +172,12 @@
 				AAF22CFC2C64D0B9003EE8EB /* Enums */,
 				AAF22CFD2C64D0B9003EE8EB /* Account.swift */,
 				AAF22CFE2C64D0B9003EE8EB /* AccountTransaction.swift */,
-				AAF22CFF2C64D0B9003EE8EB /* AppSettings.swift */,
-				AAF22D002C64D0B9003EE8EB /* Previewer.swift */,
 				AAF22D012C64D0B9003EE8EB /* RecurringTransaction.swift */,
 				AAF22D022C64D0B9003EE8EB /* RecurringTransactionGroup.swift */,
+				AA799D942C6B18F100B73E39 /* RecurringTransactionTag.swift */,
 				AAF22D032C64D0B9003EE8EB /* TransactionFile.swift */,
 				AAF22D042C64D0B9003EE8EB /* TransactionTag.swift */,
+				AAF22D002C64D0B9003EE8EB /* Previewer.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -226,42 +210,6 @@
 			productReference = AA18E03B2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13.app */;
 			productType = "com.apple.product-type.application";
 		};
-		AA18E04B2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AA18E0632C4A4C5E005F30F3 /* Build configuration list for PBXNativeTarget "EtherpunkMoneyRegisterv13Tests" */;
-			buildPhases = (
-				AA18E0482C4A4C5E005F30F3 /* Sources */,
-				AA18E0492C4A4C5E005F30F3 /* Frameworks */,
-				AA18E04A2C4A4C5E005F30F3 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				AA18E04E2C4A4C5E005F30F3 /* PBXTargetDependency */,
-			);
-			name = EtherpunkMoneyRegisterv13Tests;
-			productName = EtherpunkMoneyRegisterv13Tests;
-			productReference = AA18E04C2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		AA18E0552C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AA18E0662C4A4C5E005F30F3 /* Build configuration list for PBXNativeTarget "EtherpunkMoneyRegisterv13UITests" */;
-			buildPhases = (
-				AA18E0522C4A4C5E005F30F3 /* Sources */,
-				AA18E0532C4A4C5E005F30F3 /* Frameworks */,
-				AA18E0542C4A4C5E005F30F3 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				AA18E0582C4A4C5E005F30F3 /* PBXTargetDependency */,
-			);
-			name = EtherpunkMoneyRegisterv13UITests;
-			productName = EtherpunkMoneyRegisterv13UITests;
-			productReference = AA18E0562C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -270,18 +218,10 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					AA18E03A2C4A4C5D005F30F3 = {
 						CreatedOnToolsVersion = 15.3;
-					};
-					AA18E04B2C4A4C5E005F30F3 = {
-						CreatedOnToolsVersion = 15.3;
-						TestTargetID = AA18E03A2C4A4C5D005F30F3;
-					};
-					AA18E0552C4A4C5E005F30F3 = {
-						CreatedOnToolsVersion = 15.3;
-						TestTargetID = AA18E03A2C4A4C5D005F30F3;
 					};
 				};
 			};
@@ -299,8 +239,6 @@
 			projectRoot = "";
 			targets = (
 				AA18E03A2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13 */,
-				AA18E04B2C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13Tests */,
-				AA18E0552C4A4C5E005F30F3 /* EtherpunkMoneyRegisterv13UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -312,20 +250,6 @@
 			files = (
 				AA18E0472C4A4C5E005F30F3 /* Preview Assets.xcassets in Resources */,
 				AA18E0432C4A4C5E005F30F3 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA18E04A2C4A4C5E005F30F3 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA18E0542C4A4C5E005F30F3 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,45 +274,19 @@
 				AAF22D0F2C64D0B9003EE8EB /* TransactionTypeEnum.swift in Sources */,
 				AAF22D142C64D0B9003EE8EB /* RecurringTransaction.swift in Sources */,
 				AA18E03F2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13App.swift in Sources */,
+				AA799D952C6B18F100B73E39 /* RecurringTransactionTag.swift in Sources */,
 				AAF22D082C64D0B9003EE8EB /* CurrencyCode.swift in Sources */,
 				AAF22D162C64D0B9003EE8EB /* TransactionFile.swift in Sources */,
 				AAF22D0C2C64D0B9003EE8EB /* RecurringFrequencyEnum.swift in Sources */,
 				AA18E06A2C4A516F005F30F3 /* AppSettingsTwo.swift in Sources */,
+				AA799D932C6A777C00B73E39 /* AccountListView.swift in Sources */,
 				AAF22D172C64D0B9003EE8EB /* TransactionTag.swift in Sources */,
 				AAF22D062C64D0B9003EE8EB /* AppContainerState.swift in Sources */,
-				AAF22D122C64D0B9003EE8EB /* AppSettings.swift in Sources */,
 				AAF22D102C64D0B9003EE8EB /* Account.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AA18E0482C4A4C5E005F30F3 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA18E0522C4A4C5E005F30F3 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		AA18E04E2C4A4C5E005F30F3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = AA18E03A2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13 */;
-			targetProxy = AA18E04D2C4A4C5E005F30F3 /* PBXContainerItemProxy */;
-		};
-		AA18E0582C4A4C5E005F30F3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = AA18E03A2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13 */;
-			targetProxy = AA18E0572C4A4C5E005F30F3 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		AA18E05E2C4A4C5E005F30F3 /* Debug */ = {
@@ -425,6 +323,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -486,6 +385,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -513,6 +413,7 @@
 				CODE_SIGN_ENTITLEMENTS = EtherpunkMoneyRegisterv13/EtherpunkMoneyRegisterv13.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"EtherpunkMoneyRegisterv13/Preview Content\"";
 				DEVELOPMENT_TEAM = SNH2E6X8CL;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -552,6 +453,7 @@
 				CODE_SIGN_ENTITLEMENTS = EtherpunkMoneyRegisterv13/EtherpunkMoneyRegisterv13.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"EtherpunkMoneyRegisterv13/Preview Content\"";
 				DEVELOPMENT_TEAM = SNH2E6X8CL;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -583,96 +485,6 @@
 			};
 			name = Release;
 		};
-		AA18E0642C4A4C5E005F30F3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SNH2E6X8CL;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.etherpunk.EtherpunkMoneyRegisterv13Tests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EtherpunkMoneyRegisterv13.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EtherpunkMoneyRegisterv13";
-			};
-			name = Debug;
-		};
-		AA18E0652C4A4C5E005F30F3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SNH2E6X8CL;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.etherpunk.EtherpunkMoneyRegisterv13Tests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EtherpunkMoneyRegisterv13.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EtherpunkMoneyRegisterv13";
-			};
-			name = Release;
-		};
-		AA18E0672C4A4C5E005F30F3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SNH2E6X8CL;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.etherpunk.EtherpunkMoneyRegisterv13UITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = EtherpunkMoneyRegisterv13;
-			};
-			name = Debug;
-		};
-		AA18E0682C4A4C5E005F30F3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SNH2E6X8CL;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.etherpunk.EtherpunkMoneyRegisterv13UITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = EtherpunkMoneyRegisterv13;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -690,24 +502,6 @@
 			buildConfigurations = (
 				AA18E0612C4A4C5E005F30F3 /* Debug */,
 				AA18E0622C4A4C5E005F30F3 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AA18E0632C4A4C5E005F30F3 /* Build configuration list for PBXNativeTarget "EtherpunkMoneyRegisterv13Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AA18E0642C4A4C5E005F30F3 /* Debug */,
-				AA18E0652C4A4C5E005F30F3 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AA18E0662C4A4C5E005F30F3 /* Build configuration list for PBXNativeTarget "EtherpunkMoneyRegisterv13UITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AA18E0672C4A4C5E005F30F3 /* Debug */,
-				AA18E0682C4A4C5E005F30F3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

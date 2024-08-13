@@ -6,10 +6,8 @@
 //
 
 import Foundation
-import SwiftData
-import SwiftUI
+import SQLite3
 
-@Model
 final class TransactionFile {
     var id: UUID = UUID()
     var name: String = ""
@@ -20,10 +18,7 @@ final class TransactionFile {
     var data: Data? = nil
     var isTaxRelated: Bool = false
     var fileType: FileType? = nil
-
-    @Relationship(deleteRule: .noAction)
     var transaction: AccountTransaction?
-
     var transactionId: UUID? = nil
 
     init(id: UUID = UUID(), name: String = "", filename: String = "", notes: String = "", createdOn: Date = Date(), url: URL? = nil, data: Data? = nil, fileType: FileType? = nil ,isTaxRelated: Bool = false, transaction: AccountTransaction? = nil, transactionId: UUID? = nil) {
@@ -49,4 +44,35 @@ final class TransactionFile {
     // Recurring Transactions - contracts
 
     // Files might also have different tags such as: receipt, documentation, confirmation
+
+    public static func createTable(db: OpaquePointer?) {
+        let createTableSqlString = """
+        CREATE TABLE "TransactionFile" (
+            "Id" TEXT,
+            "Name" TEXT,
+            "Filename" TEXT,
+            "Notes" TEXT,
+            "Data" BLOB,
+            "TransactionId" TEXT,
+            "IsTaxRelated" INTEGER,
+            "FileType" TEXT,
+            "CreatedOn" TEXT,
+            PRIMARY KEY("Id")
+        );
+        """
+
+        var createTableStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, createTableSqlString, -1, &createTableStatement, nil) == SQLITE_OK {
+            let response = sqlite3_step(createTableStatement)
+            if response != SQLITE_DONE {
+                print("TransactionFile table could not be created. Error: \(response)")
+                return
+            }
+        } else {
+            print("CREATE TABLE TransactionFile statement could not be prepared.")
+            return
+        }
+        sqlite3_finalize(createTableStatement)
+        print("TransactionFile table created")
+    }
 }
