@@ -45,6 +45,5 @@ final class RecurringTransactionGroup {
             return
         }
         sqlite3_finalize(createTableStatement)
-        print("RecurringTransactionGroup table created")
     }
 }

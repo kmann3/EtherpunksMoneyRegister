@@ -73,6 +73,5 @@ final class TransactionFile {
             return
         }
         sqlite3_finalize(createTableStatement)
-        print("TransactionFile table created")
     }
 }

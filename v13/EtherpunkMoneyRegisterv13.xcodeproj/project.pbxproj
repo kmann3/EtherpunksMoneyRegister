@@ -14,7 +14,11 @@
 		AA18E06A2C4A516F005F30F3 /* AppSettingsTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA18E0692C4A516F005F30F3 /* AppSettingsTwo.swift */; };
 		AA799D932C6A777C00B73E39 /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799D922C6A777C00B73E39 /* AccountListView.swift */; };
 		AA799D952C6B18F100B73E39 /* RecurringTransactionTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799D942C6B18F100B73E39 /* RecurringTransactionTag.swift */; };
-		AAF22D062C64D0B9003EE8EB /* AppContainerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF02C64D0B9003EE8EB /* AppContainerState.swift */; };
+		AA799D9C2C6E3B1C00B73E39 /* RecentFileEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799D9B2C6E3B1C00B73E39 /* RecentFileEntries.swift */; };
+		AA799DA02C6E3B3F00B73E39 /* DesktopDbController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799D9F2C6E3B3F00B73E39 /* DesktopDbController.swift */; };
+		AA799DA32C6E3B9600B73E39 /* SqlError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799DA22C6E3B9600B73E39 /* SqlError.swift */; };
+		AA799DA82C6E3EAE00B73E39 /* SqliteActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799DA72C6E3EAE00B73E39 /* SqliteActions.swift */; };
+		AAF22D062C64D0B9003EE8EB /* LocalAppContainerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF02C64D0B9003EE8EB /* LocalAppContainerState.swift */; };
 		AAF22D072C64D0B9003EE8EB /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF22C64D0B9003EE8EB /* Currency.swift */; };
 		AAF22D082C64D0B9003EE8EB /* CurrencyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF32C64D0B9003EE8EB /* CurrencyCode.swift */; };
 		AAF22D092C64D0B9003EE8EB /* DayOfWeekEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF52C64D0B9003EE8EB /* DayOfWeekEnum.swift */; };
@@ -31,7 +35,7 @@
 		AAF22D152C64D0B9003EE8EB /* RecurringTransactionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D022C64D0B9003EE8EB /* RecurringTransactionGroup.swift */; };
 		AAF22D162C64D0B9003EE8EB /* TransactionFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D032C64D0B9003EE8EB /* TransactionFile.swift */; };
 		AAF22D172C64D0B9003EE8EB /* TransactionTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D042C64D0B9003EE8EB /* TransactionTag.swift */; };
-		AAF22D1A2C66A524003EE8EB /* DbController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D192C66A524003EE8EB /* DbController.swift */; };
+		AAF22D1A2C66A524003EE8EB /* AppDbController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22D192C66A524003EE8EB /* AppDbController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,8 +48,12 @@
 		AA18E0692C4A516F005F30F3 /* AppSettingsTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTwo.swift; sourceTree = "<group>"; };
 		AA799D922C6A777C00B73E39 /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
 		AA799D942C6B18F100B73E39 /* RecurringTransactionTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurringTransactionTag.swift; sourceTree = "<group>"; };
+		AA799D9B2C6E3B1C00B73E39 /* RecentFileEntries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentFileEntries.swift; sourceTree = "<group>"; };
+		AA799D9F2C6E3B3F00B73E39 /* DesktopDbController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesktopDbController.swift; sourceTree = "<group>"; };
+		AA799DA22C6E3B9600B73E39 /* SqlError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqlError.swift; sourceTree = "<group>"; };
+		AA799DA72C6E3EAE00B73E39 /* SqliteActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqliteActions.swift; sourceTree = "<group>"; };
 		AAF22CEF2C609E27003EE8EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		AAF22CF02C64D0B9003EE8EB /* AppContainerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppContainerState.swift; sourceTree = "<group>"; };
+		AAF22CF02C64D0B9003EE8EB /* LocalAppContainerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalAppContainerState.swift; sourceTree = "<group>"; };
 		AAF22CF22C64D0B9003EE8EB /* Currency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		AAF22CF32C64D0B9003EE8EB /* CurrencyCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyCode.swift; sourceTree = "<group>"; };
 		AAF22CF52C64D0B9003EE8EB /* DayOfWeekEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayOfWeekEnum.swift; sourceTree = "<group>"; };
@@ -62,7 +70,7 @@
 		AAF22D022C64D0B9003EE8EB /* RecurringTransactionGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurringTransactionGroup.swift; sourceTree = "<group>"; };
 		AAF22D032C64D0B9003EE8EB /* TransactionFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionFile.swift; sourceTree = "<group>"; };
 		AAF22D042C64D0B9003EE8EB /* TransactionTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionTag.swift; sourceTree = "<group>"; };
-		AAF22D192C66A524003EE8EB /* DbController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DbController.swift; sourceTree = "<group>"; };
+		AAF22D192C66A524003EE8EB /* AppDbController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDbController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,10 +144,8 @@
 			isa = PBXGroup;
 			children = (
 				AA799D982C6E37E900B73E39 /* Previewer */,
-				AAF22CF12C64D0B9003EE8EB /* AppState */,
 				AAF22D182C66A50B003EE8EB /* Controller */,
 				AAF22CF42C64D0B9003EE8EB /* DataTypes */,
-				AAF22CFC2C64D0B9003EE8EB /* Enums */,
 				AA799D972C6E37D500B73E39 /* Tables */,
 			);
 			path = AppData;
@@ -170,21 +176,72 @@
 		AA799D992C6E380900B73E39 /* DesktopData */ = {
 			isa = PBXGroup;
 			children = (
+				AA799D9E2C6E3B3100B73E39 /* Controller */,
+				AA799D9D2C6E3B2000B73E39 /* Tables */,
 			);
 			path = DesktopData;
 			sourceTree = "<group>";
 		};
-		AA799D9A2C6E381400B73E39 /* MobileData */ = {
+		AA799D9A2C6E381400B73E39 /* iOSData */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = MobileData;
+			path = iOSData;
+			sourceTree = "<group>";
+		};
+		AA799D9D2C6E3B2000B73E39 /* Tables */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Tables;
+			sourceTree = "<group>";
+		};
+		AA799D9E2C6E3B3100B73E39 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				AA799D9F2C6E3B3F00B73E39 /* DesktopDbController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		AA799DA12C6E3B8600B73E39 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				AA799DA22C6E3B9600B73E39 /* SqlError.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		AA799DA42C6E3C3100B73E39 /* SharedLocalData */ = {
+			isa = PBXGroup;
+			children = (
+				AAF22CF12C64D0B9003EE8EB /* AppState */,
+				AA799DA62C6E3E9E00B73E39 /* Controller */,
+				AA799DA52C6E3C3E00B73E39 /* Tables */,
+			);
+			path = SharedLocalData;
+			sourceTree = "<group>";
+		};
+		AA799DA52C6E3C3E00B73E39 /* Tables */ = {
+			isa = PBXGroup;
+			children = (
+				AA799D9B2C6E3B1C00B73E39 /* RecentFileEntries.swift */,
+			);
+			path = Tables;
+			sourceTree = "<group>";
+		};
+		AA799DA62C6E3E9E00B73E39 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				AA799DA72C6E3EAE00B73E39 /* SqliteActions.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		AAF22CF12C64D0B9003EE8EB /* AppState */ = {
 			isa = PBXGroup;
 			children = (
-				AAF22CF02C64D0B9003EE8EB /* AppContainerState.swift */,
+				AAF22CF02C64D0B9003EE8EB /* LocalAppContainerState.swift */,
 			);
 			path = AppState;
 			sourceTree = "<group>";
@@ -201,6 +258,7 @@
 		AAF22CFC2C64D0B9003EE8EB /* Enums */ = {
 			isa = PBXGroup;
 			children = (
+				AA799DA12C6E3B8600B73E39 /* Error */,
 				AAF22CF52C64D0B9003EE8EB /* DayOfWeekEnum.swift */,
 				AAF22CF62C64D0B9003EE8EB /* FileType.swift */,
 				AAF22CF72C64D0B9003EE8EB /* NavViewEnum.swift */,
@@ -215,7 +273,9 @@
 		AAF22D052C64D0B9003EE8EB /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				AA799D9A2C6E381400B73E39 /* MobileData */,
+				AA799DA42C6E3C3100B73E39 /* SharedLocalData */,
+				AAF22CFC2C64D0B9003EE8EB /* Enums */,
+				AA799D9A2C6E381400B73E39 /* iOSData */,
 				AA799D992C6E380900B73E39 /* DesktopData */,
 				AA799D962C6E37C700B73E39 /* AppData */,
 			);
@@ -225,7 +285,7 @@
 		AAF22D182C66A50B003EE8EB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				AAF22D192C66A524003EE8EB /* DbController.swift */,
+				AAF22D192C66A524003EE8EB /* AppDbController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -305,7 +365,8 @@
 				AAF22D112C64D0B9003EE8EB /* AccountTransaction.swift in Sources */,
 				AAF22D0B2C64D0B9003EE8EB /* NavViewEnum.swift in Sources */,
 				AAF22D092C64D0B9003EE8EB /* DayOfWeekEnum.swift in Sources */,
-				AAF22D1A2C66A524003EE8EB /* DbController.swift in Sources */,
+				AAF22D1A2C66A524003EE8EB /* AppDbController.swift in Sources */,
+				AA799DA82C6E3EAE00B73E39 /* SqliteActions.swift in Sources */,
 				AAF22D072C64D0B9003EE8EB /* Currency.swift in Sources */,
 				AAF22D152C64D0B9003EE8EB /* RecurringTransactionGroup.swift in Sources */,
 				AAF22D0A2C64D0B9003EE8EB /* FileType.swift in Sources */,
@@ -313,16 +374,19 @@
 				AAF22D0D2C64D0B9003EE8EB /* Tab.swift in Sources */,
 				AAF22D0F2C64D0B9003EE8EB /* TransactionTypeEnum.swift in Sources */,
 				AAF22D142C64D0B9003EE8EB /* RecurringTransaction.swift in Sources */,
+				AA799D9C2C6E3B1C00B73E39 /* RecentFileEntries.swift in Sources */,
 				AA18E03F2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13App.swift in Sources */,
 				AA799D952C6B18F100B73E39 /* RecurringTransactionTag.swift in Sources */,
 				AAF22D082C64D0B9003EE8EB /* CurrencyCode.swift in Sources */,
 				AAF22D162C64D0B9003EE8EB /* TransactionFile.swift in Sources */,
+				AA799DA02C6E3B3F00B73E39 /* DesktopDbController.swift in Sources */,
 				AAF22D0C2C64D0B9003EE8EB /* RecurringFrequencyEnum.swift in Sources */,
 				AA18E06A2C4A516F005F30F3 /* AppSettingsTwo.swift in Sources */,
 				AA799D932C6A777C00B73E39 /* AccountListView.swift in Sources */,
 				AAF22D172C64D0B9003EE8EB /* TransactionTag.swift in Sources */,
-				AAF22D062C64D0B9003EE8EB /* AppContainerState.swift in Sources */,
+				AAF22D062C64D0B9003EE8EB /* LocalAppContainerState.swift in Sources */,
 				AAF22D102C64D0B9003EE8EB /* Account.swift in Sources */,
+				AA799DA32C6E3B9600B73E39 /* SqlError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

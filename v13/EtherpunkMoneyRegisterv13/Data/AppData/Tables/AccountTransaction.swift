@@ -126,18 +126,17 @@ final class AccountTransaction {
             return
         }
         sqlite3_finalize(createTableStatement)
-        print("AccountTransaction table created")
     }
 
-    public func getTransactions(appContainer: AppStateContainer, currentPage: Int = 0) throws -> [AccountTransaction] {
+    public func getTransactions(appContainer: LocalAppStateContainer, currentPage: Int = 0) throws -> [AccountTransaction] {
 
         if(appContainer.loadedSqliteDbPath == nil) {
             throw SqlError.databaseNotFound
         }
 
-        if let db = DbController.openDatabase(at: appContainer.loadedSqliteDbPath!.path) {
+        if let db = SqliteActions.openDatabase(at: appContainer.loadedSqliteDbPath!) {
             defer {
-                DbController.closeDatabase(db: db)
+                SqliteActions.closeDatabase(db: db)
             }
 
             print("Hello")

@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct EtherpunkMoneyRegisterv13App: App {
+    var appContainer: LocalAppStateContainer = LocalAppStateContainer()
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(appContainer)
         }
     }
 }

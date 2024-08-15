@@ -9,7 +9,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct ContentView: View {
-    @EnvironmentObject var container: AppStateContainer
+    @EnvironmentObject var container: LocalAppStateContainer
     @State var tabSelection: Tab = .accounts
 
     var body: some View {
@@ -53,7 +53,7 @@ struct ContentView: View {
         }
     }
     private func initApp() {
-        
+        container.loadAppData()
     }
 
     private func newDatabase() {
@@ -104,9 +104,10 @@ struct ContentView: View {
 #Preview {
     do {
         return ContentView()
-            .environmentObject(AppStateContainer())
+            .environmentObject(LocalAppStateContainer())
             //.modelContainer(try Previewer().container)
     } catch {
+        print("Failed: \(error.localizedDescription)")
         return Text("Failed: \(error.localizedDescription)")
     }
 }

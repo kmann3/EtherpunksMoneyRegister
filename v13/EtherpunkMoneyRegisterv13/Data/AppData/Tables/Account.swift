@@ -87,7 +87,6 @@ final class Account {
             return
         }
         sqlite3_finalize(createTableStatement)
-        print("Account table created")
     }
 
 //    func update(isNew: Bool, name: String, startingBalance: Decimal, notes: String, modelContext: ModelContext) {

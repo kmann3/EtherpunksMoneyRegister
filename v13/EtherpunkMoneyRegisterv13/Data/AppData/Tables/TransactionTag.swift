@@ -45,7 +45,6 @@ final class TransactionTag {
             return
         }
         sqlite3_finalize(createTableStatement)
-        print("TransactionTag table created")
 
         // Now we make the link table
 
@@ -69,6 +68,5 @@ final class TransactionTag {
             return
         }
         sqlite3_finalize(createLinkTableStatement)
-        print("Link_Transaction_TransactionTag table created")
     }
 }

@@ -45,7 +45,6 @@ final class RecurringTransactionTag {
             return
         }
         sqlite3_finalize(createTableStatement)
-        print("RecurringTransactionTag table created")
 
         // Now we make the link table
 
@@ -69,6 +68,5 @@ final class RecurringTransactionTag {
             return
         }
         sqlite3_finalize(createLinkTableStatement)
-        print("Link_RecurringTransaction_RecurringTransactionTag table created")
     }
 }

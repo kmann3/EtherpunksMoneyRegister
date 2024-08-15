@@ -128,6 +128,5 @@ final class RecurringTransaction {
             return
         }
         sqlite3_finalize(createTableStatement)
-        print("RecurringTransaction table created")
     }
 }
