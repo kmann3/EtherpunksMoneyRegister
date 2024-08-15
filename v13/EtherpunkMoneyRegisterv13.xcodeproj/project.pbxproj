@@ -132,6 +132,55 @@
 			path = Accounts;
 			sourceTree = "<group>";
 		};
+		AA799D962C6E37C700B73E39 /* AppData */ = {
+			isa = PBXGroup;
+			children = (
+				AA799D982C6E37E900B73E39 /* Previewer */,
+				AAF22CF12C64D0B9003EE8EB /* AppState */,
+				AAF22D182C66A50B003EE8EB /* Controller */,
+				AAF22CF42C64D0B9003EE8EB /* DataTypes */,
+				AAF22CFC2C64D0B9003EE8EB /* Enums */,
+				AA799D972C6E37D500B73E39 /* Tables */,
+			);
+			path = AppData;
+			sourceTree = "<group>";
+		};
+		AA799D972C6E37D500B73E39 /* Tables */ = {
+			isa = PBXGroup;
+			children = (
+				AAF22CFD2C64D0B9003EE8EB /* Account.swift */,
+				AAF22CFE2C64D0B9003EE8EB /* AccountTransaction.swift */,
+				AAF22D012C64D0B9003EE8EB /* RecurringTransaction.swift */,
+				AAF22D022C64D0B9003EE8EB /* RecurringTransactionGroup.swift */,
+				AA799D942C6B18F100B73E39 /* RecurringTransactionTag.swift */,
+				AAF22D032C64D0B9003EE8EB /* TransactionFile.swift */,
+				AAF22D042C64D0B9003EE8EB /* TransactionTag.swift */,
+			);
+			path = Tables;
+			sourceTree = "<group>";
+		};
+		AA799D982C6E37E900B73E39 /* Previewer */ = {
+			isa = PBXGroup;
+			children = (
+				AAF22D002C64D0B9003EE8EB /* Previewer.swift */,
+			);
+			path = Previewer;
+			sourceTree = "<group>";
+		};
+		AA799D992C6E380900B73E39 /* DesktopData */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DesktopData;
+			sourceTree = "<group>";
+		};
+		AA799D9A2C6E381400B73E39 /* MobileData */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = MobileData;
+			sourceTree = "<group>";
+		};
 		AAF22CF12C64D0B9003EE8EB /* AppState */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,18 +215,9 @@
 		AAF22D052C64D0B9003EE8EB /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				AAF22CF12C64D0B9003EE8EB /* AppState */,
-				AAF22D182C66A50B003EE8EB /* Controller */,
-				AAF22CF42C64D0B9003EE8EB /* DataTypes */,
-				AAF22CFC2C64D0B9003EE8EB /* Enums */,
-				AAF22CFD2C64D0B9003EE8EB /* Account.swift */,
-				AAF22CFE2C64D0B9003EE8EB /* AccountTransaction.swift */,
-				AAF22D012C64D0B9003EE8EB /* RecurringTransaction.swift */,
-				AAF22D022C64D0B9003EE8EB /* RecurringTransactionGroup.swift */,
-				AA799D942C6B18F100B73E39 /* RecurringTransactionTag.swift */,
-				AAF22D032C64D0B9003EE8EB /* TransactionFile.swift */,
-				AAF22D042C64D0B9003EE8EB /* TransactionTag.swift */,
-				AAF22D002C64D0B9003EE8EB /* Previewer.swift */,
+				AA799D9A2C6E381400B73E39 /* MobileData */,
+				AA799D992C6E380900B73E39 /* DesktopData */,
+				AA799D962C6E37C700B73E39 /* AppData */,
 			);
 			path = Data;
 			sourceTree = "<group>";
