@@ -17,4 +17,12 @@ class DesktopDbController {
 
         RecentFileEntries.createTable(db: db)
     }
+
+    public static func insertNewRecentFileEntry(appContainer: LocalAppStateContainer) {
+        do {
+            try RecentFileEntries.insertFilePath(appContainer: appContainer)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
 }

@@ -11,6 +11,7 @@ import SQLite3
 class LocalAppStateContainer: ObservableObject {
     var loadedSqliteDbPath: String? = nil
     var defaultAccount: Account? = nil
+    var appDbPath: String? = nil
 
     public func loadAppData() {
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
@@ -20,10 +21,11 @@ class LocalAppStateContainer: ObservableObject {
             let fileManager = FileManager.default
             if fileManager.fileExists(atPath: filePath) {
                 // Then we open it and see if we have a default entry or a recent entry
+                appDbPath = filePath
                 print("FILE AVAILABLE at: \(filePath); Let's query it.")
                 do {
-                    var foo: [RecentFileEntries] = try RecentFileEntries.getFileEntries(path: filePath)
-                    print("Got data \(foo.count)")
+                    let entryList: [RecentFileEntries] = try RecentFileEntries.getFileEntries(path: filePath)
+                    print("Got data \(entryList.count)")
                 } catch {
                     print("Failed: \(error.localizedDescription)")
                 }
@@ -32,6 +34,7 @@ class LocalAppStateContainer: ObservableObject {
                 // Then we create it, and keep the path as nil so we know there isn't one made - probably a first time install
                 print("FILE NOT AVAILABLE - Creating new file at: \(filePath)")
                 createNewAppDatabase(appDatabasePath: pathComponent.path)
+                appDbPath = pathComponent.path
             }
         } else {
             print("FILE PATH NOT AVAILABLE")
@@ -50,6 +53,5 @@ class LocalAppStateContainer: ObservableObject {
     
     private func createTables(db: OpaquePointer?, path: String) {
         RecentFileEntries.createTable(db: db)
-        RecentFileEntries.insertFilePath(db: db, path: path)
     }
 }

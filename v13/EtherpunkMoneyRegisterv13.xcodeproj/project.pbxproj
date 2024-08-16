@@ -18,6 +18,7 @@
 		AA799DA02C6E3B3F00B73E39 /* DesktopDbController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799D9F2C6E3B3F00B73E39 /* DesktopDbController.swift */; };
 		AA799DA32C6E3B9600B73E39 /* SqlError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799DA22C6E3B9600B73E39 /* SqlError.swift */; };
 		AA799DA82C6E3EAE00B73E39 /* SqliteActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799DA72C6E3EAE00B73E39 /* SqliteActions.swift */; };
+		AAD812762C6E6D5800C35C1A /* DateHelper in Frameworks */ = {isa = PBXBuildFile; productRef = AAD812752C6E6D5800C35C1A /* DateHelper */; };
 		AAF22D062C64D0B9003EE8EB /* LocalAppContainerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF02C64D0B9003EE8EB /* LocalAppContainerState.swift */; };
 		AAF22D072C64D0B9003EE8EB /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF22C64D0B9003EE8EB /* Currency.swift */; };
 		AAF22D082C64D0B9003EE8EB /* CurrencyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF32C64D0B9003EE8EB /* CurrencyCode.swift */; };
@@ -52,6 +53,7 @@
 		AA799D9F2C6E3B3F00B73E39 /* DesktopDbController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesktopDbController.swift; sourceTree = "<group>"; };
 		AA799DA22C6E3B9600B73E39 /* SqlError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqlError.swift; sourceTree = "<group>"; };
 		AA799DA72C6E3EAE00B73E39 /* SqliteActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqliteActions.swift; sourceTree = "<group>"; };
+		AAD812732C6E6B2C00C35C1A /* TestPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = TestPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		AAF22CEF2C609E27003EE8EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AAF22CF02C64D0B9003EE8EB /* LocalAppContainerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalAppContainerState.swift; sourceTree = "<group>"; };
 		AAF22CF22C64D0B9003EE8EB /* Currency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAD812762C6E6D5800C35C1A /* DateHelper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +90,7 @@
 		AA18E0322C4A4C5D005F30F3 = {
 			isa = PBXGroup;
 			children = (
+				AAD812732C6E6B2C00C35C1A /* TestPlayground.playground */,
 				AA18E03D2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13 */,
 				AA18E03C2C4A4C5D005F30F3 /* Products */,
 			);
@@ -306,6 +310,9 @@
 			dependencies = (
 			);
 			name = EtherpunkMoneyRegisterv13;
+			packageProductDependencies = (
+				AAD812752C6E6D5800C35C1A /* DateHelper */,
+			);
 			productName = EtherpunkMoneyRegisterv13;
 			productReference = AA18E03B2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13.app */;
 			productType = "com.apple.product-type.application";
@@ -334,6 +341,9 @@
 				Base,
 			);
 			mainGroup = AA18E0322C4A4C5D005F30F3;
+			packageReferences = (
+				AAD812742C6E6D5800C35C1A /* XCRemoteSwiftPackageReference "DateHelper" */,
+			);
 			productRefGroup = AA18E03C2C4A4C5D005F30F3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -611,6 +621,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AAD812742C6E6D5800C35C1A /* XCRemoteSwiftPackageReference "DateHelper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/melvitax/DateHelper";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AAD812752C6E6D5800C35C1A /* DateHelper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAD812742C6E6D5800C35C1A /* XCRemoteSwiftPackageReference "DateHelper" */;
+			productName = DateHelper;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AA18E0332C4A4C5D005F30F3 /* Project object */;
 }

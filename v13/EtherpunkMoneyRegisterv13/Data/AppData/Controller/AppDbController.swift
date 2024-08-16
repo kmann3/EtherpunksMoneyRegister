@@ -10,8 +10,8 @@ import SQLite3
 
 class DbController {
 
-    public static func createDatabase(path: String) {
-        let db = SqliteActions.openDatabase(at: path)
+    public static func createDatabase(appContainer: LocalAppStateContainer) {
+        let db = SqliteActions.openDatabase(at: appContainer.loadedSqliteDbPath!)
         defer {
             SqliteActions.closeDatabase(db: db)
         }
@@ -23,5 +23,11 @@ class DbController {
         RecurringTransactionTag.createTable(db: db)
         TransactionFile.createTable(db: db)
         TransactionTag.createTable(db: db)
+
+        do {
+            try RecentFileEntries.insertFilePath(appContainer: appContainer)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }

@@ -68,7 +68,8 @@ struct ContentView: View {
         if panel.runModal() == .OK {
             if let url = panel.url {
                 print("Selected file: \(url.path)")
-                DbController.createDatabase(path: url.path)
+                container.loadedSqliteDbPath = url.path
+                DbController.createDatabase(appContainer: container)
                 // update app database to add this as a recently opened item
             }
         }
