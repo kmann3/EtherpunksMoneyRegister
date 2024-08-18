@@ -22,6 +22,8 @@
 		AAB08CCD2C6FB9BA00886600 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = AAB08CCC2C6FB9BA00886600 /* SwiftDate */; };
 		AAB08CD02C6FB9C700886600 /* DateHelper in Frameworks */ = {isa = PBXBuildFile; productRef = AAB08CCF2C6FB9C600886600 /* DateHelper */; };
 		AAB08CD22C721E8E00886600 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB08CD12C721E8E00886600 /* MainView.swift */; };
+		AAC881ED2C726551007273A8 /* AccountListViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC881EC2C726551007273A8 /* AccountListViewItem.swift */; };
+		AAC881F02C727579007273A8 /* AccountListViewItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC881EF2C727579007273A8 /* AccountListViewItemData.swift */; };
 		AAF22D062C64D0B9003EE8EB /* LocalAppContainerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF02C64D0B9003EE8EB /* LocalAppContainerState.swift */; };
 		AAF22D072C64D0B9003EE8EB /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF22C64D0B9003EE8EB /* Currency.swift */; };
 		AAF22D082C64D0B9003EE8EB /* CurrencyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF32C64D0B9003EE8EB /* CurrencyCode.swift */; };
@@ -57,6 +59,8 @@
 		AA799DA22C6E3B9600B73E39 /* SqlError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqlError.swift; sourceTree = "<group>"; };
 		AA799DA72C6E3EAE00B73E39 /* SqliteActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqliteActions.swift; sourceTree = "<group>"; };
 		AAB08CD12C721E8E00886600 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		AAC881EC2C726551007273A8 /* AccountListViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewItem.swift; sourceTree = "<group>"; };
+		AAC881EF2C727579007273A8 /* AccountListViewItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewItemData.swift; sourceTree = "<group>"; };
 		AAD812732C6E6B2C00C35C1A /* TestPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = TestPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		AAF22CEF2C609E27003EE8EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AAF22CF02C64D0B9003EE8EB /* LocalAppContainerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalAppContainerState.swift; sourceTree = "<group>"; };
@@ -147,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				AA799D922C6A777C00B73E39 /* AccountListView.swift */,
+				AAC881EC2C726551007273A8 /* AccountListViewItem.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -154,6 +159,7 @@
 		AA799D962C6E37C700B73E39 /* AppData */ = {
 			isa = PBXGroup;
 			children = (
+				AAC881EE2C72756A007273A8 /* ViewData */,
 				AA799D982C6E37E900B73E39 /* Previewer */,
 				AAF22D182C66A50B003EE8EB /* Controller */,
 				AAF22CF42C64D0B9003EE8EB /* DataTypes */,
@@ -247,6 +253,14 @@
 				AA799DA72C6E3EAE00B73E39 /* SqliteActions.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		AAC881EE2C72756A007273A8 /* ViewData */ = {
+			isa = PBXGroup;
+			children = (
+				AAC881EF2C727579007273A8 /* AccountListViewItemData.swift */,
+			);
+			path = ViewData;
 			sourceTree = "<group>";
 		};
 		AAF22CF12C64D0B9003EE8EB /* AppState */ = {
@@ -399,8 +413,10 @@
 				AA799D9C2C6E3B1C00B73E39 /* RecentFileEntries.swift in Sources */,
 				AA18E03F2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13App.swift in Sources */,
 				AA799D952C6B18F100B73E39 /* RecurringTransactionTag.swift in Sources */,
+				AAC881ED2C726551007273A8 /* AccountListViewItem.swift in Sources */,
 				AAF22D082C64D0B9003EE8EB /* CurrencyCode.swift in Sources */,
 				AAF22D162C64D0B9003EE8EB /* TransactionFile.swift in Sources */,
+				AAC881F02C727579007273A8 /* AccountListViewItemData.swift in Sources */,
 				AA799DA02C6E3B3F00B73E39 /* DesktopDbController.swift in Sources */,
 				AAF22D0C2C64D0B9003EE8EB /* RecurringFrequencyEnum.swift in Sources */,
 				AA18E06A2C4A516F005F30F3 /* AppSettingsTwo.swift in Sources */,
