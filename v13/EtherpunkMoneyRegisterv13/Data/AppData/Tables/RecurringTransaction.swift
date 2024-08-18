@@ -120,11 +120,11 @@ final class RecurringTransaction {
         if sqlite3_prepare_v2(db, createTableSqlString, -1, &createTableStatement, nil) == SQLITE_OK {
             let response = sqlite3_step(createTableStatement)
             if response != SQLITE_DONE {
-                print("RecurringTransaction table could not be created. Error: \(response)")
+                debugPrint("RecurringTransaction table could not be created. Error: \(response)")
                 return
             }
         } else {
-            print("CREATE TABLE RecurringTransaction statement could not be prepared.")
+            debugPrint("CREATE TABLE RecurringTransaction statement could not be prepared.")
             return
         }
         sqlite3_finalize(createTableStatement)

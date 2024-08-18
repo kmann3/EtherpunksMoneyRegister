@@ -20,14 +20,14 @@ class AppSettingsTwo: ObservableObject {
             let fileManager = FileManager.default
             if fileManager.fileExists(atPath: filePath) {
                 // Then we open it and see if we have a default entry or a recent entry
-                print("FILE AVAILABLE at: \(filePath)")
+                debugPrint("FILE AVAILABLE at: \(filePath)")
             } else {
                 // Then we create it, and keep the path as nil so we know there isn't one made - probably a first time install
-                print("FILE NOT AVAILABLE - Creating new file at: \(filePath)")
+                debugPrint("FILE NOT AVAILABLE - Creating new file at: \(filePath)")
                 createNewAppDatabase(appDatabasePath: pathComponent)
             }
         } else {
-            print("FILE PATH NOT AVAILABLE")
+            debugPrint("FILE PATH NOT AVAILABLE")
         }
     }
 
@@ -42,10 +42,10 @@ class AppSettingsTwo: ObservableObject {
     private func openDatabase(at path: String) -> OpaquePointer? {
         var db: OpaquePointer? = nil
         if sqlite3_open(path, &db) != SQLITE_OK {
-            print("Error opening database")
+            debugPrint("Error opening database")
             return nil
         }
-        print("Successfully opened connection to database at \(path)")
+        debugPrint("Successfully opened connection to database at \(path)")
         return db
     }
 
@@ -59,12 +59,12 @@ class AppSettingsTwo: ObservableObject {
         var createEntryTableStatement: OpaquePointer? = nil
         if sqlite3_prepare_v2(db, createEntryTableSqlString, -1, &createEntryTableStatement, nil) == SQLITE_OK {
             if sqlite3_step(createEntryTableStatement) == SQLITE_DONE {
-                print("Entry table created.")
+                debugPrint("Entry table created.")
             } else {
-                print("Entry table could not be created.")
+                debugPrint("Entry table could not be created.")
             }
         } else {
-            print("CREATE TABLE statement could not be prepared.")
+            debugPrint("CREATE TABLE statement could not be prepared.")
         }
         sqlite3_finalize(createEntryTableStatement)
 
@@ -76,12 +76,12 @@ class AppSettingsTwo: ObservableObject {
         var createVersionTableStatement: OpaquePointer? = nil
         if sqlite3_prepare_v2(db, createVersionTableSqlString, -1, &createVersionTableStatement, nil) == SQLITE_OK {
             if sqlite3_step(createVersionTableStatement) == SQLITE_DONE {
-                print("Version table created.")
+                debugPrint("Version table created.")
             } else {
-                print("Version table could not be created.")
+                debugPrint("Version table could not be created.")
             }
         } else {
-            print("CREATE Version TABLE statement could not be prepared.")
+            debugPrint("CREATE Version TABLE statement could not be prepared.")
         }
         sqlite3_finalize(createVersionTableStatement)
 
@@ -92,14 +92,14 @@ class AppSettingsTwo: ObservableObject {
         if sqlite3_prepare_v2(db, setCurrentVersionSqlString, -1, &setCurrentVersionStatement, nil) == SQLITE_OK {
             sqlite3_bind_int(setCurrentVersionStatement, 1, version)
             if sqlite3_step(setCurrentVersionStatement) == SQLITE_DONE {
-                print("\nSuccessfully set version.")
+                debugPrint("\nSuccessfully set version.")
             } else {
-                print("\nCould not set version / insert row")
+                debugPrint("\nCould not set version / insert row")
             }
         } else {
             let errorMessage = String(cString: sqlite3_errmsg(db))
-                print("\nSet Version statement is not prepared! \(errorMessage)")
-            print("\nINSERT statement for set version is not prepared.")
+                debugPrint("\nSet Version statement is not prepared! \(errorMessage)")
+            debugPrint("\nINSERT statement for set version is not prepared.")
         }
 
         sqlite3_finalize(setCurrentVersionStatement)
@@ -114,7 +114,7 @@ class AppSettingsTwo: ObservableObject {
 //        }
 //
 //        let addNewEntryString = "INSERT INTO RecentEntries (Path, CreatedOn) VALUES (?, ?);"
-//        print(addNewEntryString)
+//        debugPrint(addNewEntryString)
 //        var addnewEntryStatement: OpaquePointer?
 //        if sqlite3_prepare_v2(db, addNewEntryString, -1, &addnewEntryStatement, nil) ==
 //            SQLITE_OK
@@ -130,14 +130,14 @@ class AppSettingsTwo: ObservableObject {
 //            sqlite3_bind_text(addnewEntryStatement, 2, createdOn.utf8String, -1, nil)
 //
 //            if sqlite3_step(addnewEntryStatement) == SQLITE_DONE {
-//                print("\nSuccessfully inserted row.")
+//                debugPrint("\nSuccessfully inserted row.")
 //            } else {
-//                print("\nCould not insert row.")
+//                debugPrint("\nCould not insert row.")
 //            }
 //        } else {
 //            let errorMessage = String(cString: sqlite3_errmsg(db))
-//                print("\nQuery is not prepared! \(errorMessage)")
-//            print("\nINSERT statement is not prepared.")
+//                debugPrint("\nQuery is not prepared! \(errorMessage)")
+//            debugPrint("\nINSERT statement is not prepared.")
 //        }
 //
 //        sqlite3_finalize(addnewEntryStatement)
@@ -145,9 +145,9 @@ class AppSettingsTwo: ObservableObject {
 
     private func closeDatabase(db: OpaquePointer?) {
         if sqlite3_close(db) != SQLITE_OK {
-            print("Error closing database")
+            debugPrint("Error closing database")
         } else {
-            print("Database closed successfully")
+            debugPrint("Database closed successfully")
         }
     }
 }

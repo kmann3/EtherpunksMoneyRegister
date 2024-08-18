@@ -79,11 +79,11 @@ final class Account {
         if sqlite3_prepare_v2(db, createTableSqlString, -1, &createTableStatement, nil) == SQLITE_OK {
             let response = sqlite3_step(createTableStatement)
             if response != SQLITE_DONE {
-                print("Account table could not be created. Error: \(response)")
+                debugPrint("Account table could not be created. Error: \(response)")
                 return
             }
         } else {
-            print("CREATE TABLE Account statement could not be prepared.")
+            debugPrint("CREATE TABLE Account statement could not be prepared.")
             return
         }
         sqlite3_finalize(createTableStatement)
@@ -104,18 +104,18 @@ final class Account {
 //            }
 //            try modelContext.save()
 //        } catch {
-//            print("Error saving account: \(error)")
+//            debugPrint("Error saving account: \(error)")
 //        }
 //    }
 //
 //    func rebalance(amount: Decimal, dateToBegin: Date? = nil, modelContext: ModelContext) {
 //
 //        if(self.transactionCount == 0) {
-//            print("Empty")
+//            debugPrint("Empty")
 //            return
 //        }
 //
-//        debugPrint("Begin predicate")
+//        debugdebugPrint("Begin predicate")
 //
 //        let accountId: UUID = self.id
 //
@@ -137,15 +137,15 @@ final class Account {
 //
 //        do {
 //            let newTransactions = try modelContext.fetch(fetchDescriptor)
-//            debugPrint("Begin loop")
+//            debugdebugPrint("Begin loop")
 //            for transaction in newTransactions {
-//                debugPrint("Transaction: \(transaction.name)")
+//                debugdebugPrint("Transaction: \(transaction.name)")
 //                transaction.balance += amount
 //            }
 //            try modelContext.save()
 //        } catch {
 //            DispatchQueue.main.async {
-//                print("Error fetching transactions: \(error.localizedDescription)")
+//                debugPrint("Error fetching transactions: \(error.localizedDescription)")
 //            }
 //        }
 //

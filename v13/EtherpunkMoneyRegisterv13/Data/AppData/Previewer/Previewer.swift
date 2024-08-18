@@ -35,11 +35,11 @@ struct Previewer {
 //        let config = ModelConfiguration(isStoredInMemoryOnly: true)
 //        container = try! ModelContainer(for: schema, configurations: config)
 //
-//        print("-----------------")
-//        print(Date())
-//        print("-----------------")
-//        print("Database Location: \(container.mainContext.sqliteCommand)")
-//        print("Generating fake data. This may take a little bit.")
+//        debugPrint("-----------------")
+//        debugPrint(Date())
+//        debugPrint("-----------------")
+//        debugPrint("Database Location: \(container.mainContext.sqliteCommand)")
+//        debugPrint("Generating fake data. This may take a little bit.")
 //
 //        let specificUUID = UUID(uuidString: "12345678-1234-1234-1234-123456789abc")
 //        cuAccount = Account(name: "Amegy Bank", startingBalance: 238.99)
@@ -211,7 +211,7 @@ struct Previewer {
 //        
 //        let monkeyURL: URL? = downloadImageFromURL()
 //        if monkeyURL == nil {
-//            print("An error? Is the Internet down? SSL cert?")
+//            debugPrint("An error? Is the Internet down? SSL cert?")
 //        } else {
 //            let fakeAttachment = TransactionFile(id: UUID(), name: "Logo", filename: "monkey.jpg", notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.", createdOn: Date(), url: monkeyURL!, isTaxRelated: true, transactionId: cvsTransaction.id)
 //            
@@ -228,8 +228,8 @@ struct Previewer {
 //        container.mainContext.insert(axosAccount)
 //        container.mainContext.insert(billGroup)
 //
-//        print("Done generating fake data.")
-//        print("Fake transactions created: \(transactionCount)")
+//        debugPrint("Done generating fake data.")
+//        debugPrint("Fake transactions created: \(transactionCount)")
 //    }
     
     private func getNextDueDate(day: Int) -> Date {
@@ -255,14 +255,14 @@ struct Previewer {
         let monkeyUrlString = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
         
         guard let url = URL(string: monkeyUrlString) else {
-            print("Invalid URL: \(monkeyUrlString)")
+            debugPrint("Invalid URL: \(monkeyUrlString)")
             completion(nil)
             return
         }
         
         let task = URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data = data, error == nil else {
-                print("Error downloading image: \(error?.localizedDescription ?? "Unknown error")")
+                debugPrint("Error downloading image: \(error?.localizedDescription ?? "Unknown error")")
                 completion(nil)
                 return
             }
@@ -274,7 +274,7 @@ struct Previewer {
                 try data.write(to: destinationURL)
                 completion(destinationURL)
             } catch {
-                print("Error saving image data: \(error)")
+                debugPrint("Error saving image data: \(error)")
                 completion(nil)
             }
         }
@@ -286,7 +286,7 @@ struct Previewer {
         let monkeyUrl = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
         
         guard let url = URL(string: monkeyUrl) else {
-            print("Issue with URL from string")
+            debugPrint("Issue with URL from string")
             return nil
         }
         
@@ -300,7 +300,7 @@ struct Previewer {
             try data.write(to: destinationURL)
             return destinationURL
         } catch {
-            print("Error downloading file: \(error)")
+            debugPrint("Error downloading file: \(error)")
             return nil
         }
     }

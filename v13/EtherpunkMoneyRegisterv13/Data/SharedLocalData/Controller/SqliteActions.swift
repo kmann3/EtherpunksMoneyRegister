@@ -12,17 +12,17 @@ class SqliteActions {
     public static func openDatabase(at path: String) -> OpaquePointer? {
         var db: OpaquePointer? = nil
         if sqlite3_open(path, &db) != SQLITE_OK {
-            print("Error opening database")
+            debugPrint("Error opening database")
             return nil
         }
-        print("Database opened at: \(path)")
+        debugPrint("Database opened at: \(path)")
         return db
     }
 
     public static func closeDatabase(db: OpaquePointer?) {
         if sqlite3_close(db) != SQLITE_OK {
-            print("Error closing database")
+            debugPrint("Error closing database")
         }
-        print("Database closed")
+        debugPrint("Database closed")
     }
 }

@@ -118,11 +118,11 @@ final class AccountTransaction {
         if sqlite3_prepare_v2(db, createTableSqlString, -1, &createTableStatement, nil) == SQLITE_OK {
             let response = sqlite3_step(createTableStatement)
             if response != SQLITE_DONE {
-                print("AccountTransaction table could not be created. Error: \(response)")
+                debugPrint("AccountTransaction table could not be created. Error: \(response)")
                 return
             }
         } else {
-            print("CREATE TABLE AccountTransaction statement could not be prepared.")
+            debugPrint("CREATE TABLE AccountTransaction statement could not be prepared.")
             return
         }
         sqlite3_finalize(createTableStatement)
@@ -139,7 +139,7 @@ final class AccountTransaction {
                 SqliteActions.closeDatabase(db: db)
             }
 
-            print("Hello")
+            debugPrint("Hello")
             //createTables(db: db)
             //insertVersionData(db: db)
 

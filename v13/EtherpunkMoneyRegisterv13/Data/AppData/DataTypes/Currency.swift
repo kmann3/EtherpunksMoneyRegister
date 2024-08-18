@@ -276,11 +276,11 @@ struct Currency: Codable {
 
         // Implicit conversion from Decimal to Currency using the global function
         let currencyValue = +decimalValue
-        print("Currency Value: \(currencyValue.amount)")  // Output: Currency Value: 100.0
+        debugPrint("Currency Value: \(currencyValue.amount)")  // Output: Currency Value: 100.0
 
         // If you want to just let it infer
         let currency = Currency(100)
-        print("Amount: \(currency.formattedString() ?? "N/A")")  // Prints the formatted amount based on the device's locale
+        debugPrint("Amount: \(currency.formattedString() ?? "N/A")")  // Prints the formatted amount based on the device's locale
 
         // OR you can manually set it
         let usdPrice = Currency(amount: Decimal(19.99), code: .USD)
@@ -296,12 +296,12 @@ struct Currency: Codable {
            let formattedGbp = gbpPrice.formattedString(),
            let formattedJpy = jpyPrice.formattedString(),
            let formattedCny = cnyPrice.formattedString() {
-            print("USD Price: \(formattedUsd)")  // USD Price: $19.99
-            print("EUR Price: \(formattedEur)")  // EUR Price: 5,99 €
-            print("Netherlands Price: \(formattedNl)") // EUR Price: 3,47 €
-            print("GBP Price: \(formattedGbp)")  // GBP Price: £9.99
-            print("JPY Price: \(formattedJpy)")  // JPY Price: ¥1,000
-            print("CNY Price: \(formattedCny)")  // CNY Price: ¥50.00
+            debugPrint("USD Price: \(formattedUsd)")  // USD Price: $19.99
+            debugPrint("EUR Price: \(formattedEur)")  // EUR Price: 5,99 €
+            debugPrint("Netherlands Price: \(formattedNl)") // EUR Price: 3,47 €
+            debugPrint("GBP Price: \(formattedGbp)")  // GBP Price: £9.99
+            debugPrint("JPY Price: \(formattedJpy)")  // JPY Price: ¥1,000
+            debugPrint("CNY Price: \(formattedCny)")  // CNY Price: ¥50.00
         }
     }
 }

@@ -18,7 +18,10 @@
 		AA799DA02C6E3B3F00B73E39 /* DesktopDbController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799D9F2C6E3B3F00B73E39 /* DesktopDbController.swift */; };
 		AA799DA32C6E3B9600B73E39 /* SqlError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799DA22C6E3B9600B73E39 /* SqlError.swift */; };
 		AA799DA82C6E3EAE00B73E39 /* SqliteActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799DA72C6E3EAE00B73E39 /* SqliteActions.swift */; };
-		AAD812762C6E6D5800C35C1A /* DateHelper in Frameworks */ = {isa = PBXBuildFile; productRef = AAD812752C6E6D5800C35C1A /* DateHelper */; };
+		AAB08CCA2C6FB9AE00886600 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = AAB08CC92C6FB9AE00886600 /* SQLite */; };
+		AAB08CCD2C6FB9BA00886600 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = AAB08CCC2C6FB9BA00886600 /* SwiftDate */; };
+		AAB08CD02C6FB9C700886600 /* DateHelper in Frameworks */ = {isa = PBXBuildFile; productRef = AAB08CCF2C6FB9C600886600 /* DateHelper */; };
+		AAB08CD22C721E8E00886600 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB08CD12C721E8E00886600 /* MainView.swift */; };
 		AAF22D062C64D0B9003EE8EB /* LocalAppContainerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF02C64D0B9003EE8EB /* LocalAppContainerState.swift */; };
 		AAF22D072C64D0B9003EE8EB /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF22C64D0B9003EE8EB /* Currency.swift */; };
 		AAF22D082C64D0B9003EE8EB /* CurrencyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF32C64D0B9003EE8EB /* CurrencyCode.swift */; };
@@ -53,6 +56,7 @@
 		AA799D9F2C6E3B3F00B73E39 /* DesktopDbController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesktopDbController.swift; sourceTree = "<group>"; };
 		AA799DA22C6E3B9600B73E39 /* SqlError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqlError.swift; sourceTree = "<group>"; };
 		AA799DA72C6E3EAE00B73E39 /* SqliteActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqliteActions.swift; sourceTree = "<group>"; };
+		AAB08CD12C721E8E00886600 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		AAD812732C6E6B2C00C35C1A /* TestPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = TestPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		AAF22CEF2C609E27003EE8EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AAF22CF02C64D0B9003EE8EB /* LocalAppContainerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalAppContainerState.swift; sourceTree = "<group>"; };
@@ -80,7 +84,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AAD812762C6E6D5800C35C1A /* DateHelper in Frameworks */,
+				AAB08CD02C6FB9C700886600 /* DateHelper in Frameworks */,
+				AAB08CCA2C6FB9AE00886600 /* SQLite in Frameworks */,
+				AAB08CCD2C6FB9BA00886600 /* SwiftDate in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				AA799D912C6A775400B73E39 /* Accounts */,
+				AAB08CD12C721E8E00886600 /* MainView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -311,7 +318,9 @@
 			);
 			name = EtherpunkMoneyRegisterv13;
 			packageProductDependencies = (
-				AAD812752C6E6D5800C35C1A /* DateHelper */,
+				AAB08CC92C6FB9AE00886600 /* SQLite */,
+				AAB08CCC2C6FB9BA00886600 /* SwiftDate */,
+				AAB08CCF2C6FB9C600886600 /* DateHelper */,
 			);
 			productName = EtherpunkMoneyRegisterv13;
 			productReference = AA18E03B2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13.app */;
@@ -342,7 +351,9 @@
 			);
 			mainGroup = AA18E0322C4A4C5D005F30F3;
 			packageReferences = (
-				AAD812742C6E6D5800C35C1A /* XCRemoteSwiftPackageReference "DateHelper" */,
+				AAB08CC82C6FB9AE00886600 /* XCRemoteSwiftPackageReference "SQLite" */,
+				AAB08CCB2C6FB9BA00886600 /* XCRemoteSwiftPackageReference "SwiftDate" */,
+				AAB08CCE2C6FB9C600886600 /* XCRemoteSwiftPackageReference "DateHelper" */,
 			);
 			productRefGroup = AA18E03C2C4A4C5D005F30F3 /* Products */;
 			projectDirPath = "";
@@ -371,6 +382,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA18E0412C4A4C5D005F30F3 /* ContentView.swift in Sources */,
+				AAB08CD22C721E8E00886600 /* MainView.swift in Sources */,
 				AAF22D0E2C64D0B9003EE8EB /* TransactionStatusEnum.swift in Sources */,
 				AAF22D112C64D0B9003EE8EB /* AccountTransaction.swift in Sources */,
 				AAF22D0B2C64D0B9003EE8EB /* NavViewEnum.swift in Sources */,
@@ -623,7 +635,23 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		AAD812742C6E6D5800C35C1A /* XCRemoteSwiftPackageReference "DateHelper" */ = {
+		AAB08CC82C6FB9AE00886600 /* XCRemoteSwiftPackageReference "SQLite" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.15.3;
+			};
+		};
+		AAB08CCB2C6FB9BA00886600 /* XCRemoteSwiftPackageReference "SwiftDate" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/malcommac/SwiftDate";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		AAB08CCE2C6FB9C600886600 /* XCRemoteSwiftPackageReference "DateHelper" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/melvitax/DateHelper";
 			requirement = {
@@ -634,9 +662,19 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AAD812752C6E6D5800C35C1A /* DateHelper */ = {
+		AAB08CC92C6FB9AE00886600 /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = AAD812742C6E6D5800C35C1A /* XCRemoteSwiftPackageReference "DateHelper" */;
+			package = AAB08CC82C6FB9AE00886600 /* XCRemoteSwiftPackageReference "SQLite" */;
+			productName = SQLite;
+		};
+		AAB08CCC2C6FB9BA00886600 /* SwiftDate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAB08CCB2C6FB9BA00886600 /* XCRemoteSwiftPackageReference "SwiftDate" */;
+			productName = SwiftDate;
+		};
+		AAB08CCF2C6FB9C600886600 /* DateHelper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAB08CCE2C6FB9C600886600 /* XCRemoteSwiftPackageReference "DateHelper" */;
 			productName = DateHelper;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -37,11 +37,11 @@ final class TransactionTag {
         if sqlite3_prepare_v2(db, createTableSqlString, -1, &createTableStatement, nil) == SQLITE_OK {
             let response = sqlite3_step(createTableStatement)
             if response != SQLITE_DONE {
-                print("TransactionTag table could not be created. Error: \(response)")
+                debugPrint("TransactionTag table could not be created. Error: \(response)")
                 return
             }
         } else {
-            print("CREATE TABLE TransactionTag statement could not be prepared.")
+            debugPrint("CREATE TABLE TransactionTag statement could not be prepared.")
             return
         }
         sqlite3_finalize(createTableStatement)
@@ -60,11 +60,11 @@ final class TransactionTag {
         if sqlite3_prepare_v2(db, createLinkTableSqlString, -1, &createLinkTableStatement, nil) == SQLITE_OK {
             let response = sqlite3_step(createLinkTableStatement)
             if response != SQLITE_DONE {
-                print("Link_Transaction_TransactionTag table could not be created. Error: \(response)")
+                debugPrint("Link_Transaction_TransactionTag table could not be created. Error: \(response)")
                 return
             }
         } else {
-            print("CREATE TABLE Link_Transaction_TransactionTag statement could not be prepared.")
+            debugPrint("CREATE TABLE Link_Transaction_TransactionTag statement could not be prepared.")
             return
         }
         sqlite3_finalize(createLinkTableStatement)

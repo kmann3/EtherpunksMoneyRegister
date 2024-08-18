@@ -1,5 +1,5 @@
 {
-  "originHash" : "90c60ed1c3636ee30bba829dbf00a86c435ea15400ef318b83d59ed6eb90be08",
+  "originHash" : "018dde648e56041f6a4de537f173e1d0f2a698fcbdb985c48dbe75e0ed83956f",
   "pins" : [
     {
       "identity" : "datehelper",
@@ -8,6 +8,24 @@
       "state" : {
         "revision" : "76d0840daab7288fc99b04a4c23d504f0394e083",
         "version" : "5.0.1"
+      }
+    },
+    {
+      "identity" : "sqlite.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stephencelis/SQLite.swift",
+      "state" : {
+        "revision" : "a95fc6df17d108bd99210db5e8a9bac90fe984b8",
+        "version" : "0.15.3"
+      }
+    },
+    {
+      "identity" : "swiftdate",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/malcommac/SwiftDate",
+      "state" : {
+        "revision" : "5d943224c3bb173e6ecf27295611615eba90c80e",
+        "version" : "7.0.0"
       }
     }
   ],

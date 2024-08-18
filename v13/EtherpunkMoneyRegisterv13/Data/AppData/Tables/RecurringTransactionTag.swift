@@ -37,11 +37,11 @@ final class RecurringTransactionTag {
         if sqlite3_prepare_v2(db, createTableSqlString, -1, &createTableStatement, nil) == SQLITE_OK {
             let response = sqlite3_step(createTableStatement)
             if response != SQLITE_DONE {
-                print("RecurringTransactionTag table could not be created. Error: \(response)")
+                debugPrint("RecurringTransactionTag table could not be created. Error: \(response)")
                 return
             }
         } else {
-            print("CREATE TABLE RecurringTransactionTag statement could not be prepared.")
+            debugPrint("CREATE TABLE RecurringTransactionTag statement could not be prepared.")
             return
         }
         sqlite3_finalize(createTableStatement)
@@ -60,11 +60,11 @@ final class RecurringTransactionTag {
         if sqlite3_prepare_v2(db, createLinkTableSqlString, -1, &createLinkTableStatement, nil) == SQLITE_OK {
             let response = sqlite3_step(createLinkTableStatement)
             if response != SQLITE_DONE {
-                print("Link_RecurringTransaction_RecurringTransactionTag table could not be created. Error: \(response)")
+                debugPrint("Link_RecurringTransaction_RecurringTransactionTag table could not be created. Error: \(response)")
                 return
             }
         } else {
-            print("CREATE TABLE Link_RecurringTransaction_RecurringTransactionTag statement could not be prepared.")
+            debugPrint("CREATE TABLE Link_RecurringTransaction_RecurringTransactionTag statement could not be prepared.")
             return
         }
         sqlite3_finalize(createLinkTableStatement)
