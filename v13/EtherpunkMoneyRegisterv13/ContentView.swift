@@ -24,8 +24,8 @@ struct ContentView: View {
                         Text(row.path)
                         Text(row.createdOnLocalString)
                         Spacer()
-                        Button {
-                            debugPrint("Delete item")
+                        Button(role: .destructive) {
+                            removeEntry(entry: row)
                         } label: {
                             Label("Delete", systemImage: "trash")
                         }
@@ -35,10 +35,18 @@ struct ContentView: View {
                     }
                 }
             } else {
-                Button {
-                    debugPrint("New Database")
-                } label: {
-                    Text("New Database")
+                VStack {
+                    Button {
+                        newDatabase()
+                    } label: {
+                        Text("New Database")
+                    }
+                    
+                    Button {
+                        openDatabase()
+                    } label: {
+                        Text("Open Database")
+                    }
                 }
                 .onAppear() {
                     initApp()
@@ -53,8 +61,8 @@ struct ContentView: View {
                     ToolbarItem (placement: .primaryAction) {
                         Menu {
                             Section("Primary Actions") {
-                                Button("New Database") { print("New database") }
-                                Button("Open Database") { print("Open database") }
+                                Button("New Database") { newDatabase() }
+                                Button("Open Database") { openDatabase() }
                             }
 
                             Divider()
@@ -82,15 +90,62 @@ struct ContentView: View {
         // Otherwise it's nil and we need to prompt the user for a new database
         //newDatabase()
     }
+
+    private func removeEntry(entry: RecentFileEntry) {
+        RecentFileEntry.deleteFileEntry(appDbPath: appContainer.appDbPath!, id: entry.id)
+        recentFileEntries.removeAll { $0.id == entry.id }
+    }
+
+    private func newDatabase() {
+            //macOS, iOS, watchOS, tvOS, visionOS, Linux, Windows
+    #if os(macOS)
+            // Prompt for location
+            let panel = NSSavePanel()
+            panel.canCreateDirectories = true
+            panel.allowedContentTypes = [UTType.database]
+            panel.nameFieldStringValue = "money_sqlite.mmr"
+            panel.isExtensionHidden = false
+            if panel.runModal() == .OK {
+                if let url = panel.url {
+                    debugPrint("Selected file: \(url.path)")
+                    appContainer.loadedSqliteDbPath = url.path
+                    DbController.createDatabase(appContainer: appContainer)
+                    loadedSqliteDbPath = url.path
+                    // update app database to add this as a recently opened item
+                }
+            }
+    #elseif os(iOS)
+            // show iPad and iOS
+            print ("iOS not implemented")
+            #else
+            print("Unknown OS detected")
+    #endif
+        }
+
+        private func openDatabase() {
+            #if os(macOS)
+                let panel = NSOpenPanel()
+                panel.canChooseFiles = true
+                panel.canChooseDirectories = false
+                panel.allowsMultipleSelection = false
+                if panel.runModal() == .OK {
+                    if let url = panel.url {
+                        debugPrint("Selected file: \(url.path)")
+                        appContainer.loadedSqliteDbPath = url.path
+                        RecentFileEntry.insertFilePath(appContainer: appContainer)
+                        appContainer.recentFileEntries = RecentFileEntry.getFileEntries(appDbPath: appContainer.appDbPath!)
+                        recentFileEntries = appContainer.recentFileEntries
+                        loadedSqliteDbPath = url.path
+                    }
+                }
+            #elseif os(iOS)
+                print("openDatabase not implemented for iOS")
+            #endif
+        }
 }
 
 #Preview {
-    do {
-        return ContentView()
-            .environmentObject(LocalAppStateContainer())
-            //.modelContainer(try Previewer().container)
-    } catch {
-        debugPrint("Failed: \(error.localizedDescription)")
-        return Text("Failed: \(error.localizedDescription)")
-    }
+    return ContentView()
+        .environmentObject(LocalAppStateContainer())
+        //.modelContainer(try Previewer().container)
 }

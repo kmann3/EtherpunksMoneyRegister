@@ -24,10 +24,6 @@ class DbController {
         TransactionFile.createTable(db: db)
         TransactionTag.createTable(db: db)
 
-        do {
-            try RecentFileEntry.insertFilePath(appContainer: appContainer)
-        } catch {
-            debugPrint(error.localizedDescription)
-        }
+        RecentFileEntry.insertFilePath(appContainer: appContainer)
     }
 }

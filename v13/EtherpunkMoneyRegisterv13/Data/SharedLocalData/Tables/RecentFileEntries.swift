@@ -96,6 +96,18 @@ final class RecentFileEntry: CustomDebugStringConvertible, Identifiable  {
         }
     }
 
+    public static func deleteFileEntry(appDbPath: String, id: UUID) {
+        do {
+            let db = try Connection(appDbPath)
+            let entries = Table("RecentFileEntry")
+            let dbId = Expression<String>("Id")
+            let entry = entries.filter(dbId == id.uuidString)
+            try db.run(entry.delete())
+        } catch {
+            debugPrint(error)
+        }
+    }
+
     public static func getFileEntries(appDbPath: String) -> [RecentFileEntry] {
         do {
             let db = try Connection(appDbPath)
