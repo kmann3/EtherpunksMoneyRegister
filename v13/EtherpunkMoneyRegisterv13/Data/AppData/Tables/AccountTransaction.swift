@@ -24,7 +24,7 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
     public var isTaxRelated: Bool = false
     public var files: [TransactionFile]? = nil
     public var account: Account? = nil
-    public var accountId: UUID
+    public var accountId: UUID? = nil
     public var transactionTags: [TransactionTag]? = nil
     public var balancedOn: Date? = nil
 

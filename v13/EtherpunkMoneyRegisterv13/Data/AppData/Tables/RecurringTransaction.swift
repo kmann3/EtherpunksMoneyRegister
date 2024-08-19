@@ -9,19 +9,20 @@ import Foundation
 import SQLite
 
 final class RecurringTransaction : ObservableObject, CustomDebugStringConvertible, Identifiable  {
-    var id: UUID = UUID()
-    var name: String = ""
-    var transactionType: TransactionType = TransactionType.debit
-    var amount: Decimal = 0
-    var notes: String = ""
-    var nextDueDate: Date? = nil
-    var transactionTags: [TransactionTag]? = nil
-    var group: RecurringTransactionGroup? = nil
-    var transactions: [AccountTransaction]? = nil
-    var frequency: RecurringFrequency = RecurringFrequency.unknown
-    var frequencyValue: Int? = nil
-    var frequencyDayOfWeek: DayOfWeek? = nil
-    var frequencyDateValue: Date? = nil
+    public var id: UUID = UUID()
+    public var name: String = ""
+    public var transactionType: TransactionType = TransactionType.debit
+    public var amount: Decimal = 0
+    public var notes: String = ""
+    public var nextDueDate: Date? = nil
+    public var transactionTags: [TransactionTag]? = nil
+    public var recurringTransactionGroup: RecurringTransactionGroup? = nil
+    public var recurringTransactionGroupId: UUID? = nil
+    public var transactions: [AccountTransaction]? = nil
+    public var frequency: RecurringFrequency = RecurringFrequency.unknown
+    public var frequencyValue: Int? = nil
+    public var frequencyDayOfWeek: DayOfWeek? = nil
+    public var frequencyDateValue: Date? = nil
     public var createdOnLocal: Date {
         get {
             let utcDateFormatter = DateFormatter()
@@ -60,11 +61,16 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
             Account:
             -  id: \(id)
             -  name: \(name)
-
-            
+            -  transactionType: \(transactionType)
+            -  amount: \(amount)
             -  notes: \(notes)
-
-
+            -  dueDate: \(nextDueDate)
+            -  recurringTransactionGroupId: \(recurringTransactionGroupId)
+            -  recurringTransactionGroup: \(recurringTransactionGroup)
+            -  frequency: \(frequency)
+            -  frequencyValue: \(frequencyValue)
+            -  frequencyDayOfWeek: \(frequencyDayOfWeek)
+            -  frequencyDate: \(frequencyDateValue)
             -  createdOnLocal: \(createdOnLocal)
             -  createdOnLocalString: \(createdOnLocalString)
             -  _createdOnUTC: \(_createdOnUTC)
@@ -73,22 +79,21 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
 
     private var _createdOnUTC: String = ""
 
-
     private static let recurringTransactionSqlTable = Table("RecurringTransaction")
     private static let idColumn = Expression<String>("Id")
     private static let nameColumn = Expression<String>("Name")
     private static let transactionTypeColumn = Expression<String>("TransactionType")
     private static let amountColumn = Expression<Double?>("Amount")
     private static let notesColumn = Expression<String>("Notes")
-    private static let dueDateColumn = Expression<String?>("NextDueDate")
+    private static let nextDueDateColumn = Expression<String?>("NextDueDate")
     private static let recurringTransactionGroupIdColumn = Expression<String?>("RecurringTransactionGroupId")
-    // frequency
-    // freq value
-    // freq day of week
-    // freq date value
+    private static let frequecyColumn = Expression<String>("Frequecy")
+    private static let frequencyValueColumn = Expression<String>("frequencyValue")
+    private static let frequencyDayOfWeekColumn = Expression<String>("FrequencyDayOfWeek")
+    private static let frequencyDateValueColumn = Expression<String>("FrequencyDateValue")
     private static let createdOnUTCColumn = Expression<String>("CreatedOnUTC")
 
-    init(id: UUID = UUID(), name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, transactionTags: [TransactionTag]? = [], group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = [], frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOnLocal: Date = Date()) {
+    init(id: UUID = UUID(), name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, transactionTags: [TransactionTag]? = [], recurringTransactionGroup: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = [], frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOnLocal: Date = Date()) {
         self.id = id
         self.name = name
         self.transactionType = transactionType
@@ -96,7 +101,7 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
         self.notes = notes
         self.nextDueDate = nextDueDate
         self.transactionTags = transactionTags
-        self.group = group
+        self.recurringTransactionGroup = recurringTransactionGroup
         self.transactions = transactions
         self.frequency = frequency
         self.frequencyValue = frequencyValue
@@ -112,7 +117,7 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
         case missingNextDueDate
     }
 
-    func BumpNextDueDate() throws {
+    public func BumpNextDueDate() throws {
         if self.nextDueDate == nil {
             throw BumpDateError.missingNextDueDate
         }
@@ -161,7 +166,6 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
         }
     }
 
-
     public static func createTable(appDbPath: String) {
         do {
             let db = try Connection(appDbPath)
@@ -169,11 +173,15 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
             try db.run(recurringTransactionSqlTable.create { t in
                 t.column(idColumn, primaryKey: true)
                 t.column(nameColumn)
-
-
+                t.column(transactionTypeColumn)
+                t.column(amountColumn)
                 t.column(notesColumn)
-
-
+                t.column(nextDueDateColumn)
+                t.column(recurringTransactionGroupIdColumn)
+                t.column(frequecyColumn)
+                t.column(frequencyValueColumn)
+                t.column(frequencyDayOfWeekColumn)
+                t.column(frequencyDateValueColumn)
                 t.column(createdOnUTCColumn)
             })
         } catch {

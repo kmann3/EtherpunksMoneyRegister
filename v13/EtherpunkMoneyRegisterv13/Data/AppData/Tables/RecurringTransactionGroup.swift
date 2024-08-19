@@ -6,44 +6,84 @@
 //
 
 import Foundation
-//import SwiftData
-import SQLite3
+import SQLite
 
-final class RecurringTransactionGroup {
-    var id: UUID = UUID()
-    var name: String = ""
-    var createdOn: Date = Date()
+final class RecurringTransactionGroup : ObservableObject, CustomDebugStringConvertible, Identifiable  {
+    public var id: UUID = UUID()
+    public var name: String = ""
+    public var recurringTransactions: [RecurringTransaction]?
 
-    var recurringTransactions: [RecurringTransaction]?
+    public var createdOnLocal: Date {
+        get {
+            let utcDateFormatter = DateFormatter()
+            utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
 
-    init(id: UUID = UUID(), name: String, createdOn: Date = Date(), recurringTransactions: [RecurringTransaction]? = []) {
-        self.id = id
-        self.name = name
-        self.createdOn = createdOn
-        self.recurringTransactions = recurringTransactions
+            if let utcDate = utcDateFormatter.date(from: _createdOnUTC) {
+                // Convert UTC Date to local time Date
+                let localTimeInterval = utcDate.timeIntervalSinceReferenceDate + TimeInterval(TimeZone.current.secondsFromGMT(for: utcDate))
+                return Date(timeIntervalSinceReferenceDate: localTimeInterval)
+            } else {
+                debugPrint("Failed to convert UTC string to Date object.")
+                return Date()
+            }
+        }
+        set {
+            // Convert local time to UTC
+            let utcDateFormatter = DateFormatter()
+            utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+            _createdOnUTC = utcDateFormatter.string(from: newValue)
+        }
     }
 
-    public static func createTable(db: OpaquePointer?) {
-        let createTableSqlString = """
-        CREATE TABLE "RecurringTransactionGroup" (
-            "Id" TEXT,
-            "Name" TEXT,
-            "CreatedOn" TEXT,
-            PRIMARY KEY("Id")
-        );
-        """
-
-        var createTableStatement: OpaquePointer? = nil
-        if sqlite3_prepare_v2(db, createTableSqlString, -1, &createTableStatement, nil) == SQLITE_OK {
-            let response = sqlite3_step(createTableStatement)
-            if response != SQLITE_DONE {
-                debugPrint("RecurringTransactionGroup table could not be created. Error: \(response)")
-                return
-            }
-        } else {
-            debugPrint("CREATE TABLE RecurringTransactionGroup statement could not be prepared.")
-            return
+    public var createdOnLocalString: String {
+        get {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm"
+            formatter.timeZone = .current
+            return createdOnLocal.formatted()
         }
-        sqlite3_finalize(createTableStatement)
+    }
+
+    public var debugDescription: String {
+            return """
+            Account:
+            -  id: \(id)
+            -  name: \(name)
+            -  createdOnLocal: \(createdOnLocal)
+            -  createdOnLocalString: \(createdOnLocalString)
+            -  _createdOnUTC: \(_createdOnUTC)
+            """
+    }
+
+    private var _createdOnUTC: String = ""
+
+    private static let recurringTransactionGroupSqlTable = Table("RecurringTransactionGroup")
+    private static let idColumn = Expression<String>("Id")
+    private static let accountIdColumn = Expression<String>("AccountId")
+    private static let nameColumn = Expression<String?>("Name")
+    private static let createdOnUTCColumn = Expression<String>("CreatedOnUTC")
+
+    init(id: UUID = UUID(), name: String, createdOnLocal: Date = Date(), recurringTransactions: [RecurringTransaction]? = []) {
+        self.id = id
+        self.name = name
+        self.recurringTransactions = recurringTransactions
+        self.createdOnLocal = createdOnLocal
+    }
+
+    public static func createTable(appDbPath: String) {
+        do {
+            let db = try Connection(appDbPath)
+
+            try db.run(recurringTransactionGroupSqlTable.create { t in
+                t.column(idColumn, primaryKey: true)
+                t.column(accountIdColumn)
+                t.column(nameColumn)
+                t.column(createdOnUTCColumn)
+            })
+        } catch {
+            debugPrint(error)
+        }
     }
 }

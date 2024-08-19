@@ -19,7 +19,7 @@ class DbController {
         //Account.createTable(db: db)
         //AccountTransaction.createTable(db: db)
         //RecurringTransaction.createTable(db: db)
-        RecurringTransactionGroup.createTable(db: db)
+        //RecurringTransactionGroup.createTable(db: db)
         RecurringTransactionTag.createTable(db: db)
         TransactionFile.createTable(db: db)
         TransactionTag.createTable(db: db)
@@ -31,7 +31,7 @@ class DbController {
         Account.createTable(appDbPath: appContainer.loadedSqliteDbPath!)
         AccountTransaction.createTable(appDbPath: appContainer.loadedSqliteDbPath!)
         RecurringTransaction.createTable(appDbPath: appContainer.loadedSqliteDbPath!)
-
+        RecurringTransactionGroup.createTable(appDbPath: appContainer.loadedSqliteDbPath!)
         RecentFileEntry.insertFilePath(appContainer: appContainer)
     }
 }
