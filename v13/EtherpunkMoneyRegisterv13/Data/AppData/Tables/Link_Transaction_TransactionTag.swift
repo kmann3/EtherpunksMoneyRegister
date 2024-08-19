@@ -1,17 +1,16 @@
 //
-//  Tag.swift
-//  EtherpunkMoneyRegister
+//  Link_Transaction_TransactionTag.swift
+//  EtherpunkMoneyRegisterv13
 //
-//  Created by Kennith Mann on 5/18/24.
+//  Created by Kennith Mann on 8/19/24.
 //
 
 import Foundation
 import SQLite
 
-final class TransactionTag : ObservableObject, CustomDebugStringConvertible, Identifiable  {
-    public var id: UUID = UUID()
-    public var name: String
-    public var accountTransactions: [AccountTransaction]? = nil
+final class Link_Transaction_TransactionTag : ObservableObject, CustomDebugStringConvertible, Identifiable  {
+    public var transactionId: UUID
+    public var transactionTagId: UUID
     public var createdOnLocal: Date {
         get {
             let utcDateFormatter = DateFormatter()
@@ -47,9 +46,9 @@ final class TransactionTag : ObservableObject, CustomDebugStringConvertible, Ide
 
     public var debugDescription: String {
             return """
-            TransactionTag:
-            -  id: \(id)
-            -  name: \(name)
+            RecurringTransactionTag:
+            -  transactionId: \(transactionId)
+            -  transactionTagId: \(transactionTagId)
             -  createdOnLocal: \(createdOnLocal)
             -  createdOnLocalString: \(createdOnLocalString)
             -  _createdOnUTC: \(_createdOnUTC)
@@ -58,20 +57,14 @@ final class TransactionTag : ObservableObject, CustomDebugStringConvertible, Ide
 
     private var _createdOnUTC: String = ""
 
-    private static let transactionTagSqlTable = Table("TransactionTag")
-    private static let idColumn = Expression<String>("Id")
-    private static let nameColumn = Expression<String>("Name")
+    private static let link_Transaction_TransactionTag = Table("Link_Transaction_TransactionTag.swift")
+    private static let transactionId = Expression<String>("transactionId")
+    private static let transactionTagIdColumn = Expression<String>("transactionTagIdColumn")
     private static let createdOnUTCColumn = Expression<String>("CreatedOnUTC")
 
-    init(
-        id: UUID = UUID(),
-        name: String,
-        accountTransactions: [AccountTransaction]? = nil,
-        createdOnLocal: Date = Date()
-    ) {
-        self.id = id
-        self.name = name
-        self.accountTransactions = accountTransactions
+    init(transactionId: UUID, transactionTagId: UUID, createdOnLocal: Date = Date()) {
+        self.transactionId = transactionId
+        self.transactionTagId = transactionTagId
         self.createdOnLocal = createdOnLocal
     }
 
@@ -79,9 +72,9 @@ final class TransactionTag : ObservableObject, CustomDebugStringConvertible, Ide
         do {
             let db = try Connection(appDbPath)
 
-            try db.run(transactionTagSqlTable.create { t in
-                t.column(idColumn, primaryKey: true)
-                t.column(nameColumn)
+            try db.run(link_Transaction_TransactionTag.create { t in
+                t.column(transactionId)
+                t.column(transactionTagIdColumn)
                 t.column(createdOnUTCColumn)
             })
         } catch {

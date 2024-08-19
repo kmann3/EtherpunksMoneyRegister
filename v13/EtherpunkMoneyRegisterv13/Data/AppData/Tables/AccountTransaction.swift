@@ -14,7 +14,7 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
     public var name: String = ""
     public var transactionType: TransactionType = TransactionType.debit
     public var amount: Decimal = 0
-    public var balance: Decimal = 0
+    public var balance: Decimal? = nil
     public var pending: Date? = nil
     public var cleared: Date? = nil
     public var notes: String = ""
@@ -91,7 +91,7 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
 
     public var debugDescription: String {
             return """
-            Account:
+            AccountTransaction:
             -  id: \(id)
             -  name: \(name)
             -  notes: \(notes)
@@ -106,9 +106,9 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
     private static let accountTransactionSqlTable = Table("AccountTransaction")
     private static let idColumn = Expression<String>("Id")
     private static let accountIdColumn = Expression<String>("AccountId")
-    private static let nameColumn = Expression<String?>("Name")
+    private static let nameColumn = Expression<String>("Name")
     private static let transactionTypeColumn = Expression<String>("TransactionType")
-    private static let amountColumn = Expression<Double?>("Amount")
+    private static let amountColumn = Expression<Double>("Amount")
     private static let balanceColumn = Expression<Double?>("Balance")
     private static let pendingColumn = Expression<String?>("PendingDate")
     private static let clearedColumn = Expression<String?>("ClearedDate")
@@ -119,7 +119,7 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
     private static let balancedOnColumn = Expression<String?>("BalancedOn")
     private static let createdOnUTCColumn = Expression<String>("CreatedOnUTC")
 
-    init(id: UUID = UUID(), account: Account, name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal = 0, pending: Date? = nil, cleared: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransaction: RecurringTransaction? = nil, files: [TransactionFile]? = [], transactionTags: [TransactionTag]? = [], isTaxRelated: Bool = false, dueDate: Date? = nil, balancedOn: Date? = nil, createdOnLocal: Date = Date()) {
+    init(id: UUID = UUID(), account: Account, name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal? = nil, pending: Date? = nil, cleared: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransaction: RecurringTransaction? = nil, files: [TransactionFile]? = [], transactionTags: [TransactionTag]? = [], isTaxRelated: Bool = false, dueDate: Date? = nil, balancedOn: Date? = nil, createdOnLocal: Date = Date()) {
         self.id = id
         self.account = account
         self.accountId = account.id
@@ -138,8 +138,6 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
         self.transactionTags = transactionTags
         self.balancedOn = balancedOn
         self.createdOnLocal = createdOnLocal
-
-        
 
         self.VerifySignage()
     }

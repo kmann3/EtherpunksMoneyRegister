@@ -24,6 +24,8 @@
 		AAB08CD22C721E8E00886600 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB08CD12C721E8E00886600 /* MainView.swift */; };
 		AAC881ED2C726551007273A8 /* AccountListViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC881EC2C726551007273A8 /* AccountListViewItem.swift */; };
 		AAC881F02C727579007273A8 /* AccountListViewItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC881EF2C727579007273A8 /* AccountListViewItemData.swift */; };
+		AAC881F22C733953007273A8 /* Link_RecurringTransaction_RecurringTransactionTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC881F12C733953007273A8 /* Link_RecurringTransaction_RecurringTransactionTag.swift */; };
+		AAC881F42C733AED007273A8 /* Link_Transaction_TransactionTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC881F32C733AED007273A8 /* Link_Transaction_TransactionTag.swift */; };
 		AAF22D062C64D0B9003EE8EB /* LocalAppContainerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF02C64D0B9003EE8EB /* LocalAppContainerState.swift */; };
 		AAF22D072C64D0B9003EE8EB /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF22C64D0B9003EE8EB /* Currency.swift */; };
 		AAF22D082C64D0B9003EE8EB /* CurrencyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF22CF32C64D0B9003EE8EB /* CurrencyCode.swift */; };
@@ -61,6 +63,8 @@
 		AAB08CD12C721E8E00886600 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		AAC881EC2C726551007273A8 /* AccountListViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewItem.swift; sourceTree = "<group>"; };
 		AAC881EF2C727579007273A8 /* AccountListViewItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewItemData.swift; sourceTree = "<group>"; };
+		AAC881F12C733953007273A8 /* Link_RecurringTransaction_RecurringTransactionTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link_RecurringTransaction_RecurringTransactionTag.swift; sourceTree = "<group>"; };
+		AAC881F32C733AED007273A8 /* Link_Transaction_TransactionTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link_Transaction_TransactionTag.swift; sourceTree = "<group>"; };
 		AAD812732C6E6B2C00C35C1A /* TestPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = TestPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		AAF22CEF2C609E27003EE8EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AAF22CF02C64D0B9003EE8EB /* LocalAppContainerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalAppContainerState.swift; sourceTree = "<group>"; };
@@ -173,6 +177,8 @@
 			children = (
 				AAF22CFD2C64D0B9003EE8EB /* Account.swift */,
 				AAF22CFE2C64D0B9003EE8EB /* AccountTransaction.swift */,
+				AAC881F12C733953007273A8 /* Link_RecurringTransaction_RecurringTransactionTag.swift */,
+				AAC881F32C733AED007273A8 /* Link_Transaction_TransactionTag.swift */,
 				AAF22D012C64D0B9003EE8EB /* RecurringTransaction.swift */,
 				AAF22D022C64D0B9003EE8EB /* RecurringTransactionGroup.swift */,
 				AA799D942C6B18F100B73E39 /* RecurringTransactionTag.swift */,
@@ -408,12 +414,14 @@
 				AAF22D0A2C64D0B9003EE8EB /* FileType.swift in Sources */,
 				AAF22D132C64D0B9003EE8EB /* Previewer.swift in Sources */,
 				AAF22D0D2C64D0B9003EE8EB /* Tab.swift in Sources */,
+				AAC881F22C733953007273A8 /* Link_RecurringTransaction_RecurringTransactionTag.swift in Sources */,
 				AAF22D0F2C64D0B9003EE8EB /* TransactionTypeEnum.swift in Sources */,
 				AAF22D142C64D0B9003EE8EB /* RecurringTransaction.swift in Sources */,
 				AA799D9C2C6E3B1C00B73E39 /* RecentFileEntries.swift in Sources */,
 				AA18E03F2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13App.swift in Sources */,
 				AA799D952C6B18F100B73E39 /* RecurringTransactionTag.swift in Sources */,
 				AAC881ED2C726551007273A8 /* AccountListViewItem.swift in Sources */,
+				AAC881F42C733AED007273A8 /* Link_Transaction_TransactionTag.swift in Sources */,
 				AAF22D082C64D0B9003EE8EB /* CurrencyCode.swift in Sources */,
 				AAF22D162C64D0B9003EE8EB /* TransactionFile.swift in Sources */,
 				AAC881F02C727579007273A8 /* AccountListViewItemData.swift in Sources */,

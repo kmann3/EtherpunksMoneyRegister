@@ -48,7 +48,7 @@ final class RecurringTransactionGroup : ObservableObject, CustomDebugStringConve
 
     public var debugDescription: String {
             return """
-            Account:
+            RecurringTransactionGroup:
             -  id: \(id)
             -  name: \(name)
             -  createdOnLocal: \(createdOnLocal)
@@ -61,11 +61,10 @@ final class RecurringTransactionGroup : ObservableObject, CustomDebugStringConve
 
     private static let recurringTransactionGroupSqlTable = Table("RecurringTransactionGroup")
     private static let idColumn = Expression<String>("Id")
-    private static let accountIdColumn = Expression<String>("AccountId")
-    private static let nameColumn = Expression<String?>("Name")
+    private static let nameColumn = Expression<String>("Name")
     private static let createdOnUTCColumn = Expression<String>("CreatedOnUTC")
 
-    init(id: UUID = UUID(), name: String, createdOnLocal: Date = Date(), recurringTransactions: [RecurringTransaction]? = []) {
+    init(id: UUID = UUID(), name: String = "", createdOnLocal: Date = Date(), recurringTransactions: [RecurringTransaction]? = []) {
         self.id = id
         self.name = name
         self.recurringTransactions = recurringTransactions
@@ -78,7 +77,6 @@ final class RecurringTransactionGroup : ObservableObject, CustomDebugStringConve
 
             try db.run(recurringTransactionGroupSqlTable.create { t in
                 t.column(idColumn, primaryKey: true)
-                t.column(accountIdColumn)
                 t.column(nameColumn)
                 t.column(createdOnUTCColumn)
             })

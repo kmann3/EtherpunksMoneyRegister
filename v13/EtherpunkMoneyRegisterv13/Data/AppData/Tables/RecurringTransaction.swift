@@ -58,7 +58,7 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
 
     public var debugDescription: String {
             return """
-            Account:
+            RecurringTransaction:
             -  id: \(id)
             -  name: \(name)
             -  transactionType: \(transactionType)
