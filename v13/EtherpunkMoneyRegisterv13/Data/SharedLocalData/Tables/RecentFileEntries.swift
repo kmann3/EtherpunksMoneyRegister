@@ -6,13 +6,9 @@
 //
 
 import Foundation
-import SQLite3
 import SQLite
 
 final class RecentFileEntry: CustomDebugStringConvertible, Identifiable  {
-
-    private var _createdOnUTC: String = ""
-
     public var id: UUID = UUID()
     public var path: String = ""
     public var createdOnLocal: Date {
@@ -48,17 +44,24 @@ final class RecentFileEntry: CustomDebugStringConvertible, Identifiable  {
         }
     }
 
-    var debugDescription: String {
+    public var debugDescription: String {
             return """
             RecentFileEntry:
             - id: \(id)
             - path: \(path)
-            - createdOnUTC: \(_createdOnUTC)
+            - _createdOnUTC: \(_createdOnUTC)
             - createdOnLocal: \(createdOnLocal)
             """
-        }
+    }
 
-    init(id: UUID, path: String, createdOnLocal: Date) {
+    private var _createdOnUTC: String = ""
+
+    public static let recentFileEntrySqlTable = Table("RecentFileEntry")
+    public static let idColumn = Expression<String>("Id")
+    public static let pathColumn = Expression<String>("Path")
+    public static let createdOnUTCColumn = Expression<String>("CreatedOnUTC")
+
+    init(id: UUID, path: String, createdOnLocal: Date = Date()) {
         self.id = id
         self.path = path
         self.createdOnLocal = createdOnLocal
@@ -81,15 +84,10 @@ final class RecentFileEntry: CustomDebugStringConvertible, Identifiable  {
         do {
             let db = try Connection(appDbPath)
 
-            let recentFileEntry = Table("RecentFileEntry")
-            let id = Expression<String>("Id")
-            let path = Expression<String>("path")
-            let createdOn = Expression<String>("CreatedOnUTC")
-
-            try db.run(recentFileEntry.create { t in
-                t.column(id, primaryKey: true)
-                t.column(path, unique: true)
-                t.column(createdOn)
+            try db.run(recentFileEntrySqlTable.create { t in
+                t.column(idColumn, primaryKey: true)
+                t.column(pathColumn, unique: true)
+                t.column(createdOnUTCColumn)
             })
         } catch {
             debugPrint(error)
@@ -99,9 +97,8 @@ final class RecentFileEntry: CustomDebugStringConvertible, Identifiable  {
     public static func deleteFileEntry(appDbPath: String, id: UUID) {
         do {
             let db = try Connection(appDbPath)
-            let entries = Table("RecentFileEntry")
-            let dbId = Expression<String>("Id")
-            let entry = entries.filter(dbId == id.uuidString)
+
+            let entry = recentFileEntrySqlTable.filter(idColumn == id.uuidString)
             try db.run(entry.delete())
         } catch {
             debugPrint(error)
@@ -114,17 +111,12 @@ final class RecentFileEntry: CustomDebugStringConvertible, Identifiable  {
 
             var returnArray: [RecentFileEntry] = []
 
-            let recentFileEntry = Table("RecentFileEntry")
-            let id = Expression<String>("Id")
-            let path = Expression<String>("path")
-            let createdOn = Expression<String>("CreatedOnUTC")
-
-            let query = recentFileEntry.order(createdOn.desc)
+            let query = recentFileEntrySqlTable.order(createdOnUTCColumn.desc)
 
             for entry in try db.prepare(query) {
-                let id_val: UUID = UUID(uuidString: entry[id])!
-                let path_val: String = entry[path]
-                let createdOn_val: String = entry[createdOn]
+                let id_val: UUID = UUID(uuidString: entry[idColumn])!
+                let path_val: String = entry[pathColumn]
+                let createdOn_val: String = entry[createdOnUTCColumn]
                 let newEntry = RecentFileEntry(id: id_val, path: path_val, createdOnUTC: createdOn_val)
                 returnArray.append(newEntry)
                 debugPrint(newEntry)
@@ -140,6 +132,7 @@ final class RecentFileEntry: CustomDebugStringConvertible, Identifiable  {
     public static func insertFilePath(appContainer: LocalAppStateContainer) {
         if(appContainer.appDbPath == nil || appContainer.loadedSqliteDbPath == nil) {
             debugPrint("path error: app:\(appContainer.appDbPath ?? "") | db:\(appContainer.loadedSqliteDbPath ?? "") ")
+            return
         }
 
         // Get a list of the entries and make sure we aren't duplicating anything
@@ -155,11 +148,6 @@ final class RecentFileEntry: CustomDebugStringConvertible, Identifiable  {
         do {
             let db = try Connection(appContainer.appDbPath!)
 
-            let recentFileEntry = Table("RecentFileEntry")
-            let id = Expression<String>("Id")
-            let path = Expression<String>("Path")
-            let createdOn = Expression<String>("CreatedOnUTC")
-
             let id_val: String = UUID().uuidString
             let path_val: String = appContainer.loadedSqliteDbPath!
 
@@ -168,7 +156,7 @@ final class RecentFileEntry: CustomDebugStringConvertible, Identifiable  {
             utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
             let createdOnUtc_val: String = utcDateFormatter.string(from: Date())
 
-            let insert = recentFileEntry.insert(id <- id_val, path <- path_val, createdOn <- createdOnUtc_val)
+            let insert = recentFileEntrySqlTable.insert(idColumn <- id_val, pathColumn <- path_val, createdOnUTCColumn <- createdOnUtc_val)
             try db.run(insert)
         } catch {
             print (error)

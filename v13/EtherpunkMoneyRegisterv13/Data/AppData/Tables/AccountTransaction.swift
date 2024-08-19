@@ -6,38 +6,35 @@
 //
 
 import Foundation
-import SQLite3
+import SQLite
 import SwiftUI
 
-final class AccountTransaction {
-    var id: UUID = UUID()
-    var name: String = ""
-    var transactionType: TransactionType = TransactionType.debit
-    var amount: Decimal = 0
-    var balance: Decimal = 0
-    var pending: Date? = nil
-    var cleared: Date? = nil
-    var notes: String = ""
-    var confirmationNumber: String = ""
-    var recurringTransaction: RecurringTransaction? = nil
-    var dueDate: Date? = nil
-    var isTaxRelated: Bool = false
-    var files: [TransactionFile]? = nil
-    var account: Account? = nil
-
-    // The id of the account this belongs to. This is required because predicates don't allow you to filter on other models.
-    var accountId: UUID
-    var transactionTags: [TransactionTag]? = nil
-    var balancedOn: Date? = nil
-    var createdOn: Date = Date()
+final class AccountTransaction : ObservableObject, CustomDebugStringConvertible, Identifiable  {
+    public var id: UUID = UUID()
+    public var name: String = ""
+    public var transactionType: TransactionType = TransactionType.debit
+    public var amount: Decimal = 0
+    public var balance: Decimal = 0
+    public var pending: Date? = nil
+    public var cleared: Date? = nil
+    public var notes: String = ""
+    public var confirmationNumber: String = ""
+    public var recurringTransaction: RecurringTransaction? = nil
+    public var dueDate: Date? = nil
+    public var isTaxRelated: Bool = false
+    public var files: [TransactionFile]? = nil
+    public var account: Account? = nil
+    public var accountId: UUID
+    public var transactionTags: [TransactionTag]? = nil
+    public var balancedOn: Date? = nil
 
     /// The amount of files associated with the transaction.
-    var fileCount: Int {
+    public var fileCount: Int {
         self.files?.count ?? 0
     }
 
     /// The background color indicating the status of the transaction.
-    var backgroundColor: Color {
+    public var backgroundColor: Color {
         switch self.transactionStatus {
         case .cleared:
             Color.clear
@@ -49,7 +46,7 @@ final class AccountTransaction {
     }
 
     /// The inferred status of the transaction.
-    var transactionStatus: TransactionStatus {
+    public var transactionStatus: TransactionStatus {
         if self.pending == nil && self.cleared == nil {
             return .reserved
         } else if self.pending != nil && self.cleared == nil {
@@ -59,9 +56,73 @@ final class AccountTransaction {
         }
     }
 
-    init(id: UUID = UUID(), account: Account, name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal = 0, pending: Date? = nil, cleared: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransaction: RecurringTransaction? = nil, files: [TransactionFile]? = [], transactionTags: [TransactionTag]? = [], isTaxRelated: Bool = false, dueDate: Date? = nil, balancedOn: Date? = nil, createdOn: Date = Date()) {
+    public var createdOnLocal: Date {
+        get {
+            let utcDateFormatter = DateFormatter()
+            utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+
+            if let utcDate = utcDateFormatter.date(from: _createdOnUTC) {
+                // Convert UTC Date to local time Date
+                let localTimeInterval = utcDate.timeIntervalSinceReferenceDate + TimeInterval(TimeZone.current.secondsFromGMT(for: utcDate))
+                return Date(timeIntervalSinceReferenceDate: localTimeInterval)
+            } else {
+                debugPrint("Failed to convert UTC string to Date object.")
+                return Date()
+            }
+        }
+        set {
+            // Convert local time to UTC
+            let utcDateFormatter = DateFormatter()
+            utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+            _createdOnUTC = utcDateFormatter.string(from: newValue)
+        }
+    }
+
+    public var createdOnLocalString: String {
+        get {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm"
+            formatter.timeZone = .current
+            return createdOnLocal.formatted()
+        }
+    }
+
+    public var debugDescription: String {
+            return """
+            Account:
+            -  id: \(id)
+            -  name: \(name)
+            -  notes: \(notes)
+            -  createdOnLocal: \(createdOnLocal)
+            -  createdOnLocalString: \(createdOnLocalString)
+            -  _createdOnUTC: \(_createdOnUTC)
+            """
+    }
+
+    private var _createdOnUTC: String = ""
+
+    private static let accountTransactionSqlTable = Table("AccountTransaction")
+    private static let idColumn = Expression<String>("Id")
+    private static let accountIdColumn = Expression<String>("AccountId")
+    private static let nameColumn = Expression<String?>("Name")
+    private static let transactionTypeColumn = Expression<String>("TransactionType")
+    private static let amountColumn = Expression<Double?>("Amount")
+    private static let balanceColumn = Expression<Double?>("Balance")
+    private static let pendingColumn = Expression<String?>("PendingDate")
+    private static let clearedColumn = Expression<String?>("ClearedDate")
+    private static let notesColumn = Expression<String>("Notes")
+    private static let confirmationColumn = Expression<String>("ConfirmationNumber")
+    private static let isTaxRelatedColumn = Expression<Bool>("IsTaxRelated")
+    private static let dueDateColumn = Expression<String?>("DueDate")
+    private static let balancedOnColumn = Expression<String?>("BalancedOn")
+    private static let createdOnUTCColumn = Expression<String>("CreatedOnUTC")
+
+    init(id: UUID = UUID(), account: Account, name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal = 0, pending: Date? = nil, cleared: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransaction: RecurringTransaction? = nil, files: [TransactionFile]? = [], transactionTags: [TransactionTag]? = [], isTaxRelated: Bool = false, dueDate: Date? = nil, balancedOn: Date? = nil, createdOnLocal: Date = Date()) {
         self.id = id
         self.account = account
+        self.accountId = account.id
         self.name = name
         self.transactionType = transactionType
         self.amount = amount
@@ -76,9 +137,9 @@ final class AccountTransaction {
         self.files = files
         self.transactionTags = transactionTags
         self.balancedOn = balancedOn
-        self.createdOn = createdOn
+        self.createdOnLocal = createdOnLocal
 
-        self.accountId = account.id
+        
 
         self.VerifySignage()
     }
@@ -92,61 +153,34 @@ final class AccountTransaction {
         }
     }
 
-    public static func createTable(db: OpaquePointer?) {
-        let createTableSqlString = """
-        CREATE TABLE "AccountTransaction" (
-            "Id" TEXT,
-            "Name" TEXT,
-            "AccountId" TEXT,
-            "TransactionType" TEXT,
-            "IsTaxRelated" INTEGER,
-            "RecurringTransactionId" TEXT,
-            "BalancedOn" TEXT,
-            "ClearedOn" TEXT,
-            "DueDate" TEXT,
-            "Pending" TEXT,
-            "Amount" REAL,
-            "Balance" REAL,
-            "ConfirmationNumber" TEXT,
-            "Notes" TEXT,
-            "CreatedOn" TEXT,
-            PRIMARY KEY("Id")
-        );
-        """
+    public static func createTable(appDbPath: String) {
+        do {
+            let db = try Connection(appDbPath)
 
-        var createTableStatement: OpaquePointer? = nil
-        if sqlite3_prepare_v2(db, createTableSqlString, -1, &createTableStatement, nil) == SQLITE_OK {
-            let response = sqlite3_step(createTableStatement)
-            if response != SQLITE_DONE {
-                debugPrint("AccountTransaction table could not be created. Error: \(response)")
-                return
-            }
-        } else {
-            debugPrint("CREATE TABLE AccountTransaction statement could not be prepared.")
-            return
+            try db.run(accountTransactionSqlTable.create { t in
+                t.column(idColumn, primaryKey: true)
+                t.column(accountIdColumn)
+                t.column(nameColumn)
+                t.column(transactionTypeColumn)
+                t.column(amountColumn)
+                t.column(balanceColumn)
+                t.column(pendingColumn)
+                t.column(clearedColumn)
+                t.column(notesColumn)
+                t.column(confirmationColumn)
+                t.column(isTaxRelatedColumn)
+                t.column(dueDateColumn)
+                t.column(balancedOnColumn)
+                t.column(createdOnUTCColumn)
+            })
+        } catch {
+            debugPrint(error)
         }
-        sqlite3_finalize(createTableStatement)
     }
 
-    public func getTransactions(appContainer: LocalAppStateContainer, currentPage: Int = 0) throws -> [AccountTransaction] {
+    public func getTransactions(appContainer: LocalAppStateContainer, currentPage: Int = 0) -> [AccountTransaction] {
 
-        if(appContainer.loadedSqliteDbPath == nil) {
-            throw SqlError.databaseNotFound
-        }
-
-        if let db = SqliteActions.openDatabase(at: appContainer.loadedSqliteDbPath!) {
-            defer {
-                SqliteActions.closeDatabase(db: db)
-            }
-
-            debugPrint("Hello")
-            //createTables(db: db)
-            //insertVersionData(db: db)
-
-            return []
-        } else {
-            throw SqlError.openDatabaseError
-        }
+        return []
     }
 
 //    func SaveTransaction(modelContext: ModelContext, transaction: AccountTransaction, name: String, amount: Decimal) {

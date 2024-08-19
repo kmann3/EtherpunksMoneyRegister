@@ -9,7 +9,9 @@ import Foundation
 import SQLite3
 
 class DesktopDbController {
+
     public static func createDatabase(path: String) {
         RecentFileEntry.createTable(appDbPath: path)
+        // More tables may come
     }
 }

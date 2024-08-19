@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import SQLite3
+import SQLite
 
-final class RecurringTransaction {
+final class RecurringTransaction : ObservableObject, CustomDebugStringConvertible, Identifiable  {
     var id: UUID = UUID()
     var name: String = ""
     var transactionType: TransactionType = TransactionType.debit
@@ -22,9 +22,73 @@ final class RecurringTransaction {
     var frequencyValue: Int? = nil
     var frequencyDayOfWeek: DayOfWeek? = nil
     var frequencyDateValue: Date? = nil
-    var createdOn: Date = Date()
+    public var createdOnLocal: Date {
+        get {
+            let utcDateFormatter = DateFormatter()
+            utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
 
-    init(id: UUID = UUID(), name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, transactionTags: [TransactionTag]? = [], group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = [], frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOn: Date = Date()) {
+            if let utcDate = utcDateFormatter.date(from: _createdOnUTC) {
+                // Convert UTC Date to local time Date
+                let localTimeInterval = utcDate.timeIntervalSinceReferenceDate + TimeInterval(TimeZone.current.secondsFromGMT(for: utcDate))
+                return Date(timeIntervalSinceReferenceDate: localTimeInterval)
+            } else {
+                debugPrint("Failed to convert UTC string to Date object.")
+                return Date()
+            }
+        }
+        set {
+            // Convert local time to UTC
+            let utcDateFormatter = DateFormatter()
+            utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+            _createdOnUTC = utcDateFormatter.string(from: newValue)
+        }
+    }
+
+    public var createdOnLocalString: String {
+        get {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm"
+            formatter.timeZone = .current
+            return createdOnLocal.formatted()
+        }
+    }
+
+    public var debugDescription: String {
+            return """
+            Account:
+            -  id: \(id)
+            -  name: \(name)
+
+            
+            -  notes: \(notes)
+
+
+            -  createdOnLocal: \(createdOnLocal)
+            -  createdOnLocalString: \(createdOnLocalString)
+            -  _createdOnUTC: \(_createdOnUTC)
+            """
+    }
+
+    private var _createdOnUTC: String = ""
+
+
+    private static let recurringTransactionSqlTable = Table("RecurringTransaction")
+    private static let idColumn = Expression<String>("Id")
+    private static let nameColumn = Expression<String>("Name")
+    private static let transactionTypeColumn = Expression<String>("TransactionType")
+    private static let amountColumn = Expression<Double?>("Amount")
+    private static let notesColumn = Expression<String>("Notes")
+    private static let dueDateColumn = Expression<String?>("NextDueDate")
+    private static let recurringTransactionGroupIdColumn = Expression<String?>("RecurringTransactionGroupId")
+    // frequency
+    // freq value
+    // freq day of week
+    // freq date value
+    private static let createdOnUTCColumn = Expression<String>("CreatedOnUTC")
+
+    init(id: UUID = UUID(), name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, transactionTags: [TransactionTag]? = [], group: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = [], frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOnLocal: Date = Date()) {
         self.id = id
         self.name = name
         self.transactionType = transactionType
@@ -38,7 +102,7 @@ final class RecurringTransaction {
         self.frequencyValue = frequencyValue
         self.frequencyDayOfWeek = frequencyDayOfWeek
         self.frequencyDateValue = frequencyDateValue
-        self.createdOn = createdOn
+        self.createdOnLocal = createdOnLocal
 
         self.VerifySignage()
     }
@@ -88,7 +152,7 @@ final class RecurringTransaction {
         }
     }
 
-    func VerifySignage() {
+    private func VerifySignage() {
         switch self.transactionType {
         case .credit:
             self.amount = abs(self.amount)
@@ -97,36 +161,23 @@ final class RecurringTransaction {
         }
     }
 
-    public static func createTable(db: OpaquePointer?) {
-        let createTableSqlString = """
-        CREATE TABLE "RecurringTransaction" (
-            "Id" TEXT,
-            "Name" TEXT,
-            "TransactionType" TEXT,
-            "Amount" REAL,
-            "Notes" TEXT,
-            "NextDueDate" TEXT,
-            "RecurringTransactionGroupId" TEXT,
-            "Frequency" TEXT,
-            "FrequencyValue" INTEGER,
-            "FrequencyDayOfWeek" TEXT,
-            "FrqeuencyDateValue" TEXT,
-            "CreatedOn" TEXT,
-            PRIMARY KEY("Id")
-        );
-        """
 
-        var createTableStatement: OpaquePointer? = nil
-        if sqlite3_prepare_v2(db, createTableSqlString, -1, &createTableStatement, nil) == SQLITE_OK {
-            let response = sqlite3_step(createTableStatement)
-            if response != SQLITE_DONE {
-                debugPrint("RecurringTransaction table could not be created. Error: \(response)")
-                return
-            }
-        } else {
-            debugPrint("CREATE TABLE RecurringTransaction statement could not be prepared.")
-            return
+    public static func createTable(appDbPath: String) {
+        do {
+            let db = try Connection(appDbPath)
+
+            try db.run(recurringTransactionSqlTable.create { t in
+                t.column(idColumn, primaryKey: true)
+                t.column(nameColumn)
+
+
+                t.column(notesColumn)
+
+
+                t.column(createdOnUTCColumn)
+            })
+        } catch {
+            debugPrint(error)
         }
-        sqlite3_finalize(createTableStatement)
     }
 }
