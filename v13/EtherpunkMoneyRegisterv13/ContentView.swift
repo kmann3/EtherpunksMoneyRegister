@@ -19,33 +19,63 @@ struct ContentView: View {
     var body: some View {
         if loadedSqliteDbPath == nil {
             if !recentFileEntries.isEmpty {
-                List(recentFileEntries) { row in
-                    HStack {
-                        Text(row.path)
-                        Text(row.createdOnLocalString)
-                        Spacer()
-                        Button(role: .destructive) {
-                            removeEntry(entry: row)
-                        } label: {
-                            Label("Delete", systemImage: "trash")
+                VStack {
+                    List(recentFileEntries) { row in
+                        HStack {
+                            Spacer()
+                            Button() {
+                                newDatabase()
+                            } label: {
+                                Label("New", systemImage: "doc")
+                            }
+                            .padding()
+
+                            Spacer()
+
+                            Button() {
+                                openDatabase()
+                            } label: {
+                                Label("Open", systemImage: "square.and.arrow.up")
+                            }
+                            .padding()
+
+                            Spacer()
                         }
-                    }
-                    .onTapGesture {
-                        loadedSqliteDbPath = row.path
+                        HStack {
+                            Text(row.path)
+                            Text(row.createdOnLocalString)
+                            Spacer()
+                            Button(role: .destructive) {
+                                removeEntry(entry: row)
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
+                        .onTapGesture {
+                            loadedSqliteDbPath = row.path
+                        }
                     }
                 }
             } else {
                 VStack {
-                    Button {
-                        newDatabase()
-                    } label: {
-                        Text("New Database")
-                    }
-                    
-                    Button {
-                        openDatabase()
-                    } label: {
-                        Text("Open Database")
+                    HStack {
+                        Spacer()
+                        Button() {
+                            newDatabase()
+                        } label: {
+                            Label("New", systemImage: "doc")
+                        }
+                        .padding()
+
+                        Spacer()
+
+                        Button() {
+                            openDatabase()
+                        } label: {
+                            Label("Open", systemImage: "square.and.arrow.up")
+                        }
+                        .padding()
+                        Spacer()
                     }
                 }
                 .onAppear() {
@@ -54,6 +84,7 @@ struct ContentView: View {
                     loadedSqliteDbPath = appContainer.loadedSqliteDbPath
                 }
             }
+
 
         } else {
             MainView()
@@ -87,8 +118,9 @@ struct ContentView: View {
             return
         }
 
-        // Otherwise it's nil and we need to prompt the user for a new database
-        //newDatabase()
+        if appContainer.recentFileEntries.count == 0 {
+            newDatabase()
+        }
     }
 
     private func removeEntry(entry: RecentFileEntry) {
@@ -144,8 +176,41 @@ struct ContentView: View {
         }
 }
 
-#Preview {
+#Preview("Empty AppDb", traits: .fixedLayout(width: 750, height: 500)) {
     return ContentView()
         .environmentObject(LocalAppStateContainer())
-        //.modelContainer(try Previewer().container)
+    //.modelContainer(try Previewer().container)
+}
+
+#Preview("Filled AppDb - no Sql", traits: .fixedLayout(width: 750, height: 500)) {
+    var container = LocalAppStateContainer()
+
+    let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+    let url = NSURL(fileURLWithPath: path)
+    if let pathComponent = url.appendingPathComponent("emr_appdata.sqlite3.emr") {
+        container.appDbPath = pathComponent.path()
+    } else {
+        container.appDbPath = ""
+        debugPrint("ERROR LOADING APP DB")
+    }
+
+    return ContentView()
+        .environmentObject(container)
+}
+
+#Preview("Filled AppDb - w/ Sql", traits: .fixedLayout(width: 750, height: 500)) {
+    var container = LocalAppStateContainer()
+    container.loadedSqliteDbPath = "/Users/kennithmann/Downloads/money_sqlite.mmr"
+
+    let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+    let url = NSURL(fileURLWithPath: path)
+    if let pathComponent = url.appendingPathComponent("emr_appdata.sqlite3.emr") {
+        container.appDbPath = pathComponent.path()
+    } else {
+        container.appDbPath = ""
+        debugPrint("ERROR LOADING APP DB")
+    }
+
+    return ContentView()
+        .environmentObject(container)
 }

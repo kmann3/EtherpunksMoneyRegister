@@ -9,10 +9,10 @@ import Foundation
 import SQLite3
 
 class LocalAppStateContainer: ObservableObject {
-    var loadedSqliteDbPath: String? = nil
-    var defaultAccount: Account? = nil
-    var appDbPath: String? = nil
-    var recentFileEntries: [RecentFileEntry] = []
+    public var loadedSqliteDbPath: String? = nil
+    public var defaultAccount: Account? = nil
+    public var appDbPath: String? = nil
+    public var recentFileEntries: [RecentFileEntry] = []
 
     public func loadAppData() {
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
