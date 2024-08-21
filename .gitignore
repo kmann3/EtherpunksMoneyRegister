@@ -364,3 +364,4 @@ MigrationBackup/
 *.zip
 /v8-WPFMannsMoneyRegister/MMR.sqlite3-shm
 /v8-WPFMannsMoneyRegister/MMR.sqlite3-wal
+/v13/TestPlayground.playground
