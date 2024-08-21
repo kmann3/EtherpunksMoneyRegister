@@ -42,22 +42,29 @@ struct ContentView: View {
 
                 List(recentFileEntries) { row in
                     HStack {
-                        Text(row.path)
-                        Text(row.createdOnLocalString)
+                        VStack (alignment: .leading) {
+                            Text("Location: \(row.path)")
+                            Text("Created On: \(row.createdOnLocalString)")
+                        }
                         Spacer()
                         Button(role: .destructive) {
+                            // We should confirm first
                             removeEntry(entry: row)
                         } label: {
-                            Label("Delete", systemImage: "trash")
+                            // Make this a red icon
+                            Label("", systemImage: "trash")
                         }
-                    }
-                    .onAppear() {
-                        debugPrint("Row: \(row.path)")
                     }
                     .onTapGesture {
                         loadedSqliteDbPath = row.path
                     }
+                    .onLongPressGesture {
+                        // Show a menu
+                        // open up in Finder
+                        // Delete
+                    }
                 }
+                .listStyle(.bordered)
             } else {
                 MainView()
             }
@@ -82,23 +89,12 @@ struct ContentView: View {
             }
         }
         .onAppear() {
-
             initApp()
-            debugPrint("loading...")
-            debugPrint("\(recentFileEntries.count)")
         }
     }
     private func initApp() {
         appContainer.loadAppData()
-        if appContainer.loadedSqliteDbPath != nil {
-            return
-        }
-
-        if appContainer.recentFileEntries.count == 0 {
-            newDatabase()
-        } else {
-            recentFileEntries = appContainer.recentFileEntries
-        }
+        recentFileEntries = appContainer.recentFileEntries
     }
 
     private func removeEntry(entry: RecentFileEntry) {
@@ -108,6 +104,10 @@ struct ContentView: View {
 
     private func newDatabase() {
             //macOS, iOS, watchOS, tvOS, visionOS, Linux, Windows
+
+        // Check date/time to see if it's set to manual or automatic
+        // Manual date time and screw with UTC because these aren't a "real" time.
+        // We should warn the user that this is a bad idea
     #if os(macOS)
             // Prompt for location
             let panel = NSSavePanel()
@@ -155,13 +155,9 @@ struct ContentView: View {
 }
 
 #Preview("Empty AppDb", traits: .fixedLayout(width: 750, height: 500)) {
-    return ContentView()
-        .environmentObject(LocalAppStateContainer())
-    //.modelContainer(try Previewer().container)
-}
-
-#Preview("Filled AppDb - no Sql", traits: .fixedLayout(width: 750, height: 500)) {
     var container = LocalAppStateContainer()
+    container.makeAppDbNew = true
+    container.setRecentListToZero = true
 
     let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
     let url = NSURL(fileURLWithPath: path)
@@ -174,22 +170,25 @@ struct ContentView: View {
 
     return ContentView()
         .environmentObject(container)
+    //.modelContainer(try Previewer().container)
+}
+
+#Preview("Filled AppDb - no Sql", traits: .fixedLayout(width: 750, height: 500)) {
+    var container = LocalAppStateContainer()
+    container.setRecentListToZero = true
+    container.appDbPath = container.getAppDbPath()
+
+    return ContentView()
+        .environmentObject(container)
 }
 
 #Preview("Filled AppDb - w/ Sql", traits: .fixedLayout(width: 750, height: 500)) {
     var container = LocalAppStateContainer()
-
-
-    let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-    let url = NSURL(fileURLWithPath: path)
-    if let pathComponent = url.appendingPathComponent("emr_appdata.sqlite3.emr") {
-        container.appDbPath = pathComponent.path()
-    } else {
-        container.appDbPath = ""
-        debugPrint("ERROR LOADING APP DB")
-    }
-
     container.loadedSqliteDbPath = "/Users/kennithmann/Downloads/money_sqlite.mmr"
+    container.recentFileEntries.append(RecentFileEntry(path: container.loadedSqliteDbPath!))
+    container.recentFileEntries.append(RecentFileEntry(path: container.loadedSqliteDbPath!))
+    container.recentFileEntries.append(RecentFileEntry(path: container.loadedSqliteDbPath!))
+    container.appDbPath = container.getAppDbPath()
 
     return ContentView()
         .environmentObject(container)

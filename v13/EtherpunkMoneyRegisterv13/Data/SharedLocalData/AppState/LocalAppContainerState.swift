@@ -14,27 +14,49 @@ class LocalAppStateContainer: ObservableObject {
     public var appDbPath: String? = nil
     public var recentFileEntries: [RecentFileEntry] = []
 
+    public var setRecentListToZero: Bool = false
+    public var makeAppDbNew: Bool = false
+
     public func loadAppData() {
+
+        let fileManager = FileManager.default
+        let filePath = getAppDbPath()
+        debugPrint(filePath)
+        do {
+            if makeAppDbNew {
+                try fileManager.removeItem(atPath: filePath)
+            }
+        } catch {
+            print("Error deleting AppDb: \(error)")
+        }
+
+
+        if fileManager.fileExists(atPath: filePath) {
+            // Then we open it and see if we have a default entry or a recent entry
+            appDbPath = filePath
+            debugPrint("FILE AVAILABLE at: \(filePath); Let's query it.")
+
+            if !setRecentListToZero && recentFileEntries.count == 0 {
+                recentFileEntries = RecentFileEntry.getFileEntries(appDbPath: filePath)
+                // Now we go through the file entries and get the size of the database
+            }
+            debugPrint("Got data. Item count: \(recentFileEntries.count)")
+        } else {
+            // Then we create it, and keep the path as nil so we know there isn't one made - probably a first time install
+            debugPrint("FILE NOT AVAILABLE - Creating new file at: \(filePath)")
+            createNewAppDatabase(appDatabasePath: filePath)
+            appDbPath = filePath
+        }
+    }
+
+    public func getAppDbPath() -> String {
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let url = NSURL(fileURLWithPath: path)
         if let pathComponent = url.appendingPathComponent("emr_appdata.sqlite3.emr") {
-            let filePath = pathComponent.path
-            let fileManager = FileManager.default
-            if fileManager.fileExists(atPath: filePath) {
-                // Then we open it and see if we have a default entry or a recent entry
-                appDbPath = filePath
-                debugPrint("FILE AVAILABLE at: \(filePath); Let's query it.")
-
-                recentFileEntries = RecentFileEntry.getFileEntries(appDbPath: filePath)
-                debugPrint("Got data. Item count: \(recentFileEntries.count)")
-            } else {
-                // Then we create it, and keep the path as nil so we know there isn't one made - probably a first time install
-                debugPrint("FILE NOT AVAILABLE - Creating new file at: \(filePath)")
-                createNewAppDatabase(appDatabasePath: pathComponent.path)
-                appDbPath = pathComponent.path
-            }
+            return pathComponent.path
         } else {
-            debugPrint("FILE PATH NOT AVAILABLE")
+            debugPrint("Error finding path")
+            return ""
         }
     }
 
