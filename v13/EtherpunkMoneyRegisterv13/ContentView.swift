@@ -17,99 +17,75 @@ struct ContentView: View {
     @State var loadedSqliteDbPath: String? = nil
 
     var body: some View {
-        if loadedSqliteDbPath == nil {
-            if !recentFileEntries.isEmpty {
-                VStack {
-                    List(recentFileEntries) { row in
-                        HStack {
-                            Spacer()
-                            Button() {
-                                newDatabase()
-                            } label: {
-                                Label("New", systemImage: "doc")
-                            }
-                            .padding()
+        VStack {
+            if loadedSqliteDbPath == nil {
+                HStack {
+                    Spacer()
+                    Button() {
+                        newDatabase()
+                    } label: {
+                        Label("New", systemImage: "doc")
+                    }
+                    .padding()
 
-                            Spacer()
+                    Spacer()
 
-                            Button() {
-                                openDatabase()
-                            } label: {
-                                Label("Open", systemImage: "square.and.arrow.up")
-                            }
-                            .padding()
+                    Button() {
+                        openDatabase()
+                    } label: {
+                        Label("Open", systemImage: "square.and.arrow.up")
+                    }
+                    .padding()
 
-                            Spacer()
+                    Spacer()
+                }
+
+                List(recentFileEntries) { row in
+                    HStack {
+                        Text(row.path)
+                        Text(row.createdOnLocalString)
+                        Spacer()
+                        Button(role: .destructive) {
+                            removeEntry(entry: row)
+                        } label: {
+                            Label("Delete", systemImage: "trash")
                         }
-                        HStack {
-                            Text(row.path)
-                            Text(row.createdOnLocalString)
-                            Spacer()
-                            Button(role: .destructive) {
-                                removeEntry(entry: row)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        }
-                        .onTapGesture {
-                            loadedSqliteDbPath = row.path
-                        }
+                    }
+                    .onAppear() {
+                        debugPrint("Row: \(row.path)")
+                    }
+                    .onTapGesture {
+                        loadedSqliteDbPath = row.path
                     }
                 }
             } else {
-                VStack {
-                    HStack {
-                        Spacer()
-                        Button() {
-                            newDatabase()
-                        } label: {
-                            Label("New", systemImage: "doc")
-                        }
-                        .padding()
-
-                        Spacer()
-
-                        Button() {
-                            openDatabase()
-                        } label: {
-                            Label("Open", systemImage: "square.and.arrow.up")
-                        }
-                        .padding()
-                        Spacer()
+                MainView()
+            }
+        }
+        .toolbar {
+            ToolbarItem (placement: .primaryAction) {
+                Menu {
+                    Section("Primary Actions") {
+                        Button("New Database") { newDatabase() }
+                        Button("Open Database") { openDatabase() }
                     }
-                }
-                .onAppear() {
-                    initApp()
-                    recentFileEntries = appContainer.recentFileEntries
-                    loadedSqliteDbPath = appContainer.loadedSqliteDbPath
+
+                    Divider()
+
+                    Button(role: .destructive) {
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                } label: {
+                    Label("Menu", systemImage: "ellipsis.circle")
                 }
             }
+        }
+        .onAppear() {
 
-
-        } else {
-            MainView()
-                .toolbar {
-                    ToolbarItem (placement: .primaryAction) {
-                        Menu {
-                            Section("Primary Actions") {
-                                Button("New Database") { newDatabase() }
-                                Button("Open Database") { openDatabase() }
-                            }
-
-                            Divider()
-
-                            Button(role: .destructive) {
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        } label: {
-                            Label("Menu", systemImage: "ellipsis.circle")
-                        }
-                    }
-                }
-                .onAppear() {
-                    initApp()
-                }
+            initApp()
+            debugPrint("loading...")
+            debugPrint("\(recentFileEntries.count)")
         }
     }
     private func initApp() {
@@ -120,6 +96,8 @@ struct ContentView: View {
 
         if appContainer.recentFileEntries.count == 0 {
             newDatabase()
+        } else {
+            recentFileEntries = appContainer.recentFileEntries
         }
     }
 
@@ -200,7 +178,7 @@ struct ContentView: View {
 
 #Preview("Filled AppDb - w/ Sql", traits: .fixedLayout(width: 750, height: 500)) {
     var container = LocalAppStateContainer()
-    container.loadedSqliteDbPath = "/Users/kennithmann/Downloads/money_sqlite.mmr"
+
 
     let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
     let url = NSURL(fileURLWithPath: path)
@@ -210,6 +188,8 @@ struct ContentView: View {
         container.appDbPath = ""
         debugPrint("ERROR LOADING APP DB")
     }
+
+    container.loadedSqliteDbPath = "/Users/kennithmann/Downloads/money_sqlite.mmr"
 
     return ContentView()
         .environmentObject(container)
