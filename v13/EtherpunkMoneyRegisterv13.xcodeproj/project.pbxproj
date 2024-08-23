@@ -18,6 +18,7 @@
 		AA799DA02C6E3B3F00B73E39 /* DesktopDbController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799D9F2C6E3B3F00B73E39 /* DesktopDbController.swift */; };
 		AA799DA32C6E3B9600B73E39 /* SqlError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799DA22C6E3B9600B73E39 /* SqlError.swift */; };
 		AA799DA82C6E3EAE00B73E39 /* SqliteActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799DA72C6E3EAE00B73E39 /* SqliteActions.swift */; };
+		AA96CFC02C786AFE00C7978E /* NavData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA96CFBF2C786AFE00C7978E /* NavData.swift */; };
 		AAB08CCA2C6FB9AE00886600 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = AAB08CC92C6FB9AE00886600 /* SQLite */; };
 		AAB08CCD2C6FB9BA00886600 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = AAB08CCC2C6FB9BA00886600 /* SwiftDate */; };
 		AAB08CD02C6FB9C700886600 /* DateHelper in Frameworks */ = {isa = PBXBuildFile; productRef = AAB08CCF2C6FB9C600886600 /* DateHelper */; };
@@ -60,6 +61,7 @@
 		AA799D9F2C6E3B3F00B73E39 /* DesktopDbController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesktopDbController.swift; sourceTree = "<group>"; };
 		AA799DA22C6E3B9600B73E39 /* SqlError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqlError.swift; sourceTree = "<group>"; };
 		AA799DA72C6E3EAE00B73E39 /* SqliteActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqliteActions.swift; sourceTree = "<group>"; };
+		AA96CFBF2C786AFE00C7978E /* NavData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavData.swift; sourceTree = "<group>"; };
 		AAB08CD12C721E8E00886600 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		AAC881EC2C726551007273A8 /* AccountListViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewItem.swift; sourceTree = "<group>"; };
 		AAC881EF2C727579007273A8 /* AccountListViewItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewItemData.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 			children = (
 				AA799D912C6A775400B73E39 /* Accounts */,
 				AAB08CD12C721E8E00886600 /* MainView.swift */,
+				AA96CFBF2C786AFE00C7978E /* NavData.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -160,7 +163,7 @@
 			path = Accounts;
 			sourceTree = "<group>";
 		};
-		AA799D962C6E37C700B73E39 /* AppData */ = {
+		AA799D962C6E37C700B73E39 /* UserData */ = {
 			isa = PBXGroup;
 			children = (
 				AAC881EE2C72756A007273A8 /* ViewData */,
@@ -169,7 +172,7 @@
 				AAF22CF42C64D0B9003EE8EB /* DataTypes */,
 				AA799D972C6E37D500B73E39 /* Tables */,
 			);
-			path = AppData;
+			path = UserData;
 			sourceTree = "<group>";
 		};
 		AA799D972C6E37D500B73E39 /* Tables */ = {
@@ -308,7 +311,7 @@
 				AAF22CFC2C64D0B9003EE8EB /* Enums */,
 				AA799D9A2C6E381400B73E39 /* iOSData */,
 				AA799D992C6E380900B73E39 /* DesktopData */,
-				AA799D962C6E37C700B73E39 /* AppData */,
+				AA799D962C6E37C700B73E39 /* UserData */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -419,6 +422,7 @@
 				AAF22D142C64D0B9003EE8EB /* RecurringTransaction.swift in Sources */,
 				AA799D9C2C6E3B1C00B73E39 /* RecentFileEntries.swift in Sources */,
 				AA18E03F2C4A4C5D005F30F3 /* EtherpunkMoneyRegisterv13App.swift in Sources */,
+				AA96CFC02C786AFE00C7978E /* NavData.swift in Sources */,
 				AA799D952C6B18F100B73E39 /* RecurringTransactionTag.swift in Sources */,
 				AAC881ED2C726551007273A8 /* AccountListViewItem.swift in Sources */,
 				AAC881F42C733AED007273A8 /* Link_Transaction_TransactionTag.swift in Sources */,

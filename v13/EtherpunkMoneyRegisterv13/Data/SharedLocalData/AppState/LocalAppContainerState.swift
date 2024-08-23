@@ -9,8 +9,11 @@ import Foundation
 import SQLite3
 
 class LocalAppStateContainer: ObservableObject {
-    public var loadedSqliteDbPath: String? = nil
+    /// This database holds the users financial data
+    public var loadedUserDbPath: String? = nil
     public var defaultAccount: Account? = nil
+
+    /// This database is for app settings.
     public var appDbPath: String? = nil
     public var recentFileEntries: [RecentFileEntry] = []
 
@@ -44,7 +47,7 @@ class LocalAppStateContainer: ObservableObject {
         } else {
             // Then we create it, and keep the path as nil so we know there isn't one made - probably a first time install
             debugPrint("FILE NOT AVAILABLE - Creating new file at: \(filePath)")
-            createNewAppDatabase(appDatabasePath: filePath)
+            createNewAppDatabase(appContainer: self)
             appDbPath = filePath
         }
     }
@@ -60,11 +63,11 @@ class LocalAppStateContainer: ObservableObject {
         }
     }
 
-    private func createNewAppDatabase(appDatabasePath: String) {
-        createTables(path: appDatabasePath)
+    private func createNewAppDatabase(appContainer: LocalAppStateContainer) {
+        createTables(appContainer: appContainer)
     }
     
-    private func createTables(path: String) {
-        RecentFileEntry.createTable(appDbPath: path)
+    private func createTables(appContainer: LocalAppStateContainer) {
+        RecentFileEntry.createTable(appContainer: appContainer)
     }
 }

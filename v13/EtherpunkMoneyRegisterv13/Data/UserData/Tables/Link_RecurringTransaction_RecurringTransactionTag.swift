@@ -1,5 +1,5 @@
 //
-//  Link_Transaction_TransactionTag.swift
+//  Link_RecurringTransaction_RecurringTransactionTag.swift
 //  EtherpunkMoneyRegisterv13
 //
 //  Created by Kennith Mann on 8/19/24.
@@ -8,9 +8,9 @@
 import Foundation
 import SQLite
 
-final class Link_Transaction_TransactionTag : ObservableObject, CustomDebugStringConvertible, Identifiable  {
-    public var transactionId: UUID
-    public var transactionTagId: UUID
+final class Link_RecurringTransaction_RecurringTransactionTag : ObservableObject, CustomDebugStringConvertible, Identifiable  {
+    public var recurringTransactionId: UUID
+    public var recurringTransactionTagId: UUID
     public var createdOnLocal: Date {
         get {
             let utcDateFormatter = DateFormatter()
@@ -47,8 +47,8 @@ final class Link_Transaction_TransactionTag : ObservableObject, CustomDebugStrin
     public var debugDescription: String {
             return """
             RecurringTransactionTag:
-            -  transactionId: \(transactionId)
-            -  transactionTagId: \(transactionTagId)
+            -  recurringTransactionId: \(recurringTransactionId)
+            -  recurringTransactionTagId: \(recurringTransactionTagId)
             -  createdOnLocal: \(createdOnLocal)
             -  createdOnLocalString: \(createdOnLocalString)
             -  _createdOnUTC: \(_createdOnUTC)
@@ -57,24 +57,24 @@ final class Link_Transaction_TransactionTag : ObservableObject, CustomDebugStrin
 
     private var _createdOnUTC: String = ""
 
-    private static let link_Transaction_TransactionTag = Table("Link_Transaction_TransactionTag.swift")
-    private static let transactionId = Expression<String>("transactionId")
-    private static let transactionTagIdColumn = Expression<String>("transactionTagIdColumn")
+    private static let link_RecurringTransaction_RecurringTransactionTag = Table("Link_RecurringTransaction_RecurringTransactionTag.swift")
+    private static let recurringTransactionId = Expression<String>("recurringTransactionId")
+    private static let recurringTransactionTagIdColumn = Expression<String>("recurringTransactionTagId")
     private static let createdOnUTCColumn = Expression<String>("CreatedOnUTC")
 
-    init(transactionId: UUID, transactionTagId: UUID, createdOnLocal: Date = Date()) {
-        self.transactionId = transactionId
-        self.transactionTagId = transactionTagId
+    init(recurringTransactionId: UUID, recurringTransactionTagId: UUID, createdOnLocal: Date = Date()) {
+        self.recurringTransactionId = recurringTransactionId
+        self.recurringTransactionTagId = recurringTransactionTagId
         self.createdOnLocal = createdOnLocal
     }
 
-    public static func createTable(appDbPath: String) {
+    public static func createTable(appContainer: LocalAppStateContainer) {
         do {
-            let db = try Connection(appDbPath)
+            let db = try Connection(appContainer.loadedUserDbPath!)
 
-            try db.run(link_Transaction_TransactionTag.create { t in
-                t.column(transactionId)
-                t.column(transactionTagIdColumn)
+            try db.run(link_RecurringTransaction_RecurringTransactionTag.create { t in
+                t.column(recurringTransactionId)
+                t.column(recurringTransactionTagIdColumn)
                 t.column(createdOnUTCColumn)
             })
         } catch {

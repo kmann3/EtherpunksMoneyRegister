@@ -71,9 +71,9 @@ final class RecurringTransactionGroup : ObservableObject, CustomDebugStringConve
         self.createdOnLocal = createdOnLocal
     }
 
-    public static func createTable(appDbPath: String) {
+    public static func createTable(appContainer: LocalAppStateContainer) {
         do {
-            let db = try Connection(appDbPath)
+            let db = try Connection(appContainer.loadedUserDbPath!)
 
             try db.run(recurringTransactionGroupSqlTable.create { t in
                 t.column(idColumn, primaryKey: true)

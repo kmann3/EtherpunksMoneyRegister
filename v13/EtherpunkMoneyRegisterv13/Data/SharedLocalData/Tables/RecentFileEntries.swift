@@ -80,9 +80,9 @@ final class RecentFileEntry: CustomDebugStringConvertible, Identifiable  {
 
     init() {}
 
-    public static func createTable(appDbPath: String) {
+    public static func createTable(appContainer: LocalAppStateContainer) {
         do {
-            let db = try Connection(appDbPath)
+            let db = try Connection(appContainer.appDbPath!)
 
             try db.run(recentFileEntrySqlTable.create { t in
                 t.column(idColumn, primaryKey: true)
@@ -130,15 +130,15 @@ final class RecentFileEntry: CustomDebugStringConvertible, Identifiable  {
     }
 
     public static func insertFilePath(appContainer: LocalAppStateContainer) {
-        if(appContainer.appDbPath == nil || appContainer.loadedSqliteDbPath == nil) {
-            debugPrint("path error: app:\(appContainer.appDbPath ?? "") | db:\(appContainer.loadedSqliteDbPath ?? "") ")
+        if(appContainer.appDbPath == nil || appContainer.loadedUserDbPath == nil) {
+            debugPrint("path error: app:\(appContainer.appDbPath ?? "") | db:\(appContainer.loadedUserDbPath ?? "") ")
             return
         }
 
         // Get a list of the entries and make sure we aren't duplicating anything
 
         for entry in getFileEntries(appDbPath: appContainer.appDbPath!) {
-            if entry.path == appContainer.loadedSqliteDbPath {
+            if entry.path == appContainer.loadedUserDbPath {
                 // Duplicate found, no need to make another one
                 debugPrint("Duplicate recent entry. Skipping this task.")
                 return
@@ -149,7 +149,7 @@ final class RecentFileEntry: CustomDebugStringConvertible, Identifiable  {
             let db = try Connection(appContainer.appDbPath!)
 
             let id_val: String = UUID().uuidString
-            let path_val: String = appContainer.loadedSqliteDbPath!
+            let path_val: String = appContainer.loadedUserDbPath!
 
             let utcDateFormatter = DateFormatter()
             utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")

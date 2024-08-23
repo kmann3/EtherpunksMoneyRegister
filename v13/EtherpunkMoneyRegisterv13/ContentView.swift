@@ -14,11 +14,11 @@ struct ContentView: View {
 
     // We do these two variables like this because you can't observe an environmentobject, so we cheat
     @State var recentFileEntries: [RecentFileEntry] = []
-    @State var loadedSqliteDbPath: String? = nil
+    @State var loadedUserDbPath: String? = nil
 
     var body: some View {
         VStack {
-            if loadedSqliteDbPath == nil {
+            if loadedUserDbPath == nil {
                 HStack {
                     Spacer()
                     Button() {
@@ -56,7 +56,7 @@ struct ContentView: View {
                         }
                     }
                     .onTapGesture {
-                        loadedSqliteDbPath = row.path
+                        loadedUserDbPath = row.path
                     }
                     .onLongPressGesture {
                         // Show a menu
@@ -64,7 +64,14 @@ struct ContentView: View {
                         // Delete
                     }
                 }
+                #if os(macOS)
                 .listStyle(.bordered)
+                #elseif os(iOS)
+        // show iPad and iOS
+                .listStyle(.inset)
+                #else
+
+                #endif
             } else {
                 MainView()
             }
@@ -118,9 +125,9 @@ struct ContentView: View {
             if panel.runModal() == .OK {
                 if let url = panel.url {
                     debugPrint("Selected file: \(url.path)")
-                    appContainer.loadedSqliteDbPath = url.path
+                    appContainer.loadedUserDbPath = url.path
                     DbController.createDatabase(appContainer: appContainer)
-                    loadedSqliteDbPath = url.path
+                    loadedUserDbPath = url.path
                     // update app database to add this as a recently opened item
                 }
             }
@@ -141,11 +148,11 @@ struct ContentView: View {
                 if panel.runModal() == .OK {
                     if let url = panel.url {
                         debugPrint("Selected file: \(url.path)")
-                        appContainer.loadedSqliteDbPath = url.path
+                        appContainer.loadedUserDbPath = url.path
                         RecentFileEntry.insertFilePath(appContainer: appContainer)
                         appContainer.recentFileEntries = RecentFileEntry.getFileEntries(appDbPath: appContainer.appDbPath!)
                         recentFileEntries = appContainer.recentFileEntries
-                        loadedSqliteDbPath = url.path
+                        loadedUserDbPath = url.path
                     }
                 }
             #elseif os(iOS)
@@ -184,10 +191,10 @@ struct ContentView: View {
 
 #Preview("Filled AppDb - w/ Sql", traits: .fixedLayout(width: 750, height: 500)) {
     var container = LocalAppStateContainer()
-    container.loadedSqliteDbPath = "/Users/kennithmann/Downloads/money_sqlite.mmr"
-    container.recentFileEntries.append(RecentFileEntry(path: container.loadedSqliteDbPath!))
-    container.recentFileEntries.append(RecentFileEntry(path: container.loadedSqliteDbPath!))
-    container.recentFileEntries.append(RecentFileEntry(path: container.loadedSqliteDbPath!))
+    container.loadedUserDbPath = "/Users/kennithmann/Downloads/testMoney_sqlite.mmr"
+    container.recentFileEntries.append(RecentFileEntry(path: container.loadedUserDbPath!))
+    container.recentFileEntries.append(RecentFileEntry(path: container.loadedUserDbPath!))
+    container.recentFileEntries.append(RecentFileEntry(path: container.loadedUserDbPath!))
     container.appDbPath = container.getAppDbPath()
 
     return ContentView()

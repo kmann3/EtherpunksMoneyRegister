@@ -64,13 +64,13 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
             -  transactionType: \(transactionType)
             -  amount: \(amount)
             -  notes: \(notes)
-            -  dueDate: \(nextDueDate)
-            -  recurringTransactionGroupId: \(recurringTransactionGroupId)
-            -  recurringTransactionGroup: \(recurringTransactionGroup)
+            -  dueDate: \(String(describing: nextDueDate))
+            -  recurringTransactionGroupId: \(String(describing: recurringTransactionGroupId))
+            -  recurringTransactionGroup: \(String(describing: recurringTransactionGroup))
             -  frequency: \(frequency)
-            -  frequencyValue: \(frequencyValue)
-            -  frequencyDayOfWeek: \(frequencyDayOfWeek)
-            -  frequencyDate: \(frequencyDateValue)
+            -  frequencyValue: \(String(describing: frequencyValue))
+            -  frequencyDayOfWeek: \(String(describing: frequencyDayOfWeek))
+            -  frequencyDate: \(String(describing: frequencyDateValue))
             -  createdOnLocal: \(createdOnLocal)
             -  createdOnLocalString: \(createdOnLocalString)
             -  _createdOnUTC: \(_createdOnUTC)
@@ -166,9 +166,9 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
         }
     }
 
-    public static func createTable(appDbPath: String) {
+    public static func createTable(appContainer: LocalAppStateContainer) {
         do {
-            let db = try Connection(appDbPath)
+            let db = try Connection(appContainer.loadedUserDbPath!)
 
             try db.run(recurringTransactionSqlTable.create { t in
                 t.column(idColumn, primaryKey: true)

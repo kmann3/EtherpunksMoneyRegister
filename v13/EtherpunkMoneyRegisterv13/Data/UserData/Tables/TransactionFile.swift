@@ -1,17 +1,28 @@
 //
-//  Tag.swift
+//  AccountTransactionFile.swift
 //  EtherpunkMoneyRegister
 //
-//  Created by Kennith Mann on 5/18/24.
+//  Created by Kennith Mann on 5/30/24.
 //
 
 import Foundation
 import SQLite
 
-final class TransactionTag : ObservableObject, CustomDebugStringConvertible, Identifiable  {
+final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Identifiable  {
     public var id: UUID = UUID()
-    public var name: String
-    public var accountTransactions: [AccountTransaction]? = nil
+    public var name: String = ""
+    public var filename: String = ""
+    public var notes: String = ""
+    public var data: SQLite.Blob
+    public var isTaxRelated: Bool = false
+    public var transactionId: UUID
+
+    // other types of files?
+    // Account - contracts, opening papers, statements
+    // Recurring Transactions - contracts
+
+    // Files might also have different tags such as: receipt, documentation, confirmation
+
     public var createdOnLocal: Date {
         get {
             let utcDateFormatter = DateFormatter()
@@ -47,9 +58,13 @@ final class TransactionTag : ObservableObject, CustomDebugStringConvertible, Ide
 
     public var debugDescription: String {
             return """
-            TransactionTag:
+            TransactionFile:
             -  id: \(id)
             -  name: \(name)
+            -  fileName: \(filename)
+            -  notes: \(notes)
+            -  data size in bytes: \(data.bytes.count)
+            -  isTaxRelated: \(isTaxRelated)
             -  createdOnLocal: \(createdOnLocal)
             -  createdOnLocalString: \(createdOnLocalString)
             -  _createdOnUTC: \(_createdOnUTC)
@@ -58,30 +73,40 @@ final class TransactionTag : ObservableObject, CustomDebugStringConvertible, Ide
 
     private var _createdOnUTC: String = ""
 
-    private static let transactionTagSqlTable = Table("TransactionTag")
+    private static let transactionFileSqlTable = Table("TransactionFile")
     private static let idColumn = Expression<String>("Id")
     private static let nameColumn = Expression<String>("Name")
+    private static let fileNameColumn = Expression<String>("FileName")
+    private static let notesColumn = Expression<String>("Notes")
+    private static let transactionId = Expression<String>("TransactionId")
+    private static let isTaxRelated = Expression<Int64>("IsTaxRelated")
+    private static let dataColumn = Expression<SQLite.Blob>("Data")
     private static let createdOnUTCColumn = Expression<String>("CreatedOnUTC")
 
-    init(
-        id: UUID = UUID(),
-        name: String,
-        accountTransactions: [AccountTransaction]? = nil,
-        createdOnLocal: Date = Date()
-    ) {
+    init(id: UUID = UUID(), name: String = "", filename: String = "", notes: String = "", data: SQLite.Blob, isTaxRelated: Bool = false, transactionId: UUID, createdOnLocal: Date = Date()) {
         self.id = id
         self.name = name
-        self.accountTransactions = accountTransactions
+        self.filename = filename
+        self.notes = notes
+        self.data = data
+        self.transactionId = transactionId
+        self.isTaxRelated = isTaxRelated
         self.createdOnLocal = createdOnLocal
     }
 
-    public static func createTable(appDbPath: String) {
+    public static func createTable(appContainer: LocalAppStateContainer) {
         do {
-            let db = try Connection(appDbPath)
+            let db = try Connection(appContainer.loadedUserDbPath!)
 
-            try db.run(transactionTagSqlTable.create { t in
+            try db.run(transactionFileSqlTable.create { t in
                 t.column(idColumn, primaryKey: true)
                 t.column(nameColumn)
+                t.column(fileNameColumn)
+                t.column(notesColumn)
+                t.column(transactionId)
+                t.column(isTaxRelated)
+                t.column(dataColumn)
+                t.column(dataColumn)
                 t.column(createdOnUTCColumn)
             })
         } catch {

@@ -107,9 +107,9 @@ final class Account : ObservableObject, CustomDebugStringConvertible, Identifiab
         self.createdOnLocal = Date()
     }
 
-    public static func createTable(appDbPath: String) {
+    public static func createTable(appContainer: LocalAppStateContainer) {
         do {
-            let db = try Connection(appDbPath)
+            let db = try Connection(appContainer.loadedUserDbPath!)
 
             try db.run(accountSqlTable.create { t in
                 t.column(idColumn, primaryKey: true)
@@ -125,6 +125,10 @@ final class Account : ObservableObject, CustomDebugStringConvertible, Identifiab
         } catch {
             debugPrint(error)
         }
+    }
+
+    public static func getAllAccounts(appContainer: LocalAppStateContainer) -> [Account] {
+        return []
     }
 
 //    func update(isNew: Bool, name: String, startingBalance: Decimal, notes: String, modelContext: ModelContext) {

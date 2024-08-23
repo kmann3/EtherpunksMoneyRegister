@@ -10,8 +10,8 @@ import SQLite3
 
 class DesktopDbController {
 
-    public static func createDatabase(path: String) {
-        RecentFileEntry.createTable(appDbPath: path)
+    public static func createDatabase(appContainer: LocalAppStateContainer) {
+        RecentFileEntry.createTable(appContainer: appContainer)
         // More tables may come
     }
 }

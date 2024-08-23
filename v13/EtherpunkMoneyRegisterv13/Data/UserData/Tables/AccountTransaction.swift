@@ -151,9 +151,9 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
         }
     }
 
-    public static func createTable(appDbPath: String) {
+    public static func createTable(appContainer: LocalAppStateContainer) {
         do {
-            let db = try Connection(appDbPath)
+            let db = try Connection(appContainer.loadedUserDbPath!)
 
             try db.run(accountTransactionSqlTable.create { t in
                 t.column(idColumn, primaryKey: true)
