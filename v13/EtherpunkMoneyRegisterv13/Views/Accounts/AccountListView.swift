@@ -11,21 +11,22 @@ struct AccountListView: View {
     @EnvironmentObject var appContainer: LocalAppStateContainer
     @Binding var tabSelection: Tab
 
-    @State var accounts: [Account] = []
+    @State var accounts: [AccountListViewItemData] = []
 
     var body: some View {
         List {
-            ForEach(accounts) { item in
-                Text("ACC: \(item.name)")
-            }
             Text("Account List")
+            ForEach(accounts) { item in
+                Text("ACC: \(item.account.name)")
+            }
+
         }
         .onAppear() {
             // Get Data
-            self.accounts = Account.getAllAccounts(appContainer: appContainer)
+            self.accounts = AccountListViewItemData.getAllAccountData(appContainer: appContainer)
         }
         .refreshable {
-            self.accounts = Account.getAllAccounts(appContainer: appContainer)
+            self.accounts = AccountListViewItemData.getAllAccountData(appContainer: appContainer)
         }
     }
 }
@@ -36,8 +37,7 @@ struct AccountListView: View {
     container.recentFileEntries.append(RecentFileEntry(path: container.loadedUserDbPath!))
     container.appDbPath = container.getAppDbPath()
 
-    var accounts: [Account] = []
-    accounts.append(Account(name: "Test", startingBalance: 0, currentBalance: 0, outstandingBalance: 0, outstandingItemCount: 0, notes: ""))
+    var accounts: [AccountListViewItemData] = []
 
     return AccountListView(tabSelection: .constant(.accounts), accounts: accounts)
         .environmentObject(container)

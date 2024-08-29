@@ -16,7 +16,40 @@ final class Account : ObservableObject, CustomDebugStringConvertible, Identifiab
     public var outstandingBalance: Decimal = 0
     public var outstandingItemCount: Int = 0
     public var notes: String = ""
-    public var lastBalanced: Date = Date()
+
+    public var lastBalancedLocal: Date {
+        get {
+            let utcDateFormatter = DateFormatter()
+            utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+
+            if let utcDate = utcDateFormatter.date(from: _lastBalancedUTC) {
+                // Convert UTC Date to local time Date
+                let localTimeInterval = utcDate.timeIntervalSinceReferenceDate + TimeInterval(TimeZone.current.secondsFromGMT(for: utcDate))
+                return Date(timeIntervalSinceReferenceDate: localTimeInterval)
+            } else {
+                debugPrint("Failed to convert UTC string to Date object.")
+                return Date()
+            }
+        }
+        set {
+            // Convert local time to UTC
+            let utcDateFormatter = DateFormatter()
+            utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+            _createdOnUTC = utcDateFormatter.string(from: newValue)
+        }
+    }
+
+    public var lastBalancedLocalString: String {
+        get {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm"
+            formatter.timeZone = .current
+            return lastBalancedLocal.formatted()
+        }
+    }
+
     public var sortIndex: Int = 255
     public var createdOnLocal: Date {
         get {
@@ -60,7 +93,9 @@ final class Account : ObservableObject, CustomDebugStringConvertible, Identifiab
             -  currentBalance: \(currentBalance)
             -  outstandingItemCount: \(outstandingItemCount)
             -  notes: \(notes)
-            -  lastBalanced: \(lastBalanced)
+            -  lastBalancedLocal: \(lastBalancedLocal)
+            -  lastBalancedLocalString: \(lastBalancedLocalString)
+            -  _lastBalancedUTC: \(_lastBalancedUTC)
             -  sortIndex: \(sortIndex)
             -  createdOnLocal: \(createdOnLocal)
             -  createdOnLocalString: \(createdOnLocalString)
@@ -69,19 +104,20 @@ final class Account : ObservableObject, CustomDebugStringConvertible, Identifiab
     }
 
     private var _createdOnUTC: String = ""
+    private var _lastBalancedUTC: String = ""
 
-    private static let accountSqlTable = Table("Account")
-    private static let idColumn = Expression<String>("Id")
-    private static let nameColumn = Expression<String>("Name")
-    private static let startingBalanceColumn = Expression<Double>("StartingBalance")
-    private static let currentBalanceColumn = Expression<Double>("CurrentBalance")
-    private static let outstandingItemCountColumn = Expression<Int64>("OutstandingItemCount")
-    private static let notesColumn = Expression<String>("Notes")
-    private static let lastBalancedColumn = Expression<String>("LastBalanced")
-    private static let sortIndexColumn = Expression<Int64>("SortIndex")
-    private static let createdOnUTCColumn = Expression<String>("CreatedOnUTC")
+    public static let accountSqlTable = Table("Account")
+    public static let idColumn = Expression<String>("Id")
+    public static let nameColumn = Expression<String>("Name")
+    public static let startingBalanceColumn = Expression<Double>("StartingBalance")
+    public static let currentBalanceColumn = Expression<Double>("CurrentBalance")
+    public static let outstandingItemCountColumn = Expression<Int64>("OutstandingItemCount")
+    public static let notesColumn = Expression<String>("Notes")
+    public static let lastBalancedUTCColumn = Expression<String>("LastBalancedUTC")
+    public static let sortIndexColumn = Expression<Int64>("SortIndex")
+    public static let createdOnUTCColumn = Expression<String>("CreatedOnUTC")
 
-    init(id: UUID = UUID(), name: String, startingBalance: Decimal, currentBalance: Decimal, outstandingBalance: Decimal, outstandingItemCount: Int, notes: String, lastBalanced: Date = Date(), sortIndex: Int = 255, createdOnLocal: Date = Date(), transactions: [AccountTransaction]? = []) {
+    init(id: UUID = UUID(), name: String, startingBalance: Decimal, currentBalance: Decimal, outstandingBalance: Decimal, outstandingItemCount: Int, notes: String, lastBalancedLocal: Date = Date(), sortIndex: Int = 255, createdOnLocal: Date = Date(), transactions: [AccountTransaction]? = []) {
         self.id = id
         self.name = name
         self.startingBalance = startingBalance
@@ -89,10 +125,11 @@ final class Account : ObservableObject, CustomDebugStringConvertible, Identifiab
         self.outstandingBalance = outstandingBalance
         self.outstandingItemCount = outstandingItemCount
         self.notes = notes
-        self.lastBalanced = lastBalanced
+        self.lastBalancedLocal = lastBalancedLocal
         self.sortIndex = sortIndex
         self.createdOnLocal = createdOnLocal
     }
+
 
     init(id: UUID = UUID(), name: String, startingBalance: Decimal, sortIndex: Int = 255) {
         self.id = id
@@ -102,7 +139,7 @@ final class Account : ObservableObject, CustomDebugStringConvertible, Identifiab
         self.outstandingBalance = 0
         self.outstandingItemCount = 0
         self.notes = ""
-        self.lastBalanced = Date()
+        self.lastBalancedLocal = Date()
         self.sortIndex = sortIndex
         self.createdOnLocal = Date()
     }
@@ -118,16 +155,61 @@ final class Account : ObservableObject, CustomDebugStringConvertible, Identifiab
                 t.column(currentBalanceColumn)
                 t.column(outstandingItemCountColumn)
                 t.column(notesColumn)
-                t.column(lastBalancedColumn)
+                t.column(lastBalancedUTCColumn)
                 t.column(sortIndexColumn)
                 t.column(createdOnUTCColumn)
             })
         } catch {
-            debugPrint(error)
+            debugPrint("Create Table Account Error: \(error)")
+        }
+    }
+
+    public static func createAccount(appContainer: LocalAppStateContainer, account: Account) {
+        do {
+            let db = try Connection(appContainer.loadedUserDbPath!)
+            try db.run(Account.accountSqlTable.insert(
+                Account.idColumn <- account.id.uuidString,
+                Account.nameColumn <- account.name,
+                Account.startingBalanceColumn <- NSDecimalNumber(decimal: account.startingBalance).doubleValue,
+                Account.currentBalanceColumn <- NSDecimalNumber(decimal: account.currentBalance).doubleValue,
+                Account.outstandingItemCountColumn <- account.outstandingItemCount.datatypeValue,
+                Account.notesColumn <- account.notes,
+                Account.lastBalancedUTCColumn <- account._lastBalancedUTC,
+                Account.sortIndexColumn <- account.sortIndex.datatypeValue,
+                Account.createdOnUTCColumn <- account._createdOnUTC
+            ))
+        } catch {
+            debugPrint("Create Account Error: \(error)")
         }
     }
 
     public static func getAllAccounts(appContainer: LocalAppStateContainer) -> [Account] {
+//        for user in try db.prepare(users) {
+//            print("id: \(user[id]), email: \(user[email]), name: \(user[name])")
+//            // id: 1, email: alice@mac.com, name: Optional("Alice")
+//        }
+//        // SELECT * FROM "users"
+        do {
+            let db = try Connection(appContainer.loadedUserDbPath!)
+            var returnList: [Account]
+            for entry in try db.prepare(Account.accountSqlTable) {
+                try returnList.append(Account(
+                    id:  UUID.init(uuidString: entry.get(Account.idColumn))!,
+                    name: entry.get(Account.nameColumn),
+                    startingBalance: entry.get(Account.startingBalanceColumn).toDecimal(),
+                    currentBalance: <#T##Decimal#>,
+                    outstandingBalance: <#T##Decimal#>,
+                    outstandingItemCount: <#T##Int#>,
+                    notes: entry.get(Account.notesColumn),
+                    lastBalancedLocal: <#T##Date#>,
+                    sortIndex: <#T##Int#>,
+                    createdOnLocal: <#T##Date#>,
+                    transactions: <#T##[AccountTransaction]?#>))
+
+            }
+        } catch {
+            debugPrint("Error: \(error)")
+        }
         return []
     }
 

@@ -40,52 +40,52 @@ struct MainView: View {
                     }
                     .tag(Tab.settings)
             }
-        }
-        .navigationDestination(for: NavData.self) { item in
-            switch item.navView {
-            case .accountCreator:
-                //EditAccountDetailsView(account: Account(name: "", startingBalance: 0), path: $path)
-                Text("Account Creator")
-            case .accountEditor:
-                Text("Account Editor")
-            case .accountList:
-                // We should not be here?
-                Text("We should not be here.")
-            case .accountDeletor:
-                Text("Delete account with transaction count > 0")
+            .navigationDestination(for: NavData.self) { item in
+                switch item.navView {
+                case .accountCreator:
+                    //EditAccountDetailsView(account: Account(name: "", startingBalance: 0), path: $path)
+                    Text("Account Creator")
+                case .accountEditor:
+                    Text("Account Editor")
+                case .accountList:
+                    // We should not be here?
+                    Text("We should not be here.")
+                case .accountDeletor:
+                    Text("Delete account with transaction count > 0")
 
-            case .recurringTransactionDetail:
-                Text("Recurring Transaction Detail")
-            case .recurringTransactionEditor:
-                Text("Recurring Transaction Editor")
-            case .recurringTransactionList:
-                Text("Recurring Transaction List")
+                case .recurringTransactionDetail:
+                    Text("Recurring Transaction Detail")
+                case .recurringTransactionEditor:
+                    Text("Recurring Transaction Editor")
+                case .recurringTransactionList:
+                    Text("Recurring Transaction List")
 
-            case .recurringTransactionGroupDetail:
-                Text("Recurring Transaction Group Detail")
-            case .recurringTransactionGroupEditor:
-                Text("Recurring Transaction Group Editor")
-            case .recurringTransactionGroupList:
-                Text("Recurring Transaction Group List")
+                case .recurringTransactionGroupDetail:
+                    Text("Recurring Transaction Group Detail")
+                case .recurringTransactionGroupEditor:
+                    Text("Recurring Transaction Group Editor")
+                case .recurringTransactionGroupList:
+                    Text("Recurring Transaction Group List")
 
-            case .tagDetail:
-                Text("Tag detail")
+                case .tagDetail:
+                    Text("Tag detail")
 
-            case .tagEditor:
-                Text("Tag Editor")
+                case .tagEditor:
+                    Text("Tag Editor")
 
-            case .transactionCreator:
-                Text("Transaction Editor")
+                case .transactionCreator:
+                    Text("Transaction Editor")
 
-            case .transactionDetail:
-                Text("Transaction Detail")
+                case .transactionDetail:
+                    Text("Transaction Detail")
 
-            case .transactionEditor:
-                Text("Transaction Editor")
+                case .transactionEditor:
+                    Text("Transaction Editor")
 
-            case .transactionList:
-                Text("Transaction List")
+                case .transactionList:
+                    Text("Transaction List")
 
+                }
             }
         }
     }

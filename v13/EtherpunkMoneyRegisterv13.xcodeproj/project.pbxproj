@@ -17,8 +17,8 @@
 		AA799D9C2C6E3B1C00B73E39 /* RecentFileEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799D9B2C6E3B1C00B73E39 /* RecentFileEntries.swift */; };
 		AA799DA02C6E3B3F00B73E39 /* DesktopDbController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799D9F2C6E3B3F00B73E39 /* DesktopDbController.swift */; };
 		AA799DA32C6E3B9600B73E39 /* SqlError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799DA22C6E3B9600B73E39 /* SqlError.swift */; };
-		AA799DA82C6E3EAE00B73E39 /* SqliteActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA799DA72C6E3EAE00B73E39 /* SqliteActions.swift */; };
 		AA96CFC02C786AFE00C7978E /* NavData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA96CFBF2C786AFE00C7978E /* NavData.swift */; };
+		AA96CFC32C80D19400C7978E /* ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA96CFC22C80D19400C7978E /* ext.swift */; };
 		AAB08CCA2C6FB9AE00886600 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = AAB08CC92C6FB9AE00886600 /* SQLite */; };
 		AAB08CCD2C6FB9BA00886600 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = AAB08CCC2C6FB9BA00886600 /* SwiftDate */; };
 		AAB08CD02C6FB9C700886600 /* DateHelper in Frameworks */ = {isa = PBXBuildFile; productRef = AAB08CCF2C6FB9C600886600 /* DateHelper */; };
@@ -60,8 +60,8 @@
 		AA799D9B2C6E3B1C00B73E39 /* RecentFileEntries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentFileEntries.swift; sourceTree = "<group>"; };
 		AA799D9F2C6E3B3F00B73E39 /* DesktopDbController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesktopDbController.swift; sourceTree = "<group>"; };
 		AA799DA22C6E3B9600B73E39 /* SqlError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqlError.swift; sourceTree = "<group>"; };
-		AA799DA72C6E3EAE00B73E39 /* SqliteActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqliteActions.swift; sourceTree = "<group>"; };
 		AA96CFBF2C786AFE00C7978E /* NavData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavData.swift; sourceTree = "<group>"; };
+		AA96CFC22C80D19400C7978E /* ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ext.swift; sourceTree = "<group>"; };
 		AAB08CD12C721E8E00886600 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		AAC881EC2C726551007273A8 /* AccountListViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewItem.swift; sourceTree = "<group>"; };
 		AAC881EF2C727579007273A8 /* AccountListViewItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewItemData.swift; sourceTree = "<group>"; };
@@ -242,7 +242,6 @@
 			isa = PBXGroup;
 			children = (
 				AAF22CF12C64D0B9003EE8EB /* AppState */,
-				AA799DA62C6E3E9E00B73E39 /* Controller */,
 				AA799DA52C6E3C3E00B73E39 /* Tables */,
 			);
 			path = SharedLocalData;
@@ -256,12 +255,12 @@
 			path = Tables;
 			sourceTree = "<group>";
 		};
-		AA799DA62C6E3E9E00B73E39 /* Controller */ = {
+		AA96CFC12C80D18D00C7978E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				AA799DA72C6E3EAE00B73E39 /* SqliteActions.swift */,
+				AA96CFC22C80D19400C7978E /* ext.swift */,
 			);
-			path = Controller;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		AAC881EE2C72756A007273A8 /* ViewData */ = {
@@ -307,6 +306,7 @@
 		AAF22D052C64D0B9003EE8EB /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				AA96CFC12C80D18D00C7978E /* Extensions */,
 				AA799DA42C6E3C3100B73E39 /* SharedLocalData */,
 				AAF22CFC2C64D0B9003EE8EB /* Enums */,
 				AA799D9A2C6E381400B73E39 /* iOSData */,
@@ -408,10 +408,10 @@
 				AAB08CD22C721E8E00886600 /* MainView.swift in Sources */,
 				AAF22D0E2C64D0B9003EE8EB /* TransactionStatusEnum.swift in Sources */,
 				AAF22D112C64D0B9003EE8EB /* AccountTransaction.swift in Sources */,
+				AA96CFC32C80D19400C7978E /* ext.swift in Sources */,
 				AAF22D0B2C64D0B9003EE8EB /* NavViewEnum.swift in Sources */,
 				AAF22D092C64D0B9003EE8EB /* DayOfWeekEnum.swift in Sources */,
 				AAF22D1A2C66A524003EE8EB /* AppDbController.swift in Sources */,
-				AA799DA82C6E3EAE00B73E39 /* SqliteActions.swift in Sources */,
 				AAF22D072C64D0B9003EE8EB /* Currency.swift in Sources */,
 				AAF22D152C64D0B9003EE8EB /* RecurringTransactionGroup.swift in Sources */,
 				AAF22D0A2C64D0B9003EE8EB /* FileType.swift in Sources */,

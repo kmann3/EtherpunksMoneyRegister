@@ -33,11 +33,12 @@ class LocalAppStateContainer: ObservableObject {
             print("Error deleting AppDb: \(error)")
         }
 
+        self.appDbPath = filePath
 
-        if fileManager.fileExists(atPath: filePath) {
+        if fileManager.fileExists(atPath: self.appDbPath!) {
             // Then we open it and see if we have a default entry or a recent entry
-            appDbPath = filePath
-            debugPrint("FILE AVAILABLE at: \(filePath); Let's query it.")
+
+            debugPrint("FILE AVAILABLE at: \(String(describing: self.appDbPath)); Let's query it.")
 
             if !setRecentListToZero && recentFileEntries.count == 0 {
                 recentFileEntries = RecentFileEntry.getFileEntries(appDbPath: filePath)
@@ -48,7 +49,6 @@ class LocalAppStateContainer: ObservableObject {
             // Then we create it, and keep the path as nil so we know there isn't one made - probably a first time install
             debugPrint("FILE NOT AVAILABLE - Creating new file at: \(filePath)")
             createNewAppDatabase(appContainer: self)
-            appDbPath = filePath
         }
     }
 

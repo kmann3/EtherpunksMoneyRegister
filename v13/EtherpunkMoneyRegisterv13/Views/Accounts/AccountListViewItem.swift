@@ -77,7 +77,7 @@ struct AccountListItemView: View {
 
                 Spacer()
 
-                Text(acctData.account.lastBalanced, format: .dateTime.month().day().year())
+                Text(acctData.account.lastBalancedLocal, format: .dateTime.month().day().year())
                     .font(.headline)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 5)

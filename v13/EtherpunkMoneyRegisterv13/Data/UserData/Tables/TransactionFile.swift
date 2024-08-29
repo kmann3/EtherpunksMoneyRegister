@@ -106,7 +106,6 @@ final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Id
                 t.column(transactionId)
                 t.column(isTaxRelated)
                 t.column(dataColumn)
-                t.column(dataColumn)
                 t.column(createdOnUTCColumn)
             })
         } catch {
