@@ -20,7 +20,7 @@ class DbController {
         TransactionTag.createTable(appContainer: appContainer)
         Link_Transaction_TransactionTag.createTable(appContainer: appContainer)
 
-        var cashAccount:Account = Account(name: "Cash", startingBalance: 0)
+        var cashAccount:Account = Account(name: "Cash", startingBalance: 0, currentBalance: 0)
 
         Account.createAccount(appContainer: appContainer, account: cashAccount)
 

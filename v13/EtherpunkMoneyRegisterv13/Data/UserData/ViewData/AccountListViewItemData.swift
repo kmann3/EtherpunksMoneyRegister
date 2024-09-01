@@ -26,18 +26,17 @@ class AccountListViewItemData : ObservableObject, CustomDebugStringConvertible, 
     }
 
     public static func getAllAccountData(appContainer: LocalAppStateContainer) -> [AccountListViewItemData] {
-        do {
-            //let db = try Connection(appContainer.appDbPath!)
-            debugPrint("Get all accounts")
-            let accountList = Account.getAllAccounts(appContainer: appContainer)
+        var returnData: [AccountListViewItemData] = []
 
-            for account in accountList {
-                // now we get the transaction count and make + add the view item data to the array
-                debugPrint("Account name: \(account.name)")
-            }
-        } catch {
-            debugPrint(error)
+        let accountList = Account.getAllAccounts(appContainer: appContainer)
+
+        for account in accountList {
+            // now we get the transaction count and make + add the view item data to the array
+            debugPrint("Account name: \(account.name)")
+            var item: AccountListViewItemData = AccountListViewItemData(account: account, transactionCount: account.getTransactionCountForAccount(appContainer: appContainer))
+            returnData.append(item)
         }
-        return []
+
+        return returnData
     }
 }

@@ -15,22 +15,194 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
     public var transactionType: TransactionType = TransactionType.debit
     public var amount: Decimal = 0
     public var balance: Decimal? = nil
-    public var pending: Date? = nil
-    public var cleared: Date? = nil
+
+    public var pendingLocal: Date? {
+        get {
+            if _pendingDateUTC == nil {
+                return nil
+            } else {
+                let utcDateFormatter = DateFormatter()
+                utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+
+                if let utcDate = utcDateFormatter.date(from: _pendingDateUTC!) {
+                    // Convert UTC Date to local time Date
+                    let localTimeInterval = utcDate.timeIntervalSinceReferenceDate + TimeInterval(TimeZone.current.secondsFromGMT(for: utcDate))
+                    return Date(timeIntervalSinceReferenceDate: localTimeInterval)
+                } else {
+                    debugPrint("Failed to convert UTC string to Date object.")
+                    return nil
+                }
+            }
+        }
+        set {
+            // Convert local time to UTC
+            if newValue == nil {
+                _pendingDateUTC = ""
+            } else {
+                let utcDateFormatter = DateFormatter()
+                utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+                _pendingDateUTC = utcDateFormatter.string(from: newValue!)
+            }
+        }
+    }
+
+    public var pendingLocalString: String {
+        get {
+            if pendingLocal == nil {
+                return ""
+            } else {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd HH:mm"
+                formatter.timeZone = .current
+                return pendingLocal!.formatted()
+            }
+        }
+    }
+
+    public var clearedLocal: Date? {
+        get {
+            if _clearedDateUTC == nil {
+                return nil
+            } else {
+                let utcDateFormatter = DateFormatter()
+                utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+
+                if let utcDate = utcDateFormatter.date(from: _clearedDateUTC!) {
+                    // Convert UTC Date to local time Date
+                    let localTimeInterval = utcDate.timeIntervalSinceReferenceDate + TimeInterval(TimeZone.current.secondsFromGMT(for: utcDate))
+                    return Date(timeIntervalSinceReferenceDate: localTimeInterval)
+                } else {
+                    debugPrint("Failed to convert UTC string to Date object.")
+                    return nil
+                }
+            }
+        }
+        set {
+            // Convert local time to UTC
+            if newValue == nil {
+                _clearedDateUTC = ""
+            } else {
+                let utcDateFormatter = DateFormatter()
+                utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+                _clearedDateUTC = utcDateFormatter.string(from: newValue!)
+            }
+        }
+    }
+
+    public var clearedLocalString: String {
+        get {
+            if clearedLocal == nil {
+                return ""
+            } else {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd HH:mm"
+                formatter.timeZone = .current
+                return clearedLocal!.formatted()
+            }
+        }
+    }
+
     public var notes: String = ""
     public var confirmationNumber: String = ""
-    public var recurringTransaction: RecurringTransaction? = nil
+    public var recurringTransactionId: UUID? = nil
     public var dueDate: Date? = nil
+    public var dueDateLocal: Date? {
+        get {
+            if _dueDateUTC == nil {
+                return nil
+            } else {
+                let utcDateFormatter = DateFormatter()
+                utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+
+                if let utcDate = utcDateFormatter.date(from: _dueDateUTC!) {
+                    // Convert UTC Date to local time Date
+                    let localTimeInterval = utcDate.timeIntervalSinceReferenceDate + TimeInterval(TimeZone.current.secondsFromGMT(for: utcDate))
+                    return Date(timeIntervalSinceReferenceDate: localTimeInterval)
+                } else {
+                    debugPrint("Failed to convert UTC string to Date object.")
+                    return nil
+                }
+            }
+        }
+        set {
+            // Convert local time to UTC
+            if newValue == nil {
+                _dueDateUTC = ""
+            } else {
+                let utcDateFormatter = DateFormatter()
+                utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+                _dueDateUTC = utcDateFormatter.string(from: newValue!)
+            }
+        }
+    }
+
+    public var dueDateLocalString: String {
+        get {
+            if dueDateLocal == nil {
+                return ""
+            } else {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd HH:mm"
+                formatter.timeZone = .current
+                return dueDateLocal!.formatted()
+            }
+        }
+    }
+
     public var isTaxRelated: Bool = false
     public var files: [TransactionFile]? = nil
-    public var account: Account? = nil
-    public var accountId: UUID? = nil
+    public var filesCount: Int = 0
+    public var accountId: UUID
     public var transactionTags: [TransactionTag]? = nil
-    public var balancedOn: Date? = nil
+    public var balancedOnLocal: Date? {
+        get {
+            if _balancedOnUTC == nil {
+                return nil
+            } else {
+                let utcDateFormatter = DateFormatter()
+                utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
 
-    /// The amount of files associated with the transaction.
-    public var fileCount: Int {
-        self.files?.count ?? 0
+                if let utcDate = utcDateFormatter.date(from: _balancedOnUTC!) {
+                    // Convert UTC Date to local time Date
+                    let localTimeInterval = utcDate.timeIntervalSinceReferenceDate + TimeInterval(TimeZone.current.secondsFromGMT(for: utcDate))
+                    return Date(timeIntervalSinceReferenceDate: localTimeInterval)
+                } else {
+                    debugPrint("Failed to convert UTC string to Date object.")
+                    return nil
+                }
+            }
+        }
+        set {
+            // Convert local time to UTC
+            if newValue == nil {
+                _balancedOnUTC = ""
+            } else {
+                let utcDateFormatter = DateFormatter()
+                utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+                _balancedOnUTC = utcDateFormatter.string(from: newValue!)
+            }
+        }
+    }
+
+    public var balancedOnLocalString: String {
+        get {
+            if balancedOnLocal == nil {
+                return ""
+            } else {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd HH:mm"
+                formatter.timeZone = .current
+                return balancedOnLocal!.formatted()
+            }
+        }
     }
 
     /// The background color indicating the status of the transaction.
@@ -47,9 +219,9 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
 
     /// The inferred status of the transaction.
     public var transactionStatus: TransactionStatus {
-        if self.pending == nil && self.cleared == nil {
+        if self.pendingLocal == nil && self.clearedLocal == nil {
             return .reserved
-        } else if self.pending != nil && self.cleared == nil {
+        } else if self.pendingLocal != nil && self.clearedLocal == nil {
             return .pending
         } else {
             return .cleared
@@ -93,6 +265,14 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
             return """
             AccountTransaction:
             -  id: \(id)
+            -  accountId: \(accountId)
+            -  name: \(name)
+            -  transactionType: \(transactionType)
+            -  amount: \(amount)
+            -  balance: \(String(describing: balance))
+            -  pendingUTC: \(String(describing: _pendingDateUTC))
+            -  pendingLocal: \(pendingLocalString)
+            -  name: \(name)
             -  name: \(name)
             -  notes: \(notes)
             -  createdOnLocal: \(createdOnLocal)
@@ -101,6 +281,10 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
             """
     }
 
+    private var _pendingDateUTC: String? = ""
+    private var _clearedDateUTC: String? = ""
+    private var _dueDateUTC: String? = ""
+    private var _balancedOnUTC: String? = ""
     private var _createdOnUTC: String = ""
 
     private static let accountTransactionSqlTable = Table("AccountTransaction")
@@ -110,34 +294,63 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
     private static let transactionTypeColumn = Expression<String>("TransactionType")
     private static let amountColumn = Expression<Double>("Amount")
     private static let balanceColumn = Expression<Double?>("Balance")
-    private static let pendingColumn = Expression<String?>("PendingDate")
-    private static let clearedColumn = Expression<String?>("ClearedDate")
+    private static let pendingUTCColumn = Expression<String?>("PendingDateUTC")
+    private static let clearedUTCColumn = Expression<String?>("ClearedDateUTC")
+    private static let recurringTransactionIdColumn = Expression<String?>("RecurringTransactionId")
     private static let notesColumn = Expression<String>("Notes")
     private static let confirmationColumn = Expression<String>("ConfirmationNumber")
     private static let isTaxRelatedColumn = Expression<Bool>("IsTaxRelated")
-    private static let dueDateColumn = Expression<String?>("DueDate")
-    private static let balancedOnColumn = Expression<String?>("BalancedOn")
+    private static let dueDateUTCColumn = Expression<String?>("DueDate")
+    private static let balancedOnUTCColumn = Expression<String?>("BalancedOnUTC")
     private static let createdOnUTCColumn = Expression<String>("CreatedOnUTC")
 
-    init(id: UUID = UUID(), account: Account, name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal? = nil, pending: Date? = nil, cleared: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransaction: RecurringTransaction? = nil, files: [TransactionFile]? = [], transactionTags: [TransactionTag]? = [], isTaxRelated: Bool = false, dueDate: Date? = nil, balancedOn: Date? = nil, createdOnLocal: Date = Date()) {
+    init(id: UUID = UUID(), accountId: UUID, name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal? = nil, pendingLocal: Date? = nil, clearedLocal: Date? = nil, notes: String = "", confirmationNumber: String = "", recurringTransactionId: UUID? = nil, files: [TransactionFile]? = [], transactionTags: [TransactionTag]? = [], isTaxRelated: Bool = false, dueDateLocal: Date? = nil, balancedOnLocal: Date? = nil, createdOnLocal: Date = Date()) {
         self.id = id
-        self.account = account
-        self.accountId = account.id
+        self.accountId = accountId
         self.name = name
         self.transactionType = transactionType
         self.amount = amount
         self.balance = balance
-        self.pending = pending
-        self.cleared = cleared
+        self.pendingLocal = pendingLocal
+        self.clearedLocal = clearedLocal
         self.notes = notes
         self.confirmationNumber = confirmationNumber
-        self.recurringTransaction = recurringTransaction
-        self.dueDate = dueDate
+        self.recurringTransactionId = recurringTransactionId
+        self.dueDateLocal = dueDateLocal
         self.isTaxRelated = isTaxRelated
         self.files = files
         self.transactionTags = transactionTags
-        self.balancedOn = balancedOn
+        self.balancedOnLocal = balancedOnLocal
         self.createdOnLocal = createdOnLocal
+
+        self.VerifySignage()
+    }
+
+    init(id: UUID = UUID(), accountId: UUID, name: String = "", transactionType: TransactionType = .debit, amount: Decimal = 0, balance: Decimal? = nil, pendingUTC: String? = nil, clearedUTC: String? = nil, notes: String = "", confirmationNumber: String = "", recurringTransactionId: String? = nil, files: [TransactionFile]? = [], transactionTags: [TransactionTag]? = [], isTaxRelated: Bool = false, dueDateUTC: String?, balancedOnUTC: String?, createdOnUTC: String) {
+        self.id = id
+        self.accountId = accountId
+        self.name = name
+        self.transactionType = transactionType
+        self.amount = amount
+        self.balance = balance
+        self._pendingDateUTC = pendingUTC
+        self._clearedDateUTC = clearedUTC
+        self.notes = notes
+        self.confirmationNumber = confirmationNumber
+
+        var recTranId: String?  = recurringTransactionId
+        var recTranIdUUID: UUID? = nil
+        if recTranId != nil {
+            recTranIdUUID = UUID.init(uuidString: recurringTransactionId!)
+        }
+
+        self.recurringTransactionId = recTranIdUUID
+        self._dueDateUTC = dueDateUTC
+        self.isTaxRelated = isTaxRelated
+        self.files = files
+        self.transactionTags = transactionTags
+        self._balancedOnUTC = balancedOnUTC
+        self._createdOnUTC = createdOnUTC
 
         self.VerifySignage()
     }
@@ -151,6 +364,15 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
         }
     }
 
+    public func fillFiles(appContainer: LocalAppStateContainer) {
+        
+    }
+
+    public func fillFileCountAndTags(appContainer: LocalAppStateContainer) {
+        self.transactionTags = nil
+        self.filesCount = 0
+    }
+
     public static func createTable(appContainer: LocalAppStateContainer) {
         do {
             let db = try Connection(appContainer.loadedUserDbPath!)
@@ -162,13 +384,14 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
                 t.column(transactionTypeColumn)
                 t.column(amountColumn)
                 t.column(balanceColumn)
-                t.column(pendingColumn)
-                t.column(clearedColumn)
+                t.column(pendingUTCColumn)
+                t.column(clearedUTCColumn)
+                t.column(recurringTransactionIdColumn)
                 t.column(notesColumn)
                 t.column(confirmationColumn)
                 t.column(isTaxRelatedColumn)
-                t.column(dueDateColumn)
-                t.column(balancedOnColumn)
+                t.column(dueDateUTCColumn)
+                t.column(balancedOnUTCColumn)
                 t.column(createdOnUTCColumn)
             })
         } catch {
@@ -176,23 +399,39 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
         }
     }
 
-    public func getTransactions(appContainer: LocalAppStateContainer, currentPage: Int = 0) -> [AccountTransaction] {
+    public static func getTransactions(appContainer: LocalAppStateContainer, currentPage: Int = 0) -> [AccountTransaction] {
+        var returnList: [AccountTransaction] = []
 
         return []
     }
 
-//    func SaveTransaction(modelContext: ModelContext, transaction: AccountTransaction, name: String, amount: Decimal) {
-//        transaction.name = name
+
+    public static func convertEntryToAccountTransaction(appContainer: LocalAppStateContainer ,entry: Row) -> AccountTransaction? {
+        do {
+            var returnTransaction: AccountTransaction? = nil
+//            var returnTransaction: AccountTransaction = try AccountTransaction(id: UUID.init(uuidString: entry.get(AccountTransaction.idColumn))!,
+//                                                                               accountId: UUID.init(uuidString: entry.get(AccountTransaction.accountIdColumn))!,
+//                                                                               name: entry[AccountTransaction.nameColumn],
+//                                                                               transactionType: <#T##TransactionType#>,
+//                                                                               amount: entry.get(AccountTransaction.amountColumn).toDecimal(),
+//                                                                               balance: <#T##Decimal?#>,
+//                                                                               pendingUTC: entry.get(AccountTransaction.pendingUTCColumn),
+//                                                                               clearedUTC: entry.get(AccountTransaction.clearedUTCColumn),
+//                                                                               notes: entry.get(AccountTransaction.notesColumn),
+//                                                                               confirmationNumber: entry.get(AccountTransaction.confirmationColumn),
+//                                                                               recurringTransactionId: entry.get(AccountTransaction.recurringTransactionIdColumn),
+//                                                                               files: nil,
+//                                                                               transactionTags: nil,
+//                                                                               isTaxRelated: entry.get(AccountTransaction.isTaxRelatedColumn),
+//                                                                               dueDateUTC: entry.get(AccountTransaction.dueDateUTCColumn),
+//                                                                               balancedOnUTC: entry.get(AccountTransaction.balancedOnUTCColumn),
+//                                                                               createdOnUTC: entry.get(AccountTransaction.createdOnUTCColumn))
 //
-//        try? modelContext.save()
-//
-//        // perhaps we open with async stuff and return the transaction?
-//    }
-//
-//    func getFileCount(modelContext: ModelContext) -> Int {
-//
-//        let descriptor = FetchDescriptor<TransactionFile>(predicate: #Predicate { $0.transactionId! == self.id })
-//
-//        return (try? modelContext.fetchCount(descriptor)) ?? 0
-//    }
+//            returnTransaction.fillFileCountAndTags(appContainer: appContainer)
+            return returnTransaction
+        } catch {
+            debugPrint("Error: \(error)")
+            return nil
+        }
+    }
 }

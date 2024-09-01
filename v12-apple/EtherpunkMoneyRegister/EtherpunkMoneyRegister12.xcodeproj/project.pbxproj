@@ -78,7 +78,7 @@
 		AA93212E2C35D38900F906D9 /* FileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileType.swift; sourceTree = "<group>"; };
 		AA9321302C36946100F906D9 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		AA9321332C36951B00F906D9 /* CurrencyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCode.swift; sourceTree = "<group>"; };
-		AAE814EA2BF853B400CA7DDD /* EtherpunkMoneyRegister.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtherpunkMoneyRegister.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAE814EA2BF853B400CA7DDD /* EtherpunkMoneyRegister12.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtherpunkMoneyRegister12.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAE814ED2BF853B400CA7DDD /* EtherpunkMoneyRegisterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherpunkMoneyRegisterApp.swift; sourceTree = "<group>"; };
 		AAE814EF2BF853B400CA7DDD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AAE814F12BF853B500CA7DDD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -254,7 +254,7 @@
 		AAE814EB2BF853B400CA7DDD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AAE814EA2BF853B400CA7DDD /* EtherpunkMoneyRegister.app */,
+				AAE814EA2BF853B400CA7DDD /* EtherpunkMoneyRegister12.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -288,9 +288,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AAE814E92BF853B400CA7DDD /* EtherpunkMoneyRegister */ = {
+		AAE814E92BF853B400CA7DDD /* EtherpunkMoneyRegister12 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AAE814F92BF853B500CA7DDD /* Build configuration list for PBXNativeTarget "EtherpunkMoneyRegister" */;
+			buildConfigurationList = AAE814F92BF853B500CA7DDD /* Build configuration list for PBXNativeTarget "EtherpunkMoneyRegister12" */;
 			buildPhases = (
 				AAE814E62BF853B400CA7DDD /* Sources */,
 				AAE814E72BF853B400CA7DDD /* Frameworks */,
@@ -300,9 +300,9 @@
 			);
 			dependencies = (
 			);
-			name = EtherpunkMoneyRegister;
+			name = EtherpunkMoneyRegister12;
 			productName = EtherpunkMoneyRegister;
-			productReference = AAE814EA2BF853B400CA7DDD /* EtherpunkMoneyRegister.app */;
+			productReference = AAE814EA2BF853B400CA7DDD /* EtherpunkMoneyRegister12.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -320,7 +320,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AAE814E52BF853B400CA7DDD /* Build configuration list for PBXProject "EtherpunkMoneyRegister" */;
+			buildConfigurationList = AAE814E52BF853B400CA7DDD /* Build configuration list for PBXProject "EtherpunkMoneyRegister12" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -333,7 +333,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AAE814E92BF853B400CA7DDD /* EtherpunkMoneyRegister */,
+				AAE814E92BF853B400CA7DDD /* EtherpunkMoneyRegister12 */,
 			);
 		};
 /* End PBXProject section */
@@ -590,7 +590,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AAE814E52BF853B400CA7DDD /* Build configuration list for PBXProject "EtherpunkMoneyRegister" */ = {
+		AAE814E52BF853B400CA7DDD /* Build configuration list for PBXProject "EtherpunkMoneyRegister12" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AAE814F72BF853B500CA7DDD /* Debug */,
@@ -599,7 +599,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AAE814F92BF853B500CA7DDD /* Build configuration list for PBXNativeTarget "EtherpunkMoneyRegister" */ = {
+		AAE814F92BF853B500CA7DDD /* Build configuration list for PBXNativeTarget "EtherpunkMoneyRegister12" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AAE814FA2BF853B500CA7DDD /* Debug */,

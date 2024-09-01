@@ -16,7 +16,6 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
     public var notes: String = ""
     public var nextDueDate: Date? = nil
     public var transactionTags: [TransactionTag]? = nil
-    public var recurringTransactionGroup: RecurringTransactionGroup? = nil
     public var recurringTransactionGroupId: UUID? = nil
     public var transactions: [AccountTransaction]? = nil
     public var frequency: RecurringFrequency = RecurringFrequency.unknown
@@ -66,7 +65,6 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
             -  notes: \(notes)
             -  dueDate: \(String(describing: nextDueDate))
             -  recurringTransactionGroupId: \(String(describing: recurringTransactionGroupId))
-            -  recurringTransactionGroup: \(String(describing: recurringTransactionGroup))
             -  frequency: \(frequency)
             -  frequencyValue: \(String(describing: frequencyValue))
             -  frequencyDayOfWeek: \(String(describing: frequencyDayOfWeek))
@@ -93,7 +91,7 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
     private static let frequencyDateValueColumn = Expression<String>("FrequencyDateValue")
     private static let createdOnUTCColumn = Expression<String>("CreatedOnUTC")
 
-    init(id: UUID = UUID(), name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, transactionTags: [TransactionTag]? = [], recurringTransactionGroup: RecurringTransactionGroup? = nil, transactions: [AccountTransaction]? = [], frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOnLocal: Date = Date()) {
+    init(id: UUID = UUID(), name: String, transactionType: TransactionType, amount: Decimal, notes: String, nextDueDate: Date? = nil, transactionTags: [TransactionTag]? = [], recurringTransactionGroupId: UUID? = nil, transactions: [AccountTransaction]? = [], frequency: RecurringFrequency, frequencyValue: Int? = nil, frequencyDayOfWeek: DayOfWeek? = nil, frequencyDateValue: Date? = nil, createdOnLocal: Date = Date()) {
         self.id = id
         self.name = name
         self.transactionType = transactionType
@@ -101,7 +99,7 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
         self.notes = notes
         self.nextDueDate = nextDueDate
         self.transactionTags = transactionTags
-        self.recurringTransactionGroup = recurringTransactionGroup
+        self.recurringTransactionGroupId = recurringTransactionGroupId
         self.transactions = transactions
         self.frequency = frequency
         self.frequencyValue = frequencyValue

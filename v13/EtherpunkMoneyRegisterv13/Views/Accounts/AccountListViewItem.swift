@@ -107,7 +107,7 @@ struct AccountListItemView: View {
 }
 
 #Preview {
-    let account = Account(name: "Test", startingBalance: 5.0)
+    let account = Account(name: "Test", startingBalance: 5.0, currentBalance: 5.0)
     let acctData = AccountListViewItemData(account: account, transactionCount: 2347913)
     return AccountListItemView(acctData: acctData)
 }

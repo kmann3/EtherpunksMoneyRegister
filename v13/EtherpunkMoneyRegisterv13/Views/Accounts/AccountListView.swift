@@ -15,15 +15,16 @@ struct AccountListView: View {
 
     var body: some View {
         List {
-            Text("Account List")
             ForEach(accounts) { item in
-                Text("ACC: \(item.account.name)")
+                AccountListItemView(acctData: item)
             }
 
         }
         .onAppear() {
             // Get Data
-            self.accounts = AccountListViewItemData.getAllAccountData(appContainer: appContainer)
+            if self.accounts.count == 0 {
+                self.accounts = AccountListViewItemData.getAllAccountData(appContainer: appContainer)
+            }
         }
         .refreshable {
             self.accounts = AccountListViewItemData.getAllAccountData(appContainer: appContainer)
@@ -37,7 +38,7 @@ struct AccountListView: View {
     container.recentFileEntries.append(RecentFileEntry(path: container.loadedUserDbPath!))
     container.appDbPath = container.getAppDbPath()
 
-    var accounts: [AccountListViewItemData] = []
+    var accounts: [AccountListViewItemData] = [AccountListViewItemData(account: Previewer.bankAccount, transactionCount: 5)]
 
     return AccountListView(tabSelection: .constant(.accounts), accounts: accounts)
         .environmentObject(container)

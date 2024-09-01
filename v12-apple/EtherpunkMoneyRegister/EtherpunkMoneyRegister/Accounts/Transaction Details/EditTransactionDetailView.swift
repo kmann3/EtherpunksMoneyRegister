@@ -213,65 +213,65 @@ struct EditTransactionDetailView: View {
     func addNewPhoto() {}
     
     func saveTransaction() {
-        guard let amount = Decimal(string: transactionAmount) else { return }
-        var rebalanceAccount = false
-        var isDifferentAccount = false
-        var oldAccount = transaction.account
-        var difference: Decimal = 0
-
-        // CHECK TO SEE IF THE AMOUNT HERE HAS CHANGED FROM THE TRANSACTION AMOUNT
-        // IF IT HAS THEN WE NEED TO RE-CALCULATE THE BALANCE!
-
-        if transactionAccount != transaction.account {
-            // We changed the account the transaction belongs to. 
-            rebalanceAccount = true
-            isDifferentAccount = true
-        }
-
-        if amount != transaction.amount {
-            // Setting to zero to make sure it's stupidly obvious things need to change
-            rebalanceAccount = true
-            difference = transaction.amount - amount
-        }
-        
-
-        if transactionType != transaction.transactionType {
-            // WE NEED TO REBALANCE
-            // Need to make a function where we can call up and reference a transaction of previous value and new value and have it go through the rest of the transactions
-            difference = transaction.amount - amount
-            rebalanceAccount = true
-        }
-        
-        transaction.name = transactionName
-        transaction.amount = amount
-        transaction.pending = transactionPendingDate
-        transaction.cleared = transactionClearedDate
-        transaction.transactionTags = selectedTags
-        transaction.notes = transactionNotes
-        transaction.isTaxRelated = transactionIsTaxRelated
-
-        // how do I know if the files are new? Or need to be removed?
-        
-        transaction.files = transactionFiles
-        
-        do {
-            if isNewTransaction {
-                modelContext.insert(transaction)
-            }
-            try modelContext.save()
-
-            if rebalanceAccount == true {
-
-//                transaction.account!.rebalance(amount: difference, modelContext: modelContext)
-//                if isDifferentAccount == true {
-//                    oldAccount?.rebalance(amount: <#T##Decimal#>, modelContext: <#T##ModelContext#>)
-//                }
-            }
-
-            presentationMode.wrappedValue.dismiss()
-        } catch {
-            print("Error saving transaction: \(error)")
-        }
+//        guard let amount = Decimal(string: transactionAmount) else { return }
+//        var rebalanceAccount = false
+//        var isDifferentAccount = false
+//        var oldAccount = transaction.account
+//        var difference: Decimal = 0
+//
+//        // CHECK TO SEE IF THE AMOUNT HERE HAS CHANGED FROM THE TRANSACTION AMOUNT
+//        // IF IT HAS THEN WE NEED TO RE-CALCULATE THE BALANCE!
+//
+//        if transactionAccount != transaction.account {
+//            // We changed the account the transaction belongs to. 
+//            rebalanceAccount = true
+//            isDifferentAccount = true
+//        }
+//
+//        if amount != transaction.amount {
+//            // Setting to zero to make sure it's stupidly obvious things need to change
+//            rebalanceAccount = true
+//            difference = transaction.amount - amount
+//        }
+//        
+//
+//        if transactionType != transaction.transactionType {
+//            // WE NEED TO REBALANCE
+//            // Need to make a function where we can call up and reference a transaction of previous value and new value and have it go through the rest of the transactions
+//            difference = transaction.amount - amount
+//            rebalanceAccount = true
+//        }
+//        
+//        transaction.name = transactionName
+//        transaction.amount = amount
+//        transaction.pending = transactionPendingDate
+//        transaction.cleared = transactionClearedDate
+//        transaction.transactionTags = selectedTags
+//        transaction.notes = transactionNotes
+//        transaction.isTaxRelated = transactionIsTaxRelated
+//
+//        // how do I know if the files are new? Or need to be removed?
+//        
+//        transaction.files = transactionFiles
+//        
+//        do {
+//            if isNewTransaction {
+//                modelContext.insert(transaction)
+//            }
+//            try modelContext.save()
+//
+//            if rebalanceAccount == true {
+//
+////                transaction.account!.rebalance(amount: difference, modelContext: modelContext)
+////                if isDifferentAccount == true {
+////                    oldAccount?.rebalance(amount: <#T##Decimal#>, modelContext: <#T##ModelContext#>)
+////                }
+//            }
+//
+//            presentationMode.wrappedValue.dismiss()
+//        } catch {
+//            print("Error saving transaction: \(error)")
+//        }
     }
 }
 
