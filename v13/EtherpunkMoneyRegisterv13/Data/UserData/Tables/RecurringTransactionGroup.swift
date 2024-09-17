@@ -59,6 +59,8 @@ final class RecurringTransactionGroup : ObservableObject, CustomDebugStringConve
 
     private var _createdOnUTC: String = ""
 
+    public typealias Expression = SQLite.Expression
+
     private static let recurringTransactionGroupSqlTable = Table("RecurringTransactionGroup")
     private static let idColumn = Expression<String>("Id")
     private static let nameColumn = Expression<String>("Name")

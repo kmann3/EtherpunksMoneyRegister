@@ -73,6 +73,8 @@ final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Id
 
     private var _createdOnUTC: String = ""
 
+    public typealias Expression = SQLite.Expression
+
     private static let transactionFileSqlTable = Table("TransactionFile")
     private static let idColumn = Expression<String>("Id")
     private static let nameColumn = Expression<String>("Name")

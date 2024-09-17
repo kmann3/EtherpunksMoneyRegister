@@ -11,6 +11,7 @@ import SwiftUI
 
 @MainActor
 struct Previewer {
+    private static let now: Date = Date()
     public static let bankAccount: Account = Account(id: UUID(uuidString: "12345678-1234-1234-1234-123456789abc")!,
                                               name: "Chase Bank",
                                               startingBalance: 1024.44,
@@ -18,9 +19,9 @@ struct Previewer {
                                               outstandingBalance: 33.73,
                                               outstandingItemCount: 2,
                                               notes: "",
-                                              lastBalancedUTC: "2024-08-29 09:48:18 +0000",
+                                              lastBalancedUTC: "2024-09-12T17:40:31.594+0000",
                                               sortIndex: Int64.max,
-                                              createdOnUTC: "2024-08-29 09:48:18 +0000",
+                                              createdOnUTC: "2024-09-13T17:40:31.594+0000",
                                               transactions: nil)
     public let billsTag: TransactionTag
     public let medicalTag: TransactionTag

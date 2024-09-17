@@ -4,6 +4,7 @@
 //
 //  Created by Kennith Mann on 8/18/24.
 //
+// TODO: I don't exactly like how this appears. It's too many items and having lines between it all looks goofy.
 
 import SwiftUI
 
@@ -42,7 +43,23 @@ struct AccountListItemView: View {
             }
 
             HStack {
-                Text("Oustanding Amount")
+                Text("Exected Balance")
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 5)
+
+                Spacer()
+
+                Text(acctData.account.currentBalance - acctData.account.outstandingBalance, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 5)
+            }
+
+            Rectangle().fill(Color.gray).frame(width: .infinity, height: 1, alignment: .center).padding(.horizontal, 25)
+
+            HStack {
+                Text("Oustanding")
                     .font(.headline)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 5)
@@ -56,11 +73,6 @@ struct AccountListItemView: View {
             }
 
             HStack {
-                Text("Oustanding Count")
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 5)
-
                 Spacer()
 
                 Text("\(acctData.account.outstandingItemCount) Items")
@@ -95,19 +107,22 @@ struct AccountListItemView: View {
                     .font(.headline)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 5)
-
+                    .padding(.bottom, 5)
             }
         }
         .cornerRadius(10)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(Color(.sRGB, red: 125/255, green: 125/255, blue: 125/255, opacity: 0.5), lineWidth: 1)
+                .stroke(Color(.sRGB, red: 125/255, green: 125/255, blue: 125/255, opacity: 0.5))
         )
+        #if os(macOS)
+        .padding(.all, 5)
+        #endif
     }
 }
 
 #Preview {
-    let account = Account(name: "Test", startingBalance: 5.0, currentBalance: 5.0)
+    let account = Previewer.bankAccount
     let acctData = AccountListViewItemData(account: account, transactionCount: 2347913)
     return AccountListItemView(acctData: acctData)
 }

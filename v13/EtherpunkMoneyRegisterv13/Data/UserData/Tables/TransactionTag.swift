@@ -58,6 +58,8 @@ final class TransactionTag : ObservableObject, CustomDebugStringConvertible, Ide
 
     private var _createdOnUTC: String = ""
 
+    public typealias Expression = SQLite.Expression
+
     private static let transactionTagSqlTable = Table("TransactionTag")
     private static let idColumn = Expression<String>("Id")
     private static let nameColumn = Expression<String>("Name")

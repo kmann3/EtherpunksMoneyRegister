@@ -57,6 +57,8 @@ final class Link_RecurringTransaction_RecurringTransactionTag : ObservableObject
 
     private var _createdOnUTC: String = ""
 
+    public typealias Expression = SQLite.Expression
+
     private static let link_RecurringTransaction_RecurringTransactionTag = Table("Link_RecurringTransaction_RecurringTransactionTag.swift")
     private static let recurringTransactionId = Expression<String>("recurringTransactionId")
     private static let recurringTransactionTagIdColumn = Expression<String>("recurringTransactionTagId")

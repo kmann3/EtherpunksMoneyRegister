@@ -57,6 +57,8 @@ final class Link_Transaction_TransactionTag : ObservableObject, CustomDebugStrin
 
     private var _createdOnUTC: String = ""
 
+    public typealias Expression = SQLite.Expression
+
     private static let link_Transaction_TransactionTag = Table("Link_Transaction_TransactionTag.swift")
     private static let transactionId = Expression<String>("transactionId")
     private static let transactionTagIdColumn = Expression<String>("transactionTagIdColumn")

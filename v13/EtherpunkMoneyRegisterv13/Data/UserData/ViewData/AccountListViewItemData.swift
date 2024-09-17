@@ -8,16 +8,15 @@
 import Foundation
 import SQLite
 
-class AccountListViewItemData : ObservableObject, CustomDebugStringConvertible, Identifiable  {
-
+class AccountListViewItemData: ObservableObject, CustomDebugStringConvertible, Identifiable {
     public var account: Account
     public var transactionCount: Int
     var debugDescription: String {
-            return """
-            AccountListViewItemData:
-            - account: \n\(account)
-            - transactionCount: \(transactionCount)
-            """
+        return """
+        AccountListViewItemData:
+        - account: \n\(account)
+        - transactionCount: \(transactionCount)
+        """
     }
 
     init(account: Account, transactionCount: Int = 0) {
@@ -33,7 +32,7 @@ class AccountListViewItemData : ObservableObject, CustomDebugStringConvertible, 
         for account in accountList {
             // now we get the transaction count and make + add the view item data to the array
             debugPrint("Account name: \(account.name)")
-            var item: AccountListViewItemData = AccountListViewItemData(account: account, transactionCount: account.getTransactionCountForAccount(appContainer: appContainer))
+            let item = AccountListViewItemData(account: account, transactionCount: account.getTransactionCountForAccount(appContainer: appContainer))
             returnData.append(item)
         }
 

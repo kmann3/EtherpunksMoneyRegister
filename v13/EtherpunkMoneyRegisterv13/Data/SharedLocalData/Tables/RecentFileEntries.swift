@@ -56,6 +56,8 @@ final class RecentFileEntry: CustomDebugStringConvertible, Identifiable  {
 
     private var _createdOnUTC: String = ""
 
+    public typealias Expression = SQLite.Expression
+
     public static let recentFileEntrySqlTable = Table("RecentFileEntry")
     public static let idColumn = Expression<String>("Id")
     public static let pathColumn = Expression<String>("Path")

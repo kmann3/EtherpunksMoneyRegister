@@ -28,7 +28,7 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
                 let localTimeInterval = utcDate.timeIntervalSinceReferenceDate + TimeInterval(TimeZone.current.secondsFromGMT(for: utcDate))
                 return Date(timeIntervalSinceReferenceDate: localTimeInterval)
             } else {
-                debugPrint("Failed to convert UTC string to Date object.")
+                debugPrint("lastBalancedLocal: Failed to convert UTC string to Date object.")
                 return Date()
             }
         }
@@ -37,10 +37,10 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
             let utcDateFormatter = DateFormatter()
             utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
             utcDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-            _createdOnUTC = utcDateFormatter.string(from: newValue)
+            _lastBalancedUTC = utcDateFormatter.string(from: newValue)
         }
     }
-
+    
     public var lastBalancedLocalString: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm"
@@ -60,7 +60,7 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
                 let localTimeInterval = utcDate.timeIntervalSinceReferenceDate + TimeInterval(TimeZone.current.secondsFromGMT(for: utcDate))
                 return Date(timeIntervalSinceReferenceDate: localTimeInterval)
             } else {
-                debugPrint("Failed to convert UTC string to Date object.")
+                debugPrint("createdOnLocal: Failed to convert UTC string to Date object.")
                 return Date()
             }
         }
@@ -103,6 +103,8 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
     private var _createdOnUTC: String = ""
     private var _lastBalancedUTC: String = ""
 
+    public typealias Expression = SQLite.Expression
+
     public static let accountSqlTable = Table("Account")
     public static let idColumn = Expression<String>("Id")
     public static let nameColumn = Expression<String>("Name")
@@ -139,6 +141,7 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
         self._lastBalancedUTC = lastBalancedUTC
         self.sortIndex = sortIndex
         self._createdOnUTC = createdOnUTC
+        debugPrint(self)
     }
 
     public static func createTable(appContainer: LocalAppStateContainer) {

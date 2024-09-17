@@ -287,6 +287,8 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
     private var _balancedOnUTC: String? = ""
     private var _createdOnUTC: String = ""
 
+    public typealias Expression = SQLite.Expression
+
     private static let accountTransactionSqlTable = Table("AccountTransaction")
     private static let idColumn = Expression<String>("Id")
     private static let accountIdColumn = Expression<String>("AccountId")

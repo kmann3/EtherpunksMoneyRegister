@@ -58,6 +58,8 @@ final class RecurringTransactionTag : ObservableObject, CustomDebugStringConvert
 
     private var _createdOnUTC: String = ""
 
+    public typealias Expression = SQLite.Expression
+
     private static let recurringTransactionTagSqlTable = Table("RecurringTransactionTag")
     private static let idColumn = Expression<String>("Id")
     private static let nameColumn = Expression<String>("Name")
