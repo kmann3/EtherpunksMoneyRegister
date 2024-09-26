@@ -340,7 +340,7 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
         self.notes = notes
         self.confirmationNumber = confirmationNumber
 
-        var recTranId: String?  = recurringTransactionId
+        let recTranId: String?  = recurringTransactionId
         var recTranIdUUID: UUID? = nil
         if recTranId != nil {
             recTranIdUUID = UUID.init(uuidString: recurringTransactionId!)

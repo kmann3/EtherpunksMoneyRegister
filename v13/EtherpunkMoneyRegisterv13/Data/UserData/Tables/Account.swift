@@ -40,7 +40,7 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
             _lastBalancedUTC = utcDateFormatter.string(from: newValue)
         }
     }
-    
+
     public var lastBalancedLocalString: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm"
