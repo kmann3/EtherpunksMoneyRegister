@@ -1,15 +1,15 @@
 //
-//  EtherpunkMoneyRegisterv14App.swift
-//  EtherpunkMoneyRegisterv14
+//  EtherpunksMoneyRegister_v14App.swift
+//  EtherpunksMoneyRegister.v14
 //
-//  Created by Kennith Mann on 9/26/24.
+//  Created by Kennith Mann on 10/1/24.
 //
 
 import SwiftUI
 import SwiftData
 
 @main
-struct EtherpunkMoneyRegisterv14App: App {
+struct EtherpunksMoneyRegister_v14App: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,

@@ -1,8 +1,8 @@
 //
 //  Item.swift
-//  EtherpunkMoneyRegisterv14
+//  EtherpunksMoneyRegister.v14
 //
-//  Created by Kennith Mann on 9/26/24.
+//  Created by Kennith Mann on 10/1/24.
 //
 
 import Foundation

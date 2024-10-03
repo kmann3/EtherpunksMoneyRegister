@@ -1,13 +1,13 @@
 //
-//  EtherpunkMoneyRegisterv14UITestsLaunchTests.swift
-//  EtherpunkMoneyRegisterv14UITests
+//  EtherpunksMoneyRegister_v14UITestsLaunchTests.swift
+//  EtherpunksMoneyRegister.v14UITests
 //
-//  Created by Kennith Mann on 9/26/24.
+//  Created by Kennith Mann on 10/1/24.
 //
 
 import XCTest
 
-final class EtherpunkMoneyRegisterv14UITestsLaunchTests: XCTestCase {
+final class EtherpunksMoneyRegister_v14UITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
