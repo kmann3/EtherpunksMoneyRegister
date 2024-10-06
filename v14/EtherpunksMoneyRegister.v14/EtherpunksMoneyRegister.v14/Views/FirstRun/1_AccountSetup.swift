@@ -7,12 +7,19 @@
 
 import SwiftUI
 
-struct __AccountSetup: View {
+struct AccountSetup: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("Income Setup")
+            Spacer()
+            Text("New entry here")
+            Spacer()
+            Text("List here")
+            Spacer()
+        }
     }
 }
 
 #Preview {
-    __AccountSetup()
+    AccountSetup()
 }
