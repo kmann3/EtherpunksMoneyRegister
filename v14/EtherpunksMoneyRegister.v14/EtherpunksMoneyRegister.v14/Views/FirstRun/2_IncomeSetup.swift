@@ -8,8 +8,26 @@
 import SwiftUI
 
 struct IncomeSetup: View {
+#if DEBUG || DEBUG_IN_SIMULATOR
+    @Environment(\.colorScheme) var colorScheme
+#endif
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            Spacer()
+            VStack {
+                Text("New income entry here")
+                Spacer()
+                Text("List here")
+                Spacer()
+            }
+            Spacer()
+        }
+#if DEBUG || DEBUG_IN_SIMULATOR
+        .background(
+            colorScheme == .dark ? Color.darkGray : Color.lightGray
+        )
+#endif
     }
 }
 

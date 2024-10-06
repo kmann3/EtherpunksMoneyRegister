@@ -1,22 +1,22 @@
 //
-//  1_AccountSetup.swift
+//  IncomeSetup.swift
 //  EtherpunksMoneyRegister.v14
 //
-//  Created by Kennith Mann on 10/3/24.
+//  Created by Kennith Mann on 10/5/24.
 //
 
 import SwiftUI
 
-struct AccountSetup: View {
-    #if DEBUG || DEBUG_IN_SIMULATOR
+struct RecurringExpensesSetup: View {
+#if DEBUG || DEBUG_IN_SIMULATOR
     @Environment(\.colorScheme) var colorScheme
-    #endif
+#endif
 
     var body: some View {
         HStack {
             Spacer()
             VStack {
-                Text("New account entry here")
+                Text("New expense entry here")
                 Spacer()
                 Text("List here")
                 Spacer()
@@ -32,5 +32,5 @@ struct AccountSetup: View {
 }
 
 #Preview {
-    AccountSetup()
+    RecurringExpensesSetup()
 }
