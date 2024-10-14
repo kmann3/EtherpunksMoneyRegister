@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  EtherpunksMoneyRegister.v14
 //
-//  Created by Kennith Mann on 10/1/24.
+//  Created by Kennith Mann on 10/14/24.
 //
 
 import SwiftUI
