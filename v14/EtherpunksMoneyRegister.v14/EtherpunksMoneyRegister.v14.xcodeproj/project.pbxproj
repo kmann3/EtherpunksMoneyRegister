@@ -24,6 +24,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AA56088E2CDE4E66006B1932 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		AAE570E52CBD58D400663DD7 /* EtherpunksMoneyRegister.v14.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtherpunksMoneyRegister.v14.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAE570F92CBD58D500663DD7 /* EtherpunksMoneyRegister.v14Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EtherpunksMoneyRegister.v14Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAE571032CBD58D500663DD7 /* EtherpunksMoneyRegister.v14UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EtherpunksMoneyRegister.v14UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +89,7 @@
 		AAE570DC2CBD58D400663DD7 = {
 			isa = PBXGroup;
 			children = (
+				AA56088E2CDE4E66006B1932 /* MyPlayground.playground */,
 				AAE570E72CBD58D400663DD7 /* EtherpunksMoneyRegister.v14 */,
 				AAE570FC2CBD58D500663DD7 /* EtherpunksMoneyRegister.v14Tests */,
 				AAE571062CBD58D500663DD7 /* EtherpunksMoneyRegister.v14UITests */,
