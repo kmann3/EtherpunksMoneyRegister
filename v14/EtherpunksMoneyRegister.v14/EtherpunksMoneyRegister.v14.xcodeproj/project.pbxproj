@@ -6,77 +6,33 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXContainerItemProxy section */
-		AAE570FA2CBD58D500663DD7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AAE570DD2CBD58D400663DD7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = AAE570E42CBD58D400663DD7;
-			remoteInfo = EtherpunksMoneyRegister.v14;
-		};
-		AAE571042CBD58D500663DD7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AAE570DD2CBD58D400663DD7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = AAE570E42CBD58D400663DD7;
-			remoteInfo = EtherpunksMoneyRegister.v14;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		AA56088E2CDE4E66006B1932 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		AAE570E52CBD58D400663DD7 /* EtherpunksMoneyRegister.v14.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtherpunksMoneyRegister.v14.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AAE570F92CBD58D500663DD7 /* EtherpunksMoneyRegister.v14Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EtherpunksMoneyRegister.v14Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AAE571032CBD58D500663DD7 /* EtherpunksMoneyRegister.v14UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EtherpunksMoneyRegister.v14UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAF6E9942CE78E940062CFF5 /* EtherpunksMoneyRegister.v14.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtherpunksMoneyRegister.v14.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		AAE5710B2CBD58D500663DD7 /* Exceptions for "EtherpunksMoneyRegister.v14" folder in "EtherpunksMoneyRegister.v14" target */ = {
+		AAF6E9A42CE78E940062CFF5 /* Exceptions for "EtherpunksMoneyRegister.v14" folder in "EtherpunksMoneyRegister.v14" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = AAE570E42CBD58D400663DD7 /* EtherpunksMoneyRegister.v14 */;
+			target = AAF6E9932CE78E940062CFF5 /* EtherpunksMoneyRegister.v14 */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		AAE570E72CBD58D400663DD7 /* EtherpunksMoneyRegister.v14 */ = {
+		AAF6E9962CE78E940062CFF5 /* EtherpunksMoneyRegister.v14 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				AAE5710B2CBD58D500663DD7 /* Exceptions for "EtherpunksMoneyRegister.v14" folder in "EtherpunksMoneyRegister.v14" target */,
+				AAF6E9A42CE78E940062CFF5 /* Exceptions for "EtherpunksMoneyRegister.v14" folder in "EtherpunksMoneyRegister.v14" target */,
 			);
 			path = EtherpunksMoneyRegister.v14;
-			sourceTree = "<group>";
-		};
-		AAE570FC2CBD58D500663DD7 /* EtherpunksMoneyRegister.v14Tests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = EtherpunksMoneyRegister.v14Tests;
-			sourceTree = "<group>";
-		};
-		AAE571062CBD58D500663DD7 /* EtherpunksMoneyRegister.v14UITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = EtherpunksMoneyRegister.v14UITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		AAE570E22CBD58D400663DD7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AAE570F62CBD58D500663DD7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AAE571002CBD58D500663DD7 /* Frameworks */ = {
+		AAF6E9912CE78E940062CFF5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -86,23 +42,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AAE570DC2CBD58D400663DD7 = {
+		AAF6E98B2CE78E940062CFF5 = {
 			isa = PBXGroup;
 			children = (
-				AA56088E2CDE4E66006B1932 /* MyPlayground.playground */,
-				AAE570E72CBD58D400663DD7 /* EtherpunksMoneyRegister.v14 */,
-				AAE570FC2CBD58D500663DD7 /* EtherpunksMoneyRegister.v14Tests */,
-				AAE571062CBD58D500663DD7 /* EtherpunksMoneyRegister.v14UITests */,
-				AAE570E62CBD58D400663DD7 /* Products */,
+				AAF6E9962CE78E940062CFF5 /* EtherpunksMoneyRegister.v14 */,
+				AAF6E9952CE78E940062CFF5 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		AAE570E62CBD58D400663DD7 /* Products */ = {
+		AAF6E9952CE78E940062CFF5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AAE570E52CBD58D400663DD7 /* EtherpunksMoneyRegister.v14.app */,
-				AAE570F92CBD58D500663DD7 /* EtherpunksMoneyRegister.v14Tests.xctest */,
-				AAE571032CBD58D500663DD7 /* EtherpunksMoneyRegister.v14UITests.xctest */,
+				AAF6E9942CE78E940062CFF5 /* EtherpunksMoneyRegister.v14.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -110,134 +61,64 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AAE570E42CBD58D400663DD7 /* EtherpunksMoneyRegister.v14 */ = {
+		AAF6E9932CE78E940062CFF5 /* EtherpunksMoneyRegister.v14 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AAE5710C2CBD58D500663DD7 /* Build configuration list for PBXNativeTarget "EtherpunksMoneyRegister.v14" */;
+			buildConfigurationList = AAF6E9A52CE78E940062CFF5 /* Build configuration list for PBXNativeTarget "EtherpunksMoneyRegister.v14" */;
 			buildPhases = (
-				AAE570E12CBD58D400663DD7 /* Sources */,
-				AAE570E22CBD58D400663DD7 /* Frameworks */,
-				AAE570E32CBD58D400663DD7 /* Resources */,
+				AAF6E9902CE78E940062CFF5 /* Sources */,
+				AAF6E9912CE78E940062CFF5 /* Frameworks */,
+				AAF6E9922CE78E940062CFF5 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				AAE570E72CBD58D400663DD7 /* EtherpunksMoneyRegister.v14 */,
+				AAF6E9962CE78E940062CFF5 /* EtherpunksMoneyRegister.v14 */,
 			);
 			name = EtherpunksMoneyRegister.v14;
 			packageProductDependencies = (
 			);
 			productName = EtherpunksMoneyRegister.v14;
-			productReference = AAE570E52CBD58D400663DD7 /* EtherpunksMoneyRegister.v14.app */;
+			productReference = AAF6E9942CE78E940062CFF5 /* EtherpunksMoneyRegister.v14.app */;
 			productType = "com.apple.product-type.application";
-		};
-		AAE570F82CBD58D500663DD7 /* EtherpunksMoneyRegister.v14Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AAE571112CBD58D500663DD7 /* Build configuration list for PBXNativeTarget "EtherpunksMoneyRegister.v14Tests" */;
-			buildPhases = (
-				AAE570F52CBD58D500663DD7 /* Sources */,
-				AAE570F62CBD58D500663DD7 /* Frameworks */,
-				AAE570F72CBD58D500663DD7 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				AAE570FB2CBD58D500663DD7 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				AAE570FC2CBD58D500663DD7 /* EtherpunksMoneyRegister.v14Tests */,
-			);
-			name = EtherpunksMoneyRegister.v14Tests;
-			packageProductDependencies = (
-			);
-			productName = EtherpunksMoneyRegister.v14Tests;
-			productReference = AAE570F92CBD58D500663DD7 /* EtherpunksMoneyRegister.v14Tests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		AAE571022CBD58D500663DD7 /* EtherpunksMoneyRegister.v14UITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AAE571142CBD58D500663DD7 /* Build configuration list for PBXNativeTarget "EtherpunksMoneyRegister.v14UITests" */;
-			buildPhases = (
-				AAE570FF2CBD58D500663DD7 /* Sources */,
-				AAE571002CBD58D500663DD7 /* Frameworks */,
-				AAE571012CBD58D500663DD7 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				AAE571052CBD58D500663DD7 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				AAE571062CBD58D500663DD7 /* EtherpunksMoneyRegister.v14UITests */,
-			);
-			name = EtherpunksMoneyRegister.v14UITests;
-			packageProductDependencies = (
-			);
-			productName = EtherpunksMoneyRegister.v14UITests;
-			productReference = AAE571032CBD58D500663DD7 /* EtherpunksMoneyRegister.v14UITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		AAE570DD2CBD58D400663DD7 /* Project object */ = {
+		AAF6E98C2CE78E940062CFF5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1600;
+				LastSwiftUpdateCheck = 1610;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
-					AAE570E42CBD58D400663DD7 = {
-						CreatedOnToolsVersion = 16.0;
-					};
-					AAE570F82CBD58D500663DD7 = {
-						CreatedOnToolsVersion = 16.0;
-						TestTargetID = AAE570E42CBD58D400663DD7;
-					};
-					AAE571022CBD58D500663DD7 = {
-						CreatedOnToolsVersion = 16.0;
-						TestTargetID = AAE570E42CBD58D400663DD7;
+					AAF6E9932CE78E940062CFF5 = {
+						CreatedOnToolsVersion = 16.1;
 					};
 				};
 			};
-			buildConfigurationList = AAE570E02CBD58D400663DD7 /* Build configuration list for PBXProject "EtherpunksMoneyRegister.v14" */;
+			buildConfigurationList = AAF6E98F2CE78E940062CFF5 /* Build configuration list for PBXProject "EtherpunksMoneyRegister.v14" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = AAE570DC2CBD58D400663DD7;
+			mainGroup = AAF6E98B2CE78E940062CFF5;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = AAE570E62CBD58D400663DD7 /* Products */;
+			productRefGroup = AAF6E9952CE78E940062CFF5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AAE570E42CBD58D400663DD7 /* EtherpunksMoneyRegister.v14 */,
-				AAE570F82CBD58D500663DD7 /* EtherpunksMoneyRegister.v14Tests */,
-				AAE571022CBD58D500663DD7 /* EtherpunksMoneyRegister.v14UITests */,
+				AAF6E9932CE78E940062CFF5 /* EtherpunksMoneyRegister.v14 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		AAE570E32CBD58D400663DD7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AAE570F72CBD58D500663DD7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AAE571012CBD58D500663DD7 /* Resources */ = {
+		AAF6E9922CE78E940062CFF5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -247,21 +128,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		AAE570E12CBD58D400663DD7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AAE570F52CBD58D500663DD7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AAE570FF2CBD58D500663DD7 /* Sources */ = {
+		AAF6E9902CE78E940062CFF5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -270,21 +137,8 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		AAE570FB2CBD58D500663DD7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = AAE570E42CBD58D400663DD7 /* EtherpunksMoneyRegister.v14 */;
-			targetProxy = AAE570FA2CBD58D500663DD7 /* PBXContainerItemProxy */;
-		};
-		AAE571052CBD58D500663DD7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = AAE570E42CBD58D400663DD7 /* EtherpunksMoneyRegister.v14 */;
-			targetProxy = AAE571042CBD58D500663DD7 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
-		AAE5710D2CBD58D500663DD7 /* Debug */ = {
+		AAF6E9A62CE78E940062CFF5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -298,7 +152,6 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EtherpunksMoneyRegister.v14/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -309,24 +162,23 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.etherpunk.EtherpunksMoneyRegister-v14";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 2.1;
 			};
 			name = Debug;
 		};
-		AAE5710E2CBD58D500663DD7 /* Release */ = {
+		AAF6E9A72CE78E940062CFF5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -340,7 +192,6 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EtherpunksMoneyRegister.v14/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -351,24 +202,23 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.etherpunk.EtherpunksMoneyRegister-v14";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 2.1;
 			};
 			name = Release;
 		};
-		AAE5710F2CBD58D500663DD7 /* Debug */ = {
+		AAF6E9A82CE78E940062CFF5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -429,7 +279,7 @@
 			};
 			name = Debug;
 		};
-		AAE571102CBD58D500663DD7 /* Release */ = {
+		AAF6E9A92CE78E940062CFF5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -482,136 +332,28 @@
 			};
 			name = Release;
 		};
-		AAE571122CBD58D500663DD7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SNH2E6X8CL;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.etherpunk.EtherpunksMoneyRegister-v14Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EtherpunksMoneyRegister.v14.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EtherpunksMoneyRegister.v14";
-				XROS_DEPLOYMENT_TARGET = 2.0;
-			};
-			name = Debug;
-		};
-		AAE571132CBD58D500663DD7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SNH2E6X8CL;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.etherpunk.EtherpunksMoneyRegister-v14Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EtherpunksMoneyRegister.v14.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EtherpunksMoneyRegister.v14";
-				XROS_DEPLOYMENT_TARGET = 2.0;
-			};
-			name = Release;
-		};
-		AAE571152CBD58D500663DD7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SNH2E6X8CL;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.etherpunk.EtherpunksMoneyRegister-v14UITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_TARGET_NAME = EtherpunksMoneyRegister.v14;
-				XROS_DEPLOYMENT_TARGET = 2.0;
-			};
-			name = Debug;
-		};
-		AAE571162CBD58D500663DD7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SNH2E6X8CL;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.etherpunk.EtherpunksMoneyRegister-v14UITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_TARGET_NAME = EtherpunksMoneyRegister.v14;
-				XROS_DEPLOYMENT_TARGET = 2.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AAE570E02CBD58D400663DD7 /* Build configuration list for PBXProject "EtherpunksMoneyRegister.v14" */ = {
+		AAF6E98F2CE78E940062CFF5 /* Build configuration list for PBXProject "EtherpunksMoneyRegister.v14" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AAE5710F2CBD58D500663DD7 /* Debug */,
-				AAE571102CBD58D500663DD7 /* Release */,
+				AAF6E9A82CE78E940062CFF5 /* Debug */,
+				AAF6E9A92CE78E940062CFF5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AAE5710C2CBD58D500663DD7 /* Build configuration list for PBXNativeTarget "EtherpunksMoneyRegister.v14" */ = {
+		AAF6E9A52CE78E940062CFF5 /* Build configuration list for PBXNativeTarget "EtherpunksMoneyRegister.v14" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AAE5710D2CBD58D500663DD7 /* Debug */,
-				AAE5710E2CBD58D500663DD7 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AAE571112CBD58D500663DD7 /* Build configuration list for PBXNativeTarget "EtherpunksMoneyRegister.v14Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AAE571122CBD58D500663DD7 /* Debug */,
-				AAE571132CBD58D500663DD7 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AAE571142CBD58D500663DD7 /* Build configuration list for PBXNativeTarget "EtherpunksMoneyRegister.v14UITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AAE571152CBD58D500663DD7 /* Debug */,
-				AAE571162CBD58D500663DD7 /* Release */,
+				AAF6E9A62CE78E940062CFF5 /* Debug */,
+				AAF6E9A72CE78E940062CFF5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = AAE570DD2CBD58D400663DD7 /* Project object */;
+	rootObject = AAF6E98C2CE78E940062CFF5 /* Project object */;
 }

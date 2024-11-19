@@ -2,7 +2,7 @@
 //  Item.swift
 //  EtherpunksMoneyRegister.v14
 //
-//  Created by Kennith Mann on 11/15/24.
+//  Created by Kennith Mann on 10/14/24.
 //
 
 import Foundation
@@ -10,8 +10,10 @@ import SwiftData
 
 @Model
 final class Item {
-    var timestamp: Date
-    
+    var id: UUID = UUID.init()
+    var timestamp: Date = Date.init()
+    var createdOn: Date = Date.init()
+
     init(timestamp: Date) {
         self.timestamp = timestamp
     }

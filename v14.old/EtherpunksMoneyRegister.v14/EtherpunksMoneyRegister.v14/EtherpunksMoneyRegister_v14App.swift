@@ -2,7 +2,7 @@
 //  EtherpunksMoneyRegister_v14App.swift
 //  EtherpunksMoneyRegister.v14
 //
-//  Created by Kennith Mann on 11/15/24.
+//  Created by Kennith Mann on 10/14/24.
 //
 
 import SwiftUI
