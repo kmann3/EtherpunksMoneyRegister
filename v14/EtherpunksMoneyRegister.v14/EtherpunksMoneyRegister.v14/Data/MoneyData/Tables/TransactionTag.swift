@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import SwiftData
 
+@Model
 final class TransactionTag : ObservableObject, CustomDebugStringConvertible, Identifiable  {
-    public var id: UUID = UUID()
+    @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
-    public var accountTransactions: [AccountTransaction]? = nil
+    @Relationship(deleteRule: .noAction) public var accountTransactions: [AccountTransaction]? = nil
     public var createdOnUTC: Date  = Date()
 
     public var debugDescription: String {

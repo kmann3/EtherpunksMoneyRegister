@@ -7,10 +7,13 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 
+@Model
 final class AccountTransaction : ObservableObject, CustomDebugStringConvertible, Identifiable  {
-    public var id: UUID = UUID()
+    @Attribute(.unique) public var id: UUID = UUID()
     public var accountId: UUID? = nil
+    public var account: Account? = nil
     public var name: String = ""
     public var transactionType: TransactionType = TransactionType.debit
     public var amount: Decimal = 0
@@ -19,7 +22,7 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
     public var confirmationNumber: String = ""
     public var isTaxRelated: Bool = false
     public var filesCount: Int = 0
-    public var transactionTags: [TransactionTag]? = nil
+    @Relationship(deleteRule: .noAction, inverse: \TransactionTag.accountTransactions) public var transactionTags: [TransactionTag]? = nil
     public var recurringTransactionId: UUID? = nil
     public var dueDate: Date? = nil
     public var pendingOnUTC: Date? = nil
@@ -31,6 +34,7 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
             AccountTransaction:
             - id: \(id)
             - accountId: \(accountId?.uuidString ?? "nil")
+            - account: \(account == nil ? "Account is nil" : "Account is loaded")
             - name: \(name)
             - transactionType: \(transactionType)
             - amount: \(amount)
@@ -39,7 +43,7 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
             - confirmationNumber: \(confirmationNumber)
             - isTaxRelated: \(isTaxRelated)
             - filesCount: \(filesCount)
-            - transactionTags: TBI
+            - transactionTags: \(transactionTags == nil ? "Tags are nil" : "Tags are loaded")
             - recurringTransactionId: \(recurringTransactionId?.uuidString ?? "none")
             - dueDate: \(dueDate?.description ?? "nil")
             - pendingOnUTC: \(pendingOnUTC?.description ?? "nil")

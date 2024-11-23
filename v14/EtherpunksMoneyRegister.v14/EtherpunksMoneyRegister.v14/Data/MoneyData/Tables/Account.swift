@@ -6,18 +6,21 @@
 //
 
 import Foundation
+import SwiftData
 
+@Model
 final class Account: ObservableObject, CustomDebugStringConvertible, Identifiable {
-    public var id: UUID = .init()
+    @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     public var startingBalance: Decimal = 0
     public var currentBalance: Decimal = 0
     public var outstandingBalance: Decimal = 0
     public var outstandingItemCount: Int64 = 0
     public var notes: String = ""
-    public var sortIndex: Int64 = .max
+    public var sortIndex: Int64 = 0
     public var lastBalancedUTC: Date? = nil
-    public var transactions: [AccountTransaction]? = nil
+    @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account) public var transactions: [AccountTransaction]? = nil
+    public var transactionCount: Int64 = 0
     public var createdOnUTC: Date = Date()
 
     public var debugDescription: String {
@@ -32,6 +35,8 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
         - notes: \(notes)
         - sortIndex: \(sortIndex)
         - lastBalancedUTC: \(lastBalancedUTC?.description ?? "nil")
+        - transactions: (TBI - Summary?)
+        - transactionCount: \(transactionCount)
         - createdOnUTC: \(createdOnUTC)
         """
     }

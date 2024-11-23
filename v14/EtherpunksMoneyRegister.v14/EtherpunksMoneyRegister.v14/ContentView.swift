@@ -24,12 +24,14 @@ struct ContentView: View {
                 }
             }
         } content: {
-            Text("test")
+            Text(selectedSideMenuTab.description)
                 .navigationSplitViewColumnWidth(
-                    min: 100,
-                    ideal: 200,
-                    max: .infinity
+                    min: 300,
+                    ideal: 300,
+                    max: 400
                 )
+                
+
         } detail: {
             Text("Preview and details")
                 .navigationSplitViewColumnWidth(

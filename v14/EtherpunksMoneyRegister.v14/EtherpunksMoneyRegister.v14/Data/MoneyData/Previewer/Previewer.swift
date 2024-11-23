@@ -22,6 +22,9 @@ struct Previewer {
                                               sortIndex: Int64.max,
                                               lastBalancedUTC: "2024-09-12T17:40:31.594+0000",
                                               createdOnUTC: "2024-09-13T17:40:31.594+0000")
+
+    public let container: ModelContainer
+
     public let billsTag: TransactionTag
     public let medicalTag: TransactionTag
     public let pharmacyTag: TransactionTag
@@ -32,7 +35,25 @@ struct Previewer {
     public let discordRecurringTransaction: RecurringTransaction
     public let billGroup: RecurringTransactionGroup
 
-    init() throws {
+    init() {
+        let schema = Schema([
+            Account.self,
+            AccountTransaction.self
+//            TransactionFile.self,
+//            AppSettings.self,
+//            TransactionTag.self,
+//            RecurringTransaction.self,
+//            RecurringTransactionGroup.self,
+        ])
+        let config = ModelConfiguration(isStoredInMemoryOnly: false)
+        container = try! ModelContainer(for: schema, configurations: config)
+
+        print("-----------------")
+        print(Date())
+        print("-----------------")
+        print("Database Location: \(container.mainContext.sqliteCommand)")
+        print("Generating fake data. This may take a little bit.")
+
         billsTag = TransactionTag(name: "bills")
         medicalTag = TransactionTag(name: "medical")
         pharmacyTag = TransactionTag(name: "pharmacy")
