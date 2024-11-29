@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AccountsView: View {
+    @State private var showOtherView = false
     var accountList: [Account] = []
 
     init() {
@@ -15,14 +16,12 @@ struct AccountsView: View {
     }
 
     var body: some View {
-        List {
-            ForEach(accountList) { row in
-                NavigationLink(destination: AccountTransactions(account: row)) {
-                    AccountListItemView(acctData: row)
-                }
+        List(self.accountList) { account in
+            NavigationLink(destination: AccountTransactionsView(account: account)) {
+                AccountListItemView(acctData: account)
             }
+            .navigationTitle(account.name)
         }
-        .navigationTitle(MenuOptionsEnum.accounts.title)
     }
 }
 

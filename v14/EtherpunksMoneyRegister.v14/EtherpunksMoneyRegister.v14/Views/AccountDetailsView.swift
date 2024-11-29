@@ -8,12 +8,10 @@
 import SwiftUI
 
 struct AccountDetailsView: View {
-    @Binding var presenting: Bool
     var account: Account
 
-    init(account: Account, presenting: Binding<Bool>) {
+    init(account: Account) {
         self.account = account
-        self._presenting = presenting
     }
 
     var body: some View {
@@ -43,20 +41,5 @@ struct AccountDetailsView: View {
 }
 
 #Preview {
-    AccountDetailsView(account: Previewer.bankAccount, presenting: .constant(true))
+    AccountDetailsView(account: Previewer.bankAccount)
 }
-
-//#if os(macOS)
-//struct TestView: View {
-//
-//    var body: some View {
-//        NavigationSplitView(sidebar: {
-//            Sidebar()
-//        }, content: {
-//
-//        }, detail: {
-//
-//        })
-//    }
-//}
-//#endif
