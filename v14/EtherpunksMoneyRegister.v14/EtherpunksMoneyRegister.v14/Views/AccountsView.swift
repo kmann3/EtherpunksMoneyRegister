@@ -12,7 +12,7 @@ struct AccountsView: View {
     var accountList: [Account] = []
 
     init() {
-        self.accountList.insert(Previewer.bankAccount, at: 0)
+        self.accountList.append(Previewer.bankAccount)
     }
 
     var body: some View {

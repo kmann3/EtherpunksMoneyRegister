@@ -105,6 +105,7 @@ struct ContentView: View {
                 }
 #endif
             }
+
             .tabViewStyle(.automatic)
             .tabViewCustomization($customizedTabView)
         }

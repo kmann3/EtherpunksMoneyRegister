@@ -34,19 +34,6 @@ struct AccountTransactionsView: View {
                 VStack {
                     Text("Some transaction here")
                 }
-                // Options for grouping, outstanding first or by breated on?
-//                ForEach(transactions) { row in
-//                    NavigationLink(
-//                        destination: TransactionDetailView(transactionItem: row)
-//                    )
-//                    {
-//                        TransactionListItemView(transaction: row)
-//                    }
-//
-                ////                            .onAppear {
-                ////                                fetchAccountTransactionsIfNecessary(transaction: transaction)
-                ////                            }
-//                    }
             }
         }
     }

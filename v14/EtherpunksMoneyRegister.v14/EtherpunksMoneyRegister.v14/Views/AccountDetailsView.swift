@@ -18,25 +18,6 @@ struct AccountDetailsView: View {
         VStack {
             Text("Account Details View")
         }
-//        .navigationBarBackButtonHidden()
-//        .toolbar {
-//            ToolbarItem(placement: .destructiveAction, content: {
-//                Button(action: {
-//                    presenting = false
-//                }, label: {
-//                    Image(systemName: "chevron.left")
-//                        .foregroundStyle(.secondary)
-//                        .font(.title2)
-//                        .frame(width: 20)
-//                })
-//                .buttonStyle(.automatic)
-//            })
-//
-//            ToolbarItem(placement: .principal, content: {
-//                Text("Account Details: \(account.name)")
-//                    .font(.title3)
-//            })
-//        }
     }
 }
 
