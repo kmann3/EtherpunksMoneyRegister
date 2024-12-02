@@ -6,8 +6,11 @@
 //
 
 import Foundation
-final class RecurringTransactionGroup : ObservableObject, CustomDebugStringConvertible, Identifiable  {
-    public var id: UUID = UUID()
+import SwiftData
+
+@Model
+final class RecurringTransactionGroup : ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable  {
+    @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     public var recurringTransactions: [RecurringTransaction]? = nil
     public var createdOnUTC: Date = Date()

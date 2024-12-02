@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class TransactionTag : ObservableObject, CustomDebugStringConvertible, Identifiable  {
+final class TransactionTag : ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable  {
     @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     @Relationship(deleteRule: .noAction) public var accountTransactions: [AccountTransaction]? = nil

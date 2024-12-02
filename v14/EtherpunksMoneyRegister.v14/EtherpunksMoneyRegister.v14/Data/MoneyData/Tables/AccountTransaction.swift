@@ -10,7 +10,7 @@ import SwiftUI
 import SwiftData
 
 @Model
-final class AccountTransaction : ObservableObject, CustomDebugStringConvertible, Identifiable  {
+final class AccountTransaction : ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable  {
     @Attribute(.unique) public var id: UUID = UUID()
     public var accountId: UUID? = nil
     public var account: Account? = nil

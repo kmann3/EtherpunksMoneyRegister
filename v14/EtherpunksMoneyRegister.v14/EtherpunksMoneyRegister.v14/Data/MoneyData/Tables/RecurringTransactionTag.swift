@@ -6,9 +6,16 @@
 //
 
 import Foundation
+import SwiftData
 
-final class RecurringTransactionTag : ObservableObject, CustomDebugStringConvertible, Identifiable  {
-    public var id: UUID = UUID()
+@Model
+final class RecurringTransactionTag : ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable  {
+    static func == (lhs: RecurringTransactionTag, rhs: RecurringTransactionTag) -> Bool {
+        let areEqual = lhs.id == rhs.id && lhs.name == rhs.name && lhs.createdOnUTC == rhs.createdOnUTC
+        return areEqual
+    }
+
+    @Attribute(.unique) public var id: UUID = UUID()
     public var name: String
     public var recurringTransactions: [RecurringTransaction]? = nil
     public var createdOnUTC: Date = Date()

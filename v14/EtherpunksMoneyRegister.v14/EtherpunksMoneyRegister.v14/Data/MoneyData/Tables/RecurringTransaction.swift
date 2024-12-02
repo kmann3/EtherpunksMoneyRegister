@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import SwiftData
 
-final class RecurringTransaction : ObservableObject, CustomDebugStringConvertible, Identifiable  {
-    public var id: UUID = UUID()
+@Model
+final class RecurringTransaction : ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable  {
+    @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     public var transactionType: TransactionType = TransactionType.debit
     public var amount: Decimal = 0

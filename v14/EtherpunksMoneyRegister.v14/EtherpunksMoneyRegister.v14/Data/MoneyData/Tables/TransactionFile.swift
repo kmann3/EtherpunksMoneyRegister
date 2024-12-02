@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import SwiftData
 
-final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Identifiable  {
-    public var id: UUID = UUID()
+@Model
+final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable  {
+    @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     public var filename: String = ""
     public var notes: String = ""

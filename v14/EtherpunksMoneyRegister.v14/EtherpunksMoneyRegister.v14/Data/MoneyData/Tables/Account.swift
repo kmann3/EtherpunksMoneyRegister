@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Account: ObservableObject, CustomDebugStringConvertible, Identifiable {
+final class Account: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
     @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     public var startingBalance: Decimal = 0

@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import SwiftData
 
-final class Link_Transaction_TransactionTag : ObservableObject, CustomDebugStringConvertible, Identifiable  {
+@Model
+final class Link_Transaction_TransactionTag : ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable  {
     public var transactionId: UUID? = nil
     public var transactionTagId: UUID? = nil
     public var createdOnUTC: Date  = Date()
