@@ -9,6 +9,8 @@ import Foundation
 
 enum TransactionStatus: Codable {
     case cleared
+    case empty
     case pending
+    case recurring
     case reserved
 }

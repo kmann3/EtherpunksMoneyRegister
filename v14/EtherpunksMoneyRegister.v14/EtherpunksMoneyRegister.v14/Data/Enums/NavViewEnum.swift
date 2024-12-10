@@ -25,7 +25,7 @@ enum NavView: Hashable {
     case recurringTransactionEditor
     case recurringTransactionList
     
-    case recurringTransactionGroupDetail
-    case recurringTransactionGroupEditor
-    case recurringTransactionGroupList
+    case RecurringGroupDetail
+    case RecurringGroupEditor
+    case RecurringGroupList
 }

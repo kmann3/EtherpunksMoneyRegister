@@ -17,7 +17,7 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
     public var notes: String = ""
     public var nextDueDate: Date? = nil
     public var transactionTags: [TransactionTag]? = nil
-    public var recurringTransactionGroupId: UUID? = nil
+    public var RecurringGroupId: UUID? = nil
     public var transactions: [AccountTransaction]? = nil
     public var frequency: RecurringFrequency = RecurringFrequency.unknown
     public var frequencyValue: Int? = nil
@@ -34,7 +34,7 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
             - amount: \(amount)
             - notes: \(notes)
             - dueDate: \(String(describing: nextDueDate))
-            - recurringTransactionGroupId: \(String(describing: recurringTransactionGroupId))
+            - RecurringGroupId: \(String(describing: RecurringGroupId))
             - frequency: \(frequency)
             - frequencyValue: \(String(describing: frequencyValue))
             - frequencyDayOfWeek: \(String(describing: frequencyDayOfWeek))
@@ -50,7 +50,7 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
         notes: String,
         nextDueDate: Date? = nil,
         transactionTags: [TransactionTag]? = nil,
-        recurringTransactionGroupId: UUID? = nil,
+        RecurringGroupId: UUID? = nil,
         transactions: [AccountTransaction]? = nil,
         frequency: RecurringFrequency,
         frequencyValue: Int? = nil,
@@ -63,7 +63,7 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
         self.notes = notes
         self.nextDueDate = nextDueDate
         self.transactionTags = transactionTags
-        self.recurringTransactionGroupId = recurringTransactionGroupId
+        self.RecurringGroupId = RecurringGroupId
         self.transactions = transactions
         self.frequency = frequency
         self.frequencyValue = frequencyValue
@@ -79,7 +79,7 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
         notes: String,
         nextDueDate: Date?,
         transactionTags: [TransactionTag]?,
-        recurringTransactionGroupId: UUID?,
+        RecurringGroupId: UUID?,
         transactions: [AccountTransaction]?,
         frequency: RecurringFrequency,
         frequencyValue: Int?,
@@ -93,7 +93,7 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
         self.notes = notes
         self.nextDueDate = nextDueDate
         self.transactionTags = transactionTags
-        self.recurringTransactionGroupId = recurringTransactionGroupId
+        self.RecurringGroupId = RecurringGroupId
         self.transactions = transactions
         self.frequency = frequency
         self.frequencyValue = frequencyValue

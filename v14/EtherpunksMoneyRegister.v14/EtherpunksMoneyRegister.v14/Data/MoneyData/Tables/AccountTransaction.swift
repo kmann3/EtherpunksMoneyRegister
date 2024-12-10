@@ -21,12 +21,13 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
     public var notes: String = ""
     public var confirmationNumber: String = ""
     public var isTaxRelated: Bool = false
-    public var filesCount: Int = 0
+    public var fileCount: Int = 0
     @Relationship(deleteRule: .noAction, inverse: \TransactionTag.accountTransactions) public var transactionTags: [TransactionTag]? = nil
     public var recurringTransactionId: UUID? = nil
     public var dueDate: Date? = nil
     public var pendingOnUTC: Date? = nil
     public var clearedOnUTC: Date? = nil
+    public var balancedOnUTC: Date? = nil
     public var createdOnUTC: Date = Date()
 
     public var debugDescription: String {
@@ -42,12 +43,13 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
             - notes: \(notes)
             - confirmationNumber: \(confirmationNumber)
             - isTaxRelated: \(isTaxRelated)
-            - filesCount: \(filesCount)
+            - fileCount: \(fileCount)
             - transactionTags: \(transactionTags == nil ? "Tags are nil" : "Tags are loaded")
             - recurringTransactionId: \(recurringTransactionId?.uuidString ?? "none")
             - dueDate: \(dueDate?.description ?? "nil")
             - pendingOnUTC: \(pendingOnUTC?.description ?? "nil")
             - clearedOnUTC:\(clearedOnUTC?.description ?? "nil")
+            - balancedOnUTC:\(balancedOnUTC?.description ?? "nil")
             - createdOnUTC: \(createdOnUTC)
             - --- Calculated fields:
             - backgroundColor: \(backgroundColor)
@@ -59,10 +61,17 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
     public var backgroundColor: Color {
         switch self.transactionStatus {
         case .cleared:
+            Color(.sRGB, red: 0/255, green: 153/255, blue: 25/255, opacity: 0.5)
+        case .empty:
             Color.clear
+        case .recurring:
+            // blue
+            Color(.sRGB, red: 0/255, green: 153/255, blue: 153/255, opacity: 0.5)
         case .pending:
+            // yellow
             Color(.sRGB, red: 255/255, green: 150/255, blue: 25/255, opacity: 0.5)
         case .reserved:
+            // red
             Color(.sRGB, red: 255/255, green: 25/255, blue: 25/255, opacity: 0.5)
         }
     }
@@ -74,7 +83,12 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
         } else if self.pendingOnUTC != nil && self.clearedOnUTC == nil {
             return .pending
         } else {
-            return .cleared
+            if self.recurringTransactionId != nil {
+                return .recurring
+            } else if self.clearedOnUTC != nil {
+                return .cleared
+            }
+            return .empty
         }
     }
 
@@ -87,12 +101,13 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
         notes: String = "",
         confirmationNumber: String = "",
         isTaxRelated: Bool = false,
-        filesCount: Int = 0,
+        fileCount: Int = 0,
         transactionTags: [TransactionTag]? = nil,
         recurringTransactionId: UUID? = nil,
         dueDate: Date? = nil,
         pendingOnUTC: Date? = nil,
-        clearedOnUTC: Date? = nil
+        clearedOnUTC: Date? = nil,
+        balancedOnUTC: Date? = nil
     ) {
         self.accountId = accountId
         self.name = name
@@ -102,12 +117,13 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
         self.notes = notes
         self.confirmationNumber = confirmationNumber
         self.isTaxRelated = isTaxRelated
-        self.filesCount = filesCount
+        self.fileCount = fileCount
         self.transactionTags = transactionTags
         self.recurringTransactionId = recurringTransactionId
         self.dueDate = dueDate
         self.pendingOnUTC = pendingOnUTC
         self.clearedOnUTC = clearedOnUTC
+        self.balancedOnUTC = balancedOnUTC
 
         self.VerifySignage()
     }

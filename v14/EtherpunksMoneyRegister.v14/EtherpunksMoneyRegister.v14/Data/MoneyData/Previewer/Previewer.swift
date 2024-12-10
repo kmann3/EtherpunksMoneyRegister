@@ -33,7 +33,7 @@ struct Previewer {
     public let burgerKingTransaction: AccountTransaction
     public var cvsTransaction: AccountTransaction
     public let discordRecurringTransaction: RecurringTransaction
-    public let billGroup: RecurringTransactionGroup
+    public let billGroup: RecurringGroup
 
     init() {
         let schema = Schema([
@@ -43,7 +43,7 @@ struct Previewer {
 //            AppSettings.self,
 //            TransactionTag.self,
 //            RecurringTransaction.self,
-//            RecurringTransactionGroup.self,
+//            RecurringGroup.self,
         ])
         let config = ModelConfiguration(isStoredInMemoryOnly: false)
         container = try! ModelContainer(for: schema, configurations: config)
@@ -62,7 +62,7 @@ struct Previewer {
 
         var balance: Decimal = 437.99
 
-        billGroup = RecurringTransactionGroup(name: "Bills")
+        billGroup = RecurringGroup(name: "Bills")
 
         var transactionAmount: Decimal = -12.39
         balance = balance + transactionAmount
@@ -73,7 +73,7 @@ struct Previewer {
             amount: transactionAmount,
             balance: balance,
             transactionTags: [ffTag],
-            clearedOnUTC: Date()
+            clearedOnUTC: Date().addingTimeInterval(-1000000)
         )
 
 
@@ -85,6 +85,8 @@ struct Previewer {
             transactionType: .debit,
             amount: transactionAmount,
             balance: balance,
+            notes: "Some test notes",
+            confirmationNumber: "1mamz9Zvnz94n",
             isTaxRelated: true,
             transactionTags: [medicalTag, pharmacyTag],
             pendingOnUTC: Date(),
@@ -97,7 +99,7 @@ struct Previewer {
             amount: 13.99,
             notes: "",
             transactionTags: [billsTag],
-            recurringTransactionGroupId: billGroup.id,
+            RecurringGroupId: billGroup.id,
             frequency: .monthly
         )
 

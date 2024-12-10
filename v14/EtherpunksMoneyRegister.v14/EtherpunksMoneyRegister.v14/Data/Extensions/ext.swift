@@ -18,3 +18,12 @@ extension Decimal {
         return NSDecimalNumber(decimal: self).doubleValue
     }
 }
+
+extension Date {
+    func toSummaryDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.setLocalizedDateFormatFromTemplate("MMM d - EEE")
+        return dateFormatter.string(from: self)
+    }
+}

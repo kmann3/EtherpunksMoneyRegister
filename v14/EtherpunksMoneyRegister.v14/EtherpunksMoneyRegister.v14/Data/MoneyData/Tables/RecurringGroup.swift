@@ -1,5 +1,5 @@
 //
-//  RecurringTransactionGroup.swift
+//  RecurringGroup.swift
 //  EtherpunkMoneyRegister
 //
 //  Created by Kennith Mann on 5/18/24.
@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class RecurringTransactionGroup : ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable  {
+final class RecurringGroup : ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable  {
     @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     public var recurringTransactions: [RecurringTransaction]? = nil
@@ -17,7 +17,7 @@ final class RecurringTransactionGroup : ObservableObject, CustomDebugStringConve
 
     public var debugDescription: String {
             return """
-            RecurringTransactionGroup:
+            RecurringGroup:
             - id: \(id)
             - name: \(name)
             - createdOnUTC: \(createdOnUTC)
