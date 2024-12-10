@@ -32,6 +32,7 @@ struct Previewer {
     public let incomeTag: TransactionTag
     public let burgerKingTransaction: AccountTransaction
     public var cvsTransaction: AccountTransaction
+    public var discordTransaction: AccountTransaction
     public let discordRecurringTransaction: RecurringTransaction
     public let billGroup: RecurringGroup
 
@@ -93,6 +94,7 @@ struct Previewer {
             clearedOnUTC: Date()
         )
 
+
         discordRecurringTransaction = RecurringTransaction(
             name: "Discord",
             transactionType: .debit,
@@ -103,6 +105,26 @@ struct Previewer {
             frequency: .monthly
         )
 
+        transactionAmount = -10.81
+        balance = balance + transactionAmount
+        discordTransaction = AccountTransaction(
+            accountId: Previewer.bankAccount.id,
+            name: "Discord",
+            transactionType: .debit,
+            amount: transactionAmount,
+            balance: balance,
+            notes: "Some test notes",
+            confirmationNumber: "1mamz9Zvnz94n",
+            isTaxRelated: true,
+            transactionTags: [medicalTag, pharmacyTag],
+            pendingOnUTC: Date(),
+            clearedOnUTC: Date()
+        )
+
+        discordTransaction.recurringTransactionId = discordRecurringTransaction.id
+
+        discordRecurringTransaction.transactions = [discordTransaction]
+        billGroup.recurringTransactions = [discordRecurringTransaction]
     }
     
     private func getNextDueDate(day: Int) -> Date {

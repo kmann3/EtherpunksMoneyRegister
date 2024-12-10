@@ -61,12 +61,12 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
     public var backgroundColor: Color {
         switch self.transactionStatus {
         case .cleared:
-            Color(.sRGB, red: 0/255, green: 153/255, blue: 25/255, opacity: 0.5)
+            Color(.sRGB, red: 0/255, green: 150/255, blue: 25/255, opacity: 0.5)
         case .empty:
             Color.clear
         case .recurring:
             // blue
-            Color(.sRGB, red: 0/255, green: 153/255, blue: 153/255, opacity: 0.5)
+            Color(.sRGB, red: 0/255, green: 80/255, blue: 150/255, opacity: 0.5)
         case .pending:
             // yellow
             Color(.sRGB, red: 255/255, green: 150/255, blue: 25/255, opacity: 0.5)

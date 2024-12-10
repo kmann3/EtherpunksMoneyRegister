@@ -20,6 +20,9 @@ struct TransactionDetailsView: View {
     init(transactionItem: AccountTransaction) {
         self.transactionItem = transactionItem
         self.account = Previewer.bankAccount
+        let p = Previewer()
+        self.recurringTransactionItem = p.discordRecurringTransaction
+        self.recurringGroupItem = p.billGroup
     }
 
     var body: some View {
@@ -58,6 +61,11 @@ struct TransactionDetailsView: View {
                     Text("Balanced On: nil")
                 }
             }
+
+            Text("Transaction Status: \(self.transactionItem.transactionStatus)")
+            // Put an emoji here to have a popup to describe
+            // Reserved > Pending > Recurring > Cleared
+            // Red      > Yellow  > Blue      > Green
 
             if self.transactionItem.pendingOnUTC != nil {
                 HStack {
@@ -106,7 +114,7 @@ struct TransactionDetailsView: View {
 
             if self.recurringGroupItem != nil {
                 HStack {
-                    Text("Recurring Transaction Group: ")
+                    Text("Recurring Group: ")
                     Text(self.recurringGroupItem!.name)
                 }
             }
@@ -185,10 +193,14 @@ struct TransactionDetailsView: View {
 
                     Divider()
 
-                    Button {} label: {
+                    Button {
+                        addNewDocument()
+                    } label: {
                         Label("Attach file", systemImage: "doc")
                     }
-                    Button {} label: {
+                    Button {
+                        addNewPhoto()
+                    } label: {
                         Label("Attach photo", systemImage: "photo")
                     }
 
@@ -211,5 +223,5 @@ struct TransactionDetailsView: View {
 
 #Preview {
     let p = Previewer()
-    TransactionDetailsView(transactionItem: p.cvsTransaction)
+    TransactionDetailsView(transactionItem: p.discordTransaction)
 }
