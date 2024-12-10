@@ -17,7 +17,9 @@ struct AccountTransactionsView: View {
         self.account = account
         let p = Previewer()
         transactions.insert(p.cvsTransaction, at: 0)
-        transactions.insert(p.cvsTransaction, at: 0)
+        transactions.insert(p.discordTransaction, at: 0)
+        transactions.insert(p.huluPendingTransaction, at: 0)
+        transactions.insert(p.verizonReservedTransaction, at: 0)
         transactions.insert(p.burgerKingTransaction, at: 2)
     }
 

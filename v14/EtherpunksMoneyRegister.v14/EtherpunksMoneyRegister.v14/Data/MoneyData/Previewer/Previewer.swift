@@ -32,6 +32,8 @@ struct Previewer {
     public let incomeTag: TransactionTag
     public let burgerKingTransaction: AccountTransaction
     public var cvsTransaction: AccountTransaction
+    public var huluPendingTransaction: AccountTransaction
+    public var verizonReservedTransaction: AccountTransaction
     public var discordTransaction: AccountTransaction
     public let discordRecurringTransaction: RecurringTransaction
     public let billGroup: RecurringGroup
@@ -125,6 +127,45 @@ struct Previewer {
 
         discordRecurringTransaction.transactions = [discordTransaction]
         billGroup.recurringTransactions = [discordRecurringTransaction]
+        transactionAmount = -23.41
+        balance = balance + transactionAmount
+        huluPendingTransaction = AccountTransaction(
+            accountId: Previewer.bankAccount.id,
+            name: "Hulu",
+            transactionType: .debit,
+            amount: transactionAmount,
+            balance: balance,
+            notes: "",
+            confirmationNumber: "1Z49C",
+            isTaxRelated: true,
+            transactionTags: [medicalTag, pharmacyTag],
+            pendingOnUTC: Date(),
+            clearedOnUTC: nil
+        )
+
+        transactionAmount = -103.37
+        balance = balance + transactionAmount
+        verizonReservedTransaction = AccountTransaction(
+            accountId: Previewer.bankAccount.id,
+            name: "Verizon",
+            transactionType: .debit,
+            amount: transactionAmount,
+            balance: balance,
+            notes: "",
+            confirmationNumber: "",
+            isTaxRelated: true,
+            transactionTags: [medicalTag, pharmacyTag],
+            pendingOnUTC: nil,
+            clearedOnUTC: nil
+        )
+
+        Previewer.bankAccount.transactions = [
+            huluPendingTransaction,
+            verizonReservedTransaction,
+            burgerKingTransaction,
+            discordTransaction,
+            cvsTransaction
+        ]
     }
     
     private func getNextDueDate(day: Int) -> Date {
