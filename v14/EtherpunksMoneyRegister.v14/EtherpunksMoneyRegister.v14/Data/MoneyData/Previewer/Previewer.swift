@@ -30,13 +30,20 @@ struct Previewer {
     public let pharmacyTag: TransactionTag
     public let ffTag: TransactionTag
     public let incomeTag: TransactionTag
+    public let streamingTag: TransactionTag
+
+    // Fake Transactions
     public let burgerKingTransaction: AccountTransaction
     public var cvsTransaction: AccountTransaction
     public var huluPendingTransaction: AccountTransaction
     public var verizonReservedTransaction: AccountTransaction
     public var discordTransaction: AccountTransaction
+
+    // Fake Recurring Transactions
     public let discordRecurringTransaction: RecurringTransaction
+    public let huluRecurringTransaction: RecurringTransaction
     public let billGroup: RecurringGroup
+
 
     init() {
         let schema = Schema([
@@ -62,6 +69,7 @@ struct Previewer {
         pharmacyTag = TransactionTag(name: "pharmacy")
         ffTag = TransactionTag(name: "fast-food")
         incomeTag = TransactionTag(name: "income")
+        streamingTag = TransactionTag(name: "streaming")
 
         var balance: Decimal = 437.99
 
@@ -126,7 +134,17 @@ struct Previewer {
         discordTransaction.recurringTransactionId = discordRecurringTransaction.id
 
         discordRecurringTransaction.transactions = [discordTransaction]
-        billGroup.recurringTransactions = [discordRecurringTransaction]
+
+        huluRecurringTransaction = RecurringTransaction(
+            name: "hulu",
+            transactionType: TransactionType.debit,
+            amount: 23.41,
+            notes: "",
+            transactionTags: [billsTag],
+            RecurringGroupId: billGroup.id,
+            frequency: .monthly
+        )
+
         transactionAmount = -23.41
         balance = balance + transactionAmount
         huluPendingTransaction = AccountTransaction(
@@ -142,6 +160,14 @@ struct Previewer {
             pendingOnUTC: Date(),
             clearedOnUTC: nil
         )
+
+        huluPendingTransaction.recurringTransactionId = huluRecurringTransaction.id
+
+        billGroup.recurringTransactions = [
+            discordRecurringTransaction,
+            huluRecurringTransaction
+        ]
+
 
         transactionAmount = -103.37
         balance = balance + transactionAmount

@@ -62,11 +62,16 @@ struct TransactionListItemView: View {
                         Text("\(tag.name) ")
                             .font(.callout)
                     }
+
                     Spacer()
-//                    if transaction.fileCount > 0 {
-//                        Text(Image(systemName: "paperclip"))
-//                            .font(.caption2)
-//                    }
+
+                    if transaction.fileCount > 0 {
+                        HStack {
+                            Text(Image(systemName: "paperclip"))
+                                .font(.caption2)
+                            Text("x \(transaction.fileCount)")
+                        }
+                    }
                 }
             }
         }

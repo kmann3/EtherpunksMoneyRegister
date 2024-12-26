@@ -63,6 +63,7 @@ struct TransactionDetailsView: View {
             }
 
             Text("Transaction Status: \(self.transactionItem.transactionStatus)")
+
             // Put an emoji here to have a popup to describe
             // Reserved > Pending > Recurring > Cleared
             // Red      > Yellow  > Blue      > Green
