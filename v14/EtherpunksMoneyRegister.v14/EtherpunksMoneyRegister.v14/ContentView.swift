@@ -117,6 +117,8 @@ struct ContentView: View {
 }
 
 #Preview {
+    let p = Previewer()
     ContentView()
+        .modelContainer(p.container)
     // .modelContainer(for: Item.self, inMemory: true)
 }

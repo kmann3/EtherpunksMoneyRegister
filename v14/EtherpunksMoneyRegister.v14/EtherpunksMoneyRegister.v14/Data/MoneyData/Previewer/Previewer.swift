@@ -104,6 +104,7 @@ struct Previewer {
             notes: "Some test notes",
             confirmationNumber: "1mamz9Zvnz94n",
             isTaxRelated: true,
+            fileCount: 1,
             transactionTags: [medicalTag, pharmacyTag],
             pendingOnUTC: Date(),
             clearedOnUTC: Date()
@@ -189,13 +190,13 @@ struct Previewer {
             clearedOnUTC: nil
         )
 
-//        bankAccount.transactions = [
-//            huluPendingTransaction,
-//            verizonReservedTransaction,
-//            burgerKingTransaction,
-//            discordTransaction,
-//            cvsTransaction
-//        ]
+        //        bankAccount.transactions = [
+        //            huluPendingTransaction,
+        //            verizonReservedTransaction,
+        //            burgerKingTransaction,
+        //            discordTransaction,
+        //            cvsTransaction
+        //        ]
 
         container.mainContext.insert(bankAccount)
         container.mainContext.insert(billGroup)
@@ -214,7 +215,7 @@ struct Previewer {
 
         let monkeyURL: URL? = downloadImageFromURL()
         if monkeyURL == nil {
-            print("An error?")
+            print("An error downloading monkey?")
         } else {
             let cvsAttachmentFile: TransactionFile = TransactionFile(
                 id: UUID(),
@@ -229,8 +230,10 @@ struct Previewer {
             container.mainContext.insert(cvsAttachmentFile)
         }
 
-        debugPrint("Done generating data at \(Date().toDebugDate())")    }
-    
+        debugPrint("Done generating data at \(Date().toDebugDate())")
+        debugPrint("Main account id: \(bankAccount.id.uuidString)")
+    }
+
     private func getNextDueDate(day: Int) -> Date {
         let calendar = Calendar.current
         

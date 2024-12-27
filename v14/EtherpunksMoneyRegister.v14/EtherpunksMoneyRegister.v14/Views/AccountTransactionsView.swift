@@ -6,12 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AccountTransactionsView: View {
+    @Environment(\.modelContext) var modelContext
     @State private var searchText = ""
+    @State private var isLoading = false
+    @State private var hasMoreTransactions = true
+    @State private var currentAccountTransactionPage = 0
+    @State private var currentSearchPage = 0
+    @State private var transactionsPerPage = 10
+    @State var accountTransactions: [AccountTransaction] = []
 
     var account: Account
-    var transactions: [AccountTransaction] = []
 
     init(account: Account) {
         self.account = account
@@ -28,7 +35,7 @@ struct AccountTransactionsView: View {
             }
 
             Section(header: Text("Transactions"), footer: Text("End of list")) {
-                        ForEach(transactions, id: \.id) { index in
+                        ForEach(accountTransactions, id: \.id) { index in
                             NavigationLink(
                                 destination: TransactionDetailsView(
                                     transactionItem: index
@@ -36,7 +43,6 @@ struct AccountTransactionsView: View {
                             ) {
                                 TransactionListItemView(transaction: index)
                                     .onAppear {
-                                        print("More loading?")
                                         //fetchAccountTransactionsIfNecessary(transaction: transaction)
                                     }
                             }
@@ -45,7 +51,7 @@ struct AccountTransactionsView: View {
         }
         .navigationTitle("\(account.name) - Transactions")
         .onAppear {
-            //performAccountTransactionFetch()
+            performAccountTransactionFetch()
         }
         .searchable(text: $searchText) {
 //            List {
@@ -95,6 +101,47 @@ struct AccountTransactionsView: View {
                     Label("Menu", systemImage: "ellipsis.circle")
                 }
             }
+        }
+    }
+
+    private func performAccountTransactionFetch(currentPage: Int = 0) {
+        let accountId: UUID = self.account.id
+
+        let predicate = #Predicate<AccountTransaction> { transaction in
+            if transaction.accountId == accountId {
+                return true
+            } else {
+                return false
+            }
+        }
+
+        var fetchDescriptor = FetchDescriptor<AccountTransaction>(predicate: predicate)
+        fetchDescriptor.fetchLimit = transactionsPerPage
+        fetchDescriptor.fetchOffset = self.currentAccountTransactionPage * transactionsPerPage
+        fetchDescriptor.sortBy = [.init(\.createdOnUTC, order: .reverse)]
+
+        guard !isLoading && hasMoreTransactions else { return }
+        isLoading = true
+        DispatchQueue.global().async {
+            do {
+                let newTransactions = try modelContext.fetch(fetchDescriptor)
+                DispatchQueue.main.async {
+                    accountTransactions.append(contentsOf: newTransactions)
+                    isLoading = false
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    print("Error fetching transactions: \(error.localizedDescription)")
+                    isLoading = false
+                }
+            }
+        }
+    }
+
+    private func fetchAccountTransactionsIfNecessary(transaction: AccountTransaction) {
+        if let lastTransaction = accountTransactions.last, lastTransaction == transaction {
+            currentAccountTransactionPage += 1
+            performAccountTransactionFetch()
         }
     }
 }
