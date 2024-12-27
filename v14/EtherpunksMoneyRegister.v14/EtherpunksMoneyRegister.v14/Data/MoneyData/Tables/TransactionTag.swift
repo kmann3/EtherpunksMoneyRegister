@@ -20,7 +20,7 @@ final class TransactionTag : ObservableObject, CustomDebugStringConvertible, Ide
             TransactionTag:
             - id: \(id)
             - name: \(name)
-            - createdOnUTC: \(createdOnUTC)
+            - createdOnUTC: \(createdOnUTC.toDebugDate())
             """
     }
 

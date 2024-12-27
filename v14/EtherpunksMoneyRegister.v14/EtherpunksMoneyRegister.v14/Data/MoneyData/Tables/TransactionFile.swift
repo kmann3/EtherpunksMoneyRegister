@@ -18,6 +18,7 @@ final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Id
     public var data: [Data]? = nil
     public var isTaxRelated: Bool = false
     public var transactionId: UUID? = nil
+    @Relationship(deleteRule: .noAction) public var transaction: AccountTransaction?
 
     // other types of files?
     // Account - contracts, opening papers, statements
@@ -37,7 +38,8 @@ final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Id
             - data URL: \(dataURL?.absoluteString ?? "no url")
             - data size in bytes: \(data?.count ?? 0)
             - isTaxRelated: \(isTaxRelated)
-            - createdOnUTC: \(createdOnUTC)
+            - createdOnUTC: \(createdOnUTC.toDebugDate())
+            - transaction: \(String(describing: transaction))
             """
     }
 
@@ -49,7 +51,8 @@ final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Id
         dataURL: URL? = nil,
         data: [Data]? = nil,
         isTaxRelated: Bool,
-        transactionId: UUID? = nil
+        transactionId: UUID? = nil,
+        transaction: AccountTransaction
     ) {
         self.id = id
         self.name = name

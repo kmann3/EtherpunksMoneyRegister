@@ -33,13 +33,13 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
             - transactionType: \(transactionType)
             - amount: \(amount)
             - notes: \(notes)
-            - dueDate: \(String(describing: nextDueDate))
+            - dueDate: \(nextDueDate?.toDebugDate() ?? "nil")
             - RecurringGroupId: \(String(describing: RecurringGroupId))
             - frequency: \(frequency)
             - frequencyValue: \(String(describing: frequencyValue))
             - frequencyDayOfWeek: \(String(describing: frequencyDayOfWeek))
             - frequencyDate: \(String(describing: frequencyDateValue))
-            - createdOnUTC: \(createdOnUTC)
+            - createdOnUTC: \(createdOnUTC.toDebugDate())
             """
     }
 

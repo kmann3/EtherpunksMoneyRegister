@@ -34,10 +34,10 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
         - outstandingItemCount: \(outstandingItemCount)
         - notes: \(notes)
         - sortIndex: \(sortIndex)
-        - lastBalancedUTC: \(lastBalancedUTC?.description ?? "nil")
+        - lastBalancedUTC: \(lastBalancedUTC?.toDebugDate() ?? "nil")
         - transactions: (TBI - Summary?)
         - transactionCount: \(transactionCount)
-        - createdOnUTC: \(createdOnUTC)
+        - createdOnUTC: \(createdOnUTC.toDebugDate())
         """
     }
 

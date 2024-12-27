@@ -26,4 +26,11 @@ extension Date {
         dateFormatter.setLocalizedDateFormatFromTemplate("MMM d - EEE")
         return dateFormatter.string(from: self)
     }
+
+    func toDebugDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.setLocalizedDateFormatFromTemplate("EEE, dd MMM yyyy HH:mm:ssZ")
+        return dateFormatter.string(from: self)
+    }
 }

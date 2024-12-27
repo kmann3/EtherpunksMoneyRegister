@@ -11,6 +11,9 @@ import SwiftUI
 
 @MainActor
 struct Previewer {
+
+    let isDbInMemory: Bool = true
+
     private static let now: Date = Date()
     public static let bankAccount: Account = Account(id: UUID(uuidString: "12345678-1234-1234-1234-123456789abc")!,
                                               name: "Chase Bank",
@@ -54,14 +57,18 @@ struct Previewer {
             TransactionFile.self,
             TransactionTag.self,
         ])
-        let config = ModelConfiguration(isStoredInMemoryOnly: false)
+        let config = ModelConfiguration(isStoredInMemoryOnly: isDbInMemory)
         container = try! ModelContainer(for: schema, configurations: config)
 
-        print("-----------------")
-        print(Date())
-        print("-----------------")
-        print("Database Location: \(container.mainContext.sqliteCommand)")
-        print("Generating fake data. This may take a little bit.")
+        debugPrint("-----------------")
+        debugPrint(Date().toDebugDate())
+        debugPrint("-----------------")
+        if(isDbInMemory) {
+            debugPrint("Database is in memory.")
+        } else {
+            debugPrint("Database Location: \(container.mainContext.sqliteLocation)")
+        }
+        debugPrint("Generating fake data. This may take a little bit.")
 
         billsTag = TransactionTag(name: "bills")
         medicalTag = TransactionTag(name: "medical")
@@ -101,7 +108,6 @@ struct Previewer {
             pendingOnUTC: Date(),
             clearedOnUTC: Date()
         )
-
 
         discordRecurringTransaction = RecurringTransaction(
             name: "Discord",
@@ -205,7 +211,27 @@ struct Previewer {
         container.mainContext.insert(discordTransaction)
         container.mainContext.insert(discordRecurringTransaction)
         container.mainContext.insert(huluRecurringTransaction)
-    }
+
+        let monkeyURL: URL? = downloadImageFromURL()
+        if monkeyURL == nil {
+            print("An error?")
+        }
+
+        if monkeyURL == nil {
+            let cvsAttachmentFile: TransactionFile = TransactionFile(
+                id: UUID(),
+                name: "Etherpunk Logo",
+                filename: "monkey.jpg",
+                notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.",
+                dataURL: monkeyURL!,
+                isTaxRelated: true,
+                transactionId: cvsTransaction.id,
+                transaction: cvsTransaction
+            )
+            container.mainContext.insert(cvsAttachmentFile)
+        }
+
+        debugPrint("Done generating data at \(Date().toDebugDate())")    }
     
     private func getNextDueDate(day: Int) -> Date {
         let calendar = Calendar.current
@@ -281,7 +307,7 @@ struct Previewer {
 }
 
 extension ModelContext {
-    var sqliteCommand: String {
+    var sqliteLocation: String {
         if let url = container.configurations.first?.url.path(percentEncoded: false) {
             "sqlite3 \"\(url)\""
         } else {

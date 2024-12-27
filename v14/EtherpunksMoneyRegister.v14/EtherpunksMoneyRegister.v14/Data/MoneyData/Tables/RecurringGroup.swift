@@ -20,7 +20,7 @@ final class RecurringGroup : ObservableObject, CustomDebugStringConvertible, Ide
             RecurringGroup:
             - id: \(id)
             - name: \(name)
-            - createdOnUTC: \(createdOnUTC)
+            - createdOnUTC: \(createdOnUTC.toDebugDate())
             """
     }
 
