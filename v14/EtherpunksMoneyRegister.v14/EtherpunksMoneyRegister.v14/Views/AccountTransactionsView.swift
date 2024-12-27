@@ -35,18 +35,14 @@ struct AccountTransactionsView: View {
             }
 
             Section(header: Text("Transactions"), footer: Text("End of list")) {
-                        ForEach(accountTransactions, id: \.id) { index in
-                            NavigationLink(
-                                destination: TransactionDetailsView(
-                                    transactionItem: index
-                                )
-                            ) {
-                                TransactionListItemView(transaction: index)
-                                    .onAppear {
-                                        //fetchAccountTransactionsIfNecessary(transaction: transaction)
-                                    }
+                ForEach(accountTransactions, id: \.id) { index in
+                    NavigationLink(destination: TransactionDetailsView(transactionItem: index)) {
+                        TransactionListItemView(transaction: index)
+                            .onAppear() {
+                                fetchAccountTransactionsIfNecessary(transaction: index)
                             }
-                        }
+                    }
+                }
             }
         }
         .navigationTitle("\(account.name) - Transactions")
