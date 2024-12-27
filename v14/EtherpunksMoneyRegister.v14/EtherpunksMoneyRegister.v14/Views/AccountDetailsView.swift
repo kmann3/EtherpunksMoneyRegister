@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AccountDetailsView: View {
+    @Environment(\.modelContext) var modelContext
     var account: Account
 
     init(account: Account) {
@@ -22,5 +23,7 @@ struct AccountDetailsView: View {
 }
 
 #Preview {
-    AccountDetailsView(account: Previewer.bankAccount)
+    let p = Previewer()
+    AccountDetailsView(account: p.bankAccount)
+        .modelContainer(p.container)
 }

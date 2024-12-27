@@ -6,17 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AccountsView: View {
-    @State private var showOtherView = false
-    var accountList: [Account] = []
-
-    init() {
-        self.accountList.append(Previewer.bankAccount)
-    }
+    @Environment(\.modelContext) var modelContext
+    @Query(sort: [SortDescriptor(\Account.name, comparator: .localizedStandard)])
+    var accountList: [Account]
 
     var body: some View {
-        List(self.accountList) { account in
+        List(accountList) { account in
             NavigationLink(destination: AccountTransactionsView(account: account)) {
                 AccountListItemView(acctData: account)
             }
@@ -26,5 +24,7 @@ struct AccountsView: View {
 }
 
 #Preview {
+    let p = Previewer()
     AccountsView()
+        .modelContainer(p.container)
 }

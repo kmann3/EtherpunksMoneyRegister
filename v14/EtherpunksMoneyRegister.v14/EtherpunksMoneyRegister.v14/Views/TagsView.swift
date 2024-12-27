@@ -10,7 +10,8 @@ import SwiftData
 
 struct TagsView: View {
     @Environment(\.modelContext) var modelContext
-    @Query(sort: [SortDescriptor(\TransactionTag.name, comparator: .localizedStandard)]) var tags: [TransactionTag]
+    @Query(sort: [SortDescriptor(\TransactionTag.name, comparator: .localizedStandard)])
+    var tags: [TransactionTag]
 
     var body: some View {
         List {

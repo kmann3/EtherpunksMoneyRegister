@@ -15,7 +15,7 @@ struct Previewer {
     let isDbInMemory: Bool = true
 
     private static let now: Date = Date()
-    public static let bankAccount: Account = Account(id: UUID(uuidString: "12345678-1234-1234-1234-123456789abc")!,
+    public let bankAccount: Account = Account(id: UUID(uuidString: "12345678-1234-1234-1234-123456789abc")!,
                                               name: "Chase Bank",
                                               startingBalance: 1024.44,
                                               currentBalance: 437.99,
@@ -84,7 +84,7 @@ struct Previewer {
         var transactionAmount: Decimal = -12.39
         balance = balance + transactionAmount
         burgerKingTransaction = AccountTransaction(
-            accountId: Previewer.bankAccount.id,
+            accountId: bankAccount.id,
             name: "Burger King",
             transactionType: .debit,
             amount: transactionAmount,
@@ -96,7 +96,7 @@ struct Previewer {
         transactionAmount = -88.34
         balance = balance + transactionAmount
         cvsTransaction = AccountTransaction(
-            accountId: Previewer.bankAccount.id,
+            accountId: bankAccount.id,
             name: "CVS",
             transactionType: .debit,
             amount: transactionAmount,
@@ -122,7 +122,7 @@ struct Previewer {
         transactionAmount = -10.81
         balance = balance + transactionAmount
         discordTransaction = AccountTransaction(
-            accountId: Previewer.bankAccount.id,
+            accountId: bankAccount.id,
             name: "Discord",
             transactionType: .debit,
             amount: transactionAmount,
@@ -152,7 +152,7 @@ struct Previewer {
         transactionAmount = -23.41
         balance = balance + transactionAmount
         huluPendingTransaction = AccountTransaction(
-            accountId: Previewer.bankAccount.id,
+            accountId: bankAccount.id,
             name: "Hulu",
             transactionType: .debit,
             amount: transactionAmount,
@@ -176,7 +176,7 @@ struct Previewer {
         transactionAmount = -103.37
         balance = balance + transactionAmount
         verizonReservedTransaction = AccountTransaction(
-            accountId: Previewer.bankAccount.id,
+            accountId: bankAccount.id,
             name: "Verizon",
             transactionType: .debit,
             amount: transactionAmount,
@@ -189,15 +189,15 @@ struct Previewer {
             clearedOnUTC: nil
         )
 
-        Previewer.bankAccount.transactions = [
-            huluPendingTransaction,
-            verizonReservedTransaction,
-            burgerKingTransaction,
-            discordTransaction,
-            cvsTransaction
-        ]
+//        bankAccount.transactions = [
+//            huluPendingTransaction,
+//            verizonReservedTransaction,
+//            burgerKingTransaction,
+//            discordTransaction,
+//            cvsTransaction
+//        ]
 
-        container.mainContext.insert(Previewer.bankAccount)
+        container.mainContext.insert(bankAccount)
         container.mainContext.insert(billGroup)
         container.mainContext.insert(billsTag)
         container.mainContext.insert(ffTag)
@@ -215,9 +215,7 @@ struct Previewer {
         let monkeyURL: URL? = downloadImageFromURL()
         if monkeyURL == nil {
             print("An error?")
-        }
-
-        if monkeyURL == nil {
+        } else {
             let cvsAttachmentFile: TransactionFile = TransactionFile(
                 id: UUID(),
                 name: "Etherpunk Logo",

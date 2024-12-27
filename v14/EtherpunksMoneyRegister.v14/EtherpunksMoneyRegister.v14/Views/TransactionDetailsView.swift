@@ -18,9 +18,10 @@ struct TransactionDetailsView: View {
     @State var url: URL?
 
     init(transactionItem: AccountTransaction) {
-        self.transactionItem = transactionItem
-        self.account = Previewer.bankAccount
         let p = Previewer()
+        self.transactionItem = transactionItem
+        self.account = p.bankAccount
+
         self.recurringTransactionItem = p.discordRecurringTransaction
         self.recurringGroupItem = p.billGroup
     }

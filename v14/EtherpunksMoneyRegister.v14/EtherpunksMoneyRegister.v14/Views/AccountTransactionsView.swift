@@ -15,12 +15,6 @@ struct AccountTransactionsView: View {
 
     init(account: Account) {
         self.account = account
-        let p = Previewer()
-        transactions.insert(p.cvsTransaction, at: 0)
-        transactions.insert(p.discordTransaction, at: 0)
-        transactions.insert(p.huluPendingTransaction, at: 0)
-        transactions.insert(p.verizonReservedTransaction, at: 0)
-        transactions.insert(p.burgerKingTransaction, at: 2)
     }
 
     var body: some View {
@@ -106,5 +100,7 @@ struct AccountTransactionsView: View {
 }
 
 #Preview {
-    AccountTransactionsView(account: Previewer.bankAccount)
+    let p = Previewer()
+    AccountTransactionsView(account: p.bankAccount)
+        .modelContainer(p.container)
 }

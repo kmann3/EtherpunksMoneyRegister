@@ -124,5 +124,7 @@ struct AccountListItemView: View {
 }
 
 #Preview {
-    AccountListItemView(acctData: Previewer.bankAccount)
+    let p = Previewer()
+    AccountListItemView(acctData: p.bankAccount)
+        .modelContainer(p.container)
 }
