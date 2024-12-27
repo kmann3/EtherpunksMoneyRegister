@@ -18,6 +18,8 @@ struct AccountTransactionsView: View {
     @State private var transactionsPerPage = 10
     @State var accountTransactions: [AccountTransaction] = []
 
+    @State var lastTransactions: [AccountTransaction] = []
+
     var account: Account
 
     init(account: Account) {
@@ -38,7 +40,7 @@ struct AccountTransactionsView: View {
                 ForEach(accountTransactions, id: \.id) { index in
                     NavigationLink(destination: TransactionDetailsView(transactionItem: index)) {
                         TransactionListItemView(transaction: index)
-                            .onAppear() {
+                            .onAppear {
                                 fetchAccountTransactionsIfNecessary(transaction: index)
                             }
                     }
@@ -111,19 +113,29 @@ struct AccountTransactionsView: View {
             }
         }
 
+        debugPrint("Current Page: \(self.currentAccountTransactionPage)")
+        debugPrint("Offset: \(self.currentAccountTransactionPage*transactionsPerPage)")
         var fetchDescriptor = FetchDescriptor<AccountTransaction>(predicate: predicate)
         fetchDescriptor.fetchLimit = transactionsPerPage
         fetchDescriptor.fetchOffset = self.currentAccountTransactionPage * transactionsPerPage
         fetchDescriptor.sortBy = [.init(\.createdOnUTC, order: .reverse)]
 
+        // Need to see if it has more transactions
         guard !isLoading && hasMoreTransactions else { return }
         isLoading = true
         DispatchQueue.global().async {
             do {
                 let newTransactions = try modelContext.fetch(fetchDescriptor)
                 DispatchQueue.main.async {
-                    accountTransactions.append(contentsOf: newTransactions)
-                    isLoading = false
+                    if lastTransactions == newTransactions {
+                        hasMoreTransactions = false
+                        isLoading = false
+                        debugPrint("End of list")
+                    } else {
+                        accountTransactions.append(contentsOf: newTransactions)
+                        lastTransactions = newTransactions
+                        isLoading = false
+                    }
                 }
             } catch {
                 DispatchQueue.main.async {
@@ -136,6 +148,7 @@ struct AccountTransactionsView: View {
 
     private func fetchAccountTransactionsIfNecessary(transaction: AccountTransaction) {
         if let lastTransaction = accountTransactions.last, lastTransaction == transaction {
+            debugPrint("More refresh")
             currentAccountTransactionPage += 1
             performAccountTransactionFetch()
         }
