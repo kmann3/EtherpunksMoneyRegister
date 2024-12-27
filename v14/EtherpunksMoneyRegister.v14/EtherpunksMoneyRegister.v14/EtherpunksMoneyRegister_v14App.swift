@@ -10,14 +10,19 @@ import SwiftData
 
 @main
 struct EtherpunksMoneyRegister_v14App: App {
-    var sharedModelContainer: ModelContainer = {
+    var container: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Account.self,
+            AccountTransaction.self,
+            RecurringGroup.self,
+            RecurringTransaction.self,
+            TransactionFile.self,
+            TransactionTag.self,
         ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        let config = ModelConfiguration(isStoredInMemoryOnly: false)
 
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            return try ModelContainer(for: schema, configurations: [config])
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
@@ -27,6 +32,6 @@ struct EtherpunksMoneyRegister_v14App: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(container)
     }
 }

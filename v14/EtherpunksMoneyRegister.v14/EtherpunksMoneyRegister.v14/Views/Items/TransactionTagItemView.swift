@@ -6,51 +6,75 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TransactionTagItemView: View {
+    @Environment(\.modelContext) var modelContext
+    @State var accountTransactions: [AccountTransaction]? = nil
+    @State var useCount: Int = 0
+    @State var lastUsed: Date? = nil
     var transactionTag: TransactionTag
-    var useCount: Int = Int.random(in: 1..<23495)
-    var lastUsed: Date? = Date()
 
     init(transactionTag: TransactionTag) {
         self.transactionTag = transactionTag
-
-        // TODO: Calculate use count
-
-        // TODO: Calculate last used date
-        let empty: Int = Int.random(in: 1..<4)
-        debugPrint(empty)
-        if(empty == 2) {
-            lastUsed = nil
-        }
     }
 
     var body: some View {
         VStack  (alignment: .leading){
             HStack {
-                Text(transactionTag.name)
-                    .frame(width: 100, height: 30)
+                Text(self.transactionTag.name)
+                    //.frame(width: 100, height: 30)
 
                 Spacer()
 
                 Text("Last Used:")
                 if(lastUsed != nil) {
                     Text(lastUsed!, format: .dateTime.month().day().year())
-                        .frame(width: 100, height: 30)
+                        //.frame(width: 100, height: 30)
                 } else {
                     Text("Never")
-                        .frame(width: 100, height: 30)
+                        //.frame(width: 100, height: 30)
                 }
 
                 Spacer()
                 Text("#: \(useCount)")
-                    .frame(width: 100, height: 30)
+                    //.frame(width: 100, height: 30)
             }
+        }
+        .onAppear {
+            loadData()
+        }
+    }
+
+    func loadData() {
+        let tagId = transactionTag.id
+
+        var fetchDescriptor: FetchDescriptor<TransactionTag> {
+            var descriptor = FetchDescriptor<TransactionTag>(predicate: #Predicate<TransactionTag> {
+                $0.id == tagId
+            }
+            )
+            descriptor.fetchLimit = 1
+            descriptor.relationshipKeyPathsForPrefetching = [\.accountTransactions]
+            return descriptor
+        }
+
+        let query = try! modelContext.fetch(fetchDescriptor)
+
+        if(query.count > 0) {
+            accountTransactions = query.first!.accountTransactions
+            useCount = accountTransactions?.count ?? 0
+            lastUsed = accountTransactions?.first?.createdOnUTC ?? nil
+
+        } else {
+            accountTransactions = nil
+            useCount = 0
         }
     }
 }
 
 #Preview {
     let p = Previewer()
-    TransactionTagItemView(transactionTag: p.billsTag)
+    TransactionTagItemView(transactionTag: p.ffTag)
+        .modelContainer(p.container)
 }

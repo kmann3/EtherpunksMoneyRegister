@@ -6,20 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TagsView: View {
-    var tags: [TransactionTag] = []
-
-    init() {
-        let p: Previewer = Previewer()
-        self.tags = [
-            p.billsTag,
-            p.ffTag,
-            p.incomeTag,
-            p.medicalTag,
-            p.streamingTag
-        ]
-    }
+    @Environment(\.modelContext) var modelContext
+    @Query(sort: [SortDescriptor(\TransactionTag.name, comparator: .localizedStandard)]) var tags: [TransactionTag]
 
     var body: some View {
         List {
@@ -28,6 +19,9 @@ struct TagsView: View {
                     TransactionTagItemView(transactionTag: transactionTag)
                 }
             }
+        }
+        .refreshable {
+            // TODO: Implement tag refresh
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -46,5 +40,7 @@ struct TagsView: View {
 }
 
 #Preview {
+    let p = Previewer()
     TagsView()
+        .modelContainer(p.container)
 }

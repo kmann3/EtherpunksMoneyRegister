@@ -48,12 +48,11 @@ struct Previewer {
     init() {
         let schema = Schema([
             Account.self,
-            AccountTransaction.self
-//            TransactionFile.self,
-//            AppSettings.self,
-//            TransactionTag.self,
-//            RecurringTransaction.self,
-//            RecurringGroup.self,
+            AccountTransaction.self,
+            RecurringGroup.self,
+            RecurringTransaction.self,
+            TransactionFile.self,
+            TransactionTag.self,
         ])
         let config = ModelConfiguration(isStoredInMemoryOnly: false)
         container = try! ModelContainer(for: schema, configurations: config)
@@ -86,7 +85,6 @@ struct Previewer {
             transactionTags: [ffTag],
             clearedOnUTC: Date().addingTimeInterval(-1000000)
         )
-
 
         transactionAmount = -88.34
         balance = balance + transactionAmount
@@ -192,6 +190,21 @@ struct Previewer {
             discordTransaction,
             cvsTransaction
         ]
+
+        container.mainContext.insert(Previewer.bankAccount)
+        container.mainContext.insert(billGroup)
+        container.mainContext.insert(billsTag)
+        container.mainContext.insert(ffTag)
+        container.mainContext.insert(incomeTag)
+        container.mainContext.insert(medicalTag)
+        container.mainContext.insert(streamingTag)
+        container.mainContext.insert(burgerKingTransaction)
+        container.mainContext.insert(cvsTransaction)
+        container.mainContext.insert(huluPendingTransaction)
+        container.mainContext.insert(verizonReservedTransaction)
+        container.mainContext.insert(discordTransaction)
+        container.mainContext.insert(discordRecurringTransaction)
+        container.mainContext.insert(huluRecurringTransaction)
     }
     
     private func getNextDueDate(day: Int) -> Date {
