@@ -18,6 +18,10 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
     public var nextDueDate: Date? = nil
     public var transactionTags: [TransactionTag]? = nil
     public var RecurringGroupId: UUID? = nil
+    @Relationship(
+        deleteRule: .noAction,
+        inverse: \RecurringGroup.recurringTransactions
+    ) public var recurringGroup: RecurringGroup? = nil
     public var transactions: [AccountTransaction]? = nil
     public var frequency: RecurringFrequency = RecurringFrequency.unknown
     public var frequencyValue: Int? = nil

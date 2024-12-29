@@ -24,6 +24,7 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
     public var fileCount: Int = 0
     @Relationship(deleteRule: .noAction, inverse: \TransactionTag.accountTransactions) public var transactionTags: [TransactionTag]? = nil
     public var recurringTransactionId: UUID? = nil
+    @Relationship(deleteRule: .noAction, inverse: \RecurringTransaction.transactions) public var recurringTransaction: RecurringTransaction? = nil
     public var dueDate: Date? = nil
     public var pendingOnUTC: Date? = nil
     public var clearedOnUTC: Date? = nil
@@ -93,7 +94,7 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
     }
 
     init(
-        accountId: UUID? = nil,
+        account: Account,
         name: String = "",
         transactionType: TransactionType = .debit,
         amount: Decimal = 0,
@@ -103,13 +104,14 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
         isTaxRelated: Bool = false,
         fileCount: Int = 0,
         transactionTags: [TransactionTag]? = nil,
-        recurringTransactionId: UUID? = nil,
+        recurringTransaction: RecurringTransaction? = nil,
         dueDate: Date? = nil,
         pendingOnUTC: Date? = nil,
         clearedOnUTC: Date? = nil,
         balancedOnUTC: Date? = nil
     ) {
-        self.accountId = accountId
+        self.account = account
+        self.accountId = account.id
         self.name = name
         self.transactionType = transactionType
         self.amount = amount
@@ -119,7 +121,8 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
         self.isTaxRelated = isTaxRelated
         self.fileCount = fileCount
         self.transactionTags = transactionTags
-        self.recurringTransactionId = recurringTransactionId
+        self.recurringTransaction = recurringTransaction
+        self.recurringTransactionId = recurringTransaction?.id ?? nil
         self.dueDate = dueDate
         self.pendingOnUTC = pendingOnUTC
         self.clearedOnUTC = clearedOnUTC
@@ -129,8 +132,8 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
     }
 
     init(
+        account: Account,
         name: String,
-        accountId: UUID,
         transactionType: TransactionType,
         amount: Decimal,
         balance: Decimal,
@@ -138,7 +141,8 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
         clearedOnUTC: Date? = nil
     ) {
         self.name = name
-        self.accountId = accountId
+        self.account = account
+        self.accountId = account.id
         self.transactionType = transactionType
         self.amount = amount
         self.balance = balance

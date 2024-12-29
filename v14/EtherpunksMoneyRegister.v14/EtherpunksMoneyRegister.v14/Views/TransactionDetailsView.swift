@@ -7,30 +7,28 @@
 
 import QuickLook
 import SwiftUI
+import SwiftData
 
 struct TransactionDetailsView: View {
-    var transactionItem: AccountTransaction
-    var account: Account?
-    var recurringTransactionItem: RecurringTransaction? = nil
-    var recurringGroupItem: RecurringGroup? = nil
-    var transactionFiles: [TransactionFile] = []
+    @Environment(\.modelContext) var modelContext
+    @State var account: Account?
+    @State var recurringTransactionItem: RecurringTransaction? = nil
+    @State var recurringGroupItem: RecurringGroup? = nil
+    @State var transactionFiles: [TransactionFile] = []
 
     @State var url: URL?
+    var transactionItem: AccountTransaction
+
 
     init(transactionItem: AccountTransaction) {
-        let p = Previewer()
         self.transactionItem = transactionItem
-        self.account = p.bankAccount
-
-        self.recurringTransactionItem = p.discordRecurringTransaction
-        self.recurringGroupItem = p.billGroup
     }
 
     var body: some View {
         List {
             Text("Name: \(self.transactionItem.name)")
             Text("Type: \(self.transactionItem.transactionType == .debit ? "Debit" : "Credit")")
-            Text("Account: \(self.account!.name)")
+            Text("Account: \(self.account?.name ?? "Error loading account")")
             HStack {
                 Text("Amount: ")
                 Text(self.transactionItem.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
@@ -107,6 +105,7 @@ struct TransactionDetailsView: View {
                 }
             }
 
+            // TODO: Implement the ability to click on this and go to the view for Recurring Transactions
             if self.recurringTransactionItem != nil {
                 HStack {
                     Text("Recurring Transaction: ")
@@ -114,6 +113,7 @@ struct TransactionDetailsView: View {
                 }
             }
 
+            // TODO: Implement the ability to click on this and go to the view for Recurring Groups
             if self.recurringGroupItem != nil {
                 HStack {
                     Text("Recurring Group: ")
@@ -216,6 +216,27 @@ struct TransactionDetailsView: View {
                 }
             }
         }
+        .onAppear() {
+            loadData()
+        }
+    }
+
+    func loadData() {
+        let transactionID = transactionItem.id
+
+        var fetchDescriptor = FetchDescriptor<AccountTransaction>(
+            predicate: #Predicate<AccountTransaction> { $0.id == transactionID
+            })
+        fetchDescriptor.fetchLimit = 1
+        fetchDescriptor.relationshipKeyPathsForPrefetching = [\.account]
+        fetchDescriptor.relationshipKeyPathsForPrefetching = [\.recurringTransaction]
+//        fetchDescriptor.relationshipKeyPathsForPrefetching = [\.recurringTransaction?.recurringGroup]
+
+        let query = try! modelContext.fetch(fetchDescriptor)
+        self.account = query.first!.account!
+        self.recurringTransactionItem = query.first!.recurringTransaction
+        self.recurringGroupItem = query.first!.recurringTransaction?.recurringGroup
+
     }
 
     func addNewDocument() {}
@@ -226,4 +247,5 @@ struct TransactionDetailsView: View {
 #Preview {
     let p = Previewer()
     TransactionDetailsView(transactionItem: p.discordTransaction)
+        .modelContainer(p.container)
 }

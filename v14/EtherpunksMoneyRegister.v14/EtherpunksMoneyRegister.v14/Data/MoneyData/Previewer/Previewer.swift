@@ -104,7 +104,7 @@ struct Previewer {
         var transactionAmount: Decimal = -12.39
         balance = balance + transactionAmount
         burgerKingTransaction = AccountTransaction(
-            accountId: bankAccount.id,
+            account: bankAccount,
             name: "Burger King",
             transactionType: .debit,
             amount: transactionAmount,
@@ -118,7 +118,7 @@ struct Previewer {
         transactionAmount = -88.34
         balance = balance + transactionAmount
         cvsTransaction = AccountTransaction(
-            accountId: bankAccount.id,
+            account: bankAccount,
             name: "CVS",
             transactionType: .debit,
             amount: transactionAmount,
@@ -147,7 +147,7 @@ struct Previewer {
         transactionAmount = -10.81
         balance = balance + transactionAmount
         discordTransaction = AccountTransaction(
-            accountId: bankAccount.id,
+            account: bankAccount,
             name: "Discord",
             transactionType: .debit,
             amount: transactionAmount,
@@ -156,7 +156,7 @@ struct Previewer {
             confirmationNumber: "1mamz9Zvnz94n",
             isTaxRelated: true,
             transactionTags: [medicalTag, pharmacyTag],
-            recurringTransactionId: discordRecurringTransaction.id,
+            recurringTransaction: discordRecurringTransaction,
             pendingOnUTC: Date(),
             clearedOnUTC: Date()
         )
@@ -179,7 +179,7 @@ struct Previewer {
         transactionAmount = -23.41
         balance = balance + transactionAmount
         huluPendingTransaction = AccountTransaction(
-            accountId: bankAccount.id,
+            account: bankAccount,
             name: "Hulu",
             transactionType: .debit,
             amount: transactionAmount,
@@ -188,7 +188,7 @@ struct Previewer {
             confirmationNumber: "1Z49C",
             isTaxRelated: true,
             transactionTags: [medicalTag, pharmacyTag],
-            recurringTransactionId: huluRecurringTransaction.id,
+            recurringTransaction: huluRecurringTransaction,
             pendingOnUTC: Date(),
             clearedOnUTC: nil
         )
@@ -196,23 +196,6 @@ struct Previewer {
         container.mainContext.insert(huluRecurringTransaction)
 
         // VERIZON
-        transactionAmount = -103.37
-        balance = balance + transactionAmount
-        verizonReservedTransaction = AccountTransaction(
-            accountId: bankAccount.id,
-            name: "Verizon",
-            transactionType: .debit,
-            amount: transactionAmount,
-            balance: balance,
-            notes: "",
-            confirmationNumber: "",
-            isTaxRelated: true,
-            transactionTags: [medicalTag, pharmacyTag],
-            pendingOnUTC: nil,
-            clearedOnUTC: nil
-        )
-        container.mainContext.insert(verizonReservedTransaction)
-
         verizonRecurringTransaction = RecurringTransaction(
             name: "Verizon",
             transactionType: TransactionType.debit,
@@ -222,6 +205,24 @@ struct Previewer {
             RecurringGroupId: billGroup.id,
             frequency: .monthly
         )
+
+        transactionAmount = -103.37
+        balance = balance + transactionAmount
+        verizonReservedTransaction = AccountTransaction(
+            account: bankAccount,
+            name: "Verizon",
+            transactionType: .debit,
+            amount: transactionAmount,
+            balance: balance,
+            notes: "",
+            confirmationNumber: "",
+            isTaxRelated: true,
+            transactionTags: [medicalTag, pharmacyTag],
+            recurringTransaction: verizonRecurringTransaction,
+            pendingOnUTC: nil,
+            clearedOnUTC: nil
+        )
+        container.mainContext.insert(verizonReservedTransaction)
 
         billGroup.recurringTransactions = [
             discordRecurringTransaction,
