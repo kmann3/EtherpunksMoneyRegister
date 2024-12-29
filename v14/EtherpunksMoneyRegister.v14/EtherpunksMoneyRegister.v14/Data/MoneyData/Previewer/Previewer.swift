@@ -28,24 +28,27 @@ struct Previewer {
 
     public let container: ModelContainer
 
+    // Tags
     public let billsTag: TransactionTag
+    public let ffTag: TransactionTag
+    public let fuelTag: TransactionTag
+    public let incomeTag: TransactionTag
     public let medicalTag: TransactionTag
     public let pharmacyTag: TransactionTag
-    public let ffTag: TransactionTag
-    public let incomeTag: TransactionTag
     public let streamingTag: TransactionTag
 
     // Fake Transactions
     public let burgerKingTransaction: AccountTransaction
     public var cvsTransaction: AccountTransaction
+    public var discordTransaction: AccountTransaction
     public var huluPendingTransaction: AccountTransaction
     public var verizonReservedTransaction: AccountTransaction
-    public var discordTransaction: AccountTransaction
 
     // Fake Recurring Transactions
+    public let billGroup: RecurringGroup
     public let discordRecurringTransaction: RecurringTransaction
     public let huluRecurringTransaction: RecurringTransaction
-    public let billGroup: RecurringGroup
+    public let verizonRecurringTransaction: RecurringTransaction
 
 
     init() {
@@ -70,17 +73,34 @@ struct Previewer {
         }
         debugPrint("Generating fake data. This may take a little bit.")
 
+        // Bank accounts
+        container.mainContext.insert(bankAccount)
+
+        // Tags
         billsTag = TransactionTag(name: "bills")
+        ffTag = TransactionTag(name: "fast-food")
+        fuelTag = TransactionTag(name: "fuel")
+        incomeTag = TransactionTag(name: "income")
         medicalTag = TransactionTag(name: "medical")
         pharmacyTag = TransactionTag(name: "pharmacy")
-        ffTag = TransactionTag(name: "fast-food")
-        incomeTag = TransactionTag(name: "income")
         streamingTag = TransactionTag(name: "streaming")
 
-        var balance: Decimal = 437.99
+        container.mainContext.insert(billsTag)
+        container.mainContext.insert(ffTag)
+        container.mainContext.insert(fuelTag)
+        container.mainContext.insert(incomeTag)
+        container.mainContext.insert(medicalTag)
+        container.mainContext.insert(pharmacyTag)
+        container.mainContext.insert(streamingTag)
+
+        // Recurring Groups
 
         billGroup = RecurringGroup(name: "Bills")
 
+        // Initial balance
+        var balance: Decimal = 437.99
+
+        // BURGER KING
         var transactionAmount: Decimal = -12.39
         balance = balance + transactionAmount
         burgerKingTransaction = AccountTransaction(
@@ -92,7 +112,9 @@ struct Previewer {
             transactionTags: [ffTag],
             clearedOnUTC: Date().addingTimeInterval(-1000000)
         )
+        container.mainContext.insert(burgerKingTransaction)
 
+        // CVS
         transactionAmount = -88.34
         balance = balance + transactionAmount
         cvsTransaction = AccountTransaction(
@@ -109,7 +131,9 @@ struct Previewer {
             pendingOnUTC: Date(),
             clearedOnUTC: Date()
         )
+        container.mainContext.insert(cvsTransaction)
 
+        // DISCORD
         discordRecurringTransaction = RecurringTransaction(
             name: "Discord",
             transactionType: .debit,
@@ -132,14 +156,16 @@ struct Previewer {
             confirmationNumber: "1mamz9Zvnz94n",
             isTaxRelated: true,
             transactionTags: [medicalTag, pharmacyTag],
+            recurringTransactionId: discordRecurringTransaction.id,
             pendingOnUTC: Date(),
             clearedOnUTC: Date()
         )
-
-        discordTransaction.recurringTransactionId = discordRecurringTransaction.id
+        container.mainContext.insert(discordTransaction)
 
         discordRecurringTransaction.transactions = [discordTransaction]
+        container.mainContext.insert(discordRecurringTransaction)
 
+        // HULU
         huluRecurringTransaction = RecurringTransaction(
             name: "hulu",
             transactionType: TransactionType.debit,
@@ -162,18 +188,14 @@ struct Previewer {
             confirmationNumber: "1Z49C",
             isTaxRelated: true,
             transactionTags: [medicalTag, pharmacyTag],
+            recurringTransactionId: huluRecurringTransaction.id,
             pendingOnUTC: Date(),
             clearedOnUTC: nil
         )
+        container.mainContext.insert(huluPendingTransaction)
+        container.mainContext.insert(huluRecurringTransaction)
 
-        huluPendingTransaction.recurringTransactionId = huluRecurringTransaction.id
-
-        billGroup.recurringTransactions = [
-            discordRecurringTransaction,
-            huluRecurringTransaction
-        ]
-
-
+        // VERIZON
         transactionAmount = -103.37
         balance = balance + transactionAmount
         verizonReservedTransaction = AccountTransaction(
@@ -189,29 +211,24 @@ struct Previewer {
             pendingOnUTC: nil,
             clearedOnUTC: nil
         )
-
-        //        bankAccount.transactions = [
-        //            huluPendingTransaction,
-        //            verizonReservedTransaction,
-        //            burgerKingTransaction,
-        //            discordTransaction,
-        //            cvsTransaction
-        //        ]
-
-        container.mainContext.insert(bankAccount)
-        container.mainContext.insert(billGroup)
-        container.mainContext.insert(billsTag)
-        container.mainContext.insert(ffTag)
-        container.mainContext.insert(incomeTag)
-        container.mainContext.insert(medicalTag)
-        container.mainContext.insert(streamingTag)
-        container.mainContext.insert(burgerKingTransaction)
-        container.mainContext.insert(cvsTransaction)
-        container.mainContext.insert(huluPendingTransaction)
         container.mainContext.insert(verizonReservedTransaction)
-        container.mainContext.insert(discordTransaction)
-        container.mainContext.insert(discordRecurringTransaction)
-        container.mainContext.insert(huluRecurringTransaction)
+
+        verizonRecurringTransaction = RecurringTransaction(
+            name: "Verizon",
+            transactionType: TransactionType.debit,
+            amount: 104.00,
+            notes: "",
+            transactionTags: [billsTag],
+            RecurringGroupId: billGroup.id,
+            frequency: .monthly
+        )
+
+        billGroup.recurringTransactions = [
+            discordRecurringTransaction,
+            huluRecurringTransaction,
+            verizonRecurringTransaction
+        ]
+        container.mainContext.insert(billGroup)
 
         let monkeyURL: URL? = downloadImageFromURL()
         if monkeyURL == nil {
