@@ -10,11 +10,11 @@ import SwiftUI
 
 struct ContentView: View {
     @AppStorage("customizedTabView") var customizedTabView: TabViewCustomization
-    @State private var selectedTab: MenuOptionsEnum = .accounts
+    @State private var pathStore = PathStore()
 
     var body: some View {
-        NavigationStack {
-            TabView(selection: $selectedTab) {
+        NavigationStack(path: $pathStore.path) {
+            TabView(selection: $pathStore.selectedTab) {
                 Tab(
                     MenuOptionsEnum.dashboard.title,
                     systemImage: MenuOptionsEnum.dashboard.iconName,

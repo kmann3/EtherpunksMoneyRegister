@@ -113,14 +113,11 @@ struct AccountTransactionsView: View {
             }
         }
 
-        debugPrint("Current Page: \(self.currentAccountTransactionPage)")
-        debugPrint("Offset: \(self.currentAccountTransactionPage*transactionsPerPage)")
         var fetchDescriptor = FetchDescriptor<AccountTransaction>(predicate: predicate)
         fetchDescriptor.fetchLimit = transactionsPerPage
         fetchDescriptor.fetchOffset = self.currentAccountTransactionPage * transactionsPerPage
         fetchDescriptor.sortBy = [.init(\.createdOnUTC, order: .reverse)]
 
-        // Need to see if it has more transactions
         guard !isLoading && hasMoreTransactions else { return }
         isLoading = true
         DispatchQueue.global().async {

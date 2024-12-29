@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct RecurringTransactionsView: View {
+    @Environment(\.modelContext) var modelContext
+    
     var body: some View {
         Text("Recurring Transactions View")
     }

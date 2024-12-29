@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ReportsView: View {
+    @Environment(\.modelContext) var modelContext
+    
     var body: some View {
         Text("ReportsView")
         // Notes: A report that shows a calendar with the transaction count per day
