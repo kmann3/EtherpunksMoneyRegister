@@ -53,4 +53,8 @@ class PathStore {
     public func clearPathAndGoHome() {
         self.path.removeLast(path.count)
     }
+
+    public func goTo(path: NavView) {
+        self.path.append(path)
+    }
 }
