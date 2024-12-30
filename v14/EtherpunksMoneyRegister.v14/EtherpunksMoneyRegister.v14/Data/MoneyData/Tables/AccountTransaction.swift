@@ -58,6 +58,7 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
             """
     }
 
+    // TODO: Allow for user based changes for color-blindness.
     /// The background color indicating the status of the transaction.
     public var backgroundColor: Color {
         switch self.transactionStatus {
