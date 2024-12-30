@@ -54,7 +54,13 @@ class PathStore {
         self.path.removeLast(path.count)
     }
 
-    public func goTo(path: NavView) {
+    public func goTo(path: NavView, value: Any) {
+        if value is Account {
+
+        } else if value is AccountTransaction {
+
+        }
+        
         self.path.append(path)
     }
 }
