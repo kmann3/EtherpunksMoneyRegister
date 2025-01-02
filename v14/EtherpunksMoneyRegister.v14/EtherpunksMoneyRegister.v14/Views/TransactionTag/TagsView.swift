@@ -12,23 +12,34 @@ struct TagsView: View {
     @Environment(\.modelContext) var modelContext
     @Query(sort: [SortDescriptor(\TransactionTag.name, comparator: .localizedStandard)])
     var tags: [TransactionTag]
+    
+    @State var navPath: PathStore
+    @State var viewModel: ViewModel = ViewModel()
 
     var body: some View {
         List {
             Section(header: Text("Transaction Tags"), footer: Text("End of list")) {
                 ForEach(tags.sorted(by: { $0.name < $1.name })) { transactionTag in
-                    TransactionTagItemView(transactionTag: transactionTag)
+
+                    NavigationLink(destination: TagEditor(tag: transactionTag)) {
+                        TransactionTagItemView(transactionTag: transactionTag)
+                            .contextMenu(menuItems: {
+                                Button("Delete", action: {
+                                    // delete
+                                    debugPrint("Test")
+                                    debugPrint("Delete: \(transactionTag.name)")
+                                    
+                                })
+                            })
+                    }
                 }
             }
-        }
-        .refreshable {
-            // TODO: Implement tag refresh
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
                     Button {
-                        //path.append(NavData(navView: .transactionEditor, transaction: transactionItem))
+                        viewModel.isPresented.toggle()
                     } label: {
                         Label("New Tag", systemImage: "pencil")
                     }
@@ -37,11 +48,16 @@ struct TagsView: View {
                 }
             }
         }
+        .sheet(
+            isPresented: $viewModel.isPresented,
+            content: { TagEditor(tag: TransactionTag(name: ""))
+            })
+
     }
 }
 
 #Preview {
     let p = Previewer()
-    TagsView()
+    TagsView(navPath: PathStore())
         .modelContainer(p.container)
 }

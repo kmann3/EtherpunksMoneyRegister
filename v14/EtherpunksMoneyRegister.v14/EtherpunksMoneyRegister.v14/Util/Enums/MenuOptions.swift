@@ -43,13 +43,13 @@ enum MenuOptionsEnum: Int, CaseIterable {
 
     var action: some View {
         switch self {
-        case .dashboard: return AnyView(DashboardView())
-        case .accounts: return AnyView(AccountsView())
+        case .dashboard:             return AnyView(DashboardView())
+        case .accounts:              return AnyView(AccountsView())
         case .recurringTransactions: return AnyView(RecurringTransactionsView())
-        case .tags: return AnyView(TagsView())
-        case .reports: return AnyView(ReportsView())
-        case .search: return AnyView(SearchView())
-        case .settings: return AnyView(SettingsView())
+        case .reports:               return AnyView(ReportsView())
+        case .search:                return AnyView(SearchView())
+        case .settings:              return AnyView(SettingsView())
+        default:                     return AnyView(DashboardView())
         }
     }
 

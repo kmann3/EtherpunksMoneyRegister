@@ -47,7 +47,7 @@ struct ContentView: View {
                     systemImage: MenuOptionsEnum.tags.iconName,
                     value: MenuOptionsEnum.tags
                 ) {
-                    MenuOptionsEnum.tags.action
+                    TagsView(navPath: pathStore)
                 }
                 .customizationID(MenuOptionsEnum.tags.tabId)
 

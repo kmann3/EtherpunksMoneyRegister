@@ -16,8 +16,8 @@ extension TagEditor {
         var tag: TransactionTag
         var associatedTransactions: [AccountTransaction]?
         var tagName: String = ""
-
         var isNewTransaction: Bool = true
+        var isShowingDeleteAlert: Bool = false
 
         init(tagToLoad: TransactionTag) {
             tag = tagToLoad
@@ -25,6 +25,15 @@ extension TagEditor {
 
             if tag.name != "" {
                 isNewTransaction = false
+            }
+        }
+
+        public func deleteTag(modelContext: ModelContext) {
+            do {
+                modelContext.delete(tag)
+                try modelContext.save()
+            } catch {
+                debugPrint(error)
             }
         }
 

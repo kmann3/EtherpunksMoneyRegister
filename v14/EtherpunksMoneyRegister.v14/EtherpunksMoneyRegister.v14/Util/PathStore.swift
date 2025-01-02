@@ -54,13 +54,20 @@ class PathStore {
         self.path.removeLast(path.count)
     }
 
-    public func goTo(path: NavView, value: Any) {
-        if value is Account {
-
-        } else if value is AccountTransaction {
-
+    public func goTo(path: NavView, value: Any? = nil) -> any View {
+        switch path {
+        case .tag_Create: return TagEditor(tag: TransactionTag(name: ""))
+        case .tag_List: return TagsView(navPath: self)
+        case .tag_Edit: return TagEditor(tag: value as! TransactionTag)
+        default: break
         }
-        
-        self.path.append(path)
+//        if value is Account {
+//
+//        } else if value is AccountTransaction {
+//
+//        }
+//        
+//        self.path.append(path)
+        return DashboardView()
     }
 }

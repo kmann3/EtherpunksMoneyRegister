@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TagEditor: View {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
 
     @State private var viewModel: ViewModel
@@ -28,7 +28,7 @@ struct TagEditor: View {
                     format: .dateTime.month().day().year()
                 )
                 Text("@")
-                Text(viewModel.tag.createdOnUTC, format: .dateTime.hour().minute().second())
+                Text(viewModel.tag.createdOnUTC, format: .dateTime.hour().minute())
             }
         }
         .toolbar {
@@ -36,14 +36,21 @@ struct TagEditor: View {
                 Button("Save") {
                     withAnimation {
                         viewModel.saveTag(modelContext: modelContext)
-                        presentationMode.wrappedValue.dismiss()
+                        dismiss()
                     }
                 }
             }
 
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel", role: .cancel) {
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
+                }
+            }
+
+            ToolbarItem(placement: .destructiveAction) {
+                Button("Delete", role: .destructive) {
+                    viewModel.deleteTag(modelContext: modelContext)
+                    dismiss()
                 }
             }
         }

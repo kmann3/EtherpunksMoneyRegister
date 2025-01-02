@@ -17,8 +17,8 @@ final class Link_RecurringTransaction_RecurringTransactionTag : ObservableObject
     public var debugDescription: String {
             return """
             RecurringTransactionTag:
-            - recurringTransactionId: \(recurringTransactionId)
-            - recurringTransactionTagId: \(recurringTransactionTagId)
+            - recurringTransactionId: \(String(describing: recurringTransactionId))
+            - recurringTransactionTagId: \(String(describing: recurringTransactionTagId))
             - createdOnUTC: \(createdOnUTC)
             """
     }

@@ -91,7 +91,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1610;
-				LastUpgradeCheck = 1610;
+				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					AAF6E9932CE78E940062CFF5 = {
 						CreatedOnToolsVersion = 16.1;
@@ -146,6 +146,7 @@
 				CODE_SIGN_ENTITLEMENTS = EtherpunksMoneyRegister.v14/EtherpunksMoneyRegister_v14.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"EtherpunksMoneyRegister.v14/Preview Content\"";
 				DEVELOPMENT_TEAM = SNH2E6X8CL;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -186,6 +187,7 @@
 				CODE_SIGN_ENTITLEMENTS = EtherpunksMoneyRegister.v14/EtherpunksMoneyRegister_v14.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"EtherpunksMoneyRegister.v14/Preview Content\"";
 				DEVELOPMENT_TEAM = SNH2E6X8CL;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -252,6 +254,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -313,6 +316,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

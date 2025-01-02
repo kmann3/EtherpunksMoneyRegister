@@ -32,6 +32,10 @@ struct EtherpunksMoneyRegister_v14App: App {
         WindowGroup {
             ContentView()
         }
+        #if DEBUG
+        .modelContainer(Previewer().container)
+        #else
         .modelContainer(container)
+        #endif
     }
 }
