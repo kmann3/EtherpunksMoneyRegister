@@ -166,9 +166,8 @@ struct ContentView: View {
 }
 
 #Preview {
-    let p = Previewer()
     ContentView()
-        .modelContainer(p.container)
+        .modelContainer(Previewer().container)
 #if os(macOS)
         .frame(width: 900, height: 500)
 #endif

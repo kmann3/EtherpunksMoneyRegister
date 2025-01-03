@@ -94,6 +94,18 @@ final class AccountTransaction : ObservableObject, CustomDebugStringConvertible,
         }
     }
 
+    public var isPending: Bool {
+        get {
+            return self.transactionStatus == .pending
+        }
+    }
+
+    public var isReserved: Bool {
+        get {
+            return self.transactionStatus == .reserved
+        }
+    }
+
     init(
         account: Account,
         name: String = "",

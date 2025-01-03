@@ -11,43 +11,51 @@ import SwiftData
 struct AccountTransactionsView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(PathStore.self) var router
-    @State private var searchText = ""
-    @State private var isLoading = false
-    @State private var hasMoreTransactions = true
-    @State private var currentAccountTransactionPage = 0
-    @State private var currentSearchPage = 0
-    @State private var transactionsPerPage = 10
-    @State var accountTransactions: [AccountTransaction] = []
 
-    @State var lastTransactions: [AccountTransaction] = []
-
-    var account: Account
+    @State var viewModel: ViewModel = ViewModel(account: Account())
 
     init(account: Account) {
-        self.account = account
+        viewModel.account = account
     }
 
     var body: some View {
         List {
             Section(header: Text("Account Details")) {
-                NavigationLink(
-                    destination: AccountDetailsView(account: account)
-                ) {
-                    AccountListItemView(acctData: account)
-                }
+                AccountListItemView(acctData: account)
                 // add context menu for editing
                 // long and short tap for context menu?
             }
 
             Section(header: Text("Transactions"), footer: Text("End of list")) {
-                ForEach(accountTransactions, id: \.id) { index in
-                    NavigationLink(destination: TransactionDetailsView(transactionItem: index)) {
-                        TransactionListItemView(transaction: index)
-                            .onAppear {
-                                fetchAccountTransactionsIfNecessary(transaction: index)
+                ForEach(accountTransactions, id: \.id) { t in
+                    TransactionListItemView(transaction: t)
+                        .onAppear {
+                            fetchAccountTransactionsIfNecessary(transaction: t)
+                        }
+                        .onTapGesture {
+                            router.navigateTo(route: .transaction_Detail(transaction: t))
+                        }
+                        .contextMenu(menuItems: {
+                            Button {
+                                // Mark as pending
+                            } label: {
+                                Label("Mark Pending", systemImage: "trash")
                             }
+
+                            Button {
+                                // Mark as pending
+                            } label: {
+                                Label("Mark Cleared", systemImage: "trash")
+                            }
+
+                            Button {
+                                //viewModel.tagToDelete = transactionTag
+                                //viewModel.isDeleteWarningPresented.toggle()
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        })
                         // context menu for setting pending and cleared
-                    }
                 }
             }
         }
@@ -161,4 +169,7 @@ struct AccountTransactionsView: View {
     AccountTransactionsView(account: p.bankAccount)
         .modelContainer(p.container)
         .environment(PathStore())
+#if os(macOS)
+        .frame(width: 900, height: 500)
+#endif
 }

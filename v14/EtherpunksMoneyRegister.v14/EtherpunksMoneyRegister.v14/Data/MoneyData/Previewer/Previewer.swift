@@ -155,7 +155,7 @@ struct Previewer {
             notes: "Some test notes",
             confirmationNumber: "1mamz9Zvnz94n",
             isTaxRelated: true,
-            transactionTags: [medicalTag, pharmacyTag],
+            transactionTags: [billsTag],
             recurringTransaction: discordRecurringTransaction,
             pendingOnUTC: Date(),
             clearedOnUTC: Date()
@@ -187,7 +187,7 @@ struct Previewer {
             notes: "",
             confirmationNumber: "1Z49C",
             isTaxRelated: true,
-            transactionTags: [medicalTag, pharmacyTag],
+            transactionTags: [billsTag, streamingTag],
             recurringTransaction: huluRecurringTransaction,
             pendingOnUTC: Date(),
             clearedOnUTC: nil
@@ -217,7 +217,7 @@ struct Previewer {
             notes: "",
             confirmationNumber: "",
             isTaxRelated: true,
-            transactionTags: [medicalTag, pharmacyTag],
+            transactionTags: [billsTag],
             recurringTransaction: verizonRecurringTransaction,
             pendingOnUTC: nil,
             clearedOnUTC: nil
