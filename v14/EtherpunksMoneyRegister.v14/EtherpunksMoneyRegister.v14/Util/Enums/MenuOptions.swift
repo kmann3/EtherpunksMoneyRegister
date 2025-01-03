@@ -21,7 +21,7 @@ enum MenuOptionsEnum: Int, CaseIterable {
         switch self {
         case .dashboard: return "Dashboard"
         case .accounts: return "Accounts"
-        case .recurringTransactions: return "Recurring Transactions"
+        case .recurringTransactions: return "Recurring"
         case .tags: return "Tags"
         case .reports: return "Reports"
         case .search: return "Search"
