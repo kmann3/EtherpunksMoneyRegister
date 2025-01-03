@@ -19,6 +19,36 @@ class PathStore {
 
     var selectedTab: MenuOptionsEnum = .dashboard
 
+    enum Route: Hashable {
+        case account_Create
+        case account_Details
+        case account_Edit
+        case account_List
+
+        case dashboard
+
+        case recurringGroup_Create
+        case recurringGroup_Details
+        case recurringGroup_Edit
+        case recurringGroup_List
+
+        case recurringTransaction_Create
+        case recurringTransaction_Details
+        case recurringTransaction_Edit
+        case recurringTransaction_List
+
+        case report_Tax
+
+        case tag_Create
+        case tag_Edit(tag: TransactionTag)
+        case tag_List
+
+        case transaction_Create
+        case transaction_Detail
+        case transaction_Edit
+        case transaction_List
+    }
+
     private let savePath = URL.documentsDirectory.appending(path: "SavedPath")
 
     init() {
@@ -54,20 +84,8 @@ class PathStore {
         self.path.removeLast(path.count)
     }
 
-    public func goTo(path: NavView, value: Any? = nil) -> any View {
-        switch path {
-        case .tag_Create: return TagEditor(tag: TransactionTag(name: ""))
-        case .tag_List: return TagsView(navPath: self)
-        case .tag_Edit: return TagEditor(tag: value as! TransactionTag)
-        default: break
-        }
-//        if value is Account {
-//
-//        } else if value is AccountTransaction {
-//
-//        }
-//        
-//        self.path.append(path)
-        return DashboardView()
+    // https://tanaschita.com/swiftui-navigationpath/
+    public func navigateTo(route: Route) {
+        self.path.append(route)
     }
 }

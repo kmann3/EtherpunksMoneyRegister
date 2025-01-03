@@ -20,6 +20,7 @@ struct ContentView: View {
                     value: MenuOptionsEnum.dashboard
                 ) {
                     MenuOptionsEnum.dashboard.action
+                        .environment(pathStore)
                 }
                 .customizationID(MenuOptionsEnum.dashboard.tabId)
 
@@ -29,6 +30,7 @@ struct ContentView: View {
                     value: MenuOptionsEnum.accounts
                 ) {
                     MenuOptionsEnum.accounts.action
+                        .environment(pathStore)
                 }
                 .customizationID(MenuOptionsEnum.accounts.tabId)
 
@@ -38,6 +40,7 @@ struct ContentView: View {
                     value: MenuOptionsEnum.recurringTransactions
                 ) {
                     MenuOptionsEnum.recurringTransactions.action
+                        .environment(pathStore)
                 }
                 .customizationID(MenuOptionsEnum.recurringTransactions.tabId)
 
@@ -46,7 +49,8 @@ struct ContentView: View {
                     systemImage: MenuOptionsEnum.tags.iconName,
                     value: MenuOptionsEnum.tags
                 ) {
-                    TagsView(navPath: pathStore)
+                    TagsView()
+                        .environment(pathStore)
                 }
                 .customizationID(MenuOptionsEnum.tags.tabId)
 
@@ -56,6 +60,7 @@ struct ContentView: View {
                     value: MenuOptionsEnum.reports
                 ) {
                     MenuOptionsEnum.reports.action
+                        .environment(pathStore)
                 }
                 .customizationID(MenuOptionsEnum.reports.tabId)
 
@@ -66,6 +71,7 @@ struct ContentView: View {
                         .search
                 ) {
                     MenuOptionsEnum.search.action
+                        .environment(pathStore)
                 }
                 .customizationID(MenuOptionsEnum.search.tabId)
 
@@ -75,6 +81,7 @@ struct ContentView: View {
                     value: MenuOptionsEnum.settings
                 ) {
                     MenuOptionsEnum.settings.action
+                        .environment(pathStore)
                 }
                 .customizationID(MenuOptionsEnum.settings.tabId)
 
@@ -105,6 +112,45 @@ struct ContentView: View {
 #endif
             }
             .tabViewStyle(.sidebarAdaptable)
+            .navigationDestination(for: PathStore.Route.self) { route in
+                switch route {
+                case .account_Create: Text("TBI")
+                case .account_Details: Text("TBI")
+                case .account_Edit: Text("TBI")
+                case .account_List: Text("TBI")
+
+                case .dashboard:
+                    DashboardView()
+                        .environment(pathStore)
+
+                case .recurringGroup_Create: Text("TBI")
+                case .recurringGroup_Details: Text("TBI")
+                case .recurringGroup_Edit: Text("TBI")
+                case .recurringGroup_List: Text("TBI")
+
+                case .recurringTransaction_Create: Text("TBI")
+                case .recurringTransaction_Details: Text("TBI")
+                case .recurringTransaction_Edit: Text("TBI")
+                case .recurringTransaction_List: Text("TBI")
+
+                case .report_Tax: Text("TBI")
+
+                case .tag_Create:
+                    TagEditor(tag: TransactionTag(name: ""))
+                        .environment(pathStore)
+                case .tag_Edit(let tag):
+                    TagEditor(tag: tag)
+                        .environment(pathStore)
+                case .tag_List:
+                    TagsView()
+                        .environment(pathStore)
+
+                case .transaction_Create: Text("TBI")
+                case .transaction_Detail: Text("TBI")
+                case .transaction_Edit: Text("TBI")
+                case .transaction_List: Text("TBI")
+                }
+            }
         }
 #if os(macOS)
         .frame(minWidth: 850, maxWidth: .infinity, minHeight: 500, maxHeight: .infinity)

@@ -10,34 +10,38 @@ import SwiftData
 
 struct TagsView: View {
     @Environment(\.modelContext) var modelContext
+    @Environment(PathStore.self) var router
     @Query(sort: [SortDescriptor(\TransactionTag.name, comparator: .localizedStandard)])
     var tags: [TransactionTag]
-    
-    @State var navPath: PathStore
+
     @State var viewModel: ViewModel = ViewModel()
 
     var body: some View {
         List {
             Section(header: Text("Transaction Tags"), footer: Text("End of list")) {
                 ForEach(tags.sorted(by: { $0.name < $1.name })) { transactionTag in
-                    NavigationLink(destination: TagEditor(tag: transactionTag)) {
-                        TransactionTagItemView(transactionTag: transactionTag)
-                            .contextMenu(menuItems: {
-                                Button("Delete", action: {
-                                    viewModel.tagToDelete = transactionTag
-                                    viewModel.isDeleteWarningPresented.toggle()
+                    TransactionTagItemView(transactionTag: transactionTag)
+                        .contextMenu(menuItems: {
+                            Button("Delete", action: {
+                                viewModel.tagToDelete = transactionTag
+                                viewModel.isDeleteWarningPresented.toggle()
 
-                                })
                             })
-                    }
+                        })
+                        .onTapGesture {
+                            router
+                                .navigateTo(
+                                    route: .tag_Edit(tag: transactionTag)
+                                )
+                        }
                 }
             }
         }
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
+            ToolbarItem(placement: .automatic) {
                 Menu {
                     Button {
-                        viewModel.isPresented.toggle()
+                        router.navigateTo(route: .tag_Create)
                     } label: {
                         Label("New Tag", systemImage: "pencil")
                     }
@@ -46,10 +50,6 @@ struct TagsView: View {
                 }
             }
         }
-        .sheet(
-            isPresented: $viewModel.isPresented,
-            content: { TagEditor(tag: TransactionTag(name: ""))
-            })
         .confirmationDialog(
             "Delete Confirmation",
             isPresented: $viewModel.isDeleteWarningPresented
@@ -57,13 +57,13 @@ struct TagsView: View {
             Button("Yes") { viewModel.deleteTag() }
             Button("Cancel", role: .cancel) { }
         } message: {
-            Text("Are you sure you want to delete \(viewModel.tagToDelete!.name)")
+            Text("Are you sure you want to delete \(viewModel.tagToDelete?.name ?? "none_selected")")
         }
     }
 }
 
 #Preview {
-    let p = Previewer()
-    TagsView(navPath: PathStore())
-        .modelContainer(p.container)
+    TagsView()
+        .modelContainer(Previewer().container)
+        .environment(PathStore())
 }
