@@ -129,7 +129,8 @@ struct Previewer {
             fileCount: 1,
             transactionTags: [medicalTag, pharmacyTag],
             pendingOnUTC: Date(),
-            clearedOnUTC: Date()
+            clearedOnUTC: Date(),
+            balancedOnUTC: Date()
         )
         container.mainContext.insert(cvsTransaction)
 
