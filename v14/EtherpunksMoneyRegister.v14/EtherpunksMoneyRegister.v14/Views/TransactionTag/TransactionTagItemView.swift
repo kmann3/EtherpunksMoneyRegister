@@ -23,7 +23,7 @@ struct TransactionTagItemView: View {
         VStack  (alignment: .leading){
             HStack {
                 Text(self.transactionTag.name)
-                    //.frame(width: 100, height: 30)
+                    .frame(width: 100, height: 30)
 
                 Spacer()
 

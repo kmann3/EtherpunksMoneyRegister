@@ -105,6 +105,7 @@ struct ContentView: View {
                 }
 #endif
             }
+            .tabViewStyle(.grouped)
 
             .tabViewStyle(.automatic)
             .tabViewCustomization($customizedTabView)
@@ -120,5 +121,6 @@ struct ContentView: View {
     let p = Previewer()
     ContentView()
         .modelContainer(p.container)
+        .frame(width: 900, height: 500)
     // .modelContainer(for: Item.self, inMemory: true)
 }
