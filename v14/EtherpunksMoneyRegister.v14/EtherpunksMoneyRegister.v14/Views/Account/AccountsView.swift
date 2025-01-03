@@ -18,7 +18,7 @@ struct AccountsView: View {
         List(accountList) { account in
             AccountListItemView(acctData: account)
                 .onTapGesture {
-                    
+
                 }
         }
     }
@@ -28,4 +28,5 @@ struct AccountsView: View {
     let p = Previewer()
     AccountsView()
         .modelContainer(p.container)
+        .environment(PathStore())
 }

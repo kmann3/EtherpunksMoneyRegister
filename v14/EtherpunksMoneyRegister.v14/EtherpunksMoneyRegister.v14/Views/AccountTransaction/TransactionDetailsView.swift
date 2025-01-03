@@ -11,6 +11,7 @@ import SwiftData
 
 struct TransactionDetailsView: View {
     @Environment(\.modelContext) var modelContext
+    @Environment(PathStore.self) var router
     @State var account: Account?
     @State var recurringTransactionItem: RecurringTransaction? = nil
     @State var recurringGroupItem: RecurringGroup? = nil
@@ -248,4 +249,5 @@ struct TransactionDetailsView: View {
     let p = Previewer()
     TransactionDetailsView(transactionItem: p.discordTransaction)
         .modelContainer(p.container)
+        .environment(PathStore())
 }

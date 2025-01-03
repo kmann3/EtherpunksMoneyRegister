@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AccountDetailsView: View {
     @Environment(\.modelContext) var modelContext
+    @Environment(PathStore.self) var router
     var account: Account
 
     init(account: Account) {
@@ -26,4 +27,5 @@ struct AccountDetailsView: View {
     let p = Previewer()
     AccountDetailsView(account: p.bankAccount)
         .modelContainer(p.container)
+        .environment(PathStore())
 }

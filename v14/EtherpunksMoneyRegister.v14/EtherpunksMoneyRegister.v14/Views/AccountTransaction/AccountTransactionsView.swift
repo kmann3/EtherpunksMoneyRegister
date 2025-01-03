@@ -10,6 +10,7 @@ import SwiftData
 
 struct AccountTransactionsView: View {
     @Environment(\.modelContext) var modelContext
+    @Environment(PathStore.self) var router
     @State private var searchText = ""
     @State private var isLoading = false
     @State private var hasMoreTransactions = true
@@ -156,4 +157,5 @@ struct AccountTransactionsView: View {
     let p = Previewer()
     AccountTransactionsView(account: p.bankAccount)
         .modelContainer(p.container)
+        .environment(PathStore())
 }
