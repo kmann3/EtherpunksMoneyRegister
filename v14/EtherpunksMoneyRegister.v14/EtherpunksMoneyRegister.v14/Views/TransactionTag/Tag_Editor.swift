@@ -54,6 +54,9 @@ struct TagEditor: View {
                 }
             }
         }
+//        .confirmationDialog("Delete?", isPresented: $viewModel.isShowingDeleteAlert, actions: {
+//            debugPrint("Delete item")
+//        })
     }
 }
 
