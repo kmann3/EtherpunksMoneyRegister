@@ -18,7 +18,7 @@ struct AccountsView: View {
         List(accountList) { account in
             AccountListItemView(acctData: account)
                 .onTapGesture {
-                    router.navigateTo(route: .account_Transactions(account: account))
+                    router.navigateTo(route: .transaction_List(account: account))
                 }
             // add context menu for going to edit it
             // add long tap gesture for context menu too

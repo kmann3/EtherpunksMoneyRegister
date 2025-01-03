@@ -115,11 +115,12 @@ struct ContentView: View {
             .navigationDestination(for: PathStore.Route.self) { route in
                 switch route {
                 case .account_Create: Text("TBI")
-                case .account_Details: Text("TBI")
+                case .account_Details(let account):
+                    AccountDetailsView(account: account)
+                        .environment(pathStore)
                 case .account_Edit: Text("TBI")
-                case .account_List: Text("TBI")
-                case .account_Transactions(let account):
-                    AccountTransactionsView(account: account)
+                case .account_List:
+                    AccountsView()
                         .environment(pathStore)
 
                 case .dashboard:
@@ -149,9 +150,13 @@ struct ContentView: View {
                         .environment(pathStore)
 
                 case .transaction_Create: Text("TBI")
-                case .transaction_Detail: Text("TBI")
+                case .transaction_Detail(let transaction):
+                    TransactionDetailsView(transaction: transaction)
+                        .environment(pathStore)
                 case .transaction_Edit: Text("TBI")
-                case .transaction_List: Text("TBI")
+                case .transaction_List(let account):
+                    AccountTransactionsView(account: account)
+                        .environment(pathStore)
                 }
             }
         }

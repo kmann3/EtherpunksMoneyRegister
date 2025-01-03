@@ -22,8 +22,17 @@ struct AccountTransactionsView: View {
         List {
             Section(header: Text("Account Details")) {
                 AccountListItemView(acctData: viewModel.account)
-                // add context menu for editing
-                // long and short tap for context menu?
+                    .onTapGesture {
+                        router
+                            .navigateTo(route: .account_Details(account: viewModel.account))
+                    }
+                    .contextMenu(menuItems: {
+                        Button {
+                            router.navigateTo(route: .account_Edit(account: viewModel.account))
+                        } label: {
+                            Label("Edit Account", systemImage: "pencil")
+                        }
+                    })
             }
 
             Section(header: Text("Transactions"), footer: Text("End of list")) {

@@ -12,133 +12,141 @@ import SwiftData
 struct TransactionDetailsView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(PathStore.self) var router
-    @State var account: Account?
-    @State var recurringTransactionItem: RecurringTransaction? = nil
-    @State var recurringGroupItem: RecurringGroup? = nil
-    @State var transactionFiles: [TransactionFile] = []
+    @State var viewModel: ViewModel
 
-    @State var url: URL?
-    var transactionItem: AccountTransaction
-
-
-    init(transactionItem: AccountTransaction) {
-        self.transactionItem = transactionItem
+    init(transaction: AccountTransaction) {
+        viewModel = ViewModel(transaction: transaction)
     }
 
     var body: some View {
         List {
-            Text("Name: \(self.transactionItem.name)")
-            Text("Type: \(self.transactionItem.transactionType == .debit ? "Debit" : "Credit")")
-            Text("Account: \(self.account?.name ?? "Error loading account")")
+            Text("Name: \(self.viewModel.transaction.name)")
+            Text("Type: \(self.viewModel.transaction.transactionType == .debit ? "Debit" : "Credit")")
+            Text("Account: \(self.viewModel.account?.name ?? "Error loading account")")
             HStack {
                 Text("Amount: ")
-                Text(self.transactionItem.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                Text(self.viewModel.transaction.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
             }
 
-            if self.transactionItem.transactionTags != nil {
+            if self.viewModel.transaction.transactionTags != nil {
                 VStack {
                     HStack {
                         Text("Tags: ")
                         Spacer()
                     }
-                    ForEach(self.transactionItem.transactionTags!.sorted(by: { $0.name < $1.name })) { tag in
+                    ForEach(self.viewModel.transaction.transactionTags!.sorted(by: { $0.name < $1.name })) { tag in
                         Text(tag.name)
                     }
                 }
             }
 
             HStack {
-                Text("Tax Related: \(self.transactionItem.isTaxRelated == true ? "Yes" : "No")")
+                Text("Tax Related: \(self.viewModel.transaction.isTaxRelated == true ? "Yes" : "No")")
             }
 
             HStack {
-                if self.transactionItem.balancedOnUTC != nil {
+                if self.viewModel.transaction.balancedOnUTC != nil {
                     Text("Balanced On: ")
-                    Text(self.transactionItem.balancedOnUTC!, format: .dateTime.month().day())
+                    Text(self.viewModel.transaction.balancedOnUTC!, format: .dateTime.month().day())
                     Text("@")
-                    Text(self.transactionItem.balancedOnUTC!, format: .dateTime.hour().minute().second())
+                    Text(self.viewModel.transaction.balancedOnUTC!, format: .dateTime.hour().minute().second())
                 } else {
                     Text("Balanced On: nil")
                 }
             }
 
-            Text("Transaction Status: \(self.transactionItem.transactionStatus)")
+            Text("Transaction Status: \(self.viewModel.transaction.transactionStatus)")
 
-            // Put an emoji here to have a popup to describe
             // Reserved > Pending > Recurring > Cleared
             // Red      > Yellow  > Blue      > Green
 
-            if self.transactionItem.pendingOnUTC != nil {
+            if self.viewModel.transaction.pendingOnUTC != nil {
                 HStack {
                     Text("Pending: ")
-                    Text(self.transactionItem.pendingOnUTC!, format: .dateTime.month().day())
+                    Text(self.viewModel.transaction.pendingOnUTC!, format: .dateTime.month().day())
                     Text("@")
-                    Text(self.transactionItem.pendingOnUTC!, format: .dateTime.hour().minute().second())
-                }.background(self.transactionItem.backgroundColor)
+                    Text(self.viewModel.transaction.pendingOnUTC!, format: .dateTime.hour().minute().second())
+                }.background(self.viewModel.transaction.backgroundColor)
             } else {
-                Text("Pending: ").background(self.transactionItem.backgroundColor)
+                Text("Pending: ").background(self.viewModel.transaction.backgroundColor)
             }
 
-            if self.transactionItem.clearedOnUTC != nil {
+            if self.viewModel.transaction.clearedOnUTC != nil {
                 HStack {
                     Text("Cleared: ")
-                    Text(self.transactionItem.clearedOnUTC!, format: .dateTime.month().day())
+                    Text(self.viewModel.transaction.clearedOnUTC!, format: .dateTime.month().day())
                     Text("@")
-                    Text(self.transactionItem.clearedOnUTC!, format: .dateTime.hour().minute().second())
-                }.background(self.transactionItem.backgroundColor)
+                    Text(self.viewModel.transaction.clearedOnUTC!, format: .dateTime.hour().minute().second())
+                }.background(self.viewModel.transaction.backgroundColor)
             } else {
-                Text("Cleared: ").background(self.transactionItem.backgroundColor)
+                Text("Cleared: ").background(self.viewModel.transaction.backgroundColor)
             }
 
             // Recurring Transaction
 
-            if self.transactionItem.dueDate != nil {
+            if self.viewModel.transaction.dueDate != nil {
                 HStack {
                     Text("Due date: ")
-                    Text(self.transactionItem.dueDate!, format: .dateTime.month().day())
+                    Text(self.viewModel.transaction.dueDate!, format: .dateTime.month().day())
                 }
             }
 
-            if self.transactionItem.confirmationNumber != "" {
+            if self.viewModel.transaction.confirmationNumber != "" {
                 HStack {
                     Text("Confirmation: ")
-                    Text(self.transactionItem.confirmationNumber)
+                    Text(self.viewModel.transaction.confirmationNumber)
                 }
             }
 
-            // TODO: Implement the ability to click on this and go to the view for Recurring Transactions
-            if self.recurringTransactionItem != nil {
+            if self.viewModel.recurringTransaction != nil {
                 HStack {
                     Text("Recurring Transaction: ")
-                    Text(self.recurringTransactionItem!.name)
+                    Text(self.viewModel.recurringTransaction!.name)
+                        .onTapGesture {
+                            router
+                                .navigateTo(
+                                    route:
+                                            .recurringTransaction_Details(
+                                                recTrans: self.viewModel.recurringTransaction!
+                                            )
+                                )
+                        }
                 }
             }
 
-            // TODO: Implement the ability to click on this and go to the view for Recurring Groups
-            if self.recurringGroupItem != nil {
+            if self.viewModel.recurringGroup != nil {
                 HStack {
                     Text("Recurring Group: ")
-                    Text(self.recurringGroupItem!.name)
+                    Text(self.viewModel.recurringGroup!.name)
+                        .onTapGesture {
+                            router
+                                .navigateTo(
+                                    route:
+                                            .recurringGroup_Details(
+                                                recGroup: self.viewModel.recurringGroup!
+                                            )
+                                )
+                        }
                 }
             }
 
             Section(header: Text("Files")) {
-                Text("Files: \(self.transactionItem.fileCount)")
+                Text("Files: \(self.viewModel.transaction.fileCount)")
 
                 HStack {
-                    Button(action: addNewDocument) {
+                    Button(action: viewModel.addNewDocument) {
                         Text("Add Document")
                     }
 
                     Spacer()
 
-                    Button(action: addNewPhoto) {
+                    Button(action: viewModel.addNewPhoto) {
                         Text("Add Photo")
                     }
                 }
 
-                if self.transactionFiles.count > 0 {
-                    ForEach(self.transactionFiles) { file in
+                if self.viewModel.transactionFiles.count > 0 {
+                    ForEach(self.viewModel.transactionFiles) { file in
                         VStack(alignment: .leading) {
                             if file.name != file.filename {
                                 HStack {
@@ -147,8 +155,8 @@ struct TransactionDetailsView: View {
                             }
                             HStack {
                                 Button("Filename: \(file.filename)") {
-                                    url = file.dataURL
-                                }.quickLookPreview($url)
+                                    viewModel.url = file.dataURL
+                                }.quickLookPreview($viewModel.url)
                                 Text("Filename: \(file.filename)")
                             }
 
@@ -171,17 +179,17 @@ struct TransactionDetailsView: View {
                 }
             }
 
-            if self.transactionItem.notes != "" {
+            if self.viewModel.transaction.notes != "" {
                 Section(header: Text("Notes")) {
-                    Text(self.transactionItem.notes)
+                    Text(self.viewModel.transaction.notes)
                 }
             }
             Section(header: Text("Misc")) {
                 HStack {
                     Text("Created On: ")
-                    Text(self.transactionItem.createdOnUTC, format: .dateTime.month().day())
+                    Text(self.viewModel.transaction.createdOnUTC, format: .dateTime.month().day())
                     Text("@")
-                    Text(self.transactionItem.createdOnUTC, format: .dateTime.hour().minute().second())
+                    Text(self.viewModel.transaction.createdOnUTC, format: .dateTime.hour().minute().second())
                 }
             }
         }
@@ -189,7 +197,13 @@ struct TransactionDetailsView: View {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
                     Button {
-                        //                        path.append(NavData(navView: .transactionEditor, transaction: transactionItem))
+                        router
+                            .navigateTo(
+                                route:
+                                        .transaction_Edit(
+                                            transaction: viewModel.transaction
+                                        )
+                            )
                     } label: {
                         Label("Edit transaction", systemImage: "pencil")
                     }
@@ -197,12 +211,12 @@ struct TransactionDetailsView: View {
                     Divider()
 
                     Button {
-                        addNewDocument()
+                        viewModel.addNewDocument()
                     } label: {
                         Label("Attach file", systemImage: "doc")
                     }
                     Button {
-                        addNewPhoto()
+                        viewModel.addNewPhoto()
                     } label: {
                         Label("Attach photo", systemImage: "photo")
                     }
@@ -218,36 +232,14 @@ struct TransactionDetailsView: View {
             }
         }
         .onAppear() {
-            loadData()
+            viewModel.loadData(modelContext: modelContext)
         }
     }
-
-    func loadData() {
-        let transactionID = transactionItem.id
-
-        var fetchDescriptor = FetchDescriptor<AccountTransaction>(
-            predicate: #Predicate<AccountTransaction> { $0.id == transactionID
-            })
-        fetchDescriptor.fetchLimit = 1
-        fetchDescriptor.relationshipKeyPathsForPrefetching = [\.account]
-        fetchDescriptor.relationshipKeyPathsForPrefetching = [\.recurringTransaction]
-//        fetchDescriptor.relationshipKeyPathsForPrefetching = [\.recurringTransaction?.recurringGroup]
-
-        let query = try! modelContext.fetch(fetchDescriptor)
-        self.account = query.first!.account!
-        self.recurringTransactionItem = query.first!.recurringTransaction
-        self.recurringGroupItem = query.first!.recurringTransaction?.recurringGroup
-
-    }
-
-    func addNewDocument() {}
-
-    func addNewPhoto() {}
 }
 
 #Preview {
     let p = Previewer()
-    TransactionDetailsView(transactionItem: p.discordTransaction)
+    TransactionDetailsView(transaction: p.discordTransaction)
         .modelContainer(p.container)
         .environment(PathStore())
 }

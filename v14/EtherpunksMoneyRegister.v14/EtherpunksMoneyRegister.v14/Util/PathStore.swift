@@ -21,21 +21,20 @@ class PathStore {
 
     enum Route: Hashable {
         case account_Create
-        case account_Details
-        case account_Edit
+        case account_Details(account: Account)
+        case account_Edit(account: Account)
         case account_List
-        case account_Transactions(account: Account)
 
         case dashboard
 
         case recurringGroup_Create
-        case recurringGroup_Details
-        case recurringGroup_Edit
+        case recurringGroup_Details(recGroup: RecurringGroup)
+        case recurringGroup_Edit(recGroup: RecurringGroup)
         case recurringGroup_List
 
         case recurringTransaction_Create
-        case recurringTransaction_Details
-        case recurringTransaction_Edit
+        case recurringTransaction_Details(recTrans: RecurringTransaction)
+        case recurringTransaction_Edit(recTrans: RecurringTransaction)
         case recurringTransaction_List
 
         case report_Tax
@@ -46,8 +45,8 @@ class PathStore {
 
         case transaction_Create
         case transaction_Detail(transaction: AccountTransaction)
-        case transaction_Edit
-        case transaction_List
+        case transaction_Edit(transaction: AccountTransaction)
+        case transaction_List(account: Account)
     }
 
     private let savePath = URL.documentsDirectory.appending(path: "SavedPath")
