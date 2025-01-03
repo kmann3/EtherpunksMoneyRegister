@@ -237,9 +237,30 @@ struct TransactionDetailsView: View {
     }
 }
 
-#Preview {
+#Preview("Recurring") {
     let p = Previewer()
     TransactionDetailsView(transaction: p.discordTransaction)
+        .modelContainer(p.container)
+        .environment(PathStore())
+}
+
+#Preview("Cleared") {
+    let p = Previewer()
+    TransactionDetailsView(transaction: p.cvsTransaction)
+        .modelContainer(p.container)
+        .environment(PathStore())
+}
+
+#Preview("Pending") {
+    let p = Previewer()
+    TransactionDetailsView(transaction: p.huluPendingTransaction)
+        .modelContainer(p.container)
+        .environment(PathStore())
+}
+
+#Preview("Reserved") {
+    let p = Previewer()
+    TransactionDetailsView(transaction: p.verizonReservedTransaction)
         .modelContainer(p.container)
         .environment(PathStore())
 }
