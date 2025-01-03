@@ -21,15 +21,19 @@ struct TagEditor: View {
         VStack {
             TextField("Name", text: $viewModel.tagName)
 
-            HStack {
-                Text("Created on:")
-                Text(
-                    viewModel.tag.createdOnUTC,
-                    format: .dateTime.month().day().year()
-                )
-                Text("@")
-                Text(viewModel.tag.createdOnUTC, format: .dateTime.hour().minute())
+            if viewModel.isNewTransaction == false {
+                HStack {
+                    Text("Created on:")
+                    Text(
+                        viewModel.tag.createdOnUTC,
+                        format: .dateTime.month().day().year()
+                    )
+                    Text("@")
+                    Text(viewModel.tag.createdOnUTC, format: .dateTime.hour().minute())
+                }
             }
+
+            Spacer()
         }
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
@@ -52,11 +56,20 @@ struct TagEditor: View {
                     viewModel.deleteTag(modelContext: modelContext)
                     dismiss()
                 }
+                .disabled(viewModel.isNewTransaction)
+                .opacity(viewModel.isNewTransaction ? 0 : 1)
             }
+
         }
-//        .confirmationDialog("Delete?", isPresented: $viewModel.isShowingDeleteAlert, actions: {
-//            debugPrint("Delete item")
-//        })
+        .confirmationDialog(
+            "Delete Confirmation",
+            isPresented: $viewModel.isShowingDeleteAlert
+        ) {
+            Button("Yes") { viewModel.deleteTag(modelContext: modelContext) }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Are you sure you want to delete \(viewModel.tag.name)")
+        }
     }
 }
 

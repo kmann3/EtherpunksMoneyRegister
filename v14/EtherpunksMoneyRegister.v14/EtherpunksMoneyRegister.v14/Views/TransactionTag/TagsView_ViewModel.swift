@@ -14,5 +14,13 @@ extension TagsView {
     @Observable
     class ViewModel {
         var isPresented: Bool = false
+        var isDeleteWarningPresented: Bool = false
+
+        var tagToDelete: TransactionTag? = nil
+
+        func deleteTag() {
+            isDeleteWarningPresented = false
+            debugPrint("Deleting tag: \(tagToDelete!.name)")
+        }
     }
 }

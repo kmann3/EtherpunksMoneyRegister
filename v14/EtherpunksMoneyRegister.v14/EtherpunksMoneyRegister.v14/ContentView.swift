@@ -23,7 +23,6 @@ struct ContentView: View {
                 }
                 .customizationID(MenuOptionsEnum.dashboard.tabId)
 
-
                 Tab(
                     MenuOptionsEnum.accounts.title,
                     systemImage: MenuOptionsEnum.accounts.iconName,

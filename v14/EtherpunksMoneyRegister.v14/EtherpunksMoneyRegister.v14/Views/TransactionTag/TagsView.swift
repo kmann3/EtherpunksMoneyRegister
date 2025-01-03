@@ -20,15 +20,13 @@ struct TagsView: View {
         List {
             Section(header: Text("Transaction Tags"), footer: Text("End of list")) {
                 ForEach(tags.sorted(by: { $0.name < $1.name })) { transactionTag in
-
                     NavigationLink(destination: TagEditor(tag: transactionTag)) {
                         TransactionTagItemView(transactionTag: transactionTag)
                             .contextMenu(menuItems: {
                                 Button("Delete", action: {
-                                    // delete
-                                    debugPrint("Test")
-                                    debugPrint("Delete: \(transactionTag.name)")
-                                    
+                                    viewModel.tagToDelete = transactionTag
+                                    viewModel.isDeleteWarningPresented.toggle()
+
                                 })
                             })
                     }
@@ -52,7 +50,15 @@ struct TagsView: View {
             isPresented: $viewModel.isPresented,
             content: { TagEditor(tag: TransactionTag(name: ""))
             })
-
+        .confirmationDialog(
+            "Delete Confirmation",
+            isPresented: $viewModel.isDeleteWarningPresented
+        ) {
+            Button("Yes") { viewModel.deleteTag() }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Are you sure you want to delete \(viewModel.tagToDelete!.name)")
+        }
     }
 }
 
