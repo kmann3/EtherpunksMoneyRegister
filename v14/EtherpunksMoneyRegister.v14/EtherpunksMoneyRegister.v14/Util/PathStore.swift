@@ -24,6 +24,7 @@ class PathStore {
         case account_Details
         case account_Edit
         case account_List
+        case account_Transactions(account: Account)
 
         case dashboard
 

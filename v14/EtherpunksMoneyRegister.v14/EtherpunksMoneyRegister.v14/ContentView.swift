@@ -118,6 +118,9 @@ struct ContentView: View {
                 case .account_Details: Text("TBI")
                 case .account_Edit: Text("TBI")
                 case .account_List: Text("TBI")
+                case .account_Transactions(let account):
+                    AccountTransactionsView(account: account)
+                        .environment(pathStore)
 
                 case .dashboard:
                     DashboardView()

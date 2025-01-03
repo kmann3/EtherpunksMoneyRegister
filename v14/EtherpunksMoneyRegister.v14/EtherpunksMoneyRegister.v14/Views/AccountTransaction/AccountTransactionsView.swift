@@ -35,6 +35,8 @@ struct AccountTransactionsView: View {
                 ) {
                     AccountListItemView(acctData: account)
                 }
+                // add context menu for editing
+                // long and short tap for context menu?
             }
 
             Section(header: Text("Transactions"), footer: Text("End of list")) {
@@ -44,6 +46,7 @@ struct AccountTransactionsView: View {
                             .onAppear {
                                 fetchAccountTransactionsIfNecessary(transaction: index)
                             }
+                        // context menu for setting pending and cleared
                     }
                 }
             }
