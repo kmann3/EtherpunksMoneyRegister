@@ -13,11 +13,11 @@ struct TransactionListItemView: View {
     var body: some View {
         VStack {
             HStack(spacing: 0) {
-//                if transaction.balancedOn != nil {
-//                    Text(Image(systemName: "checkmark.seal"))
-//                        .font(.caption2)
-//                        .foregroundStyle(.cyan)
-//                }
+                if transaction.balancedOnUTC != nil {
+                    Text(Image(systemName: "checkmark.seal"))
+                        .font(.caption2)
+                        .foregroundStyle(.cyan)
+                }
                 Text(transaction.name)
                 Spacer()
                 if transaction.amount > 0 {
