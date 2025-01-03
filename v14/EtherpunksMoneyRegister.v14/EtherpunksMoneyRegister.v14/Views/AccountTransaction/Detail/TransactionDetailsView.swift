@@ -154,10 +154,10 @@ struct TransactionDetailsView: View {
                                 }
                             }
                             HStack {
-                                Button("Filename: \(file.filename)") {
+                                Text("Filename: \(file.filename)")
+                                Button("Download") {
                                     viewModel.url = file.dataURL
                                 }.quickLookPreview($viewModel.url)
-                                Text("Filename: \(file.filename)")
                             }
 
                             HStack {
@@ -244,7 +244,7 @@ struct TransactionDetailsView: View {
         .environment(PathStore())
 }
 
-#Preview("Cleared") {
+#Preview("Cleared And Attachment") {
     let p = Previewer()
     TransactionDetailsView(transaction: p.cvsTransaction)
         .modelContainer(p.container)

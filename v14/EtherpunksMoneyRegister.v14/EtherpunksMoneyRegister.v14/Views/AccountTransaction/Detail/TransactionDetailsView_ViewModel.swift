@@ -39,9 +39,32 @@ extension TransactionDetailsView {
             self.recurringTransaction = query.first!.recurringTransaction
             self.recurringGroup = query.first!.recurringTransaction?.recurringGroup
 
+            var fetchDescriptor_Files = FetchDescriptor<TransactionFile>(
+                predicate: #Predicate<TransactionFile> {
+                    $0.transactionId == transactionID
+                }
+
+            )
+            fetchDescriptor_Files.sortBy = [.init(\.createdOnUTC, order: .reverse)]
+            fetchDescriptor_Files.propertiesToFetch = [
+                \.id,
+                 \.name,
+                 \.filename,
+                 \.notes,
+                 \.dataURL,
+                 \.isTaxRelated,
+                 \.transactionId,
+                 \.createdOnUTC
+             ]
+
+            self.transactionFiles = try! modelContext.fetch(fetchDescriptor_Files)
         }
         func addNewDocument() {}
 
         func addNewPhoto() {}
+
+        func getAttachmentData(file: TransactionFile) -> Data? {
+            return nil
+        }
     }
 }

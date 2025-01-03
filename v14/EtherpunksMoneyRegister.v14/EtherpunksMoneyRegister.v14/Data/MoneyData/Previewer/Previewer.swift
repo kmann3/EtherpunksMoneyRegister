@@ -237,17 +237,31 @@ struct Previewer {
             print("An error downloading monkey?")
         } else {
             let cvsAttachmentFile: TransactionFile = TransactionFile(
-                id: UUID(),
                 name: "Etherpunk Logo",
                 filename: "monkey.jpg",
                 notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.",
                 dataURL: monkeyURL!,
                 isTaxRelated: true,
-                transactionId: cvsTransaction.id,
-                transaction: cvsTransaction
+                accountTransaction: cvsTransaction
             )
             container.mainContext.insert(cvsAttachmentFile)
         }
+
+//        let monkeyData: Data? = downloadImageData()
+//        if monkeyData == nil {
+//            debugPrint("Error downloading monkey")
+//        } else {
+//            debugPrint("Got the data: \(monkeyData?.count ?? 0)")
+//            let cvsAttachmentFile: TransactionFile = TransactionFile(
+//                name: "Etherpunk Logo",
+//                filename: "monkey.jpg",
+//                notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.",
+//                data: monkeyData,
+//                isTaxRelated: true,
+//                accountTransaction: cvsTransaction
+//            )
+//            container.mainContext.insert(cvsAttachmentFile)
+//        }
 
         debugPrint("Done generating data at \(Date().toDebugDate())")
         debugPrint("Main account id: \(bankAccount.id.uuidString)")
@@ -319,6 +333,24 @@ struct Previewer {
 
             try data.write(to: destinationURL)
             return destinationURL
+        } catch {
+            debugPrint("Error downloading file: \(error)")
+            return nil
+        }
+    }
+
+    private func downloadImageData() -> Data? {
+        return nil
+        let monkeyUrl = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
+
+        guard let url = URL(string: monkeyUrl) else {
+            debugPrint("Issue with URL from string")
+            return nil
+        }
+
+        do {
+            return nil
+            //return try Data(contentsOf: url)
         } catch {
             debugPrint("Error downloading file: \(error)")
             return nil
