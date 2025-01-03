@@ -15,7 +15,7 @@ final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Id
     public var filename: String = ""
     public var notes: String = ""
     public var dataURL: URL? = nil
-    public var data: [Data]? = nil
+    public var data: Data? = nil
     public var isTaxRelated: Bool = false
     public var transactionId: UUID? = nil
     @Relationship(deleteRule: .noAction) public var transaction: AccountTransaction?
@@ -44,37 +44,35 @@ final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Id
     }
 
     init(
-        id: UUID,
         name: String,
         filename: String,
         notes: String,
-        dataURL: URL? = nil,
-        data: [Data]? = nil,
+        data: Data,
         isTaxRelated: Bool,
-        transactionId: UUID? = nil,
-        transaction: AccountTransaction
+        accountTransaction: AccountTransaction
     ) {
-        self.id = id
+        self.name = name
+        self.filename = filename
+        self.notes = notes
+        self.data = data
+        self.isTaxRelated = isTaxRelated
+        self.transaction = accountTransaction
+        self.transactionId = accountTransaction.id
+    }
+    init(
+        name: String,
+        filename: String,
+        notes: String,
+        dataURL: URL,
+        isTaxRelated: Bool,
+        accountTransaction: AccountTransaction
+    ) {
         self.name = name
         self.filename = filename
         self.notes = notes
         self.dataURL = dataURL
-        self.data = data
         self.isTaxRelated = isTaxRelated
-        self.transactionId = transactionId
-    }
-
-    init(
-        name: String,
-        filename: String,
-        data: [Data],
-        isTaxRelated: Bool,
-        transactionId: UUID?
-    ) {
-        self.name = name
-        self.filename = filename
-        self.data = data
-        self.isTaxRelated = isTaxRelated
-        self.transactionId = transactionId
+        self.transaction = accountTransaction
+        self.transactionId = accountTransaction.id
     }
 }

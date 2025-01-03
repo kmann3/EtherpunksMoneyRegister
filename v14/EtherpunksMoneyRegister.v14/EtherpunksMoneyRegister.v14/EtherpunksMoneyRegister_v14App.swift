@@ -10,6 +10,7 @@ import SwiftData
 
 @main
 struct EtherpunksMoneyRegister_v14App: App {
+#if !DEBUG
     var container: ModelContainer = {
         let schema = Schema([
             Account.self,
@@ -19,6 +20,7 @@ struct EtherpunksMoneyRegister_v14App: App {
             TransactionFile.self,
             TransactionTag.self,
         ])
+        // There is a problem with TransactionFile.Data and NOT being stored in memory.
         let config = ModelConfiguration(isStoredInMemoryOnly: false)
 
         do {
@@ -27,6 +29,7 @@ struct EtherpunksMoneyRegister_v14App: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+#endif
 
     var body: some Scene {
         WindowGroup {
