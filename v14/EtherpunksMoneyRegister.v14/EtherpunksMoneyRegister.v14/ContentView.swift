@@ -9,7 +9,6 @@ import SwiftData
 import SwiftUI
 
 struct ContentView: View {
-    @AppStorage("customizedTabView") var customizedTabView: TabViewCustomization
     @State private var pathStore = PathStore()
 
     var body: some View {
@@ -23,6 +22,7 @@ struct ContentView: View {
                     MenuOptionsEnum.dashboard.action
                 }
                 .customizationID(MenuOptionsEnum.dashboard.tabId)
+
 
                 Tab(
                     MenuOptionsEnum.accounts.title,
@@ -105,11 +105,11 @@ struct ContentView: View {
                 }
 #endif
             }
-            .tabViewStyle(.grouped)
-
-            .tabViewStyle(.automatic)
-            .tabViewCustomization($customizedTabView)
+            .tabViewStyle(.sidebarAdaptable)
         }
+#if os(macOS)
+        .frame(minWidth: 850, maxWidth: .infinity, minHeight: 500, maxHeight: .infinity)
+#endif
     }
 
 //        .searchable(text: $searchText)
@@ -121,6 +121,8 @@ struct ContentView: View {
     let p = Previewer()
     ContentView()
         .modelContainer(p.container)
+#if os(macOS)
         .frame(width: 900, height: 500)
+#endif
     // .modelContainer(for: Item.self, inMemory: true)
 }
