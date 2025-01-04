@@ -10,7 +10,7 @@ import SwiftData
 import SwiftUI
 
 @MainActor
-struct Previewer {
+class Previewer {
 
     let isDbInMemory: Bool = true
 
@@ -232,31 +232,32 @@ struct Previewer {
         ]
         container.mainContext.insert(billGroup)
 
-        let monkeyURL: URL? = downloadImageFromURL()
-        if monkeyURL == nil {
-            print("An error downloading monkey?")
-        } else {
-            let cvsAttachmentFile: TransactionFile = TransactionFile(
-                name: "Etherpunk Logo",
-                filename: "monkey.jpg",
-                notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.",
-                dataURL: monkeyURL!,
-                isTaxRelated: true,
-                accountTransaction: cvsTransaction
-            )
-            container.mainContext.insert(cvsAttachmentFile)
-        }
+        downloadImageDataAsync(completion: { [self] data in
+            if data != nil {
+                let cvsAttachmentFile: TransactionFile = TransactionFile(
+                    name: "Etherpunk Logo",
+                    filename: "monkey.jpg",
+                    notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.",
+                    data: data!,
+                    isTaxRelated: true,
+                    accountTransaction: self.cvsTransaction
+                )
+
+                container.mainContext.insert(cvsAttachmentFile)
+            } else {
+                debugPrint( "Error downloading monkey from URL")
+            }
+        })
 
 //        let monkeyData: Data? = downloadImageData()
 //        if monkeyData == nil {
 //            debugPrint("Error downloading monkey")
 //        } else {
-//            debugPrint("Got the data: \(monkeyData?.count ?? 0)")
 //            let cvsAttachmentFile: TransactionFile = TransactionFile(
 //                name: "Etherpunk Logo",
 //                filename: "monkey.jpg",
 //                notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.",
-//                data: monkeyData,
+//                data: monkeyData!,
 //                isTaxRelated: true,
 //                accountTransaction: cvsTransaction
 //            )
@@ -286,75 +287,28 @@ struct Previewer {
         return date!
     }
     
-    func downloadImageFromURL(completion: @escaping (URL?) -> Void) {
+
+
+    func downloadImageDataAsync(completion: @escaping (Data?) -> Void) {
         let monkeyUrlString = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
-        
+
         guard let url = URL(string: monkeyUrlString) else {
             debugPrint("Invalid URL: \(monkeyUrlString)")
             completion(nil)
             return
         }
-        
+
         let task = URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data = data, error == nil else {
                 debugPrint("Error downloading image: \(error?.localizedDescription ?? "Unknown error")")
                 completion(nil)
                 return
             }
-            
-            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            let destinationURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
-            
-            do {
-                try data.write(to: destinationURL)
-                completion(destinationURL)
-            } catch {
-                debugPrint("Error saving image data: \(error)")
-                completion(nil)
-            }
+
+            completion(data)
         }
-        
+
         task.resume()
-    }
-    
-    private func downloadImageFromURL() -> URL? {
-        let monkeyUrl = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
-        
-        guard let url = URL(string: monkeyUrl) else {
-            debugPrint("Issue with URL from string")
-            return nil
-        }
-        
-        do {
-            let data = try Data(contentsOf: url)
-
-            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            let destinationURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
-
-            try data.write(to: destinationURL)
-            return destinationURL
-        } catch {
-            debugPrint("Error downloading file: \(error)")
-            return nil
-        }
-    }
-
-    private func downloadImageData() -> Data? {
-        return nil
-        let monkeyUrl = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
-
-        guard let url = URL(string: monkeyUrl) else {
-            debugPrint("Issue with URL from string")
-            return nil
-        }
-
-        do {
-            return nil
-            //return try Data(contentsOf: url)
-        } catch {
-            debugPrint("Error downloading file: \(error)")
-            return nil
-        }
     }
 }
 

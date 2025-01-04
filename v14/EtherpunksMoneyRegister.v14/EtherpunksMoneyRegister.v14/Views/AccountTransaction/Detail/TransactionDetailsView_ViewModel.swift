@@ -32,7 +32,6 @@ extension TransactionDetailsView {
             fetchDescriptor.fetchLimit = 1
             fetchDescriptor.relationshipKeyPathsForPrefetching = [\.account]
             fetchDescriptor.relationshipKeyPathsForPrefetching = [\.recurringTransaction]
-            //        fetchDescriptor.relationshipKeyPathsForPrefetching = [\.recurringTransaction?.recurringGroup]
 
             let query = try! modelContext.fetch(fetchDescriptor)
             self.account = query.first!.account!
@@ -46,25 +45,58 @@ extension TransactionDetailsView {
 
             )
             fetchDescriptor_Files.sortBy = [.init(\.createdOnUTC, order: .reverse)]
-            fetchDescriptor_Files.propertiesToFetch = [
-                \.id,
-                 \.name,
-                 \.filename,
-                 \.notes,
-                 \.dataURL,
-                 \.isTaxRelated,
-                 \.transactionId,
-                 \.createdOnUTC
-             ]
-
             self.transactionFiles = try! modelContext.fetch(fetchDescriptor_Files)
         }
         func addNewDocument() {}
 
         func addNewPhoto() {}
 
-        func getAttachmentData(file: TransactionFile) -> Data? {
-            return nil
+        func downloadFileForViewing(file: TransactionFile) {
+            do {
+                if(file.data == nil) {
+                    debugPrint("Empty file data")
+                    return
+                }
+
+                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                let destinationURL = documentsDirectory.appendingPathComponent(file.filename)
+                try file.data?.write(to: destinationURL)
+                self.url = destinationURL
+            } catch {
+                debugPrint("Error saving file: \(error)")
+            }
         }
+
+        // Should I handle the downloading via async? If the file is huge it might take a hot second.
+        //    func downloadImageFromURL(completion: @escaping (URL?) -> Void) {
+        //        let monkeyUrlString = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
+        //
+        //        guard let url = URL(string: monkeyUrlString) else {
+        //            debugPrint("Invalid URL: \(monkeyUrlString)")
+        //            completion(nil)
+        //            return
+        //        }
+        //
+        //        let task = URLSession.shared.dataTask(with: url) { data, _, error in
+        //            guard let data = data, error == nil else {
+        //                debugPrint("Error downloading image: \(error?.localizedDescription ?? "Unknown error")")
+        //                completion(nil)
+        //                return
+        //            }
+        //
+        //            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        //            let destinationURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
+        //
+        //            do {
+        //                try data.write(to: destinationURL)
+        //                completion(destinationURL)
+        //            } catch {
+        //                debugPrint("Error saving image data: \(error)")
+        //                completion(nil)
+        //            }
+        //        }
+        //
+        //        task.resume()
+        //    }
     }
 }

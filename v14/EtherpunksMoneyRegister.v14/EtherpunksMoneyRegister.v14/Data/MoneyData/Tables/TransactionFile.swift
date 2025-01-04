@@ -14,7 +14,6 @@ final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Id
     public var name: String = ""
     public var filename: String = ""
     public var notes: String = ""
-    public var dataURL: URL? = nil
     public var data: Data? = nil
     public var isTaxRelated: Bool = false
     public var transactionId: UUID? = nil
@@ -35,7 +34,6 @@ final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Id
             - name: \(name)
             - fileName: \(filename)
             - notes: \(notes)
-            - data URL: \(dataURL?.absoluteString ?? "no url")
             - data size in bytes: \(data?.count ?? 0)
             - isTaxRelated: \(isTaxRelated)
             - createdOnUTC: \(createdOnUTC.toDebugDate())
@@ -55,22 +53,6 @@ final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Id
         self.filename = filename
         self.notes = notes
         self.data = data
-        self.isTaxRelated = isTaxRelated
-        self.transaction = accountTransaction
-        self.transactionId = accountTransaction.id
-    }
-    init(
-        name: String,
-        filename: String,
-        notes: String,
-        dataURL: URL,
-        isTaxRelated: Bool,
-        accountTransaction: AccountTransaction
-    ) {
-        self.name = name
-        self.filename = filename
-        self.notes = notes
-        self.dataURL = dataURL
         self.isTaxRelated = isTaxRelated
         self.transaction = accountTransaction
         self.transactionId = accountTransaction.id
