@@ -142,9 +142,15 @@ struct ContentView: View {
                 case .tag_Create:
                     TagEditor(tag: TransactionTag(name: ""))
                         .environment(pathStore)
+                        .onAppear {
+                            pathStore.selectedTab = .tags
+                        }
                 case .tag_Edit(let tag):
                     TagEditor(tag: tag)
                         .environment(pathStore)
+                        .onAppear {
+                            pathStore.selectedTab = .tags
+                        }
                 case .tag_List:
                     TagsView()
                         .environment(pathStore)
