@@ -36,6 +36,9 @@ struct TransactionDetailsView: View {
                     }
                     ForEach(self.viewModel.transaction.transactionTags!.sorted(by: { $0.name < $1.name })) { tag in
                         Text(tag.name)
+                            .onTapGesture {
+                                router.navigateTo(route: .tag_Edit(tag: tag))
+                            }
                     }
                 }
             }
