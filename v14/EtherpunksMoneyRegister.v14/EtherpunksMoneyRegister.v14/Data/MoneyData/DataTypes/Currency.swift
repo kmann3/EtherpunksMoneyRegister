@@ -212,7 +212,7 @@ struct Currency: Codable {
     ///   - rhs: The `Decimal` value to compare against.
     /// - Returns: `true` if the amounts are not equal, `false` otherwise.
     static func != (lhs: Currency, rhs: Decimal) -> Bool {
-      return lhs.amount != rhs
+        return lhs.amount != rhs
     }
 
     /// Checks inequality between a `Currency` instance and a `Decimal`.
@@ -254,7 +254,9 @@ struct Currency: Codable {
         if let decimalAmount = Decimal(string: amountString) {
             self.amount = decimalAmount
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .amount, in: container, debugDescription: "Amount is not a valid decimal number")
+            throw DecodingError.dataCorruptedError(
+                forKey: .amount, in: container,
+                debugDescription: "Amount is not a valid decimal number")
         }
         self.code = try container.decode(CurrencyCode.self, forKey: .code)
     }
@@ -291,14 +293,15 @@ struct Currency: Codable {
         let cnyPrice = Currency(amount: Decimal(50), code: .CNY)
 
         if let formattedUsd = usdPrice.formattedString(),
-           let formattedEur = eurPrice.formattedString(),
-           let formattedNl = nlPrice.formattedString(),
-           let formattedGbp = gbpPrice.formattedString(),
-           let formattedJpy = jpyPrice.formattedString(),
-           let formattedCny = cnyPrice.formattedString() {
+            let formattedEur = eurPrice.formattedString(),
+            let formattedNl = nlPrice.formattedString(),
+            let formattedGbp = gbpPrice.formattedString(),
+            let formattedJpy = jpyPrice.formattedString(),
+            let formattedCny = cnyPrice.formattedString()
+        {
             debugPrint("USD Price: \(formattedUsd)")  // USD Price: $19.99
             debugPrint("EUR Price: \(formattedEur)")  // EUR Price: 5,99 €
-            debugPrint("Netherlands Price: \(formattedNl)") // EUR Price: 3,47 €
+            debugPrint("Netherlands Price: \(formattedNl)")  // EUR Price: 3,47 €
             debugPrint("GBP Price: \(formattedGbp)")  // GBP Price: £9.99
             debugPrint("JPY Price: \(formattedJpy)")  // JPY Price: ¥1,000
             debugPrint("CNY Price: \(formattedCny)")  // CNY Price: ¥50.00
@@ -310,7 +313,7 @@ struct Currency: Codable {
 ///
 /// - Parameter decimal: The `Decimal` value to convert to `Currency`.
 /// - Returns: A new `Currency` instance with the specified `Decimal` amount.
-prefix func +(decimal: Decimal) -> Currency {
+prefix func + (decimal: Decimal) -> Currency {
     return Currency(decimal)
 }
 

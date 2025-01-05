@@ -5,28 +5,35 @@
 //  Created by Kennith Mann on 11/19/24.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct TagsView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(PathStore.self) var router
-    @Query(sort: [SortDescriptor(\TransactionTag.name, comparator: .localizedStandard)])
+    @Query(sort: [
+        SortDescriptor(\TransactionTag.name, comparator: .localizedStandard)
+    ])
     var tags: [TransactionTag]
 
     @State var viewModel: ViewModel = ViewModel()
 
     var body: some View {
         List {
-            Section(header: Text("Transaction Tags"), footer: Text("End of list")) {
-                ForEach(tags.sorted(by: { $0.name < $1.name })) { transactionTag in
+            Section(
+                header: Text("Transaction Tags"), footer: Text("End of list")
+            ) {
+                ForEach(tags.sorted(by: { $0.name < $1.name })) {
+                    transactionTag in
                     TransactionTagItemView(transactionTag: transactionTag)
                         .contextMenu(menuItems: {
-                            Button("Delete", action: {
-                                viewModel.tagToDelete = transactionTag
-                                viewModel.isDeleteWarningPresented.toggle()
+                            Button(
+                                "Delete",
+                                action: {
+                                    viewModel.tagToDelete = transactionTag
+                                    viewModel.isDeleteWarningPresented.toggle()
 
-                            })
+                                })
                         })
                         .onTapGesture {
                             router
@@ -55,9 +62,11 @@ struct TagsView: View {
             isPresented: $viewModel.isDeleteWarningPresented
         ) {
             Button("Yes") { viewModel.deleteTag() }
-            Button("Cancel", role: .cancel) { }
+            Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Are you sure you want to delete \(viewModel.tagToDelete?.name ?? "none_selected")")
+            Text(
+                "Are you sure you want to delete \(viewModel.tagToDelete?.name ?? "none_selected")"
+            )
         }
     }
 }

@@ -73,11 +73,11 @@ enum CurrencyCode: String, Codable, CaseIterable, Identifiable {
 
         switch localeIdentifier {
         case "en_US": return .USD
-        case "en_EU", "fr_FR", "de_DE", "es_ES", "it_IT", "nl_NL": return .EUR // Eurozone countries
+        case "en_EU", "fr_FR", "de_DE", "es_ES", "it_IT", "nl_NL": return .EUR  // Eurozone countries
         case "en_GB": return .GBP
         case "ja_JP": return .JPY
         case "zh_CN": return .CNY
-        default: return .USD // Default to USD if no matching locale is found, because this is my app and I do not expect anyone but me and maybe one or two friends to ever use this.
+        default: return .USD  // Default to USD if no matching locale is found, because this is my app and I do not expect anyone but me and maybe one or two friends to ever use this.
         }
     }
 

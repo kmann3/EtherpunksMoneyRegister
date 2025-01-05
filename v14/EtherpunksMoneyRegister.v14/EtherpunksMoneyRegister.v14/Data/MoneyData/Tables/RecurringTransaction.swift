@@ -9,7 +9,9 @@ import Foundation
 import SwiftData
 
 @Model
-final class RecurringTransaction : ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable  {
+final class RecurringTransaction: ObservableObject,
+    CustomDebugStringConvertible, Identifiable, Hashable
+{
     @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     public var transactionType: TransactionType = TransactionType.debit
@@ -121,32 +123,43 @@ final class RecurringTransaction : ObservableObject, CustomDebugStringConvertibl
         case .unknown, .irregular:
             break
         case .yearly:
-            self.nextDueDate = calendar.date(byAdding: .year, value: 1, to: self.nextDueDate!)
+            self.nextDueDate = calendar.date(
+                byAdding: .year, value: 1, to: self.nextDueDate!)
         case .monthly:
-            self.nextDueDate = calendar.date(byAdding: .month, value: 1, to: self.nextDueDate!)
+            self.nextDueDate = calendar.date(
+                byAdding: .month, value: 1, to: self.nextDueDate!)
         case .weekly:
-            self.nextDueDate = calendar.date(byAdding: .day, value: 7, to: self.nextDueDate!)
+            self.nextDueDate = calendar.date(
+                byAdding: .day, value: 7, to: self.nextDueDate!)
         case .xdays:
             if self.frequencyValue == nil {
                 throw BumpDateError.missingFrequencyValues
             }
-            self.nextDueDate = calendar.date(byAdding: .day, value: self.frequencyValue!, to: self.nextDueDate!)
+            self.nextDueDate = calendar.date(
+                byAdding: .day, value: self.frequencyValue!,
+                to: self.nextDueDate!)
         case .xmonths:
             if self.frequencyValue == nil {
                 throw BumpDateError.missingFrequencyValues
             }
-            self.nextDueDate = calendar.date(byAdding: .month, value: self.frequencyValue!, to: self.nextDueDate!)
+            self.nextDueDate = calendar.date(
+                byAdding: .month, value: self.frequencyValue!,
+                to: self.nextDueDate!)
         case .xweekOnYDayOfWeek:
             if self.frequencyDayOfWeek == nil || self.frequencyValue == nil {
                 throw BumpDateError.missingFrequencyValues
             }
-            let nextMonth = calendar.date(byAdding: .month, value: 1, to: self.nextDueDate!)
-            let currentComponents = calendar.dateComponents([.year, .month], from: nextMonth!)
+            let nextMonth = calendar.date(
+                byAdding: .month, value: 1, to: self.nextDueDate!)
+            let currentComponents = calendar.dateComponents(
+                [.year, .month], from: nextMonth!)
             let startOfMonth = calendar.date(from: currentComponents)
             let startWeekday = calendar.component(.weekday, from: startOfMonth!)
-            var difference = (self.frequencyDayOfWeek!.rawValue - startWeekday + 7) % 7
+            var difference =
+                (self.frequencyDayOfWeek!.rawValue - startWeekday + 7) % 7
             difference += (self.frequencyValue! - 1) * 7
-            self.nextDueDate = calendar.date(byAdding: .day, value: difference, to: startOfMonth!)
+            self.nextDueDate = calendar.date(
+                byAdding: .day, value: difference, to: startOfMonth!)
         }
     }
 

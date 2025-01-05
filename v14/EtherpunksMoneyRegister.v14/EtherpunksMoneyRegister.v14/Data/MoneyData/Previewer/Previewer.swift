@@ -15,16 +15,17 @@ class Previewer {
     let isDbInMemory: Bool = true
 
     private static let now: Date = Date()
-    public let bankAccount: Account = Account(id: UUID(uuidString: "12345678-1234-1234-1234-123456789abc")!,
-                                              name: "Chase Bank",
-                                              startingBalance: 1024.44,
-                                              currentBalance: 437.99,
-                                              outstandingBalance: 33.73,
-                                              outstandingItemCount: 2,
-                                              notes: "",
-                                              sortIndex: Int64.max,
-                                              lastBalancedUTC: "2024-09-12T17:40:31.594+0000",
-                                              createdOnUTC: "2024-09-13T17:40:31.594+0000")
+    public let bankAccount: Account = Account(
+        id: UUID(uuidString: "12345678-1234-1234-1234-123456789abc")!,
+        name: "Chase Bank",
+        startingBalance: 1024.44,
+        currentBalance: 437.99,
+        outstandingBalance: 33.73,
+        outstandingItemCount: 2,
+        notes: "",
+        sortIndex: Int64.max,
+        lastBalancedUTC: "2024-09-12T17:40:31.594+0000",
+        createdOnUTC: "2024-09-13T17:40:31.594+0000")
 
     public let container: ModelContainer
 
@@ -50,7 +51,6 @@ class Previewer {
     public let huluRecurringTransaction: RecurringTransaction
     public let verizonRecurringTransaction: RecurringTransaction
 
-
     init() {
         let schema = Schema([
             Account.self,
@@ -66,10 +66,11 @@ class Previewer {
         debugPrint("-----------------")
         debugPrint(Date().toDebugDate())
         debugPrint("-----------------")
-        if(isDbInMemory) {
+        if isDbInMemory {
             debugPrint("Database is in memory.")
         } else {
-            debugPrint("Database Location: \(container.mainContext.sqliteLocation)")
+            debugPrint(
+                "Database Location: \(container.mainContext.sqliteLocation)")
         }
         debugPrint("Generating fake data. This may take a little bit.")
 
@@ -110,7 +111,7 @@ class Previewer {
             amount: transactionAmount,
             balance: balance,
             transactionTags: [ffTag],
-            clearedOnUTC: Date().addingTimeInterval(-1000000)
+            clearedOnUTC: Date().addingTimeInterval(-1_000_000)
         )
         container.mainContext.insert(burgerKingTransaction)
 
@@ -228,7 +229,7 @@ class Previewer {
         billGroup.recurringTransactions = [
             discordRecurringTransaction,
             huluRecurringTransaction,
-            verizonRecurringTransaction
+            verizonRecurringTransaction,
         ]
         container.mainContext.insert(billGroup)
 
@@ -237,7 +238,8 @@ class Previewer {
                 let cvsAttachmentFile: TransactionFile = TransactionFile(
                     name: "Etherpunk Logo",
                     filename: "monkey.jpg",
-                    notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.",
+                    notes:
+                        "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.",
                     data: data!,
                     isTaxRelated: true,
                     accountTransaction: self.cvsTransaction
@@ -245,24 +247,24 @@ class Previewer {
 
                 container.mainContext.insert(cvsAttachmentFile)
             } else {
-                debugPrint( "Error downloading monkey from URL")
+                debugPrint("Error downloading monkey from URL")
             }
         })
 
-//        let monkeyData: Data? = downloadImageData()
-//        if monkeyData == nil {
-//            debugPrint("Error downloading monkey")
-//        } else {
-//            let cvsAttachmentFile: TransactionFile = TransactionFile(
-//                name: "Etherpunk Logo",
-//                filename: "monkey.jpg",
-//                notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.",
-//                data: monkeyData!,
-//                isTaxRelated: true,
-//                accountTransaction: cvsTransaction
-//            )
-//            container.mainContext.insert(cvsAttachmentFile)
-//        }
+        //        let monkeyData: Data? = downloadImageData()
+        //        if monkeyData == nil {
+        //            debugPrint("Error downloading monkey")
+        //        } else {
+        //            let cvsAttachmentFile: TransactionFile = TransactionFile(
+        //                name: "Etherpunk Logo",
+        //                filename: "monkey.jpg",
+        //                notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.",
+        //                data: monkeyData!,
+        //                isTaxRelated: true,
+        //                accountTransaction: cvsTransaction
+        //            )
+        //            container.mainContext.insert(cvsAttachmentFile)
+        //        }
 
         debugPrint("Done generating data at \(Date().toDebugDate())")
         debugPrint("Main account id: \(bankAccount.id.uuidString)")
@@ -270,27 +272,28 @@ class Previewer {
 
     private func getNextDueDate(day: Int) -> Date {
         let calendar = Calendar.current
-        
-        let currentComponents = calendar.dateComponents([.year, .month, .day], from: Date())
-        
+
+        let currentComponents = calendar.dateComponents(
+            [.year, .month, .day], from: Date())
+
         var monthsToAdd = 0
-        
+
         if currentComponents.day! > 16 {
             monthsToAdd = 1
         }
-        
-        var components = calendar.dateComponents([.year, .month, .day], from: Date())
+
+        var components = calendar.dateComponents(
+            [.year, .month, .day], from: Date())
         components.month! += monthsToAdd
         components.day = 16
-        
+
         let date = calendar.date(from: components)
         return date!
     }
-    
-
 
     func downloadImageDataAsync(completion: @escaping (Data?) -> Void) {
-        let monkeyUrlString = "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
+        let monkeyUrlString =
+            "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
 
         guard let url = URL(string: monkeyUrlString) else {
             debugPrint("Invalid URL: \(monkeyUrlString)")
@@ -300,7 +303,9 @@ class Previewer {
 
         let task = URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data = data, error == nil else {
-                debugPrint("Error downloading image: \(error?.localizedDescription ?? "Unknown error")")
+                debugPrint(
+                    "Error downloading image: \(error?.localizedDescription ?? "Unknown error")"
+                )
                 completion(nil)
                 return
             }
@@ -314,7 +319,9 @@ class Previewer {
 
 extension ModelContext {
     var sqliteLocation: String {
-        if let url = container.configurations.first?.url.path(percentEncoded: false) {
+        if let url = container.configurations.first?.url.path(
+            percentEncoded: false)
+        {
             "sqlite3 \"\(url)\""
         } else {
             "No SQLite database found."

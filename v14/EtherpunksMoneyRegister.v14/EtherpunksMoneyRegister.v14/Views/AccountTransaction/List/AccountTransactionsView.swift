@@ -5,8 +5,8 @@
 //  Created by Kennith Mann on 11/19/24.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct AccountTransactionsView: View {
     @Environment(\.modelContext) var modelContext
@@ -24,11 +24,15 @@ struct AccountTransactionsView: View {
                 AccountListItemView(acctData: viewModel.account)
                     .onTapGesture {
                         router
-                            .navigateTo(route: .account_Details(account: viewModel.account))
+                            .navigateTo(
+                                route: .account_Details(
+                                    account: viewModel.account))
                     }
                     .contextMenu(menuItems: {
                         Button {
-                            router.navigateTo(route: .account_Edit(account: viewModel.account))
+                            router.navigateTo(
+                                route: .account_Edit(account: viewModel.account)
+                            )
                         } label: {
                             Label("Edit Account", systemImage: "pencil")
                         }
@@ -39,28 +43,38 @@ struct AccountTransactionsView: View {
                 ForEach(viewModel.accountTransactions, id: \.id) { t in
                     TransactionListItemView(transaction: t)
                         .onAppear {
-                            viewModel.fetchAccountTransactionsIfNecessary(transaction: t, modelContext: modelContext)
+                            viewModel.fetchAccountTransactionsIfNecessary(
+                                transaction: t, modelContext: modelContext)
                         }
                         .onTapGesture {
-                            router.navigateTo(route: .transaction_Detail(transaction: t))
+                            router.navigateTo(
+                                route: .transaction_Detail(transaction: t))
                         }
                         .contextMenu(menuItems: {
                             Button {
                                 // Mark as pending
                             } label: {
-                                Label("Mark Reserved", systemImage: "arrowshape.turn.up.backward.badge.clock")
+                                Label(
+                                    "Mark Reserved",
+                                    systemImage:
+                                        "arrowshape.turn.up.backward.badge.clock"
+                                )
                             }
 
                             Button {
                                 // Mark as pending
                             } label: {
-                                Label("Mark Pending", systemImage: "arrowshape.turn.up.forward")
+                                Label(
+                                    "Mark Pending",
+                                    systemImage: "arrowshape.turn.up.forward")
                             }
 
                             Button {
                                 // Mark as pending
                             } label: {
-                                Label("Mark Cleared", systemImage: "checkmark.circle")
+                                Label(
+                                    "Mark Cleared",
+                                    systemImage: "checkmark.circle")
                             }
 
                             Button {
@@ -70,7 +84,7 @@ struct AccountTransactionsView: View {
                                 Label("Delete", systemImage: "trash")
                             }
                         })
-                        // context menu for setting pending and cleared
+                    // context menu for setting pending and cleared
                 }
             }
         }
@@ -81,9 +95,11 @@ struct AccountTransactionsView: View {
             Button("Yes") {
                 viewModel.deleteTransaction(modelContext: modelContext)
             }
-            Button("Cancel", role: .cancel) { }
+            Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Are you sure you want to delete \(viewModel.selectedTransaction?.name ?? "none_selected")")
+            Text(
+                "Are you sure you want to delete \(viewModel.selectedTransaction?.name ?? "none_selected")"
+            )
         }
         .navigationTitle("\(viewModel.account.name) - Transactions")
         .onAppear {
@@ -100,22 +116,23 @@ struct AccountTransactionsView: View {
                             Label("Debit / Expense", systemImage: "creditcard")
                         }
                         Button {
-                            print ("New Credit")
+                            print("New Credit")
                             //createNewTransaction(transactionType: .credit)
                         } label: {
-                            Label("Credit / Income / Deposit", systemImage: "banknote")
+                            Label(
+                                "Credit / Income / Deposit",
+                                systemImage: "banknote")
                         }
                     }
 
                     Divider()
 
                     Section(header: Text("Actions")) {
-                        Button("Mark Account as Balanced"){
+                        Button("Mark Account as Balanced") {
                             //balanceAccount()
                             print("Mark account as balanced")
                         }
                     }
-
 
                 } label: {
                     Label("Menu", systemImage: "ellipsis.circle")
@@ -130,7 +147,7 @@ struct AccountTransactionsView: View {
     AccountTransactionsView(account: p.bankAccount)
         .modelContainer(p.container)
         .environment(PathStore())
-#if os(macOS)
-        .frame(width: 900, height: 500)
-#endif
+        #if os(macOS)
+            .frame(width: 900, height: 500)
+        #endif
 }

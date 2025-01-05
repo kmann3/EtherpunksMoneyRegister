@@ -9,14 +9,16 @@ import Foundation
 import SwiftData
 
 @Model
-final class RecurringGroup : ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable  {
+final class RecurringGroup: ObservableObject, CustomDebugStringConvertible,
+    Identifiable, Hashable
+{
     @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     public var recurringTransactions: [RecurringTransaction]? = nil
     public var createdOnUTC: Date = Date()
 
     public var debugDescription: String {
-            return """
+        return """
             RecurringGroup:
             - id: \(id)
             - name: \(name)
@@ -24,13 +26,13 @@ final class RecurringGroup : ObservableObject, CustomDebugStringConvertible, Ide
             """
     }
 
-   init(
-    name: String = "",
-    recurringTransactions: [RecurringTransaction]? = nil
-   ) {
-       self.name = name
-       self.recurringTransactions = recurringTransactions
-   }
+    init(
+        name: String = "",
+        recurringTransactions: [RecurringTransaction]? = nil
+    ) {
+        self.name = name
+        self.recurringTransactions = recurringTransactions
+    }
 
     init(name: String) {
         self.name = name

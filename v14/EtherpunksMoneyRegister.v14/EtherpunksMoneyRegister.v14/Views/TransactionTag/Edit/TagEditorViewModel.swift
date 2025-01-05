@@ -29,7 +29,9 @@ struct TagEditor: View {
                         format: .dateTime.month().day().year()
                     )
                     Text("@")
-                    Text(viewModel.tag.createdOnUTC, format: .dateTime.hour().minute())
+                    Text(
+                        viewModel.tag.createdOnUTC,
+                        format: .dateTime.hour().minute())
                 }
             }
 
@@ -66,7 +68,7 @@ struct TagEditor: View {
             isPresented: $viewModel.isShowingDeleteAlert
         ) {
             Button("Yes") { viewModel.deleteTag(modelContext: modelContext) }
-            Button("Cancel", role: .cancel) { }
+            Button("Cancel", role: .cancel) {}
         } message: {
             Text("Are you sure you want to delete \(viewModel.tag.name)")
         }

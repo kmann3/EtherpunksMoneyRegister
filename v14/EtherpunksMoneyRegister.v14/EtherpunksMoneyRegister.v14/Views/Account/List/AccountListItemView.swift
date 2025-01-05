@@ -35,10 +35,14 @@ struct AccountListItemView: View {
 
                 Spacer()
 
-                Text(acctData.currentBalance, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 5)
+                Text(
+                    acctData.currentBalance,
+                    format: .currency(
+                        code: Locale.current.currency?.identifier ?? "USD")
+                )
+                .font(.headline)
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 5)
             }
 
             HStack {
@@ -49,13 +53,19 @@ struct AccountListItemView: View {
 
                 Spacer()
 
-                Text(acctData.currentBalance - acctData.outstandingBalance, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 5)
+                Text(
+                    acctData.currentBalance - acctData.outstandingBalance,
+                    format: .currency(
+                        code: Locale.current.currency?.identifier ?? "USD")
+                )
+                .font(.headline)
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 5)
             }
 
-            Rectangle().fill(Color.gray).frame(width: .infinity, height: 1, alignment: .center).padding(.horizontal, 25)
+            Rectangle().fill(Color.gray).frame(
+                width: .infinity, height: 1, alignment: .center
+            ).padding(.horizontal, 25)
 
             HStack {
                 Text("Oustanding")
@@ -65,10 +75,14 @@ struct AccountListItemView: View {
 
                 Spacer()
 
-                Text(acctData.outstandingBalance, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 5)
+                Text(
+                    acctData.outstandingBalance,
+                    format: .currency(
+                        code: Locale.current.currency?.identifier ?? "USD")
+                )
+                .font(.headline)
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 5)
             }
 
             HStack {
@@ -92,9 +106,9 @@ struct AccountListItemView: View {
                     acctData.lastBalancedUTC!,
                     format: .dateTime.month().day().year()
                 )
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 5)
+                .font(.headline)
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 5)
             }
 
             HStack {
@@ -115,12 +129,15 @@ struct AccountListItemView: View {
         .cornerRadius(10)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(Color(.sRGB, red: 125/255, green: 125/255, blue: 125/255, opacity: 0.5))
+                .stroke(
+                    Color(
+                        .sRGB, red: 125 / 255, green: 125 / 255,
+                        blue: 125 / 255, opacity: 0.5))
         )
         .contentShape(Rectangle())
-#if os(macOS)
-        .padding(.all, 5)
-#endif
+        #if os(macOS)
+            .padding(.all, 5)
+        #endif
     }
 }
 

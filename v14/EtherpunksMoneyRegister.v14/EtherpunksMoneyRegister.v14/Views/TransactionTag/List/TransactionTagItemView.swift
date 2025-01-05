@@ -5,8 +5,8 @@
 //  Created by Kennith Mann on 12/25/24.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct TransactionTagItemView: View {
     @Environment(\.modelContext) var modelContext
@@ -20,7 +20,7 @@ struct TransactionTagItemView: View {
     }
 
     var body: some View {
-        VStack  (alignment: .leading){
+        VStack(alignment: .leading) {
             HStack {
                 Text(self.transactionTag.name)
                     .frame(width: 100, height: 30)
@@ -28,17 +28,17 @@ struct TransactionTagItemView: View {
                 Spacer()
 
                 Text("Last Used:")
-                if(lastUsed != nil) {
+                if lastUsed != nil {
                     Text(lastUsed!, format: .dateTime.month().day().year())
-                        //.frame(width: 100, height: 30)
+                    //.frame(width: 100, height: 30)
                 } else {
                     Text("Never")
-                        //.frame(width: 100, height: 30)
+                    //.frame(width: 100, height: 30)
                 }
 
                 Spacer()
                 Text("#: \(useCount)")
-                    //.frame(width: 100, height: 30)
+                //.frame(width: 100, height: 30)
             }
         }
         .onAppear {
@@ -50,18 +50,21 @@ struct TransactionTagItemView: View {
         let tagId = transactionTag.id
 
         var fetchDescriptor: FetchDescriptor<TransactionTag> {
-            var descriptor = FetchDescriptor<TransactionTag>(predicate: #Predicate<TransactionTag> {
-                $0.id == tagId
-            }
+            var descriptor = FetchDescriptor<TransactionTag>(
+                predicate: #Predicate<TransactionTag> {
+                    $0.id == tagId
+                }
             )
             descriptor.fetchLimit = 1
-            descriptor.relationshipKeyPathsForPrefetching = [\.accountTransactions]
+            descriptor.relationshipKeyPathsForPrefetching = [
+                \.accountTransactions
+            ]
             return descriptor
         }
 
         let query = try! modelContext.fetch(fetchDescriptor)
 
-        if(query.count > 0) {
+        if query.count > 0 {
             accountTransactions = query.first!.accountTransactions
             useCount = accountTransactions?.count ?? 0
             lastUsed = accountTransactions?.first?.createdOnUTC ?? nil

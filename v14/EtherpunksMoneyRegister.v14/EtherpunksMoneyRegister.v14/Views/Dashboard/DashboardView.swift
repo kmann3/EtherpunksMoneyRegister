@@ -22,7 +22,7 @@ struct DashboardView: View {
     DashboardView()
         .modelContainer(Previewer().container)
         .environment(PathStore())
-#if os(macOS)
-        .frame(width: 900, height: 500)
-#endif
+        #if os(macOS)
+            .frame(width: 900, height: 500)
+        #endif
 }

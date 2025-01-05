@@ -53,7 +53,9 @@ class PathStore {
 
     init() {
         if let data = try? Data(contentsOf: savePath) {
-            if let decoded = try? JSONDecoder().decode(NavigationPath.CodableRepresentation.self, from: data) {
+            if let decoded = try? JSONDecoder().decode(
+                NavigationPath.CodableRepresentation.self, from: data)
+            {
                 path = NavigationPath(decoded)
                 return
             }

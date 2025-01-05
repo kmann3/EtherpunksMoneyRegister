@@ -21,22 +21,35 @@ struct TransactionListItemView: View {
                 Text(transaction.name)
                 Spacer()
                 if transaction.amount > 0 {
-                    Text(transaction.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
-                        .foregroundStyle(.green)
+                    Text(
+                        transaction.amount,
+                        format: .currency(
+                            code: Locale.current.currency?.identifier ?? "USD")
+                    )
+                    .foregroundStyle(.green)
                 } else {
-                    Text(transaction.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                    Text(
+                        transaction.amount,
+                        format: .currency(
+                            code: Locale.current.currency?.identifier ?? "USD"))
                 }
             }
 
             HStack(spacing: 0) {
-                if transaction.pendingOnUTC == nil && transaction.clearedOnUTC == nil {
+                if transaction.pendingOnUTC == nil
+                    && transaction.clearedOnUTC == nil
+                {
                     Text("Reserved")
-                } else if transaction.pendingOnUTC != nil && transaction.clearedOnUTC == nil {
+                } else if transaction.pendingOnUTC != nil
+                    && transaction.clearedOnUTC == nil
+                {
                     Text("Pending")
                 } else {
-                    if let clearedText: Date = self.transaction.clearedOnUTC?.advanced(
-                        by: 0
-                    ) {
+                    if let clearedText: Date = self.transaction.clearedOnUTC?
+                        .advanced(
+                            by: 0
+                        )
+                    {
                         Text(clearedText, format: .dateTime.month().day())
                     }
                 }
@@ -48,9 +61,10 @@ struct TransactionListItemView: View {
                     Text(
                         transaction.balance ?? 0,
                         format:
-                                .currency(
-                                    code: Locale.current.currency?.identifier ?? "USD"
-                                )
+                            .currency(
+                                code: Locale.current.currency?.identifier
+                                    ?? "USD"
+                            )
                     )
                     .font(.caption)
                 }
@@ -81,9 +95,8 @@ struct TransactionListItemView: View {
 }
 
 #Preview {
-        let previewer = Previewer()
+    let previewer = Previewer()
 
-        TransactionListItemView(transaction: previewer.cvsTransaction)
-            .modelContainer(previewer.container)
+    TransactionListItemView(transaction: previewer.cvsTransaction)
+        .modelContainer(previewer.container)
 }
-

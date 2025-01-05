@@ -9,7 +9,9 @@ import Foundation
 import SwiftData
 
 @Model
-final class Account: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
+final class Account: ObservableObject, CustomDebugStringConvertible,
+    Identifiable, Hashable
+{
     @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     public var startingBalance: Decimal = 0
@@ -19,26 +21,27 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
     public var notes: String = ""
     public var sortIndex: Int64 = 0
     public var lastBalancedUTC: Date? = nil
-    @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account) public var transactions: [AccountTransaction]? = nil
+    @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account)
+    public var transactions: [AccountTransaction]? = nil
     public var transactionCount: Int64 = 0
     public var createdOnUTC: Date = Date()
 
     public var debugDescription: String {
         return """
-        Account:
-        - id: \(id)
-        - name: \(name)
-        - startingBalance: \(startingBalance)
-        - currentBalance: \(currentBalance)
-        - oustandingBalance: \(outstandingBalance)
-        - outstandingItemCount: \(outstandingItemCount)
-        - notes: \(notes)
-        - sortIndex: \(sortIndex)
-        - lastBalancedUTC: \(lastBalancedUTC?.toDebugDate() ?? "nil")
-        - transactions: (TBI - Summary?)
-        - transactionCount: \(transactionCount)
-        - createdOnUTC: \(createdOnUTC.toDebugDate())
-        """
+            Account:
+            - id: \(id)
+            - name: \(name)
+            - startingBalance: \(startingBalance)
+            - currentBalance: \(currentBalance)
+            - oustandingBalance: \(outstandingBalance)
+            - outstandingItemCount: \(outstandingItemCount)
+            - notes: \(notes)
+            - sortIndex: \(sortIndex)
+            - lastBalancedUTC: \(lastBalancedUTC?.toDebugDate() ?? "nil")
+            - transactions: (TBI - Summary?)
+            - transactionCount: \(transactionCount)
+            - createdOnUTC: \(createdOnUTC.toDebugDate())
+            """
     }
 
     init(
@@ -68,8 +71,11 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
 
         if let utcDate = utcDateFormatter.date(from: lastBalancedUTC) {
             // Convert UTC Date to local time Date
-            let localTimeInterval = utcDate.timeIntervalSinceReferenceDate + TimeInterval(TimeZone.current.secondsFromGMT(for: utcDate))
-            self.lastBalancedUTC = Date(timeIntervalSinceReferenceDate: localTimeInterval)
+            let localTimeInterval =
+                utcDate.timeIntervalSinceReferenceDate
+                + TimeInterval(TimeZone.current.secondsFromGMT(for: utcDate))
+            self.lastBalancedUTC = Date(
+                timeIntervalSinceReferenceDate: localTimeInterval)
         } else {
             debugPrint("Failed to convert UTC string to Date object.")
             self.lastBalancedUTC = nil
@@ -77,13 +83,16 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
 
         if let utcDate = utcDateFormatter.date(from: createdOnUTC) {
             // Convert UTC Date to local time Date
-            let localTimeInterval = utcDate.timeIntervalSinceReferenceDate + TimeInterval(TimeZone.current.secondsFromGMT(for: utcDate))
-            self.lastBalancedUTC = Date(timeIntervalSinceReferenceDate: localTimeInterval)
+            let localTimeInterval =
+                utcDate.timeIntervalSinceReferenceDate
+                + TimeInterval(TimeZone.current.secondsFromGMT(for: utcDate))
+            self.lastBalancedUTC = Date(
+                timeIntervalSinceReferenceDate: localTimeInterval)
         } else {
             debugPrint("Failed to convert UTC string to Date object.")
         }
 
-        }
+    }
 
     init(
         name: String = "",
@@ -114,8 +123,8 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
         outstandingItemCount: Int64,
         notes: String,
         sortIndex: Int64,
-        lastBalancedUTC: Date?)
-    {
+        lastBalancedUTC: Date?
+    ) {
         self.id = id
         self.name = name
         self.startingBalance = startingBalance

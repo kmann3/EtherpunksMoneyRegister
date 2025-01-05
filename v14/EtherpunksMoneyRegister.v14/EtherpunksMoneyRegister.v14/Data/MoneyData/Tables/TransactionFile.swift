@@ -9,7 +9,9 @@ import Foundation
 import SwiftData
 
 @Model
-final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable  {
+final class TransactionFile: ObservableObject, CustomDebugStringConvertible,
+    Identifiable, Hashable
+{
     @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     public var filename: String = ""
@@ -17,7 +19,8 @@ final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Id
     public var data: Data? = nil
     public var isTaxRelated: Bool = false
     public var transactionId: UUID? = nil
-    @Relationship(deleteRule: .noAction) public var transaction: AccountTransaction?
+    @Relationship(deleteRule: .noAction) public var transaction:
+        AccountTransaction?
 
     // other types of files?
     // Account - contracts, opening papers, statements
@@ -25,7 +28,7 @@ final class TransactionFile : ObservableObject, CustomDebugStringConvertible, Id
 
     // Files might also have different tags such as: receipt, documentation, confirmation
 
-    public var createdOnUTC: Date  = Date()
+    public var createdOnUTC: Date = Date()
 
     public var debugDescription: String {
         return """

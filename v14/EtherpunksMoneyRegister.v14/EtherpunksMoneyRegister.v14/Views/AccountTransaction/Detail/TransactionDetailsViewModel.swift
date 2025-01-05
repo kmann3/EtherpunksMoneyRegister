@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 extension TransactionDetailsView {
     @Observable
@@ -27,16 +27,20 @@ extension TransactionDetailsView {
             let transactionID = transaction.id
 
             var fetchDescriptor = FetchDescriptor<AccountTransaction>(
-                predicate: #Predicate<AccountTransaction> { $0.id == transactionID
+                predicate: #Predicate<AccountTransaction> {
+                    $0.id == transactionID
                 })
             fetchDescriptor.fetchLimit = 1
             fetchDescriptor.relationshipKeyPathsForPrefetching = [\.account]
-            fetchDescriptor.relationshipKeyPathsForPrefetching = [\.recurringTransaction]
+            fetchDescriptor.relationshipKeyPathsForPrefetching = [
+                \.recurringTransaction
+            ]
 
             let query = try! modelContext.fetch(fetchDescriptor)
             self.account = query.first!.account!
             self.recurringTransaction = query.first!.recurringTransaction
-            self.recurringGroup = query.first!.recurringTransaction?.recurringGroup
+            self.recurringGroup =
+                query.first!.recurringTransaction?.recurringGroup
 
             var fetchDescriptor_Files = FetchDescriptor<TransactionFile>(
                 predicate: #Predicate<TransactionFile> {
@@ -44,8 +48,11 @@ extension TransactionDetailsView {
                 }
 
             )
-            fetchDescriptor_Files.sortBy = [.init(\.createdOnUTC, order: .reverse)]
-            self.transactionFiles = try! modelContext.fetch(fetchDescriptor_Files)
+            fetchDescriptor_Files.sortBy = [
+                .init(\.createdOnUTC, order: .reverse)
+            ]
+            self.transactionFiles = try! modelContext.fetch(
+                fetchDescriptor_Files)
         }
         func addNewDocument() {}
 
@@ -53,13 +60,16 @@ extension TransactionDetailsView {
 
         func downloadFileForViewing(file: TransactionFile) {
             do {
-                if(file.data == nil) {
+                if file.data == nil {
                     debugPrint("Empty file data")
                     return
                 }
 
-                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-                let destinationURL = documentsDirectory.appendingPathComponent(file.filename)
+                let documentsDirectory = FileManager.default.urls(
+                    for: .documentDirectory, in: .userDomainMask
+                ).first!
+                let destinationURL = documentsDirectory.appendingPathComponent(
+                    file.filename)
                 try file.data?.write(to: destinationURL)
                 self.url = destinationURL
             } catch {

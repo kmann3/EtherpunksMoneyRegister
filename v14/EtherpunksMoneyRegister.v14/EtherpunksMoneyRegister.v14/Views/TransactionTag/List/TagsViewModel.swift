@@ -6,11 +6,11 @@
 //
 
 import Foundation
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 extension TagsView {
-    
+
     @Observable
     class ViewModel {
         var isDeleteWarningPresented: Bool = false

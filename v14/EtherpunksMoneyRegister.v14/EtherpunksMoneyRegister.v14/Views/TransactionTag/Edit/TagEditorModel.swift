@@ -6,11 +6,11 @@
 //
 
 import Foundation
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 extension TagEditor {
-    
+
     @Observable
     class ViewModel {
         var tag: TransactionTag
@@ -39,7 +39,8 @@ extension TagEditor {
 
         public func saveTag(modelContext: ModelContext) {
             if hasChanges() {
-                tag.name = tagName.trimmingCharacters(in: .whitespacesAndNewlines)
+                tag.name = tagName.trimmingCharacters(
+                    in: .whitespacesAndNewlines)
                 do {
                     if isNewTransaction {
                         modelContext.insert(tag)
@@ -53,39 +54,41 @@ extension TagEditor {
         }
 
         private func hasChanges() -> Bool {
-            if tagName.trimmingCharacters(in: .whitespacesAndNewlines) != tag.name {
+            if tagName.trimmingCharacters(in: .whitespacesAndNewlines)
+                != tag.name
+            {
                 return true
             }
 
             return false
         }
-//        func saveTag() {
-//            if(hasChanges() == false) {
-//                // do a popup? Saying no changes made?
-//            } else {
-//                //            self.tag.name = _tagName.wrappedValue.trimmingCharacters(in: .whitespacesAndNewlines)
-//                //
-//                //            do {
-//                //                if isNewTransaction {
-//                //                    modelContext.insert(self.tag)
-//                //                }
-//                //
-//                //                try modelContext.save()
-//                //                presentationMode.wrappedValue.dismiss()
-//                //            } catch {
-//                //                debugPrint(error)
-//                //            }
-//            }
-//        }
-//
-//        func hasChanges() -> Bool {
-//            var hasChanges = false
-//
-//            //        if(self.tag.name != _tagName.wrappedValue.trimmingCharacters(in: .whitespacesAndNewlines)) {
-//            //            hasChanges = true
-//            //        }
-//
-//            return hasChanges
-//        }
+        //        func saveTag() {
+        //            if(hasChanges() == false) {
+        //                // do a popup? Saying no changes made?
+        //            } else {
+        //                //            self.tag.name = _tagName.wrappedValue.trimmingCharacters(in: .whitespacesAndNewlines)
+        //                //
+        //                //            do {
+        //                //                if isNewTransaction {
+        //                //                    modelContext.insert(self.tag)
+        //                //                }
+        //                //
+        //                //                try modelContext.save()
+        //                //                presentationMode.wrappedValue.dismiss()
+        //                //            } catch {
+        //                //                debugPrint(error)
+        //                //            }
+        //            }
+        //        }
+        //
+        //        func hasChanges() -> Bool {
+        //            var hasChanges = false
+        //
+        //            //        if(self.tag.name != _tagName.wrappedValue.trimmingCharacters(in: .whitespacesAndNewlines)) {
+        //            //            hasChanges = true
+        //            //        }
+        //
+        //            return hasChanges
+        //        }
     }
 }

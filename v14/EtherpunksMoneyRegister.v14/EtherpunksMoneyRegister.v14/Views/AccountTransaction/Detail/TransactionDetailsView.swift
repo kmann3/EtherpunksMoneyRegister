@@ -6,8 +6,8 @@
 //
 
 import QuickLook
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct TransactionDetailsView: View {
     @Environment(\.modelContext) var modelContext
@@ -21,11 +21,18 @@ struct TransactionDetailsView: View {
     var body: some View {
         List {
             Text("Name: \(self.viewModel.transaction.name)")
-            Text("Type: \(self.viewModel.transaction.transactionType == .debit ? "Debit" : "Credit")")
-            Text("Account: \(self.viewModel.account?.name ?? "Error loading account")")
+            Text(
+                "Type: \(self.viewModel.transaction.transactionType == .debit ? "Debit" : "Credit")"
+            )
+            Text(
+                "Account: \(self.viewModel.account?.name ?? "Error loading account")"
+            )
             HStack {
                 Text("Amount: ")
-                Text(self.viewModel.transaction.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                Text(
+                    self.viewModel.transaction.amount,
+                    format: .currency(
+                        code: Locale.current.currency?.identifier ?? "USD"))
             }
 
             if self.viewModel.transaction.transactionTags != nil {
@@ -34,7 +41,11 @@ struct TransactionDetailsView: View {
                         Text("Tags: ")
                         Spacer()
                     }
-                    ForEach(self.viewModel.transaction.transactionTags!.sorted(by: { $0.name < $1.name })) { tag in
+                    ForEach(
+                        self.viewModel.transaction.transactionTags!.sorted(by: {
+                            $0.name < $1.name
+                        })
+                    ) { tag in
                         Text(tag.name)
                             .onTapGesture {
                                 router.navigateTo(route: .tag_Edit(tag: tag))
@@ -44,21 +55,29 @@ struct TransactionDetailsView: View {
             }
 
             HStack {
-                Text("Tax Related: \(self.viewModel.transaction.isTaxRelated == true ? "Yes" : "No")")
+                Text(
+                    "Tax Related: \(self.viewModel.transaction.isTaxRelated == true ? "Yes" : "No")"
+                )
             }
 
             HStack {
                 if self.viewModel.transaction.balancedOnUTC != nil {
                     Text("Balanced On: ")
-                    Text(self.viewModel.transaction.balancedOnUTC!, format: .dateTime.month().day())
+                    Text(
+                        self.viewModel.transaction.balancedOnUTC!,
+                        format: .dateTime.month().day())
                     Text("@")
-                    Text(self.viewModel.transaction.balancedOnUTC!, format: .dateTime.hour().minute().second())
+                    Text(
+                        self.viewModel.transaction.balancedOnUTC!,
+                        format: .dateTime.hour().minute().second())
                 } else {
                     Text("Balanced On: nil")
                 }
             }
 
-            Text("Transaction Status: \(self.viewModel.transaction.transactionStatus)")
+            Text(
+                "Transaction Status: \(self.viewModel.transaction.transactionStatus)"
+            )
 
             // Reserved > Pending > Recurring > Cleared
             // Red      > Yellow  > Blue      > Green
@@ -66,23 +85,33 @@ struct TransactionDetailsView: View {
             if self.viewModel.transaction.pendingOnUTC != nil {
                 HStack {
                     Text("Pending: ")
-                    Text(self.viewModel.transaction.pendingOnUTC!, format: .dateTime.month().day())
+                    Text(
+                        self.viewModel.transaction.pendingOnUTC!,
+                        format: .dateTime.month().day())
                     Text("@")
-                    Text(self.viewModel.transaction.pendingOnUTC!, format: .dateTime.hour().minute().second())
+                    Text(
+                        self.viewModel.transaction.pendingOnUTC!,
+                        format: .dateTime.hour().minute().second())
                 }.background(self.viewModel.transaction.backgroundColor)
             } else {
-                Text("Pending: ").background(self.viewModel.transaction.backgroundColor)
+                Text("Pending: ").background(
+                    self.viewModel.transaction.backgroundColor)
             }
 
             if self.viewModel.transaction.clearedOnUTC != nil {
                 HStack {
                     Text("Cleared: ")
-                    Text(self.viewModel.transaction.clearedOnUTC!, format: .dateTime.month().day())
+                    Text(
+                        self.viewModel.transaction.clearedOnUTC!,
+                        format: .dateTime.month().day())
                     Text("@")
-                    Text(self.viewModel.transaction.clearedOnUTC!, format: .dateTime.hour().minute().second())
+                    Text(
+                        self.viewModel.transaction.clearedOnUTC!,
+                        format: .dateTime.hour().minute().second())
                 }.background(self.viewModel.transaction.backgroundColor)
             } else {
-                Text("Cleared: ").background(self.viewModel.transaction.backgroundColor)
+                Text("Cleared: ").background(
+                    self.viewModel.transaction.backgroundColor)
             }
 
             // Recurring Transaction
@@ -90,7 +119,9 @@ struct TransactionDetailsView: View {
             if self.viewModel.transaction.dueDate != nil {
                 HStack {
                     Text("Due date: ")
-                    Text(self.viewModel.transaction.dueDate!, format: .dateTime.month().day())
+                    Text(
+                        self.viewModel.transaction.dueDate!,
+                        format: .dateTime.month().day())
                 }
             }
 
@@ -109,9 +140,10 @@ struct TransactionDetailsView: View {
                             router
                                 .navigateTo(
                                     route:
-                                            .recurringTransaction_Details(
-                                                recTrans: self.viewModel.recurringTransaction!
-                                            )
+                                        .recurringTransaction_Details(
+                                            recTrans: self.viewModel
+                                                .recurringTransaction!
+                                        )
                                 )
                         }
                 }
@@ -125,9 +157,10 @@ struct TransactionDetailsView: View {
                             router
                                 .navigateTo(
                                     route:
-                                            .recurringGroup_Details(
-                                                recGroup: self.viewModel.recurringGroup!
-                                            )
+                                        .recurringGroup_Details(
+                                            recGroup: self.viewModel
+                                                .recurringGroup!
+                                        )
                                 )
                         }
                 }
@@ -165,13 +198,19 @@ struct TransactionDetailsView: View {
 
                             HStack {
                                 Text("Created On: ")
-                                Text(file.createdOnUTC, format: .dateTime.month().day())
+                                Text(
+                                    file.createdOnUTC,
+                                    format: .dateTime.month().day())
                                 Text("@")
-                                Text(file.createdOnUTC, format: .dateTime.hour().minute().second())
+                                Text(
+                                    file.createdOnUTC,
+                                    format: .dateTime.hour().minute().second())
                             }
 
                             HStack {
-                                Text("Tax Document: \(file.isTaxRelated == true ? "Yes" : "No")")
+                                Text(
+                                    "Tax Document: \(file.isTaxRelated == true ? "Yes" : "No")"
+                                )
                             }
 
                             HStack {
@@ -190,9 +229,13 @@ struct TransactionDetailsView: View {
             Section(header: Text("Misc")) {
                 HStack {
                     Text("Created On: ")
-                    Text(self.viewModel.transaction.createdOnUTC, format: .dateTime.month().day())
+                    Text(
+                        self.viewModel.transaction.createdOnUTC,
+                        format: .dateTime.month().day())
                     Text("@")
-                    Text(self.viewModel.transaction.createdOnUTC, format: .dateTime.hour().minute().second())
+                    Text(
+                        self.viewModel.transaction.createdOnUTC,
+                        format: .dateTime.hour().minute().second())
                 }
             }
         }
@@ -203,9 +246,9 @@ struct TransactionDetailsView: View {
                         router
                             .navigateTo(
                                 route:
-                                        .transaction_Edit(
-                                            transaction: viewModel.transaction
-                                        )
+                                    .transaction_Edit(
+                                        transaction: viewModel.transaction
+                                    )
                             )
                     } label: {
                         Label("Edit transaction", systemImage: "pencil")
@@ -226,15 +269,18 @@ struct TransactionDetailsView: View {
 
                     Divider()
 
-                    Button {} label: {
-                        Label("Create Recurring Transaction", systemImage: "repeat")
+                    Button {
+                    } label: {
+                        Label(
+                            "Create Recurring Transaction",
+                            systemImage: "repeat")
                     }
                 } label: {
                     Label("Menu", systemImage: "ellipsis.circle")
                 }
             }
         }
-        .onAppear() {
+        .onAppear {
             viewModel.loadData(modelContext: modelContext)
         }
     }
