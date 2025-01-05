@@ -76,6 +76,7 @@ struct TransactionListItemView: View {
             }
         }
         .background(transaction.backgroundColor)
+        .contentShape(Rectangle())
     }
 }
 
