@@ -10,9 +10,7 @@ import SwiftData
 import SwiftUI
 
 @Model
-final class AccountTransaction: ObservableObject, CustomDebugStringConvertible,
-    Identifiable, Hashable
-{
+final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
     @Attribute(.unique) public var id: UUID = UUID()
     public var accountId: UUID? = nil
     public var account: Account? = nil
@@ -24,13 +22,9 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible,
     public var confirmationNumber: String = ""
     public var isTaxRelated: Bool = false
     public var fileCount: Int = 0
-    @Relationship(
-        deleteRule: .noAction, inverse: \TransactionTag.accountTransactions)
-    public var transactionTags: [TransactionTag]? = nil
+    @Relationship(deleteRule: .noAction, inverse: \TransactionTag.accountTransactions) public var transactionTags: [TransactionTag]? = nil
     public var recurringTransactionId: UUID? = nil
-    @Relationship(
-        deleteRule: .noAction, inverse: \RecurringTransaction.transactions)
-    public var recurringTransaction: RecurringTransaction? = nil
+    @Relationship(deleteRule: .noAction, inverse: \RecurringTransaction.transactions) public var recurringTransaction: RecurringTransaction? = nil
     public var dueDate: Date? = nil
     public var pendingOnUTC: Date? = nil
     public var clearedOnUTC: Date? = nil

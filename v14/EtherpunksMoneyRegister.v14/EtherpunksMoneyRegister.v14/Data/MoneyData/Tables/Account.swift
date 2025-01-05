@@ -9,9 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Account: ObservableObject, CustomDebugStringConvertible,
-    Identifiable, Hashable
-{
+final class Account: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
     @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     public var startingBalance: Decimal = 0
@@ -21,8 +19,7 @@ final class Account: ObservableObject, CustomDebugStringConvertible,
     public var notes: String = ""
     public var sortIndex: Int64 = 0
     public var lastBalancedUTC: Date? = nil
-    @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account)
-    public var transactions: [AccountTransaction]? = nil
+    @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account) public var transactions: [AccountTransaction]? = nil
     public var transactionCount: Int64 = 0
     public var createdOnUTC: Date = Date()
 

@@ -9,9 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class RecurringTransaction: ObservableObject,
-    CustomDebugStringConvertible, Identifiable, Hashable
-{
+final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
     @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     public var transactionType: TransactionType = TransactionType.debit
@@ -20,10 +18,7 @@ final class RecurringTransaction: ObservableObject,
     public var nextDueDate: Date? = nil
     public var transactionTags: [TransactionTag]? = nil
     public var RecurringGroupId: UUID? = nil
-    @Relationship(
-        deleteRule: .noAction,
-        inverse: \RecurringGroup.recurringTransactions
-    ) public var recurringGroup: RecurringGroup? = nil
+    @Relationship(deleteRule: .noAction, inverse: \RecurringGroup.recurringTransactions) public var recurringGroup: RecurringGroup? = nil
     public var transactions: [AccountTransaction]? = nil
     public var frequency: RecurringFrequency = RecurringFrequency.unknown
     public var frequencyValue: Int? = nil

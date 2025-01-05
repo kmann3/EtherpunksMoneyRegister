@@ -9,9 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class RecurringGroup: ObservableObject, CustomDebugStringConvertible,
-    Identifiable, Hashable
-{
+final class RecurringGroup: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
     @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     public var recurringTransactions: [RecurringTransaction]? = nil

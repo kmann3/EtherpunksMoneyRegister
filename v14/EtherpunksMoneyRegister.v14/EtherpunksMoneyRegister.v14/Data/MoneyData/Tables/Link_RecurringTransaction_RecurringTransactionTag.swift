@@ -9,8 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Link_RecurringTransaction_RecurringTransactionTag: ObservableObject,
-    CustomDebugStringConvertible, Identifiable, Hashable
+final class Link_RecurringTransaction_RecurringTransactionTag: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable
 {
     public var recurringTransactionId: UUID? = nil
     public var recurringTransactionTagId: UUID? = nil
