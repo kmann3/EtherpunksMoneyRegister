@@ -15,8 +15,8 @@ struct DashboardView: View {
 
     @Query(
         filter: #Predicate<AccountTransaction> { transaction in
-            if transaction.pendingOnUTC == nil {
-                if transaction.clearedOnUTC == nil {
+            if transaction.clearedOnUTC == nil {
+                if transaction.pendingOnUTC == nil {
                     return true
                 } else {
                     return false
@@ -30,8 +30,8 @@ struct DashboardView: View {
 
     @Query(
         filter: #Predicate<AccountTransaction> { transaction in
-            if transaction.pendingOnUTC != nil {
-                if transaction.clearedOnUTC == nil {
+            if transaction.clearedOnUTC == nil {
+                if transaction.pendingOnUTC != nil {
                     return true
                 } else {
                     return false

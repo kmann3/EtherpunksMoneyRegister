@@ -11,11 +11,17 @@ import SwiftUI
 struct AccountTransactionsView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(PathStore.self) var router
-
     @State var viewModel: ViewModel = ViewModel(account: Account())
+
+    @Query(sort: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)])
+    var accountTransactions: [AccountTransaction]
 
     init(account: Account) {
         viewModel.account = account
+        let id = account.id
+        self._accountTransactions = Query(filter: #Predicate {
+            $0.accountId == id
+        }, sort: \.createdOnUTC, order: .reverse)
     }
 
     var body: some View {
@@ -41,13 +47,8 @@ struct AccountTransactionsView: View {
             .padding(.top)
 
             Section(header: Text("Transactions"), footer: Text("End of list")) {
-                ForEach(viewModel.accountTransactions, id: \.id) { t in
+                ForEach(accountTransactions, id: \.id) { t in
                     TransactionListItemView(transaction: t)
-                        .onAppear {
-                            debugPrint("Fetching transactions")
-                            viewModel.fetchAccountTransactionsIfNecessary(
-                                transaction: t, modelContext: modelContext)
-                        }
                         .onTapGesture {
                             router.navigateTo(
                                 route: .transaction_Detail(transaction: t))
@@ -96,9 +97,6 @@ struct AccountTransactionsView: View {
             )
         }
         .navigationTitle("\(viewModel.account.name) - Transactions")
-        .onAppear {
-            viewModel.performAccountTransactionFetch(modelContext: modelContext)
-        }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {

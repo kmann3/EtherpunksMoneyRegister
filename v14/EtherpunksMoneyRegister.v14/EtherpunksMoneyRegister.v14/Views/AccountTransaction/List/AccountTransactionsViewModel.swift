@@ -27,67 +27,6 @@ extension AccountTransactionsView {
             self.account = account
         }
 
-        func performAccountTransactionFetch(
-            currentPage: Int = 0, modelContext: ModelContext
-        ) {
-            let accountId: UUID = account.id
-
-            let predicate = #Predicate<AccountTransaction> { transaction in
-                if transaction.accountId == accountId {
-                    return true
-                } else {
-                    return false
-                }
-            }
-
-            var fetchDescriptor = FetchDescriptor<AccountTransaction>(
-                predicate: predicate)
-            fetchDescriptor.fetchLimit = transactionsPerPage
-            fetchDescriptor.fetchOffset =
-                self.currentAccountTransactionPage * transactionsPerPage
-            fetchDescriptor.sortBy = [.init(\.createdOnUTC, order: .reverse)]
-
-            guard !isLoading && hasMoreTransactions else { return }
-            isLoading = true
-            DispatchQueue.global().async {
-                do {
-                    let newTransactions = try modelContext.fetch(
-                        fetchDescriptor)
-                    DispatchQueue.main.async {
-                        if self.lastTransactions == newTransactions {
-                            self.hasMoreTransactions = false
-                            self.isLoading = false
-                            debugPrint("End of list")
-                        } else {
-                            self.accountTransactions.append(
-                                contentsOf: newTransactions)
-                            self.lastTransactions = newTransactions
-                            self.isLoading = false
-                        }
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        print(
-                            "Error fetching transactions: \(error.localizedDescription)"
-                        )
-                        self.isLoading = false
-                    }
-                }
-            }
-        }
-
-        func fetchAccountTransactionsIfNecessary(
-            transaction: AccountTransaction, modelContext: ModelContext
-        ) {
-            if let lastTransaction = accountTransactions.last,
-                lastTransaction == transaction
-            {
-                debugPrint("More refresh")
-                currentAccountTransactionPage += 1
-                performAccountTransactionFetch(modelContext: modelContext)
-            }
-        }
-
         func deleteTransaction(modelContext: ModelContext) {
             isDeleteWarningPresented = false
         }
