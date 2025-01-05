@@ -9,7 +9,14 @@ import SwiftUI
 
 struct TransactionListItemView: View {
     let transaction: AccountTransaction
+    let showBalance: Bool
+    let renderBackgroundColor: Bool
 
+    init(transaction: AccountTransaction, showBalance: Bool = true, renderBackgroundColor: Bool = true) {
+        self.transaction = transaction
+        self.showBalance = showBalance
+        self.renderBackgroundColor = renderBackgroundColor
+    }
     var body: some View {
         VStack {
             HStack(spacing: 0) {
@@ -56,17 +63,19 @@ struct TransactionListItemView: View {
 
                 Spacer()
 
-                HStack {
-                    Text("Bal:")
-                    Text(
-                        transaction.balance ?? 0,
-                        format:
-                            .currency(
-                                code: Locale.current.currency?.identifier
-                                    ?? "USD"
-                            )
-                    )
-                    .font(.caption)
+                if showBalance {
+                    HStack {
+                        Text("Bal:")
+                        Text(
+                            transaction.balance ?? 0,
+                            format:
+                                    .currency(
+                                        code: Locale.current.currency?.identifier
+                                        ?? "USD"
+                                    )
+                        )
+                        .font(.caption)
+                    }
                 }
             }
 
@@ -89,7 +98,7 @@ struct TransactionListItemView: View {
                 }
             }
         }
-        .background(transaction.backgroundColor)
+        .background(renderBackgroundColor ? transaction.backgroundColor : Color.clear)
         .contentShape(Rectangle())
     }
 }
