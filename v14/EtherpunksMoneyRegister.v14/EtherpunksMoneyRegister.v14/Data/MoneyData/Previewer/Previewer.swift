@@ -169,7 +169,7 @@ class Previewer {
 
         // HULU
         huluRecurringTransaction = RecurringTransaction(
-            name: "hulu",
+            name: "Hulu",
             transactionType: TransactionType.debit,
             amount: 23.41,
             notes: "",
