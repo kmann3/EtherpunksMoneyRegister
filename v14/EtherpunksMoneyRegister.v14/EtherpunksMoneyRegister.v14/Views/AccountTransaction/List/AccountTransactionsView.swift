@@ -134,9 +134,8 @@ struct AccountTransactionsView: View {
 }
 
 #Preview {
-    let p = Previewer()
-    AccountTransactionsView(account: p.bankAccount)
-        .modelContainer(p.container)
+    AccountTransactionsView(account: Previewer().bankAccount)
+        .modelContainer(Previewer().container)
         .environment(PathStore())
         #if os(macOS)
             .frame(width: 900, height: 500)
