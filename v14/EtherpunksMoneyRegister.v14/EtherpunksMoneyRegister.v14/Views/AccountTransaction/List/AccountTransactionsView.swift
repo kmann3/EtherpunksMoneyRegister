@@ -38,11 +38,13 @@ struct AccountTransactionsView: View {
                         }
                     })
             }
+            .padding(.top)
 
             Section(header: Text("Transactions"), footer: Text("End of list")) {
                 ForEach(viewModel.accountTransactions, id: \.id) { t in
                     TransactionListItemView(transaction: t)
                         .onAppear {
+                            debugPrint("Fetching transactions")
                             viewModel.fetchAccountTransactionsIfNecessary(
                                 transaction: t, modelContext: modelContext)
                         }
@@ -55,19 +57,10 @@ struct AccountTransactionsView: View {
                                 // Mark as pending
                             } label: {
                                 Label(
-                                    "Mark Reserved",
-                                    systemImage:
-                                        "arrowshape.turn.up.backward.badge.clock"
-                                )
-                            }
-
-                            Button {
-                                // Mark as pending
-                            } label: {
-                                Label(
                                     "Mark Pending",
                                     systemImage: "arrowshape.turn.up.forward")
                             }
+                            .disabled(t.transactionStatus == .pending || t.transactionStatus == .cleared || t.transactionStatus == .recurring)
 
                             Button {
                                 // Mark as pending
@@ -76,6 +69,7 @@ struct AccountTransactionsView: View {
                                     "Mark Cleared",
                                     systemImage: "checkmark.circle")
                             }
+                            .disabled(t.transactionStatus == .cleared || t.transactionStatus == .recurring)
 
                             Button {
                                 viewModel.selectedTransaction = t
