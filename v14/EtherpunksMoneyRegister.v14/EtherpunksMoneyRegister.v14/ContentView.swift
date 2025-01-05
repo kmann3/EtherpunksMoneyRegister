@@ -85,25 +85,25 @@ struct ContentView: View {
                 }
                 .customizationID(MenuOptionsEnum.settings.tabId)
 
-                TabSection {
-                    // This is where we'd do a foreach loop listing all the accounts
-                    Tab(
-                        "Accounts 1",
-                        systemImage: MenuOptionsEnum.accounts.iconName,
-                        value: MenuOptionsEnum
-                            .accounts
-                    ) {
-                        Text("Hello, World!")
-                    }
-                    .customizationID("\(MenuOptionsEnum.accounts.tabId).account1")
-                } header: {
-                    Label("Accounts", systemImage: MenuOptionsEnum.accounts.iconName)
-                }
-                .sectionActions {
-                    Button("New Account", systemImage: "plus") {
-                        print("New account method here")
-                    }
-                }
+//                TabSection {
+//                    // This is where we'd do a foreach loop listing all the accounts
+//                    Tab(
+//                        "Accounts 1",
+//                        systemImage: MenuOptionsEnum.accounts.iconName,
+//                        value: MenuOptionsEnum
+//                            .accounts
+//                    ) {
+//                        Text("Hello, World!")
+//                    }
+//                    .customizationID("\(MenuOptionsEnum.accounts.tabId).account1")
+//                } header: {
+//                    Label("Accounts", systemImage: MenuOptionsEnum.accounts.iconName)
+//                }
+//                .sectionActions {
+//                    Button("New Account", systemImage: "plus") {
+//                        print("New account method here")
+//                    }
+//                }
 
 #if os(iOS)
                 Tab(value: .search, role: .search) {
@@ -111,7 +111,7 @@ struct ContentView: View {
                 }
 #endif
             }
-            .tabViewStyle(.sidebarAdaptable)
+            .tabViewStyle(.grouped)
             .navigationDestination(for: PathStore.Route.self) { route in
                 switch route {
                 case .account_Create: Text("TBI")
