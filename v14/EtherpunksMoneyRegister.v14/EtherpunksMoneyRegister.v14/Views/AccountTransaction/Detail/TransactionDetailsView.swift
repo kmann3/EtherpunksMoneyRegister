@@ -158,7 +158,7 @@ struct TransactionDetailsView: View {
                             }
                             HStack {
                                 Text("Filename: \(file.filename)")
-                                Button("Download") {
+                                Button("View") {
                                     viewModel.downloadFileForViewing(file: file)
                                 }.quickLookPreview($viewModel.url)
                             }
