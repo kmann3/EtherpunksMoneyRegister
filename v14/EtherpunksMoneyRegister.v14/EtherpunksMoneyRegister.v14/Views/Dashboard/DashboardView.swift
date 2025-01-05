@@ -52,6 +52,10 @@ struct DashboardView: View {
                 VStack {
                     List(accountList) { account in
                         AccountListItemView(acctData: account)
+                            .onTapGesture {
+                                router.navigateTo(
+                                    route: .transaction_List(account: account))
+                            }
                     }
                     Spacer()
                 }
