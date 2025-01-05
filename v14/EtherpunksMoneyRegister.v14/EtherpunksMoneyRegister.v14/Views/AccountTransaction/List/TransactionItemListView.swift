@@ -11,27 +11,11 @@ struct TransactionListItemView: View {
     let transaction: AccountTransaction
     let showBalance: Bool
     let renderBackgroundColor: Bool
-    @State private var opacity = 1.0
-    @State private var isFadingOut: Bool = true
 
     init(transaction: AccountTransaction, showBalance: Bool = true, renderBackgroundColor: Bool = true) {
         self.transaction = transaction
         self.showBalance = showBalance
         self.renderBackgroundColor = renderBackgroundColor
-
-        withAnimation(.linear(duration: 3)) {
-            if isFadingOut {
-                opacity -= 0.2
-            } else {
-                opacity += 0.2
-            }
-
-            if opacity == 0.0 {
-                isFadingOut = false
-            } else if opacity == 1.0 {
-                isFadingOut = true
-            }
-        }
     }
     var body: some View {
         VStack {
@@ -114,7 +98,6 @@ struct TransactionListItemView: View {
                 }
             }
         }
-        .opacity(opacity)
         .background(renderBackgroundColor ? transaction.backgroundColor : Color.clear)
         .contentShape(Rectangle())
     }

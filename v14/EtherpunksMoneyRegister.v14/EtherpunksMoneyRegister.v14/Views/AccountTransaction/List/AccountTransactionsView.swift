@@ -55,7 +55,7 @@ struct AccountTransactionsView: View {
                         }
                         .contextMenu(menuItems: {
                             Button {
-                                // Mark as pending
+                                viewModel.markTransactionAsPending(transaction: t, modelContext: modelContext)
                             } label: {
                                 Label(
                                     "Mark Pending",
@@ -64,7 +64,7 @@ struct AccountTransactionsView: View {
                             .disabled(t.transactionStatus == .pending || t.transactionStatus == .cleared || t.transactionStatus == .recurring)
 
                             Button {
-                                // Mark as pending
+                                viewModel.markTransactionAsCleared(transaction: t, modelContext: modelContext)
                             } label: {
                                 Label(
                                     "Mark Cleared",
@@ -79,7 +79,6 @@ struct AccountTransactionsView: View {
                                 Label("Delete", systemImage: "trash")
                             }
                         })
-                    // context menu for setting pending and cleared
                 }
             }
         }
