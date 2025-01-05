@@ -5,6 +5,7 @@
 //  Created by Kennith Mann on 11/19/24.
 //
 
+import SwiftData
 import SwiftUI
 
 struct DashboardView: View {

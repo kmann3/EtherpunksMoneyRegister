@@ -11,9 +11,7 @@ import SwiftUI
 struct AccountsView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(PathStore.self) var router
-    @Query(sort: [SortDescriptor(\Account.name, comparator: .localizedStandard)]
-    )
-    var accountList: [Account]
+    @Query(sort: [SortDescriptor(\Account.name, comparator: .localizedStandard)]) var accountList: [Account]
 
     var body: some View {
         List(accountList) { account in
