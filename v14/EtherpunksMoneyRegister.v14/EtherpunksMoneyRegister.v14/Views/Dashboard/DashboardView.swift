@@ -10,10 +10,18 @@ import SwiftUI
 struct DashboardView: View {
     var body: some View {
         VStack {
-            Text("Dashboard View")
-            Text("Current Available Spending")
-            Text("Reserved Transactions:")
-            Text("Pending Transactions:")
+            HStack {
+                VStack {
+                    Text("Current Available Spending")
+                    Spacer()
+                }
+                Spacer()
+                VStack {
+                    Text("Reserved Transactions:")
+                    Text("Pending Transactions:")
+                    Spacer()
+                }
+            }
         }
     }
 }
