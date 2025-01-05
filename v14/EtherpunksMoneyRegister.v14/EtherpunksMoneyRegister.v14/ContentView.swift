@@ -162,7 +162,7 @@ struct ContentView: View {
     ContentView()
         .modelContainer(Previewer().container)
         #if os(macOS)
-            .frame(width: 900, height: 500)
+            .frame(width: 900, height: 600)
         #endif
     // .modelContainer(for: Item.self, inMemory: true)
 }
