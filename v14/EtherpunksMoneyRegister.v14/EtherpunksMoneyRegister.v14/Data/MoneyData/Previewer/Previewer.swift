@@ -226,6 +226,27 @@ class Previewer {
         )
         container.mainContext.insert(verizonReservedTransaction)
 
+        container.mainContext.insert(createTransaction(name: "Test 1", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 2", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 3", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 4", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 5", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 6", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 7", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 8", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 9", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+
+        container.mainContext.insert(createTransaction(name: "Test 1", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 2", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 3", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 4", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 5", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 6", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 7", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 8", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+        container.mainContext.insert(createTransaction(name: "Test 9", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+
+
         billGroup.recurringTransactions = [
             discordRecurringTransaction,
             huluRecurringTransaction,
@@ -251,23 +272,25 @@ class Previewer {
             }
         })
 
-        //        let monkeyData: Data? = downloadImageData()
-        //        if monkeyData == nil {
-        //            debugPrint("Error downloading monkey")
-        //        } else {
-        //            let cvsAttachmentFile: TransactionFile = TransactionFile(
-        //                name: "Etherpunk Logo",
-        //                filename: "monkey.jpg",
-        //                notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.",
-        //                data: monkeyData!,
-        //                isTaxRelated: true,
-        //                accountTransaction: cvsTransaction
-        //            )
-        //            container.mainContext.insert(cvsAttachmentFile)
-        //        }
-
         debugPrint("Done generating data at \(Date().toDebugDate())")
         debugPrint("Main account id: \(bankAccount.id.uuidString)")
+    }
+
+    func createTransaction(name: String, account: Account, amount: Decimal, pending: Date?, cleared: Date?) -> AccountTransaction {
+        return AccountTransaction(
+            account: account,
+            name: name,
+            transactionType: .debit,
+            amount: amount,
+            balance: 0,
+            notes: "",
+            confirmationNumber: "",
+            isTaxRelated: false,
+            transactionTags: [],
+            recurringTransaction: nil,
+            pendingOnUTC: pending,
+            clearedOnUTC: cleared
+        )
     }
 
     private func getNextDueDate(day: Int) -> Date {
