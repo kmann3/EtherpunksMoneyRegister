@@ -91,7 +91,11 @@ struct ContentView: View {
                     }
                 #endif
             }
+            #if os(macOS)
             .tabViewStyle(.grouped)
+            #else
+            .tabViewStyle(.automatic)
+            #endif
             .navigationDestination(for: PathStore.Route.self) { route in
                 switch route {
                 case .account_Create: Text("TBI")
@@ -152,10 +156,6 @@ struct ContentView: View {
                 maxHeight: .infinity)
         #endif
     }
-
-    //        .searchable(text: $searchText)
-    //
-    //    }
 }
 
 #Preview {
