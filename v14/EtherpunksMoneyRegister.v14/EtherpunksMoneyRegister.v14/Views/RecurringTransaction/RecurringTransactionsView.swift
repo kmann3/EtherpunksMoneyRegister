@@ -43,7 +43,9 @@ struct RecurringTransactionsView: View {
                 ForEach(recurringGroups) { group in
                     Section(header: Text(group.name)) {
                         ForEach(group.recurringTransactions!) { transaction in
-                            Text(transaction.name)
+                            HStack {
+                                Text(transaction.name)
+                            }
                         }
                     }
                 }

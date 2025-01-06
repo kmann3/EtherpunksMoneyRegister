@@ -48,9 +48,8 @@ class Previewer {
 
     // Fake Recurring Transactions
     public let billGroup: RecurringGroup
-    public let discordRecurringTransaction: RecurringTransaction
-    public let huluRecurringTransaction: RecurringTransaction
-    public let verizonRecurringTransaction: RecurringTransaction
+    public var discordRecurringTransaction: RecurringTransaction
+    public var verizonRecurringTransaction: RecurringTransaction
 
     init() {
         let schema = Schema([
@@ -96,7 +95,6 @@ class Previewer {
         container.mainContext.insert(streamingTag)
 
         // Recurring Groups
-
         billGroup = RecurringGroup(name: "Bills")
 
         // Initial balance
@@ -138,13 +136,14 @@ class Previewer {
 
         // DISCORD
         discordRecurringTransaction = RecurringTransaction(
+            id: UUID(uuidString: "75696d00-50a8-40af-8c00-14b5e4245920")!,
             name: "Discord",
             transactionType: .debit,
             amount: 13.99,
-            notes: "",
             transactionTags: [billsTag],
-            RecurringGroupId: billGroup.id,
-            frequency: .monthly
+            recurringGroup: billGroup,
+            frequency: .monthly,
+            frequencyValue: 16
         )
 
         transactionAmount = -10.81
@@ -169,15 +168,6 @@ class Previewer {
         container.mainContext.insert(discordRecurringTransaction)
 
         // HULU
-        huluRecurringTransaction = RecurringTransaction(
-            name: "Hulu",
-            transactionType: TransactionType.debit,
-            amount: 23.41,
-            notes: "",
-            transactionTags: [billsTag],
-            RecurringGroupId: billGroup.id,
-            frequency: .monthly
-        )
 
         transactionAmount = -23.41
         balance = balance + transactionAmount
@@ -190,23 +180,22 @@ class Previewer {
             notes: "",
             confirmationNumber: "1Z49C",
             isTaxRelated: true,
-            transactionTags: [billsTag, streamingTag],
-            recurringTransaction: huluRecurringTransaction,
             pendingOnUTC: Date(),
             clearedOnUTC: nil
         )
         container.mainContext.insert(huluPendingTransaction)
-        container.mainContext.insert(huluRecurringTransaction)
 
         // VERIZON
         verizonRecurringTransaction = RecurringTransaction(
+            id: UUID(uuidString: "12283638-eaa1-4689-85dd-7b542ca55ecb")!,
             name: "Verizon",
             transactionType: TransactionType.debit,
             amount: 104.00,
             notes: "",
             transactionTags: [billsTag],
-            RecurringGroupId: billGroup.id,
-            frequency: .monthly
+            recurringGroup: billGroup,
+            frequency: .monthly,
+            frequencyValue: 28
         )
 
         transactionAmount = -103.37
@@ -247,14 +236,6 @@ class Previewer {
         container.mainContext.insert(createTransaction(name: "Test 8", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
         container.mainContext.insert(createTransaction(name: "Test 9", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
 
-
-        billGroup.recurringTransactions = [
-            discordRecurringTransaction,
-            huluRecurringTransaction,
-            verizonRecurringTransaction,
-        ]
-        container.mainContext.insert(billGroup)
-
         downloadImageDataAsync(completion: { [self] data in
             if data != nil {
                 let cvsAttachmentFile: TransactionFile = TransactionFile(
@@ -273,8 +254,19 @@ class Previewer {
             }
         })
 
+        discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
+        verizonRecurringTransaction.nextDueDate = getNextDueDate(day: 28)
+
         importTestRecurringData()
-        
+
+        container.mainContext.insert(billGroup)
+
+        do {
+            try container.mainContext.save()
+        } catch {
+            debugPrint(error)
+        }
+
         debugPrint("Done generating data at \(Date().toDebugDate())")
         debugPrint("Main account id: \(bankAccount.id.uuidString)")
     }
@@ -310,23 +302,116 @@ class Previewer {
             let db = try Connection(path)
 
             let recurringTransactionTable = Table("RecurringTransaction")
-            let id = Expression<UUID>("Id")
-            let name = Expression<String>("Name")
-            let transactionType = Expression<String>("TransactionType")
-            let amount = Expression<String>("Amount")
-            let frequency = Expression<String>("Frequency")
-            let frequencyValue = Expression<Int64?>("FrequencyValue")
-            let frequencyDayOfWeek = Expression<String?>("FrequencyDayOfWeek")
-            let frequencyDate = Expression<String?>("FrequencyDate")
-            let groupName = Expression<String?>("GroupName")
+            let idCol = Expression<UUID>("Id")
+            let nameCol = Expression<String>("Name")
+            let transactionTypeCol = Expression<String>("TransactionType")
+            let amountCol = Expression<String>("Amount")
+            let frequencyCol = Expression<String>("Frequency")
+            let frequencyValueCol = Expression<Int?>("FrequencyValue")
+            let frequencyDayOfWeekCol = Expression<String?>("FrequencyDayOfWeek")
+            let frequencyDateCol = Expression<String?>("FrequencyDate")
+            let groupNameCol = Expression<String?>("GroupName")
+
+            billGroup.recurringTransactions = []
 
             for row in try db.prepare(recurringTransactionTable) {
-                var f: Decimal = Decimal.init(string: row[amount]) ?? Decimal.zero
-                debugPrint(row[id], row[name], row[transactionType], row[amount], row[frequency], row[frequencyValue] ?? "none", row[frequencyDayOfWeek] ?? "none", row[frequencyDate] ?? "none", row[groupName] ?? "none", "Amount: \(f)")
+                let recurringTransaction: RecurringTransaction = RecurringTransaction(
+                    id: row[idCol],
+                    name: row[nameCol],
+                    transactionType: row[transactionTypeCol] == "debit" ? TransactionType.debit : TransactionType.credit,
+                    amount: Decimal.init(string: row[amountCol])!
+                    )
+
+                if(row[groupNameCol] != nil) {
+                    if(row[groupNameCol] == "bills") {
+                        recurringTransaction.recurringGroup = billGroup
+                        if recurringTransaction.name != "Discord" && recurringTransaction.name != "Verizon" {
+                            // For some reason if I assign the transaction tags again it causes Swift to crash
+                            recurringTransaction.transactionTags = [billsTag]
+                        }
+                        billGroup.recurringTransactions?.append(recurringTransaction)
+                    }
+                } else {
+                    recurringTransaction.recurringGroup = nil
+                    recurringTransaction.transactionTags = nil
+                }
+
+                switch(row[frequencyCol]) {
+                case "xweekOnYDayOfWeek":
+                    let x = Int(row[frequencyDayOfWeekCol]!)
+                    let y = Int(row[frequencyValueCol]!)
+                    recurringTransaction.frequency = .xweekOnYDayOfWeek
+                    recurringTransaction.frequencyValue = y
+                    recurringTransaction.frequencyDayOfWeek = DayOfWeek(rawValue: x!)
+                    recurringTransaction.nextDueDate = calculateDueDateFromYWeekAndXDay(yWeek: y, xDay: x!)
+                    break
+                case "monthly":
+                    recurringTransaction.frequency = .monthly
+                    recurringTransaction.frequencyValue = Int(row[frequencyValueCol]!)
+                    recurringTransaction.nextDueDate = getNextDueDate(day: row[frequencyValueCol]!)
+                    break
+                case "yearly":
+                    recurringTransaction.frequency = .yearly
+                    recurringTransaction.frequencyDateValue = calculateDateFromMMDD(mmdd: row[frequencyDateCol]!)
+                    recurringTransaction.nextDueDate = recurringTransaction.frequencyDateValue
+                    break
+                default:
+                    debugPrint("Error parsing frequency: \(row[frequencyCol])")
+                }
+
+                switch row[nameCol] {
+                case "Discord":
+                    discordRecurringTransaction = recurringTransaction
+                    break
+                case "Verizon":
+                    verizonRecurringTransaction = recurringTransaction
+                    break
+                default:
+                    container.mainContext.insert(recurringTransaction)
+                    break
+                }
+
+                if recurringTransaction.nextDueDate != nil {
+                    debugPrint("Name: \(recurringTransaction.name) Due Date: \(recurringTransaction.nextDueDate!)")
+                }
+
+                try container.mainContext.save()
             }
+            
+
         } catch {
             debugPrint(error)
         }
+    }
+
+    private func calculateDateFromMMDD(mmdd: String) -> Date {
+        let calendar = Calendar.current
+        
+        var components = calendar.dateComponents(
+            [.year, .month, .day], from: Date())
+        
+        let mm = mmdd.components(separatedBy: "/")[0]
+        let dd = mmdd.components(separatedBy: "/")[1]
+
+        let mmInt = Int(String(mm))
+        let ddInt = Int(String(dd))
+
+        components.month = mmInt
+        components.day = ddInt
+
+        let date = calendar.date(from: components)
+        return date!
+    }
+
+    private func calculateDueDateFromYWeekAndXDay(yWeek: Int, xDay: Int) -> Date {
+        let calendar = Calendar.current
+        let nextMonth = calendar.date(byAdding: .month, value: 0, to: Date())
+        let currentComponents = calendar.dateComponents([.year, .month], from: nextMonth!)
+        let startOfMonth = calendar.date(from: currentComponents)
+        let startWeekday = calendar.component(.weekday, from: startOfMonth!)
+        var difference = (xDay - startWeekday + 7) % 7
+        difference += (yWeek - 1) * 7
+        return calendar.date(byAdding: .day, value: difference, to: startOfMonth!)!
     }
 
     private func getNextDueDate(day: Int) -> Date {
@@ -344,7 +429,7 @@ class Previewer {
         var components = calendar.dateComponents(
             [.year, .month, .day], from: Date())
         components.month! += monthsToAdd
-        components.day = 16
+        components.day = day
 
         let date = calendar.date(from: components)
         return date!

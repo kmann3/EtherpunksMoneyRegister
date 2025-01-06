@@ -13,6 +13,7 @@ final class TransactionTag: ObservableObject, CustomDebugStringConvertible, Iden
     @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     @Relationship(deleteRule: .noAction) public var accountTransactions: [AccountTransaction]? = nil
+    @Relationship(deleteRule: .nullify) public var recurringTransactions: [RecurringTransaction]? = nil
     public var createdOnUTC: Date = Date()
 
     public var debugDescription: String {

@@ -12,7 +12,7 @@ import SwiftData
 final class RecurringGroup: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
     @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
-    public var recurringTransactions: [RecurringTransaction]? = nil
+    @Relationship(deleteRule: .nullify) public var recurringTransactions: [RecurringTransaction]? = nil
     public var createdOnUTC: Date = Date()
 
     public var debugDescription: String {

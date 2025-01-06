@@ -16,8 +16,8 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
     public var amount: Decimal = 0
     public var notes: String = ""
     public var nextDueDate: Date? = nil
-    public var transactionTags: [TransactionTag]? = nil
-    public var RecurringGroupId: UUID? = nil
+    @Relationship(deleteRule: .noAction) public var transactionTags: [TransactionTag]? = nil
+    public var recurringGroupId: UUID? = nil
     @Relationship(deleteRule: .noAction, inverse: \RecurringGroup.recurringTransactions) public var recurringGroup: RecurringGroup? = nil
     public var transactions: [AccountTransaction]? = nil
     public var frequency: RecurringFrequency = RecurringFrequency.unknown
@@ -35,7 +35,7 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
             - amount: \(amount)
             - notes: \(notes)
             - dueDate: \(nextDueDate?.toDebugDate() ?? "nil")
-            - RecurringGroupId: \(String(describing: RecurringGroupId))
+            - recurringGroup: \(String(describing: recurringGroup))
             - frequency: \(frequency)
             - frequencyValue: \(String(describing: frequencyValue))
             - frequencyDayOfWeek: \(String(describing: frequencyDayOfWeek))
@@ -45,47 +45,19 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
     }
 
     init(
+        id: UUID = UUID(),
         name: String,
-        transactionType: TransactionType,
-        amount: Decimal,
-        notes: String,
+        transactionType: TransactionType = .debit,
+        amount: Decimal = 0.0,
+        notes: String = "",
         nextDueDate: Date? = nil,
         transactionTags: [TransactionTag]? = nil,
-        RecurringGroupId: UUID? = nil,
+        recurringGroup: RecurringGroup? = nil,
         transactions: [AccountTransaction]? = nil,
-        frequency: RecurringFrequency,
+        frequency: RecurringFrequency = .unknown,
         frequencyValue: Int? = nil,
         frequencyDayOfWeek: DayOfWeek? = nil,
         frequencyDateValue: Date? = nil
-    ) {
-        self.name = name
-        self.transactionType = transactionType
-        self.amount = amount
-        self.notes = notes
-        self.nextDueDate = nextDueDate
-        self.transactionTags = transactionTags
-        self.RecurringGroupId = RecurringGroupId
-        self.transactions = transactions
-        self.frequency = frequency
-        self.frequencyValue = frequencyValue
-        self.frequencyDayOfWeek = frequencyDayOfWeek
-        self.frequencyDateValue = frequencyDateValue
-    }
-
-    init(
-        id: UUID,
-        name: String,
-        transactionType: TransactionType,
-        amount: Decimal,
-        notes: String,
-        nextDueDate: Date?,
-        transactionTags: [TransactionTag]?,
-        RecurringGroupId: UUID?,
-        transactions: [AccountTransaction]?,
-        frequency: RecurringFrequency,
-        frequencyValue: Int?,
-        frequencyDayOfWeek: DayOfWeek?,
-        frequencyDateValue: Date?
     ) {
         self.id = id
         self.name = name
@@ -94,7 +66,8 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
         self.notes = notes
         self.nextDueDate = nextDueDate
         self.transactionTags = transactionTags
-        self.RecurringGroupId = RecurringGroupId
+        self.recurringGroup = recurringGroup
+        self.recurringGroupId = recurringGroup?.id ?? nil
         self.transactions = transactions
         self.frequency = frequency
         self.frequencyValue = frequencyValue
@@ -121,6 +94,7 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
             self.nextDueDate = calendar.date(
                 byAdding: .year, value: 1, to: self.nextDueDate!)
         case .monthly:
+            // TBI: Test what happens if the date is the 31's but next month has 28 or 30 days in it
             self.nextDueDate = calendar.date(
                 byAdding: .month, value: 1, to: self.nextDueDate!)
         case .weekly:
