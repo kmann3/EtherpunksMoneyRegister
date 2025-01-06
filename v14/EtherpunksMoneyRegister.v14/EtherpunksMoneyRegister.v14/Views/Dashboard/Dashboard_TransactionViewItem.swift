@@ -1,20 +1,19 @@
 //
-//  TransactionItemListView.swift
+//  Dashboard_TransactionViewItem.swift
 //  EtherpunksMoneyRegister.v14
 //
-//  Created by Kennith Mann on 11/20/24.
+//  Created by Kennith Mann on 1/6/25.
 //
 
 import SwiftUI
 
-struct TransactionListItemView: View {
+struct Dashboard_TransactionViewItem: View {
     let transaction: AccountTransaction
-    let showBalance: Bool
-
-    init(transaction: AccountTransaction, showBalance: Bool = true) {
+    
+    init(transaction: AccountTransaction) {
         self.transaction = transaction
-        self.showBalance = showBalance
     }
+    
     var body: some View {
         VStack {
             HStack(spacing: 0) {
@@ -39,14 +38,14 @@ struct TransactionListItemView: View {
                             code: Locale.current.currency?.identifier ?? "USD"))
                 }
             }
-
+            
             HStack(spacing: 0) {
                 if transaction.pendingOnUTC == nil
                     && transaction.clearedOnUTC == nil
                 {
                     Text("Reserved")
                 } else if transaction.pendingOnUTC != nil
-                    && transaction.clearedOnUTC == nil
+                            && transaction.clearedOnUTC == nil
                 {
                     Text("Pending")
                 } else {
@@ -58,34 +57,19 @@ struct TransactionListItemView: View {
                         Text(clearedText, format: .dateTime.month().day())
                     }
                 }
-
+                
                 Spacer()
-
-                if showBalance {
-                    HStack {
-                        Text("Bal:")
-                        Text(
-                            transaction.balance ?? 0,
-                            format:
-                                    .currency(
-                                        code: Locale.current.currency?.identifier
-                                        ?? "USD"
-                                    )
-                        )
-                        .font(.caption)
-                    }
-                }
             }
-
+            
             HStack(spacing: 0) {
                 if transaction.transactionTags != nil {
                     ForEach(transaction.transactionTags!) { tag in
                         Text("\(tag.name) ")
                             .font(.callout)
                     }
-
+                    
                     Spacer()
-
+                    
                     if transaction.fileCount > 0 {
                         HStack {
                             Text(Image(systemName: "paperclip"))
@@ -102,7 +86,7 @@ struct TransactionListItemView: View {
 }
 
 #Preview {
-    let p = Previewer()
-    TransactionListItemView(transaction: p.cvsTransaction)
-        .modelContainer(p.container)
+    Dashboard_TransactionViewItem(transaction: Previewer().discordTransaction)
+        .modelContainer(Previewer().container)
+        .environment(PathStore())
 }

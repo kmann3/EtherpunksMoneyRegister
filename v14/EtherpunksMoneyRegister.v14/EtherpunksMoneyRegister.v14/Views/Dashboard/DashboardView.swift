@@ -58,7 +58,7 @@ struct DashboardView: View {
             HStack {
                 VStack {
                     List(accountList) { account in
-                        AccountListItemView(acctData: account)
+                        Dashboard_AccountViewItem(acctData: account)
                             .onTapGesture {
                                 router.navigateTo(
                                     route: .transaction_List(account: account))
@@ -72,19 +72,20 @@ struct DashboardView: View {
                     List {
                         Section(header: Text("Reserved Transactions")) {
                             ForEach(reservedTransactions) { reserved in
-                                TransactionListItemView(transaction: reserved, showBalance: false)
+                                Dashboard_TransactionViewItem(transaction: reserved)
                             }
                         }
                     }
                     List {
                         Section(header: Text("Pending Transactions")) {
                             ForEach(pendingTransactions) { pending in
-                                TransactionListItemView(transaction: pending, showBalance: false)
+                                Dashboard_TransactionViewItem(transaction: pending)
                             }
                         }
                     }
                     Spacer()
                 }
+                .frame(width: 200)
 
                 Spacer()
                 VStack {
@@ -140,14 +141,16 @@ struct DashboardView: View {
                     }
                     Spacer()
                 }
+                .frame(width: 400)
             }
         }
     }
 }
 
 #Preview {
+    let p = Previewer()
     DashboardView()
-        .modelContainer(Previewer().container)
+        .modelContainer(p.container)
         .environment(PathStore())
         #if os(macOS)
             .frame(width: 900, height: 500)
