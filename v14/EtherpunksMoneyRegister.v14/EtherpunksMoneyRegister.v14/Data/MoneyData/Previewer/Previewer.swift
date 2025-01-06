@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SQLite
 import SwiftData
 import SwiftUI
 
@@ -272,6 +273,8 @@ class Previewer {
             }
         })
 
+        importTestRecurringData()
+        
         debugPrint("Done generating data at \(Date().toDebugDate())")
         debugPrint("Main account id: \(bankAccount.id.uuidString)")
     }
@@ -291,6 +294,39 @@ class Previewer {
             pendingOnUTC: pending,
             clearedOnUTC: cleared
         )
+    }
+
+    func importTestRecurringData() {
+        let path = "/Users/kennithmann/Downloads/dev/tmpData.sqlite3"
+
+        let fileManager = FileManager.default
+        if !fileManager.fileExists(atPath: path) {
+            debugPrint("Test data could not be found to be imported at \(path)")
+            return
+        }
+
+        do {
+            typealias Expression = SQLite.Expression
+            let db = try Connection(path)
+
+            let recurringTransactionTable = Table("RecurringTransaction")
+            let id = Expression<UUID>("Id")
+            let name = Expression<String>("Name")
+            let transactionType = Expression<String>("TransactionType")
+            let amount = Expression<String>("Amount")
+            let frequency = Expression<String>("Frequency")
+            let frequencyValue = Expression<Int64?>("FrequencyValue")
+            let frequencyDayOfWeek = Expression<String?>("FrequencyDayOfWeek")
+            let frequencyDate = Expression<String?>("FrequencyDate")
+            let groupName = Expression<String?>("GroupName")
+
+            for row in try db.prepare(recurringTransactionTable) {
+                var f: Decimal = Decimal.init(string: row[amount]) ?? Decimal.zero
+                debugPrint(row[id], row[name], row[transactionType], row[amount], row[frequency], row[frequencyValue] ?? "none", row[frequencyDayOfWeek] ?? "none", row[frequencyDate] ?? "none", row[groupName] ?? "none", "Amount: \(f)")
+            }
+        } catch {
+            debugPrint(error)
+        }
     }
 
     private func getNextDueDate(day: Int) -> Date {

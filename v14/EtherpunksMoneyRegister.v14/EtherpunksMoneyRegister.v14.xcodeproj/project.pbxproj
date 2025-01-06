@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AAD0DE872D2B82B300F9A71C /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = AAD0DE862D2B82B300F9A71C /* SQLite */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		AAF6E9942CE78E940062CFF5 /* EtherpunksMoneyRegister.v14.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtherpunksMoneyRegister.v14.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAD0DE872D2B82B300F9A71C /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = EtherpunksMoneyRegister.v14;
 			packageProductDependencies = (
+				AAD0DE862D2B82B300F9A71C /* SQLite */,
 			);
 			productName = EtherpunksMoneyRegister.v14;
 			productReference = AAF6E9942CE78E940062CFF5 /* EtherpunksMoneyRegister.v14.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = AAF6E98B2CE78E940062CFF5;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				AAD0DE852D2B82B300F9A71C /* XCRemoteSwiftPackageReference "SQLite" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AAF6E9952CE78E940062CFF5 /* Products */;
 			projectDirPath = "";
@@ -358,6 +367,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AAD0DE852D2B82B300F9A71C /* XCRemoteSwiftPackageReference "SQLite" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.15.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AAD0DE862D2B82B300F9A71C /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAD0DE852D2B82B300F9A71C /* XCRemoteSwiftPackageReference "SQLite" */;
+			productName = SQLite;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AAF6E98C2CE78E940062CFF5 /* Project object */;
 }
