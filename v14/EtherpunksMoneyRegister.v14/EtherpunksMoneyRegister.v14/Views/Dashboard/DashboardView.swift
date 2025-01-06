@@ -43,8 +43,15 @@ struct DashboardView: View {
         ,sort: [SortDescriptor(\AccountTransaction.createdOnUTC)]
     ) var pendingTransactions: [AccountTransaction]
 
-    var upcomingTransactions: [AccountTransaction] = []
-    var paydayTransactions: [AccountTransaction] = []
+    @Query(
+        filter: RecurringTransaction.transactionTypeFilter(type: .debit)
+        ,sort: [SortDescriptor(\RecurringTransaction.nextDueDate)]
+    ) var upcomingTransactions: [RecurringTransaction]
+
+    @Query(
+        filter: RecurringTransaction.transactionTypeFilter(type: .credit)
+        ,sort: [SortDescriptor(\RecurringTransaction.nextDueDate)]
+    ) var paydayTransactions: [RecurringTransaction] = []
 
     var body: some View {
         VStack {
@@ -94,10 +101,15 @@ struct DashboardView: View {
                             }
 
                             ForEach(paydayTransactions) { payday in
-                                TransactionListItemView(transaction: payday, showBalance: false, renderBackgroundColor: false)
-                                    .onTapGesture {
-                                        // Select the box and show the "reserve" button
-                                    }
+                                HStack {
+                                    Text(payday.name)
+                                    Spacer()
+                                    Text(payday.nextDueDate?.toSummaryDate() ?? "")
+                                }
+//                                TransactionListItemView(transaction: payday, showBalance: false, renderBackgroundColor: false)
+//                                    .onTapGesture {
+//                                        // Select the box and show the "reserve" button
+//                                    }
                             }
                         }
                     }
@@ -114,10 +126,15 @@ struct DashboardView: View {
                             }
 
                             ForEach(upcomingTransactions) { upcoming in
-                                TransactionListItemView(transaction: upcoming, showBalance: false, renderBackgroundColor: false)
-                                    .onTapGesture {
-                                        // Select the box and show the "reserve" button
-                                    }
+                                HStack {
+                                    Text(upcoming.name)
+                                    Spacer()
+                                    Text(upcoming.nextDueDate?.toSummaryDate() ?? "")
+                                }
+//                                TransactionListItemView(transaction: upcoming, showBalance: false, renderBackgroundColor: false)
+//                                    .onTapGesture {
+//                                        // Select the box and show the "reserve" button
+//                                    }
                             }
                         }
                     }

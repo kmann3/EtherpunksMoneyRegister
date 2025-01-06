@@ -12,7 +12,11 @@ import SwiftData
 final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
     @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
-    public var transactionType: TransactionType = TransactionType.debit
+    //public var transactionType: TransactionType = TransactionType.debit
+    public var transactionType: TransactionType {
+        get { TransactionType(rawValue: transactionTypeRaw) ?? .debit }
+        set { transactionTypeRaw = newValue.rawValue }
+    }
     public var amount: Decimal = 0
     public var notes: String = ""
     public var nextDueDate: Date? = nil
@@ -25,6 +29,10 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
     public var frequencyDayOfWeek: DayOfWeek? = nil
     public var frequencyDateValue: Date? = nil
     public var createdOnUTC: Date = Date()
+
+
+
+    private var transactionTypeRaw: TransactionType.RawValue = TransactionType.debit.rawValue
 
     public var debugDescription: String {
         return """
@@ -73,6 +81,13 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
         self.frequencyValue = frequencyValue
         self.frequencyDayOfWeek = frequencyDayOfWeek
         self.frequencyDateValue = frequencyDateValue
+    }
+
+    static func transactionTypeFilter(type: TransactionType) -> Predicate<RecurringTransaction> {
+        let rawValue = type.rawValue
+        return #Predicate<RecurringTransaction> {
+            $0.transactionTypeRaw == rawValue
+        }
     }
 
     enum BumpDateError: Error {

@@ -216,25 +216,25 @@ class Previewer {
         )
         container.mainContext.insert(verizonReservedTransaction)
 
-        container.mainContext.insert(createTransaction(name: "Test 1", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 2", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 3", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 4", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 5", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 6", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 7", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 8", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 9", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-
-        container.mainContext.insert(createTransaction(name: "Test 1", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 2", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 3", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 4", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 5", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 6", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 7", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 8", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-        container.mainContext.insert(createTransaction(name: "Test 9", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 1", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 2", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 3", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 4", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 5", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 6", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 7", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 8", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 9", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
+//
+//        container.mainContext.insert(createTransaction(name: "Test 1", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 2", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 3", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 4", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 5", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 6", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 7", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 8", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+//        container.mainContext.insert(createTransaction(name: "Test 9", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
 
         downloadImageDataAsync(completion: { [self] data in
             if data != nil {
@@ -349,6 +349,10 @@ class Previewer {
                     recurringTransaction.frequency = .monthly
                     recurringTransaction.frequencyValue = Int(row[frequencyValueCol]!)
                     recurringTransaction.nextDueDate = getNextDueDate(day: row[frequencyValueCol]!)
+
+//                    if getNextDueDate(day: row[frequencyValueCol]!) < Date() {
+//                        try recurringTransaction.BumpNextDueDate()
+//                    }
                     break
                 case "yearly":
                     recurringTransaction.frequency = .yearly
@@ -357,6 +361,10 @@ class Previewer {
                     break
                 default:
                     debugPrint("Error parsing frequency: \(row[frequencyCol])")
+                }
+
+                if recurringTransaction.nextDueDate! < Date() {
+                    try recurringTransaction.BumpNextDueDate()
                 }
 
                 switch row[nameCol] {
@@ -369,10 +377,6 @@ class Previewer {
                 default:
                     container.mainContext.insert(recurringTransaction)
                     break
-                }
-
-                if recurringTransaction.nextDueDate != nil {
-                    debugPrint("Name: \(recurringTransaction.name) Due Date: \(recurringTransaction.nextDueDate!)")
                 }
 
                 try container.mainContext.save()
