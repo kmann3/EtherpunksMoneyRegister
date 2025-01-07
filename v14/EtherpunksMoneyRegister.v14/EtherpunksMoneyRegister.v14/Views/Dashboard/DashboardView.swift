@@ -53,6 +53,9 @@ struct DashboardView: View {
         ,sort: [SortDescriptor(\RecurringTransaction.nextDueDate)]
     ) var paydayTransactions: [RecurringTransaction] = []
 
+    @State private var selectedPaydays = [RecurringTransaction]()
+    @State private var selectedUpcomingTransactions: [RecurringTransaction] = []
+
     var body: some View {
         VStack {
             HStack {
@@ -95,24 +98,26 @@ struct DashboardView: View {
                                 Spacer()
                                 Button {
                                     // If items are selected, deposit money into account. Should do this as pending? Or cleared? Or ask?
+                                    debugPrint(self.selectedPaydays.count)
                                 } label: {
                                     Text("Paid")
                                 }
                                 .opacity(1)
                             }
 
-                            ForEach(paydayTransactions) { payday in
-                                HStack {
-                                    Text(payday.name)
-                                    Spacer()
-                                    Text(payday.nextDueDate?.toSummaryDate() ?? "")
+                            ForEach(paydayTransactions, id: \.self) { payday in
+                                Dashboard_RecurringViewItem(recurringItem: payday, isSelected: self.selectedPaydays.contains(payday)) {
+                                    if self.selectedPaydays.contains(payday) {
+                                        self.selectedPaydays.removeAll(where: { $0 == payday })
+                                    } else {
+                                        self.selectedPaydays.append(payday)
+                                    }
                                 }
-//                                TransactionListItemView(transaction: payday, showBalance: false, renderBackgroundColor: false)
-//                                    .onTapGesture {
-//                                        // Select the box and show the "reserve" button
-//                                    }
                             }
                         }
+                    }
+                    .onAppear {
+                        self.selectedPaydays = []
                     }
                     List {
                         Section(header: Text("Upcoming Recurring Transactions")) {
@@ -126,18 +131,19 @@ struct DashboardView: View {
                                 .opacity(1)
                             }
 
-                            ForEach(upcomingTransactions) { upcoming in
-                                HStack {
-                                    Text(upcoming.name)
-                                    Spacer()
-                                    Text(upcoming.nextDueDate?.toSummaryDate() ?? "")
+                            ForEach(upcomingTransactions, id: \.self) { upcoming in
+                                Dashboard_RecurringViewItem(recurringItem: upcoming, isSelected: self.selectedUpcomingTransactions.contains(upcoming)) {
+                                    if self.selectedUpcomingTransactions.contains(upcoming) {
+                                        self.selectedUpcomingTransactions.removeAll(where: { $0 == upcoming })
+                                    } else {
+                                        self.selectedUpcomingTransactions.append(upcoming)
+                                    }
                                 }
-//                                TransactionListItemView(transaction: upcoming, showBalance: false, renderBackgroundColor: false)
-//                                    .onTapGesture {
-//                                        // Select the box and show the "reserve" button
-//                                    }
                             }
                         }
+                    }
+                    .onAppear {
+                        self.selectedUpcomingTransactions = []
                     }
                     Spacer()
                 }
