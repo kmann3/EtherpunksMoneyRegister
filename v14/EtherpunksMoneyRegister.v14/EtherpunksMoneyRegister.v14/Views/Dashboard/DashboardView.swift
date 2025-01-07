@@ -56,6 +56,8 @@ struct DashboardView: View {
     @State private var selectedPaydays = [RecurringTransaction]()
     @State private var selectedUpcomingTransactions: [RecurringTransaction] = []
 
+    @State private var isConfirmReserveModalShowing: Bool = false
+
     var body: some View {
         VStack {
             HStack {
@@ -97,7 +99,9 @@ struct DashboardView: View {
                             HStack {
                                 Spacer()
                                 Button {
-                                    //Account.reserveList(list: selectedPaydays, account: <#Account#>, context: modelContext)
+                                    if self.selectedPaydays.count > 0 {
+                                        self.isConfirmReserveModalShowing.toggle()
+                                    }
                                 } label: {
                                     Text("Paid")
                                 }
@@ -123,7 +127,9 @@ struct DashboardView: View {
                             HStack {
                                 Spacer()
                                 Button {
-                                    //RecurringTransaction.reserveList(list: selectedUpcomingTransactions, context: modelContext)
+                                    if self.selectedUpcomingTransactions.count > 0 {
+                                        self.isConfirmReserveModalShowing.toggle()
+                                    }
                                 } label: {
                                     Text("Reserve")
                                 }
@@ -147,6 +153,16 @@ struct DashboardView: View {
                     Spacer()
                 }
                 .frame(width: 400)
+            }
+        }
+        .sheet(isPresented: $isConfirmReserveModalShowing) {
+
+            if !self.$selectedPaydays.isEmpty {
+                Dashboard_ReserveTransactionsModalView(reserveList: selectedPaydays, accountList: accountList)
+            }
+
+            if !self.$selectedUpcomingTransactions.isEmpty {
+                Dashboard_ReserveTransactionsModalView(reserveList: selectedUpcomingTransactions, accountList: accountList)
             }
         }
     }
