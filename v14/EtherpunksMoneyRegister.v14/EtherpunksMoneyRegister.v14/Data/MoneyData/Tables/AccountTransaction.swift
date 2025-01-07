@@ -169,6 +169,20 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
         self.VerifySignage()
     }
 
+    init(recurringTransaction: RecurringTransaction, account: Account) {
+        self.account = account
+        self.name = recurringTransaction.name
+        self.transactionType = recurringTransaction.transactionType
+        self.amount = recurringTransaction.amount
+        self.balance = account.currentBalance
+        self.isTaxRelated = recurringTransaction.isTaxRelated
+        self.transactionTags = recurringTransaction.transactionTags
+        self.recurringTransaction = recurringTransaction
+        self.dueDate = recurringTransaction.nextDueDate
+
+        VerifySignage()
+    }
+
     func VerifySignage() {
         switch self.transactionType {
         case .credit:

@@ -140,4 +140,45 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
         self.name = name
         self.startingBalance = startingBalance
     }
+
+    /// Reserve a list of transactions. This creates a transaction for each RecurringTransaction and bumps each RecurringTransactions
+    /// - Parameters:
+    ///   - list: list of items to reserve
+    ///   - account: account to reserve the item to
+    ///   - context: context to save data
+    public static func reserveList(list: [RecurringTransaction], account: Account, context: ModelContext) {
+        do {
+            try list.forEach { item in
+                account.currentBalance += item.amount
+                account.outstandingBalance += item.amount
+                account.outstandingItemCount += 1
+                account.transactionCount += 1
+                context.insert(AccountTransaction(recurringTransaction: item, account: account))
+
+                try item.BumpNextDueDate()
+            }
+
+            try context.save()
+        } catch {
+            debugPrint(error)
+        }
+    }
+
+    public static func insertTransaction(account: Account, transaction: AccountTransaction, context: ModelContext) {
+        do {
+            transaction.VerifySignage()
+            account.currentBalance += transaction.amount
+            if(transaction.clearedOnUTC == nil) {
+                account.outstandingBalance += transaction.amount
+                account.outstandingItemCount += 1
+            }
+            account.transactionCount += 1
+            transaction.balance = account.currentBalance
+            context.insert(transaction)
+
+            try context.save()
+        } catch {
+            debugPrint(error)
+        }
+    }
 }

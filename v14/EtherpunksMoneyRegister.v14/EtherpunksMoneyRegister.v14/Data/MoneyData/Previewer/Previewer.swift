@@ -19,10 +19,10 @@ class Previewer {
     public let bankAccount: Account = Account(
         id: UUID(uuidString: "12345678-1234-1234-1234-123456789abc")!,
         name: "Chase Bank",
-        startingBalance: 1024.44,
-        currentBalance: 437.99,
-        outstandingBalance: 33.73,
-        outstandingItemCount: 2,
+        startingBalance: 2062.00,
+        currentBalance: 2062.00,
+        outstandingBalance: 0.0,
+        outstandingItemCount: 0,
         notes: "",
         sortIndex: Int64.max,
         lastBalancedUTC: "2024-09-12T17:40:31.594+0000",
@@ -97,32 +97,24 @@ class Previewer {
         // Recurring Groups
         billGroup = RecurringGroup(name: "Bills")
 
-        // Initial balance
-        var balance: Decimal = 437.99
-
         // BURGER KING
-        var transactionAmount: Decimal = -12.39
-        balance = balance + transactionAmount
         burgerKingTransaction = AccountTransaction(
             account: bankAccount,
             name: "Burger King",
             transactionType: .debit,
-            amount: transactionAmount,
-            balance: balance,
+            amount: -12.39,
+            //balance: balance,
             transactionTags: [ffTag],
             clearedOnUTC: Date().addingTimeInterval(-1_000_000)
         )
-        container.mainContext.insert(burgerKingTransaction)
+        Account.insertTransaction(account: bankAccount, transaction: burgerKingTransaction, context: container.mainContext)
 
         // CVS
-        transactionAmount = -88.34
-        balance = balance + transactionAmount
         cvsTransaction = AccountTransaction(
             account: bankAccount,
             name: "CVS",
             transactionType: .debit,
-            amount: transactionAmount,
-            balance: balance,
+            amount: -88.34,
             notes: "Some test notes",
             confirmationNumber: "1mamz9Zvnz94n",
             isTaxRelated: true,
@@ -132,28 +124,25 @@ class Previewer {
             clearedOnUTC: Date(),
             balancedOnUTC: Date()
         )
-        container.mainContext.insert(cvsTransaction)
+        Account.insertTransaction(account: bankAccount, transaction: cvsTransaction, context: container.mainContext)
 
         // DISCORD
         discordRecurringTransaction = RecurringTransaction(
             id: UUID(uuidString: "75696d00-50a8-40af-8c00-14b5e4245920")!,
             name: "Discord",
             transactionType: .debit,
-            amount: 13.99,
+            amount: -13.99,
             transactionTags: [billsTag],
             recurringGroup: billGroup,
             frequency: .monthly,
             frequencyValue: 16
         )
 
-        transactionAmount = -10.81
-        balance = balance + transactionAmount
         discordTransaction = AccountTransaction(
             account: bankAccount,
             name: "Discord",
             transactionType: .debit,
-            amount: transactionAmount,
-            balance: balance,
+            amount: -10.81,
             notes: "Some test notes",
             confirmationNumber: "1mamz9Zvnz94n",
             isTaxRelated: true,
@@ -162,28 +151,24 @@ class Previewer {
             pendingOnUTC: Date(),
             clearedOnUTC: Date()
         )
-        container.mainContext.insert(discordTransaction)
+        Account.insertTransaction(account: bankAccount, transaction: discordTransaction, context: container.mainContext)
 
         discordRecurringTransaction.transactions = [discordTransaction]
         container.mainContext.insert(discordRecurringTransaction)
 
         // HULU
-
-        transactionAmount = -23.41
-        balance = balance + transactionAmount
         huluPendingTransaction = AccountTransaction(
             account: bankAccount,
             name: "Hulu",
             transactionType: .debit,
-            amount: transactionAmount,
-            balance: balance,
+            amount: -23.41,
             notes: "",
             confirmationNumber: "1Z49C",
             isTaxRelated: true,
             pendingOnUTC: Date(),
             clearedOnUTC: nil
         )
-        container.mainContext.insert(huluPendingTransaction)
+        Account.insertTransaction(account: bankAccount, transaction: huluPendingTransaction, context: container.mainContext)
 
         // VERIZON
         verizonRecurringTransaction = RecurringTransaction(
@@ -198,14 +183,11 @@ class Previewer {
             frequencyValue: 28
         )
 
-        transactionAmount = -103.37
-        balance = balance + transactionAmount
         verizonReservedTransaction = AccountTransaction(
             account: bankAccount,
             name: "Verizon",
             transactionType: .debit,
-            amount: transactionAmount,
-            balance: balance,
+            amount: -104.00,
             notes: "",
             confirmationNumber: "",
             isTaxRelated: true,
@@ -214,7 +196,7 @@ class Previewer {
             pendingOnUTC: nil,
             clearedOnUTC: nil
         )
-        container.mainContext.insert(verizonReservedTransaction)
+        Account.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: container.mainContext)
 
 //        container.mainContext.insert(createTransaction(name: "Test 1", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
 //        container.mainContext.insert(createTransaction(name: "Test 2", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
@@ -269,23 +251,6 @@ class Previewer {
 
         debugPrint("Done generating data at \(Date().toDebugDate())")
         debugPrint("Main account id: \(bankAccount.id.uuidString)")
-    }
-
-    func createTransaction(name: String, account: Account, amount: Decimal, pending: Date?, cleared: Date?) -> AccountTransaction {
-        return AccountTransaction(
-            account: account,
-            name: name,
-            transactionType: .debit,
-            amount: amount,
-            balance: 0,
-            notes: "",
-            confirmationNumber: "",
-            isTaxRelated: false,
-            transactionTags: [],
-            recurringTransaction: nil,
-            pendingOnUTC: pending,
-            clearedOnUTC: cleared
-        )
     }
 
     func importTestRecurringData() {

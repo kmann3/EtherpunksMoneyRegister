@@ -19,6 +19,7 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
     }
     public var amount: Decimal = 0
     public var notes: String = ""
+    public var isTaxRelated: Bool = false
     public var nextDueDate: Date? = nil
     @Relationship(deleteRule: .noAction) public var transactionTags: [TransactionTag]? = nil
     public var recurringGroupId: UUID? = nil
@@ -42,6 +43,7 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
             - transactionType: \(transactionType)
             - amount: \(amount)
             - notes: \(notes)
+            - isTaxRelated: \(isTaxRelated)
             - dueDate: \(nextDueDate?.toDebugDate() ?? "nil")
             - recurringGroup: \(String(describing: recurringGroup))
             - frequency: \(frequency)
@@ -58,6 +60,7 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
         transactionType: TransactionType = .debit,
         amount: Decimal = 0.0,
         notes: String = "",
+        isTaxRelated: Bool = false,
         nextDueDate: Date? = nil,
         transactionTags: [TransactionTag]? = nil,
         recurringGroup: RecurringGroup? = nil,
@@ -72,6 +75,7 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
         self.transactionType = transactionType
         self.amount = amount
         self.notes = notes
+        self.isTaxRelated = isTaxRelated
         self.nextDueDate = nextDueDate
         self.transactionTags = transactionTags
         self.recurringGroup = recurringGroup
@@ -81,9 +85,11 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
         self.frequencyValue = frequencyValue
         self.frequencyDayOfWeek = frequencyDayOfWeek
         self.frequencyDateValue = frequencyDateValue
+
+        self.VerifySignage()
     }
 
-    static func transactionTypeFilter(type: TransactionType) -> Predicate<RecurringTransaction> {
+    public static func transactionTypeFilter(type: TransactionType) -> Predicate<RecurringTransaction> {
         let rawValue = type.rawValue
         return #Predicate<RecurringTransaction> {
             $0.transactionTypeRaw == rawValue
