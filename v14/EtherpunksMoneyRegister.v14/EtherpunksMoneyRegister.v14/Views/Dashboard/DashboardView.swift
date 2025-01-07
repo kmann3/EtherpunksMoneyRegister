@@ -97,8 +97,7 @@ struct DashboardView: View {
                             HStack {
                                 Spacer()
                                 Button {
-                                    // If items are selected, deposit money into account. Should do this as pending? Or cleared? Or ask?
-                                    debugPrint(self.selectedPaydays.count)
+                                    //Account.reserveList(list: selectedPaydays, account: <#Account#>, context: modelContext)
                                 } label: {
                                     Text("Paid")
                                 }
@@ -124,7 +123,7 @@ struct DashboardView: View {
                             HStack {
                                 Spacer()
                                 Button {
-                                    // If items are selected, flag all the selected ones as reserved
+                                    //RecurringTransaction.reserveList(list: selectedUpcomingTransactions, context: modelContext)
                                 } label: {
                                     Text("Reserve")
                                 }
