@@ -56,7 +56,8 @@ struct DashboardView: View {
     @State private var selectedPaydays = [RecurringTransaction]()
     @State private var selectedUpcomingTransactions: [RecurringTransaction] = []
 
-    @State private var isConfirmReserveModalShowing: Bool = false
+    @State private var isConfirmReservePaydayModalShowing: Bool = false
+    @State private var isConfirmReserveBillsModalShowing: Bool = false
 
     var body: some View {
         VStack {
@@ -100,7 +101,7 @@ struct DashboardView: View {
                                 Spacer()
                                 Button {
                                     if self.selectedPaydays.count > 0 {
-                                        self.isConfirmReserveModalShowing.toggle()
+                                        self.isConfirmReservePaydayModalShowing.toggle()
                                     }
                                 } label: {
                                     Text("Paid")
@@ -128,7 +129,7 @@ struct DashboardView: View {
                                 Spacer()
                                 Button {
                                     if self.selectedUpcomingTransactions.count > 0 {
-                                        self.isConfirmReserveModalShowing.toggle()
+                                        self.isConfirmReserveBillsModalShowing.toggle()
                                     }
                                 } label: {
                                     Text("Reserve")
@@ -155,12 +156,13 @@ struct DashboardView: View {
                 .frame(width: 400)
             }
         }
-        .sheet(isPresented: $isConfirmReserveModalShowing) {
-
-            if !self.$selectedPaydays.isEmpty {
+        .sheet(isPresented: $isConfirmReservePaydayModalShowing, onDismiss: {self.selectedPaydays.removeAll()}) {
+            if !self.selectedPaydays.isEmpty {
                 Dashboard_ReserveTransactionsModalView(reserveList: selectedPaydays, accountList: accountList)
             }
 
+        }
+        .sheet(isPresented: $isConfirmReserveBillsModalShowing, onDismiss: {self.selectedUpcomingTransactions.removeAll()}) {
             if !self.$selectedUpcomingTransactions.isEmpty {
                 Dashboard_ReserveTransactionsModalView(reserveList: selectedUpcomingTransactions, accountList: accountList)
             }

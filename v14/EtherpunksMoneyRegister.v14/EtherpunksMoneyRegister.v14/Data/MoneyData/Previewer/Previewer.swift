@@ -103,11 +103,10 @@ class Previewer {
             name: "Burger King",
             transactionType: .debit,
             amount: -12.39,
-            //balance: balance,
             transactionTags: [ffTag],
             clearedOnUTC: Date().addingTimeInterval(-1_000_000)
         )
-        Account.insertTransaction(account: bankAccount, transaction: burgerKingTransaction, context: container.mainContext)
+        Previewer.insertTransaction(account: bankAccount, transaction: burgerKingTransaction, context: container.mainContext)
 
         // CVS
         cvsTransaction = AccountTransaction(
@@ -124,7 +123,7 @@ class Previewer {
             clearedOnUTC: Date(),
             balancedOnUTC: Date()
         )
-        Account.insertTransaction(account: bankAccount, transaction: cvsTransaction, context: container.mainContext)
+        Previewer.insertTransaction(account: bankAccount, transaction: cvsTransaction, context: container.mainContext)
 
         // DISCORD
         discordRecurringTransaction = RecurringTransaction(
@@ -151,7 +150,7 @@ class Previewer {
             pendingOnUTC: Date(),
             clearedOnUTC: Date()
         )
-        Account.insertTransaction(account: bankAccount, transaction: discordTransaction, context: container.mainContext)
+        Previewer.insertTransaction(account: bankAccount, transaction: discordTransaction, context: container.mainContext)
 
         discordRecurringTransaction.transactions = [discordTransaction]
         container.mainContext.insert(discordRecurringTransaction)
@@ -168,7 +167,7 @@ class Previewer {
             pendingOnUTC: Date(),
             clearedOnUTC: nil
         )
-        Account.insertTransaction(account: bankAccount, transaction: huluPendingTransaction, context: container.mainContext)
+        Previewer.insertTransaction(account: bankAccount, transaction: huluPendingTransaction, context: container.mainContext)
 
         // VERIZON
         verizonRecurringTransaction = RecurringTransaction(
@@ -196,7 +195,7 @@ class Previewer {
             pendingOnUTC: nil,
             clearedOnUTC: nil
         )
-        Account.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: container.mainContext)
+        Previewer.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: container.mainContext)
 
 //        container.mainContext.insert(createTransaction(name: "Test 1", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
 //        container.mainContext.insert(createTransaction(name: "Test 2", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
@@ -427,6 +426,24 @@ class Previewer {
         }
 
         task.resume()
+    }
+
+    static func insertTransaction(account: Account, transaction: AccountTransaction, context: ModelContext) {
+        do {
+            transaction.VerifySignage()
+            account.currentBalance += transaction.amount
+            if(transaction.clearedOnUTC == nil) {
+                account.outstandingBalance += transaction.amount
+                account.outstandingItemCount += 1
+            }
+            account.transactionCount += 1
+            transaction.balance = account.currentBalance
+            context.insert(transaction)
+
+            try context.save()
+        } catch {
+            debugPrint(error)
+        }
     }
 }
 

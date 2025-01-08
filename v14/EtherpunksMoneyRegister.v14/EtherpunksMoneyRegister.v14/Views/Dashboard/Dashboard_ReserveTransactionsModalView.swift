@@ -101,7 +101,7 @@ struct Dashboard_ReserveTransactionsModalView: View {
                 Spacer()
 
                 Button {
-                    Account.reserveList(list: reserveList, account: selectedAccount, context: modelContext)
+                    self.reserveList(list: reserveList, account: selectedAccount)
                     dismiss()
                 } label: {
                     Text("Save")
@@ -117,6 +117,24 @@ struct Dashboard_ReserveTransactionsModalView: View {
                     .init(top: 2, leading: 0, bottom: 5, trailing: 0)
                 )
             )
+        }
+    }
+
+    private func reserveList(list: [RecurringTransaction], account: Account) {
+        do {
+            try list.forEach { item in
+                account.currentBalance += item.amount
+                account.outstandingBalance += item.amount
+                account.outstandingItemCount += 1
+                account.transactionCount += 1
+                modelContext.insert(AccountTransaction(recurringTransaction: item, account: account))
+
+                try item.BumpNextDueDate()
+            }
+
+            try modelContext.save()
+        } catch {
+            debugPrint(error)
         }
     }
 }
