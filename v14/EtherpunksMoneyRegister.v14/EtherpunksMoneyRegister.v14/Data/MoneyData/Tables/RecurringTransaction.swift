@@ -21,7 +21,7 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
     public var notes: String = ""
     public var isTaxRelated: Bool = false
     public var nextDueDate: Date? = nil
-    @Relationship(deleteRule: .noAction) public var transactionTags: [TransactionTag]? = nil
+    @Relationship(deleteRule: .noAction, inverse: \TransactionTag.recurringTransactions) public var transactionTags: [TransactionTag]? = nil
     public var recurringGroupId: UUID? = nil
     @Relationship(deleteRule: .noAction, inverse: \RecurringGroup.recurringTransactions) public var recurringGroup: RecurringGroup? = nil
     public var transactions: [AccountTransaction]? = nil
