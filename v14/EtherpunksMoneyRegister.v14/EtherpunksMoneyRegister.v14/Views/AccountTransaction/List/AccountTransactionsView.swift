@@ -16,12 +16,11 @@ struct AccountTransactionsView: View {
     @Query(sort: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)])
     var accountTransactions: [AccountTransaction]
 
+    @Query(sort: [SortDescriptor(\Account.name)]) var accountDetails: [Account]
+
     init(account: Account) {
-        viewModel.account = account
-        let id = account.id
-        self._accountTransactions = Query(filter: #Predicate {
-            $0.accountId == id
-        }, sort: \.createdOnUTC, order: .reverse)
+        viewModel = ViewModel(account: account)
+        viewModel.modelContext = modelContext
     }
 
     var body: some View {

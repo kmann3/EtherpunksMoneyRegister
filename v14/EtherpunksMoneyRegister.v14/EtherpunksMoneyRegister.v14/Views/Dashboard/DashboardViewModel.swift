@@ -38,10 +38,17 @@ extension DashboardView {
 
                     try? item.BumpNextDueDate()
                 }
-
+                
+                do {
+                    try modelContext.save()
+                } catch {
+                    modelContext.rollback()
+                    debugPrint("An error saving has occured")
+                }
             }
 
             didCancel = false
+            selectedPaydays.removeAll()
         }
 
         func reserveBillsDismiss(modelContext: ModelContext) {
@@ -62,6 +69,12 @@ extension DashboardView {
                     try? item.BumpNextDueDate()
                 }
 
+                do {
+                    try modelContext.save()
+                } catch {
+                    modelContext.rollback()
+                    debugPrint("An error saving has occured")
+                }
             }
 
             didCancel = false

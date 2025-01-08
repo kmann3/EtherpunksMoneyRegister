@@ -22,9 +22,23 @@ extension AccountTransactionsView {
         var lastTransactions: [AccountTransaction] = []
         var selectedTransaction: AccountTransaction? = nil
         var account: Account
-
+        var modelContext: ModelContext? = nil
         init(account: Account) {
             self.account = account
+//            let id = viewModel.account.id
+//            self._accountTransactions = Query(filter: #Predicate {
+//                $0.accountId == id
+//            }, sort: \.createdOnUTC, order: .reverse)
+//
+//            self._accountDetails = Query(filter: #Predicate<Account> {
+//                $0.id == id
+//            })
+//
+//            if(accountDetails.isEmpty) {
+//                debugPrint( "AccountDetails is empty")
+//            } else {
+//                viewModel.account = accountDetails.first!
+//            }
         }
 
         func deleteTransaction(modelContext: ModelContext) {
