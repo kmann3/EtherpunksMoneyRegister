@@ -25,55 +25,98 @@ struct Dashboard_ReserveTransactionsModalView: View {
     var body: some View {
         VStack {
             HStack {
+                Text("Reserve Transactions")
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .font(.title2)
+                    .foregroundStyle(.blue)
+                    .padding(
+                        EdgeInsets(
+                            .init(top: 2, leading: 0, bottom: 5, trailing: 0)
+                        )
+                    )
+                Spacer()
+            }
+
+            Divider()
+
+            HStack {
                 VStack {
-                    ForEach(self.reserveList) { transaction in
-                        Text(transaction.name)
-                    }
-                    .frame(minWidth: 100, maxWidth: 300, alignment: .center)
+                    Text("Transactions")
+                        .padding(.bottom, 10)
 
-                    HStack {
-
-                        Button {
-                            dismiss()
-                        } label: {
-                            Text("Cancel")
+                    VStack {
+                        ForEach(self.reserveList) { transaction in
+                            Text(transaction.name)
                         }
-                        .frame(minWidth: 100, alignment: .center)
-                        .padding(.top, 15)
-                        Spacer()
-                            .frame(width: 50)
                     }
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 25)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(
+                                Color(
+                                    .sRGB, red: 125 / 255, green: 125 / 255,
+                                    blue: 125 / 255, opacity: 0.5))
+                    )
+                    .frame(maxWidth: .infinity, alignment: .center)
                 }
 
-                Text("-->")
-
                 VStack {
+                    Text("Accounts")
+                        .padding(.trailing, 25)
+                        .padding(.bottom, 25)
+                        .frame(maxWidth: .infinity, alignment: .center)
+
                     Picker("Account", selection: $selectedAccount) {
                         ForEach(self.accountList) { account in
                             Text(account.name)
                                 .tag(account)
                         }
                     }
-                    .frame(minWidth: 200, maxWidth: 300)
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 25)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(
+                                Color(
+                                    .sRGB, red: 125 / 255, green: 125 / 255,
+                                    blue: 125 / 255, opacity: 0.5))
+                    )
+                    .frame(maxWidth: .infinity, alignment: .center)
 
-                    HStack {
-                        Spacer()
-                        .frame(width: 150)
-                        Button {
-                            // Save and then dismiss
-                            dismiss()
-                        } label: {
-                            Text("Save")
-                        }
-                        .frame(width: 150, alignment: .center)
-                        .padding(.top, 15)
-                    }
                 }
             }
 
-            HStack {
+            Divider()
 
+            HStack {
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Cancel")
+                }
+                .frame(minWidth: 100, alignment: .center)
+                .padding(.bottom, 5)
+
+                Spacer()
+
+                Button {
+                    Account.reserveList(list: reserveList, account: selectedAccount, context: modelContext)
+                    dismiss()
+                } label: {
+                    Text("Save")
+                }
+                .frame(minWidth: 100, alignment: .center)
+                .padding(.bottom, 5)
             }
+            .frame(maxWidth: .infinity, alignment: .center)
+            .font(.title2)
+            .foregroundStyle(.blue)
+            .padding(
+                EdgeInsets(
+                    .init(top: 2, leading: 0, bottom: 5, trailing: 0)
+                )
+            )
         }
     }
 }
