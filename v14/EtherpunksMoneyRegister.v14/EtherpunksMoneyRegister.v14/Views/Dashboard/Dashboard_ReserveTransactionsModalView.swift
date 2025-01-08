@@ -6,20 +6,22 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct Dashboard_ReserveTransactionsModalView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
+    @Query(sort: [SortDescriptor(\Account.name, comparator: .localizedStandard)]) var accountList: [Account]
 
-    var reserveList: [RecurringTransaction]
-    var accountList: [Account]
+    let reserveList: [RecurringTransaction]
 
-    @State var selectedAccount: Account
+    @Binding var selectedAccount: Account?
+    @Binding var didCancel: Bool
 
-    init(reserveList: [RecurringTransaction], accountList: [Account]) {
+    init(reserveList: [RecurringTransaction], selectedAccount: Binding<Account?>, didCancel: Binding<Bool>) {
         self.reserveList = reserveList.sorted(by: {$0.name < $1.name })
-        self.accountList = accountList.sorted(by: {$0.name < $1.name })
-        selectedAccount = accountList.first!
+        _selectedAccount = selectedAccount
+        _didCancel = didCancel
     }
 
     var body: some View {
@@ -91,6 +93,7 @@ struct Dashboard_ReserveTransactionsModalView: View {
 
             HStack {
                 Button {
+                    didCancel = true
                     dismiss()
                 } label: {
                     Text("Cancel")
@@ -101,7 +104,8 @@ struct Dashboard_ReserveTransactionsModalView: View {
                 Spacer()
 
                 Button {
-                    self.reserveList(list: reserveList, account: selectedAccount)
+                    //self.reserveList(list: reserveList, account: selectedAccount!)
+                    didCancel = false
                     dismiss()
                 } label: {
                     Text("Save")
@@ -119,28 +123,14 @@ struct Dashboard_ReserveTransactionsModalView: View {
             )
         }
     }
-
-    private func reserveList(list: [RecurringTransaction], account: Account) {
-        do {
-            try list.forEach { item in
-                account.currentBalance += item.amount
-                account.outstandingBalance += item.amount
-                account.outstandingItemCount += 1
-                account.transactionCount += 1
-                modelContext.insert(AccountTransaction(recurringTransaction: item, account: account))
-
-                try item.BumpNextDueDate()
-            }
-
-            try modelContext.save()
-        } catch {
-            debugPrint(error)
-        }
-    }
 }
 
 #Preview {
     let p = Previewer()
-    Dashboard_ReserveTransactionsModalView(reserveList: [p.discordRecurringTransaction, p.verizonRecurringTransaction], accountList: [p.bankAccount])
-        .modelContainer(p.container)
+    Dashboard_ReserveTransactionsModalView(
+        reserveList: [p.discordRecurringTransaction, p.verizonRecurringTransaction],
+        selectedAccount: .constant(p.bankAccount),
+        didCancel: .constant(false)
+    )
+    .modelContainer(p.container)
 }

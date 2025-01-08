@@ -25,7 +25,7 @@ struct DashboardView: View {
                 return false
             }
         }
-        ,sort: [SortDescriptor(\AccountTransaction.createdOnUTC)]
+        ,sort: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
     ) var reservedTransactions: [AccountTransaction]
 
     @Query(
@@ -40,7 +40,7 @@ struct DashboardView: View {
                 return false
             }
         }
-        ,sort: [SortDescriptor(\AccountTransaction.createdOnUTC)]
+        ,sort: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
     ) var pendingTransactions: [AccountTransaction]
 
     @Query(
@@ -53,11 +53,7 @@ struct DashboardView: View {
         ,sort: [SortDescriptor(\RecurringTransaction.nextDueDate)]
     ) var paydayTransactions: [RecurringTransaction] = []
 
-    @State private var selectedPaydays = [RecurringTransaction]()
-    @State private var selectedUpcomingTransactions: [RecurringTransaction] = []
-
-    @State private var isConfirmReservePaydayModalShowing: Bool = false
-    @State private var isConfirmReserveBillsModalShowing: Bool = false
+    @State private var viewModel: ViewModel = ViewModel()
 
     var body: some View {
         VStack {
@@ -100,8 +96,8 @@ struct DashboardView: View {
                             HStack {
                                 Spacer()
                                 Button {
-                                    if self.selectedPaydays.count > 0 {
-                                        self.isConfirmReservePaydayModalShowing.toggle()
+                                    if viewModel.selectedPaydays.count > 0 {
+                                        viewModel.isConfirmReservePaydayModalShowing.toggle()
                                     }
                                 } label: {
                                     Text("Paid")
@@ -110,26 +106,23 @@ struct DashboardView: View {
                             }
 
                             ForEach(paydayTransactions, id: \.self) { payday in
-                                Dashboard_RecurringViewItem(recurringItem: payday, isSelected: self.selectedPaydays.contains(payday)) {
-                                    if self.selectedPaydays.contains(payday) {
-                                        self.selectedPaydays.removeAll(where: { $0 == payday })
+                                Dashboard_RecurringViewItem(recurringItem: payday, isSelected: viewModel.selectedPaydays.contains(payday)) {
+                                    if viewModel.selectedPaydays.contains(payday) {
+                                        viewModel.selectedPaydays.removeAll(where: { $0 == payday })
                                     } else {
-                                        self.selectedPaydays.append(payday)
+                                        viewModel.selectedPaydays.append(payday)
                                     }
                                 }
                             }
                         }
-                    }
-                    .onAppear {
-                        self.selectedPaydays = []
                     }
                     List {
                         Section(header: Text("Upcoming Recurring Transactions")) {
                             HStack {
                                 Spacer()
                                 Button {
-                                    if self.selectedUpcomingTransactions.count > 0 {
-                                        self.isConfirmReserveBillsModalShowing.toggle()
+                                    if viewModel.selectedUpcomingTransactions.count > 0 {
+                                        viewModel.isConfirmReserveBillsModalShowing.toggle()
                                     }
                                 } label: {
                                     Text("Reserve")
@@ -138,33 +131,38 @@ struct DashboardView: View {
                             }
 
                             ForEach(upcomingTransactions, id: \.self) { upcoming in
-                                Dashboard_RecurringViewItem(recurringItem: upcoming, isSelected: self.selectedUpcomingTransactions.contains(upcoming)) {
-                                    if self.selectedUpcomingTransactions.contains(upcoming) {
-                                        self.selectedUpcomingTransactions.removeAll(where: { $0 == upcoming })
+                                Dashboard_RecurringViewItem(recurringItem: upcoming, isSelected: viewModel.selectedUpcomingTransactions.contains(upcoming)) {
+                                    if viewModel.selectedUpcomingTransactions.contains(upcoming) {
+                                        viewModel.selectedUpcomingTransactions.removeAll(where: { $0 == upcoming })
                                     } else {
-                                        self.selectedUpcomingTransactions.append(upcoming)
+                                        viewModel.selectedUpcomingTransactions.append(upcoming)
                                     }
                                 }
                             }
                         }
                     }
-                    .onAppear {
-                        self.selectedUpcomingTransactions = []
-                    }
+
                     Spacer()
                 }
                 .frame(width: 400)
             }
         }
-        .sheet(isPresented: $isConfirmReservePaydayModalShowing, onDismiss: {self.selectedPaydays.removeAll()}) {
-            if !self.selectedPaydays.isEmpty {
-                Dashboard_ReserveTransactionsModalView(reserveList: selectedPaydays, accountList: accountList)
+        .sheet(isPresented: $viewModel.isConfirmReservePaydayModalShowing, onDismiss: {viewModel.reservePaydayDismiss(modelContext: modelContext)}) {
+            if !$viewModel.selectedPaydays.isEmpty {
+                Dashboard_ReserveTransactionsModalView(
+                    reserveList: viewModel.selectedPaydays,
+                    selectedAccount: $viewModel.selectedAccount,
+                    didCancel: $viewModel.didCancel
+                )
             }
 
         }
-        .sheet(isPresented: $isConfirmReserveBillsModalShowing, onDismiss: {self.selectedUpcomingTransactions.removeAll()}) {
-            if !self.$selectedUpcomingTransactions.isEmpty {
-                Dashboard_ReserveTransactionsModalView(reserveList: selectedUpcomingTransactions, accountList: accountList)
+        .sheet(isPresented: $viewModel.isConfirmReserveBillsModalShowing, onDismiss: {viewModel.reserveBillsDismiss(modelContext: modelContext)}) {
+            if !$viewModel.selectedUpcomingTransactions.isEmpty {
+                Dashboard_ReserveTransactionsModalView(
+                    reserveList: viewModel.selectedUpcomingTransactions,
+                    selectedAccount: $viewModel.selectedAccount,
+                    didCancel: $viewModel.didCancel)
             }
         }
     }

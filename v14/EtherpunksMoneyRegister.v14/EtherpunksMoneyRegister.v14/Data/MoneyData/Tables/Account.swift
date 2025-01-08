@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import SwiftUICore
 
 @Model
 final class Account: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
