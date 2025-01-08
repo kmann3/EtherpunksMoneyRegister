@@ -10,35 +10,41 @@ import SwiftUI
 
 @main
 struct EtherpunksMoneyRegister_v14App: App {
-    #if !DEBUG
-        var container: ModelContainer = {
+    var container: ModelContainer
+
+    init() {
+        container = {
             let schema = Schema([
                 Account.self,
                 AccountTransaction.self,
                 RecurringGroup.self,
                 RecurringTransaction.self,
                 TransactionFile.self,
-                TransactionTag.self,
+                TransactionTag.self
             ])
-            // There is a problem with TransactionFile.Data and NOT being stored in memory.
+
             let config = ModelConfiguration(isStoredInMemoryOnly: false)
 
             do {
+
                 return try ModelContainer(for: schema, configurations: [config])
             } catch {
-                fatalError("Could not create ModelContainer: \(error)")
+                fatalError("fatal error: Could not create ModelContainer: \(error)")
             }
         }()
-    #endif
+
+        print("-----------------")
+        print(Date().toDebugDate())
+        print("-----------------")
+        print("Database Location: \(container.mainContext.sqliteLocation)")
+    }
 
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
-        #if DEBUG
-            .modelContainer(Previewer().container)
-        #else
-            .modelContainer(container)
-        #endif
+        .modelContainer(container)
+        //.modelContext(container.mainContext)
+
     }
 }
