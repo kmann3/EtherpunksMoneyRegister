@@ -13,7 +13,7 @@ import SwiftUI
 @MainActor
 class Previewer {
 
-    let isDbInMemory: Bool = true
+    let isDbInMemory: Bool = false
 
     private static let now: Date = Date()
     public let bankAccount: Account = Account(
@@ -58,7 +58,7 @@ class Previewer {
             RecurringGroup.self,
             RecurringTransaction.self,
             TransactionFile.self,
-            TransactionTag.self,
+            TransactionTag.self
         ])
         let config = ModelConfiguration(isStoredInMemoryOnly: isDbInMemory)
         container = try! ModelContainer(for: schema, configurations: config)
@@ -429,21 +429,15 @@ class Previewer {
     }
 
     static func insertTransaction(account: Account, transaction: AccountTransaction, context: ModelContext) {
-        do {
-            transaction.VerifySignage()
-            account.currentBalance += transaction.amount
-            if(transaction.clearedOnUTC == nil) {
-                account.outstandingBalance += transaction.amount
-                account.outstandingItemCount += 1
-            }
-            account.transactionCount += 1
-            transaction.balance = account.currentBalance
-            context.insert(transaction)
-
-            try context.save()
-        } catch {
-            debugPrint(error)
+        transaction.VerifySignage()
+        account.currentBalance += transaction.amount
+        if(transaction.clearedOnUTC == nil) {
+            account.outstandingBalance += transaction.amount
+            account.outstandingItemCount += 1
         }
+        account.transactionCount += 1
+        transaction.balance = account.currentBalance
+        context.insert(transaction)
     }
 }
 
