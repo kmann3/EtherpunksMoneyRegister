@@ -1,32 +1,24 @@
 //
-//  ContentView.swift
+//  ContentView_MacOS.swift
 //  EtherpunksMoneyRegister.v14
 //
-//  Created by Kennith Mann on 11/15/24.
+//  Created by Kennith Mann on 1/9/25.
 //
 
-import SwiftData
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.modelContext) var modelContext
-    @State private var pathStore = PathStore()
-
-//    init(modelContext: ModelContext) {
-//        let viewModel = ViewModel(modelContext: modelContext)
-//        _viewModel = State(initialValue: viewModel)
-//    }
+    @State var viewModel = ViewModel()
 
     var body: some View {
-        NavigationStack(path: $pathStore.path) {
-            TabView(selection: $pathStore.selectedTab) {
+        NavigationStack(path: $viewModel.pathStore.path) {
+            TabView(selection: $viewModel.pathStore.selectedTab) {
                 Tab(
                     MenuOptionsEnum.dashboard.title,
                     systemImage: MenuOptionsEnum.dashboard.iconName,
                     value: MenuOptionsEnum.dashboard
                 ) {
-                    MenuOptionsEnum.dashboard.action
-                        .environment(pathStore)
+                    DashboardView()
                 }
                 .customizationID(MenuOptionsEnum.dashboard.tabId)
 
@@ -35,8 +27,7 @@ struct ContentView: View {
                     systemImage: MenuOptionsEnum.accounts.iconName,
                     value: MenuOptionsEnum.accounts
                 ) {
-                    MenuOptionsEnum.accounts.action
-                        .environment(pathStore)
+                    AccountsView()
                 }
                 .customizationID(MenuOptionsEnum.accounts.tabId)
 
@@ -45,8 +36,7 @@ struct ContentView: View {
                     systemImage: MenuOptionsEnum.recurringTransactions.iconName,
                     value: MenuOptionsEnum.recurringTransactions
                 ) {
-                    MenuOptionsEnum.recurringTransactions.action
-                        .environment(pathStore)
+                    RecurringTransactionsView()
                 }
                 .customizationID(MenuOptionsEnum.recurringTransactions.tabId)
 
@@ -56,7 +46,6 @@ struct ContentView: View {
                     value: MenuOptionsEnum.tags
                 ) {
                     TagsView()
-                        .environment(pathStore)
                 }
                 .customizationID(MenuOptionsEnum.tags.tabId)
 
@@ -65,8 +54,8 @@ struct ContentView: View {
                     systemImage: MenuOptionsEnum.reports.iconName,
                     value: MenuOptionsEnum.reports
                 ) {
-                    MenuOptionsEnum.reports.action
-                        .environment(pathStore)
+                    ReportsView()
+                        .environment(viewModel.pathStore)
                 }
                 .customizationID(MenuOptionsEnum.reports.tabId)
 
@@ -76,8 +65,7 @@ struct ContentView: View {
                     value: MenuOptionsEnum
                         .search
                 ) {
-                    MenuOptionsEnum.search.action
-                        .environment(pathStore)
+                    SearchView()
                 }
                 .customizationID(MenuOptionsEnum.search.tabId)
 
@@ -86,36 +74,32 @@ struct ContentView: View {
                     systemImage: MenuOptionsEnum.settings.iconName,
                     value: MenuOptionsEnum.settings
                 ) {
-                    MenuOptionsEnum.settings.action
-                        .environment(pathStore)
+                    SettingsView()
                 }
                 .customizationID(MenuOptionsEnum.settings.tabId)
-
-                #if os(iOS)
-                    Tab(value: .search, role: .search) {
-                        MenuOptionsEnum.search.action
-                    }
-                #endif
+#if os(iOS)
+                Tab(value: .search, role: .search) {
+                    MenuOptionsEnum.search.action
+                }
+#endif
             }
-            #if os(macOS)
+#if os(macOS)
             .tabViewStyle(.grouped)
-            #else
+#else
             .tabViewStyle(.automatic)
-            #endif
+#endif
             .navigationDestination(for: PathStore.Route.self) { route in
                 switch route {
                 case .account_Create: Text("TBI")
-                case .account_Details(let account):
-                    AccountDetailsView(account: account)
-                        .environment(pathStore)
+                case .account_Details(let account): Text("TBI: \(account.name)")
                 case .account_Edit: Text("TBI")
-                case .account_List:
-                    AccountsView()
-                        .environment(pathStore)
+                case .account_List: Text("TBI")
 
                 case .dashboard:
                     DashboardView()
-                        .environment(pathStore)
+                        .onAppear {
+                            viewModel.pathStore.selectedTab = .dashboard
+                        }
 
                 case .recurringGroup_Create: Text("TBI")
                 case .recurringGroup_Details: Text("TBI")
@@ -129,46 +113,31 @@ struct ContentView: View {
 
                 case .report_Tax: Text("TBI")
 
-                case .tag_Create:
-                    TagEditor(tag: TransactionTag(name: ""))
-                        .environment(pathStore)
-                        .onAppear {
-                            pathStore.selectedTab = .tags
-                        }
-                case .tag_Edit(let tag):
-                    TagEditor(tag: tag)
-                        .environment(pathStore)
-                        .onAppear {
-                            pathStore.selectedTab = .tags
-                        }
-                case .tag_List:
-                    TagsView()
-                        .environment(pathStore)
+                case .tag_Create: Text("TBI")
+                case .tag_Edit(let tag): Text("TBI: \(tag.name)")
+//                    TagEditor(tag: tag)
+//                        .environment(pathStore)
+//                        .onAppear {
+//                            pathStore.selectedTab = .tags
+//                        }
+                case .tag_List: Text("TBI")
 
                 case .transaction_Create: Text("TBI")
-                case .transaction_Detail(let transaction):
-                    TransactionDetailsView(transaction: transaction)
-                        .environment(pathStore)
+                case .transaction_Detail(let transaction): Text("TBI: \(transaction.name)")
                 case .transaction_Edit: Text("TBI")
-                case .transaction_List(let account):
-                    AccountTransactionsView(account: account)
-                        .environment(pathStore)
+                case .transaction_List(let account): Text("TBI: \(account.name)")
                 }
             }
         }
-        #if os(macOS)
-            .frame(
-                minWidth: 850, maxWidth: .infinity, minHeight: 500,
-                maxHeight: .infinity)
-        #endif
+        .frame(
+            minWidth: 850, maxWidth: .infinity, minHeight: 500,
+            maxHeight: .infinity)
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(Previewer().container)
-        #if os(macOS)
-            .frame(width: 900, height: 600)
-        #endif
-    // .modelContainer(for: Item.self, inMemory: true)
+#if os(macOS)
+        .frame(width: 900, height: 600)
+#endif
 }

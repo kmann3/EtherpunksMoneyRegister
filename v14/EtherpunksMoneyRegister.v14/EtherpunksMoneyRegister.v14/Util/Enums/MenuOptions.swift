@@ -41,17 +41,6 @@ enum MenuOptionsEnum: Int, CaseIterable {
         }
     }
 
-    var action: some View {
-        switch self {
-        case .dashboard:             return AnyView(DashboardView())
-        case .accounts:              return AnyView(AccountsView())
-        case .recurringTransactions: return AnyView(RecurringTransactionsView())
-        case .reports:               return AnyView(ReportsView())
-        case .search:                return AnyView(SearchView())
-        case .settings:              return AnyView(SettingsView())
-        default:                     return AnyView(DashboardView())
-        }
-    }
 
     var tabId: String {
         switch self {

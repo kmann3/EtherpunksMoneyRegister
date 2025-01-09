@@ -217,23 +217,22 @@ class Previewer {
 //        container.mainContext.insert(createTransaction(name: "Test 8", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
 //        container.mainContext.insert(createTransaction(name: "Test 9", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
 
-        downloadImageDataAsync(completion: { [self] data in
-            if data != nil {
+        Task {
+            let monkeyData = await downloadEtherpunkMonkeyAsync()
+            if monkeyData != nil {
                 let cvsAttachmentFile: TransactionFile = TransactionFile(
                     name: "Etherpunk Logo",
                     filename: "monkey.jpg",
                     notes:
                         "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.",
-                    data: data!,
+                    data: monkeyData!,
                     isTaxRelated: true,
                     accountTransaction: self.cvsTransaction
                 )
 
                 container.mainContext.insert(cvsAttachmentFile)
-            } else {
-                debugPrint("Error downloading monkey from URL")
             }
-        })
+        }
 
         discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
         verizonRecurringTransaction.nextDueDate = getNextDueDate(day: 28)
@@ -403,29 +402,21 @@ class Previewer {
         return date!
     }
 
-    func downloadImageDataAsync(completion: @escaping (Data?) -> Void) {
+    func downloadEtherpunkMonkeyAsync() async -> Data? {
         let monkeyUrlString =
-            "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
+        "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
 
         guard let url = URL(string: monkeyUrlString) else {
             debugPrint("Invalid URL: \(monkeyUrlString)")
-            completion(nil)
-            return
+            return nil
         }
 
-        let task = URLSession.shared.dataTask(with: url) { data, _, error in
-            guard let data = data, error == nil else {
-                debugPrint(
-                    "Error downloading image: \(error?.localizedDescription ?? "Unknown error")"
-                )
-                completion(nil)
-                return
-            }
-
-            completion(data)
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            return data
+        } catch {
+            return nil
         }
-
-        task.resume()
     }
 
     static func insertTransaction(account: Account, transaction: AccountTransaction, context: ModelContext) {

@@ -1,5 +1,5 @@
 //
-//  Dashboard_AccountViewITem.swift
+//  Dashboard_AccountViewItem.swift
 //  EtherpunksMoneyRegister.v14
 //
 //  Created by Kennith Mann on 1/6/25.
