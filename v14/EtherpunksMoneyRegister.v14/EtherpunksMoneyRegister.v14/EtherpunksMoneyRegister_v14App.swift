@@ -41,10 +41,13 @@ struct EtherpunksMoneyRegister_v14App: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            #if os(macOS)
+            ContentView_MacOS()
+            #endif
+            #if os(iOS)
+            ContentView_iOS()
+            #endif
         }
-        .modelContainer(container)
-        //.modelContext(container.mainContext)
 
     }
 }
