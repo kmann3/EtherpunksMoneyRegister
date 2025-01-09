@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Dashboard_AccountViewItem: View {
+struct Dashboard_AccountItemView: View {
     var acctData: Account
 
     var body: some View {
@@ -76,8 +76,7 @@ struct Dashboard_AccountViewItem: View {
                 Spacer()
 
                 Text(
-                    acctData.lastBalancedUTC!,
-                    format: .dateTime.month().day().year()
+                    acctData.lastBalancedUTC?.toSummaryDate2() ?? "never"
                 )
                 .font(.headline)
                 .foregroundStyle(.secondary)
@@ -101,6 +100,6 @@ struct Dashboard_AccountViewItem: View {
 
 #Preview {
     let p = Previewer()
-    Dashboard_AccountViewItem(acctData: p.bankAccount)
+    Dashboard_AccountItemView(acctData: p.bankAccount)
         .modelContainer(p.container)
 }

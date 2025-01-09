@@ -17,7 +17,9 @@ final class MoneyDataSource: Sendable {
     static let shared = MoneyDataSource()
     static let pathStore = PathStore()
 
-    init() {
+    public var acct = Account(name: "Etherpunks Money Register", startingBalance: 0)
+
+    init(generatePreviewData: Bool = false) {
         self.modelContainer = {
             let schema = Schema([
                 Account.self,
@@ -28,7 +30,7 @@ final class MoneyDataSource: Sendable {
                 TransactionTag.self
             ])
 
-            let config = ModelConfiguration(isStoredInMemoryOnly: false)
+            let config = ModelConfiguration(isStoredInMemoryOnly: true)
 
             do {
 
@@ -44,9 +46,21 @@ final class MoneyDataSource: Sendable {
         print(Date().toDebugDate())
         print("-----------------")
         print("Database Location: \(self.modelContext.sqliteLocation)")
+
+        if generatePreviewData {
+            populateTestData()
+        }
     }
 
     func fetchAccounts() -> [Account] {
+        do {
+            return try modelContext.fetch(FetchDescriptor<Account>(sortBy: [SortDescriptor(\.name)]))
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+
+    func fetchAccountsAsync() async -> [Account] {
         do {
             return try modelContext.fetch(FetchDescriptor<Account>(sortBy: [SortDescriptor(\.name)]))
         } catch {
@@ -108,5 +122,23 @@ final class MoneyDataSource: Sendable {
         } catch {
             fatalError(error.localizedDescription)
         }
+    }
+
+    func populateTestData() {
+        acct = Account(
+            id: UUID(uuidString: "12345678-1234-1234-1234-123456789abc")!,
+            name: "Chase Bank",
+            startingBalance: 2062.00,
+            currentBalance: 2062.00,
+            outstandingBalance: 0.0,
+            outstandingItemCount: 0,
+            notes: "",
+            sortIndex: Int64.max,
+            lastBalancedUTC: "2024-09-12T17:40:31.594+0000",
+            createdOnUTC: "2024-09-13T17:40:31.594+0000")
+
+        modelContext.insert(acct)
+
+        //Previewer().generatePreviewData(modelContext: modelContext)
     }
 }

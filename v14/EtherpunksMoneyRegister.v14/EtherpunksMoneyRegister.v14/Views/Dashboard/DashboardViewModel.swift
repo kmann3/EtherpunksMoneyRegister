@@ -10,7 +10,8 @@ import SwiftData
 import SwiftUI
 
 extension DashboardView {
-    
+
+    @MainActor
     @Observable
     class ViewModel {
         @ObservationIgnored
@@ -31,7 +32,6 @@ extension DashboardView {
         var isConfirmReserveCreditDialogShowing: Bool = false
         var isConfirmReserveDebitDialogShowing: Bool = false
 
-        @MainActor
         init(dataSource: MoneyDataSource = MoneyDataSource.shared) {
             self.dataSource = dataSource
             self.pathStore = MoneyDataSource.pathStore

@@ -1,20 +1,19 @@
 //
-//  TransactionItemListView.swift
+//  Dashboard_TransactionItemView.swift
 //  EtherpunksMoneyRegister.v14
 //
-//  Created by Kennith Mann on 11/20/24.
+//  Created by Kennith Mann on 1/9/25.
 //
 
 import SwiftUI
 
-struct TransactionListItemView: View {
+struct Dashboard_TransactionItemView: View {
     let transaction: AccountTransaction
-    let showBalance: Bool
 
-    init(transaction: AccountTransaction, showBalance: Bool = true) {
+    init(transaction: AccountTransaction) {
         self.transaction = transaction
-        self.showBalance = showBalance
     }
+
     var body: some View {
         VStack {
             HStack(spacing: 0) {
@@ -46,7 +45,7 @@ struct TransactionListItemView: View {
                 {
                     Text("Reserved")
                 } else if transaction.pendingOnUTC != nil
-                    && transaction.clearedOnUTC == nil
+                            && transaction.clearedOnUTC == nil
                 {
                     Text("Pending")
                 } else {
@@ -60,21 +59,6 @@ struct TransactionListItemView: View {
                 }
 
                 Spacer()
-
-                if showBalance {
-                    HStack {
-                        Text("Bal:")
-                        Text(
-                            transaction.balance ?? 0,
-                            format:
-                                    .currency(
-                                        code: Locale.current.currency?.identifier
-                                        ?? "USD"
-                                    )
-                        )
-                        .font(.caption)
-                    }
-                }
             }
 
             HStack(spacing: 0) {
@@ -102,7 +86,5 @@ struct TransactionListItemView: View {
 }
 
 #Preview {
-    let p = Previewer()
-    TransactionListItemView(transaction: p.cvsTransaction)
-        .modelContainer(p.container)
+    Dashboard_TransactionItemView(transaction: Previewer().discordTransaction)
 }

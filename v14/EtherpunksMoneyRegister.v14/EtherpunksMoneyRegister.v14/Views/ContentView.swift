@@ -27,7 +27,7 @@ struct ContentView: View {
                     systemImage: MenuOptionsEnum.accounts.iconName,
                     value: MenuOptionsEnum.accounts
                 ) {
-                    AccountsView()
+                    //AccountsView()
                 }
                 .customizationID(MenuOptionsEnum.accounts.tabId)
 
@@ -36,7 +36,7 @@ struct ContentView: View {
                     systemImage: MenuOptionsEnum.recurringTransactions.iconName,
                     value: MenuOptionsEnum.recurringTransactions
                 ) {
-                    RecurringTransactionsView()
+                    //RecurringTransactionsView()
                 }
                 .customizationID(MenuOptionsEnum.recurringTransactions.tabId)
 
@@ -45,7 +45,7 @@ struct ContentView: View {
                     systemImage: MenuOptionsEnum.tags.iconName,
                     value: MenuOptionsEnum.tags
                 ) {
-                    TagsView()
+                    //TagsView()
                 }
                 .customizationID(MenuOptionsEnum.tags.tabId)
 
@@ -54,8 +54,7 @@ struct ContentView: View {
                     systemImage: MenuOptionsEnum.reports.iconName,
                     value: MenuOptionsEnum.reports
                 ) {
-                    ReportsView()
-                        .environment(viewModel.pathStore)
+                    //ReportsView()
                 }
                 .customizationID(MenuOptionsEnum.reports.tabId)
 
@@ -65,7 +64,7 @@ struct ContentView: View {
                     value: MenuOptionsEnum
                         .search
                 ) {
-                    SearchView()
+                    //SearchView()
                 }
                 .customizationID(MenuOptionsEnum.search.tabId)
 
@@ -74,7 +73,7 @@ struct ContentView: View {
                     systemImage: MenuOptionsEnum.settings.iconName,
                     value: MenuOptionsEnum.settings
                 ) {
-                    SettingsView()
+                    //SettingsView()
                 }
                 .customizationID(MenuOptionsEnum.settings.tabId)
 #if os(iOS)

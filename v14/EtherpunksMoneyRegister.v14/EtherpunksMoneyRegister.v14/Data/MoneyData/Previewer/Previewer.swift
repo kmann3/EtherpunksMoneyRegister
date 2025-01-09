@@ -13,7 +13,7 @@ import SwiftUI
 @MainActor
 class Previewer {
 
-    let isDbInMemory: Bool = false
+    let isDbInMemory: Bool = true
 
     private static let now: Date = Date()
     public let bankAccount: Account = Account(
@@ -430,16 +430,9 @@ class Previewer {
         transaction.balance = account.currentBalance
         context.insert(transaction)
     }
-}
 
-extension ModelContext {
-    var sqliteLocation: String {
-        if let url = container.configurations.first?.url.path(
-            percentEncoded: false)
-        {
-            "sqlite3 \"\(url)\""
-        } else {
-            "No SQLite database found."
-        }
+    public func generatePreviewData(modelContext: ModelContext) {
+        //Previewer.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: container.mainContext)
+        modelContext.insert(Account(name: "Kenny", startingBalance: 20.00))
     }
 }

@@ -15,7 +15,7 @@ struct DashboardView: View {
             HStack {
                 VStack {
                     List(viewModel.accounts) { account in
-                        Dashboard_AccountViewItem(acctData: account)
+                        Dashboard_AccountItemView(acctData: account)
                             .onTapGesture {
                                 viewModel.pathStore.navigateTo(
                                     route: .transaction_List(account: account))
@@ -29,14 +29,14 @@ struct DashboardView: View {
                     List {
                         Section(header: Text("Reserved Transactions")) {
                             ForEach(viewModel.reservedTransactions) { reserved in
-                                Dashboard_TransactionViewItem(transaction: reserved)
+                                Dashboard_TransactionItemView(transaction: reserved)
                             }
                         }
                     }
                     List {
                         Section(header: Text("Pending Transactions")) {
                             ForEach(viewModel.pendingTransactions) { pending in
-                                Dashboard_TransactionViewItem(transaction: pending)
+                                Dashboard_TransactionItemView(transaction: pending)
                             }
                         }
                     }
@@ -61,7 +61,7 @@ struct DashboardView: View {
                             }
 
                             ForEach(viewModel.upcomingCreditRecurringTransactions, id: \.self) { creditItem in
-                                Dashboard_RecurringViewItem(recurringItem: creditItem, isSelected: viewModel.selectedCreditRecurringTransactions.contains(creditItem)) {
+                                Dashboard_RecurringItemView(recurringItem: creditItem, isSelected: viewModel.selectedCreditRecurringTransactions.contains(creditItem)) {
                                     if viewModel.selectedCreditRecurringTransactions.contains(creditItem) {
                                         viewModel.selectedCreditRecurringTransactions.removeAll(where: { $0 == creditItem })
                                     } else {
@@ -86,7 +86,7 @@ struct DashboardView: View {
                             }
 
                             ForEach(viewModel.upcomingDebitRecurringTransactions, id: \.self) { debitItem in
-                                Dashboard_RecurringViewItem(
+                                Dashboard_RecurringItemView(
                                     recurringItem: debitItem,
                                     isSelected: viewModel.selectedDebitRecurringTransactions.contains(debitItem)
                                 ) {
@@ -127,7 +127,7 @@ struct DashboardView: View {
 }
 
 #Preview {
-    DashboardView()
+    DashboardView(viewModel: DashboardView.ViewModel(dataSource: MoneyDataSource(generatePreviewData: true)))
 #if os(macOS)
         .frame(width: 900, height: 500)
 #endif

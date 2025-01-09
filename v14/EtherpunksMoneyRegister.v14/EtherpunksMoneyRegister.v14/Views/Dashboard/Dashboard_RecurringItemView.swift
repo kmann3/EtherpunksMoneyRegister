@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Dashboard_RecurringViewItem: View {
+struct Dashboard_RecurringItemView: View {
     var recurringItem: RecurringTransaction
     var isSelected: Bool
     var action: () -> Void
@@ -35,6 +35,5 @@ struct Dashboard_RecurringViewItem: View {
 
 #Preview {
     let p = Previewer()
-    Dashboard_RecurringViewItem(recurringItem: p.discordRecurringTransaction, isSelected: false, action: {})
-        .modelContainer(p.container)
+    Dashboard_RecurringItemView(recurringItem: p.discordRecurringTransaction, isSelected: false, action: {})
 }
