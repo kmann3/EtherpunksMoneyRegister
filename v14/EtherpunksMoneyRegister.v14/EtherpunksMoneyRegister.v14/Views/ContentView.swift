@@ -45,7 +45,7 @@ struct ContentView: View {
                     systemImage: MenuOptionsEnum.tags.iconName,
                     value: MenuOptionsEnum.tags
                 ) {
-                    //TagsView()
+                    TagView()
                 }
                 .customizationID(MenuOptionsEnum.tags.tabId)
 
@@ -120,7 +120,8 @@ struct ContentView: View {
 //                        .onAppear {
 //                            pathStore.selectedTab = .tags
 //                        }
-                case .tag_List: Text("TBI")
+                case .tag_List:
+                    TagView()
 
                 case .transaction_Create: Text("TBI")
                 case .transaction_Detail(let transaction): Text("TBI: \(transaction.name)")
