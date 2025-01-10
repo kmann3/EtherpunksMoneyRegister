@@ -27,7 +27,7 @@ final class TransactionTag: ObservableObject, CustomDebugStringConvertible, Iden
 
     init(
         id: UUID = UUID(),
-        name: String,
+        name: String = "",
         accountTransactions: [AccountTransaction]? = nil
     ) {
         self.id = id

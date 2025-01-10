@@ -21,6 +21,7 @@ extension TagView {
         var tags: [TransactionTag]
         var tagToDelete: TransactionTag? = nil
         var isDeleteWarningPresented: Bool = false
+        var isNewTagDialogPresented: Bool = false
 
         init(dataSource: MoneyDataSource = MoneyDataSource.shared) {
             self.dataSource = dataSource
@@ -36,6 +37,10 @@ extension TagView {
 
             dataSource.deleteTag(tagToDelete!)
 
+            self.tags = dataSource.fetchAllTags()
+        }
+
+        func refreshTagList() {
             self.tags = dataSource.fetchAllTags()
         }
     }

@@ -55,6 +55,15 @@ final class MoneyDataSource: Sendable {
         #endif
     }
 
+    func createTag(_ tag: TransactionTag) {
+        do {
+            modelContext.insert(tag)
+            try modelContext.save()
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+
     func deleteTag(_ tag: TransactionTag) {
         modelContext.delete(tag)
     }
@@ -185,6 +194,14 @@ final class MoneyDataSource: Sendable {
                 print(error)
                 modelContext.rollback()
             }
+        }
+    }
+
+    func updateTag(_ tag: TransactionTag) {
+        do {
+            try modelContext.save()
+        } catch {
+            fatalError(error.localizedDescription)
         }
     }
 }

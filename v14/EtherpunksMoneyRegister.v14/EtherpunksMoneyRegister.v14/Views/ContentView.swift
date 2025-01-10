@@ -78,7 +78,8 @@ struct ContentView: View {
                 .customizationID(MenuOptionsEnum.settings.tabId)
 #if os(iOS)
                 Tab(value: .search, role: .search) {
-                    MenuOptionsEnum.search.action
+                    // TODO: Mobile search
+                    //SearchView()
                 }
 #endif
             }
@@ -113,13 +114,16 @@ struct ContentView: View {
 
                 case .report_Tax: Text("TBI")
 
-                case .tag_Create: Text("TBI")
-                case .tag_Edit(let tag): Text("TBI: \(tag.name)")
-//                    TagEditor(tag: tag)
-//                        .environment(pathStore)
-//                        .onAppear {
-//                            pathStore.selectedTab = .tags
-//                        }
+                case .tag_Create:
+                    TagEditorView(tag: TransactionTag(name: ""))
+                        .onAppear {
+                            viewModel.pathStore.selectedTab = .tags
+                        }
+                case .tag_Edit(let tag):
+                    TagEditorView(tag: tag)
+                        .onAppear {
+                            viewModel.pathStore.selectedTab = .tags
+                        }
                 case .tag_List:
                     TagView()
 
@@ -130,6 +134,54 @@ struct ContentView: View {
                 }
             }
         }
+        // https://www.appcoda.com/swiftui-toolbar-customization/
+//        .toolbar {
+//            ToolbarItem(placement: .principal) {
+//                Image(systemName: "person.crop.circle")
+//            }
+//
+//            ToolbarItem(placement: .topBarLeading) {
+//                Button {
+//                    // action
+//                } label: {
+//                    Image(systemName: "line.3.horizontal")
+//                }
+//            }
+//
+//            ToolbarItem(placement: .topBarTrailing) {
+//                Button {
+//                    // action
+//                } label: {
+//                    Image(systemName: "plus")
+//                }
+//            }
+//
+//            ToolbarItem(placement: .topBarTrailing) {
+//                Button {
+//                    // action
+//                } label: {
+//                    Image(systemName: "square.and.arrow.up")
+//                }
+//            }
+//
+//            ToolbarItem(placement: .bottomBar) {
+//                Image(systemName: "folder")
+//            }
+//
+//            ToolbarItem(placement: .bottomBar) {
+//                Image(systemName: "message")
+//            }
+//
+//            ToolbarItem(placement: .status) {
+//                Button {
+//
+//                } label: {
+//                    Text("Hide Navigation")
+//                }
+//                .buttonStyle(.borderedProminent)
+//                .controlSize(.extraLarge)
+//            }
+//        }
         .frame(
             minWidth: 850, maxWidth: .infinity, minHeight: 500,
             maxHeight: .infinity)
