@@ -27,7 +27,7 @@ struct ContentView: View {
                     systemImage: MenuOptionsEnum.accounts.iconName,
                     value: MenuOptionsEnum.accounts
                 ) {
-                    //AccountsView()
+                    AccountsView()
                 }
                 .customizationID(MenuOptionsEnum.accounts.tabId)
 
@@ -92,7 +92,8 @@ struct ContentView: View {
                 case .account_Create: Text("TBI")
                 case .account_Details(let account): Text("TBI: \(account.name)")
                 case .account_Edit: Text("TBI")
-                case .account_List: Text("TBI")
+                case .account_List:
+                    AccountsView()
 
                 case .dashboard:
                     DashboardView()

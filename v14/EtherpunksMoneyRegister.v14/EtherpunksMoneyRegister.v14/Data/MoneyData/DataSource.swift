@@ -55,6 +55,10 @@ final class MoneyDataSource: Sendable {
         #endif
     }
 
+    func deleteTag(_ tag: TransactionTag) {
+        modelContext.delete(tag)
+    }
+
     func fetchAccounts() -> [Account] {
         do {
             return try modelContext.fetch(FetchDescriptor<Account>(sortBy: [SortDescriptor(\.name)]))
@@ -110,6 +114,41 @@ final class MoneyDataSource: Sendable {
             ))
         } catch {
             fatalError(error.localizedDescription)
+        }
+    }
+
+    func fetchAllTags() -> [TransactionTag] {
+        do {
+            return try modelContext.fetch(FetchDescriptor<TransactionTag>(
+                sortBy: [SortDescriptor(\TransactionTag.name)]
+            ))
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+
+    func fetchTagItemData(_ transactionTag: TransactionTag) -> (count: Int, lastUsed: Date?) {
+        let tagId = transactionTag.id
+
+        var fetchDescriptor: FetchDescriptor<TransactionTag> {
+            var descriptor = FetchDescriptor<TransactionTag>(
+                predicate: #Predicate<TransactionTag> {
+                    $0.id == tagId
+                }
+            )
+            descriptor.fetchLimit = 1
+            descriptor.relationshipKeyPathsForPrefetching = [
+                \.accountTransactions
+            ]
+            return descriptor
+        }
+
+        let query = try! modelContext.fetch(fetchDescriptor)
+
+        if query.count > 0 {
+            return (query.first!.accountTransactions?.count ?? 0, query.first?.createdOnUTC ?? nil)
+        } else {
+            return (0, nil)
         }
     }
 
