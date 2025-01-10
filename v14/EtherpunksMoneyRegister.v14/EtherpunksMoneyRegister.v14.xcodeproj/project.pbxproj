@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AAD0DE872D2B82B300F9A71C /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = AAD0DE862D2B82B300F9A71C /* SQLite */; };
+		AABFCA992D311BBD00949C1A /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = AABFCA982D311BBD00949C1A /* SQLite */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,17 +40,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AAD0DE872D2B82B300F9A71C /* SQLite in Frameworks */,
+				AABFCA992D311BBD00949C1A /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AABFCA962D311BA000949C1A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		AAF6E98B2CE78E940062CFF5 = {
 			isa = PBXGroup;
 			children = (
 				AAF6E9962CE78E940062CFF5 /* EtherpunksMoneyRegister.v14 */,
+				AABFCA962D311BA000949C1A /* Frameworks */,
 				AAF6E9952CE78E940062CFF5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -83,7 +91,7 @@
 			);
 			name = EtherpunksMoneyRegister.v14;
 			packageProductDependencies = (
-				AAD0DE862D2B82B300F9A71C /* SQLite */,
+				AABFCA982D311BBD00949C1A /* SQLite */,
 			);
 			productName = EtherpunksMoneyRegister.v14;
 			productReference = AAF6E9942CE78E940062CFF5 /* EtherpunksMoneyRegister.v14.app */;
@@ -114,7 +122,7 @@
 			mainGroup = AAF6E98B2CE78E940062CFF5;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				AAD0DE852D2B82B300F9A71C /* XCRemoteSwiftPackageReference "SQLite" */,
+				AABFCA972D311BBD00949C1A /* XCRemoteSwiftPackageReference "SQLite" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AAF6E9952CE78E940062CFF5 /* Products */;
@@ -373,7 +381,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		AAD0DE852D2B82B300F9A71C /* XCRemoteSwiftPackageReference "SQLite" */ = {
+		AABFCA972D311BBD00949C1A /* XCRemoteSwiftPackageReference "SQLite" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
 			requirement = {
@@ -384,9 +392,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AAD0DE862D2B82B300F9A71C /* SQLite */ = {
+		AABFCA982D311BBD00949C1A /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = AAD0DE852D2B82B300F9A71C /* XCRemoteSwiftPackageReference "SQLite" */;
+			package = AABFCA972D311BBD00949C1A /* XCRemoteSwiftPackageReference "SQLite" */;
 			productName = SQLite;
 		};
 /* End XCSwiftPackageProductDependency section */

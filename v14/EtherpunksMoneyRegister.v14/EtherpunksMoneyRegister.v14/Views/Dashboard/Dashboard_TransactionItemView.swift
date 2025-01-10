@@ -84,7 +84,40 @@ struct Dashboard_TransactionItemView: View {
         .contentShape(Rectangle())
     }
 }
+#Preview("Reserved") {
+    Dashboard_TransactionItemView(
+        transaction: AccountTransaction(
+            account: Account(name: "Test", startingBalance: 50.00),
+            name: "Test Transaction",
+            transactionType: .debit,
+            amount: 13.73,
+            balance: 50.00
+        )
+    )
+}
 
-#Preview {
-    Dashboard_TransactionItemView(transaction: Previewer().discordTransaction)
+#Preview("Pending") {
+    Dashboard_TransactionItemView(
+        transaction: AccountTransaction(
+            account: Account(name: "Test", startingBalance: 50.00),
+            name: "Test Transaction",
+            transactionType: .debit,
+            amount: 13.73,
+            balance: 50.00,
+            pendingOnUTC: Date()
+        )
+    )
+}
+#Preview("Cleared") {
+    Dashboard_TransactionItemView(
+        transaction: AccountTransaction(
+            account: Account(name: "Test", startingBalance: 50.00),
+            name: "Test Transaction",
+            transactionType: .debit,
+            amount: 13.73,
+            balance: 50.00,
+            pendingOnUTC: Date(),
+            clearedOnUTC: Date()
+        )
+    )
 }

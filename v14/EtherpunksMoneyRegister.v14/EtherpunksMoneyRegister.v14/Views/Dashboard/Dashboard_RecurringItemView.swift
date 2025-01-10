@@ -34,6 +34,6 @@ struct Dashboard_RecurringItemView: View {
 }
 
 #Preview {
-    let p = Previewer()
-    Dashboard_RecurringItemView(recurringItem: p.discordRecurringTransaction, isSelected: false, action: {})
+    let ds = MoneyDataSource()
+    Dashboard_RecurringItemView(recurringItem: ds.previewer.discordRecurringTransaction, isSelected: false, action: {})
 }

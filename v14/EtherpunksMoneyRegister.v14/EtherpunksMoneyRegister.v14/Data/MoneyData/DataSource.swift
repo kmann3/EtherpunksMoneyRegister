@@ -17,9 +17,11 @@ final class MoneyDataSource: Sendable {
     static let shared = MoneyDataSource()
     static let pathStore = PathStore()
 
-    public var acct = Account(name: "Etherpunks Money Register", startingBalance: 0)
+#if DEBUG
+    public let previewer: Previewer
+#endif
 
-    init(generatePreviewData: Bool = false) {
+    init() {
         self.modelContainer = {
             let schema = Schema([
                 Account.self,
@@ -42,14 +44,14 @@ final class MoneyDataSource: Sendable {
 
         self.modelContext = self.modelContainer.mainContext
 
+        #if DEBUG
         print("-----------------")
         print(Date().toDebugDate())
         print("-----------------")
         print("Database Location: \(self.modelContext.sqliteLocation)")
 
-        if generatePreviewData {
-            populateTestData()
-        }
+        previewer = Previewer(modelContext: modelContext)
+        #endif
     }
 
     func fetchAccounts() -> [Account] {
@@ -124,21 +126,25 @@ final class MoneyDataSource: Sendable {
         }
     }
 
-    func populateTestData() {
-        acct = Account(
-            id: UUID(uuidString: "12345678-1234-1234-1234-123456789abc")!,
-            name: "Chase Bank",
-            startingBalance: 2062.00,
-            currentBalance: 2062.00,
-            outstandingBalance: 0.0,
-            outstandingItemCount: 0,
-            notes: "",
-            sortIndex: Int64.max,
-            lastBalancedUTC: "2024-09-12T17:40:31.594+0000",
-            createdOnUTC: "2024-09-13T17:40:31.594+0000")
+    func reserveTransactions(_ transactions: [RecurringTransaction], account: Account) {
+        try? modelContext.transaction {
+            transactions.forEach { item in
+                account.currentBalance += item.amount
+                account.outstandingBalance += item.amount
+                account.outstandingItemCount += 1
+                account.transactionCount += 1
 
-        modelContext.insert(acct)
+                modelContext.insert(AccountTransaction(recurringTransaction: item, account: account))
 
-        //Previewer().generatePreviewData(modelContext: modelContext)
+                try? item.BumpNextDueDate()
+            }
+
+            do {
+                try modelContext.save()
+            } catch {
+                print(error)
+                modelContext.rollback()
+            }
+        }
     }
 }

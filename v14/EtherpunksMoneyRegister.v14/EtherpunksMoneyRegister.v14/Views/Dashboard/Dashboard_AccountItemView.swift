@@ -63,9 +63,10 @@ struct Dashboard_AccountItemView: View {
                 .padding(.horizontal, 5)
             }
 
-            Rectangle().fill(Color.gray).frame(
-                width: .infinity, height: 1, alignment: .center
-            ).padding(.horizontal, 25)
+            Rectangle()
+                .fill(Color.gray)
+                .frame(maxWidth: 750, maxHeight: 1, alignment: .center)
+                .padding(.horizontal, 25)
 
             HStack {
                 Text("Last Balanced:")
@@ -99,7 +100,7 @@ struct Dashboard_AccountItemView: View {
 }
 
 #Preview {
-    let p = Previewer()
-    Dashboard_AccountItemView(acctData: p.bankAccount)
-        .modelContainer(p.container)
+    let ds = MoneyDataSource()
+
+    Dashboard_AccountItemView(acctData: ds.previewer.bankAccount)
 }

@@ -105,29 +105,31 @@ struct DashboardView: View {
                 .frame(width: 400)
             }
         }
-//        .sheet(isPresented: $viewModel.isConfirmReservePaydayModalShowing, onDismiss: {viewModel.reservePaydayDismiss(modelContext: modelContext)}) {
-//            if !$viewModel.selectedPaydays.isEmpty {
-//                Dashboard_ReserveTransactionsModalView(
-//                    reserveList: viewModel.selectedPaydays,
-//                    selectedAccount: $viewModel.selectedAccount,
-//                    didCancel: $viewModel.didCancel
-//                )
-//            }
-//
-//        }
-//        .sheet(isPresented: $viewModel.isConfirmReserveBillsModalShowing, onDismiss: {viewModel.reserveBillsDismiss(modelContext: modelContext)}) {
-//            if !$viewModel.selectedUpcomingTransactions.isEmpty {
-//                Dashboard_ReserveTransactionsModalView(
-//                    reserveList: viewModel.selectedUpcomingTransactions,
-//                    selectedAccount: $viewModel.selectedAccount,
-//                    didCancel: $viewModel.didCancel)
-//            }
-//        }
+        .sheet(isPresented: $viewModel.isConfirmReserveCreditDialogShowing, onDismiss: {viewModel.reserveReserveDialogDismiss(transactionType: .credit)}) {
+            if !$viewModel.selectedCreditRecurringTransactions.isEmpty {
+                Dashboard_ReserveTransactionsDialogView(
+                    reserveList: viewModel.selectedCreditRecurringTransactions,
+                    selectedAccount: $viewModel.selectedAccountFromReserveDialog,
+                    didCancel: $viewModel.didCancelReserveDialog
+                )
+            }
+
+        }
+        .sheet(isPresented: $viewModel.isConfirmReserveDebitDialogShowing, onDismiss: {viewModel.reserveReserveDialogDismiss(transactionType: .debit)}) {
+            if !$viewModel.selectedDebitRecurringTransactions.isEmpty {
+                Dashboard_ReserveTransactionsDialogView(
+                    reserveList: viewModel.selectedDebitRecurringTransactions,
+                    selectedAccount: $viewModel.selectedAccountFromReserveDialog,
+                    didCancel: $viewModel.didCancelReserveDialog
+                )
+            }
+        }
     }
 }
 
 #Preview {
-    DashboardView(viewModel: DashboardView.ViewModel(dataSource: MoneyDataSource(generatePreviewData: true)))
+    let ds = MoneyDataSource()
+    DashboardView(viewModel: DashboardView.ViewModel(dataSource: ds))
 #if os(macOS)
         .frame(width: 900, height: 500)
 #endif

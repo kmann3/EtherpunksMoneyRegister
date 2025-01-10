@@ -32,6 +32,9 @@ extension DashboardView {
         var isConfirmReserveCreditDialogShowing: Bool = false
         var isConfirmReserveDebitDialogShowing: Bool = false
 
+        var selectedAccountFromReserveDialog: Account? = nil
+        var didCancelReserveDialog: Bool = false
+
         init(dataSource: MoneyDataSource = MoneyDataSource.shared) {
             self.dataSource = dataSource
             self.pathStore = MoneyDataSource.pathStore
@@ -42,64 +45,27 @@ extension DashboardView {
             upcomingCreditRecurringTransactions = dataSource.fetchUpcomingRecurringTransactions(transactionType: .credit)
         }
 
-//        func reservePaydayDismiss(modelContext: ModelContext) {
-//            if didCancel || selectedAccount == nil {
-//                didCancel = false
-//                return
-//            }
-//
-//            try? modelContext.transaction {
-//                selectedPaydays.forEach { item in
-//                    selectedAccount!.currentBalance += item.amount
-//                    selectedAccount!.outstandingBalance += item.amount
-//                    selectedAccount!.outstandingItemCount += 1
-//                    selectedAccount!.transactionCount += 1
-//
-//                    modelContext.insert(AccountTransaction(recurringTransaction: item, account: selectedAccount!))
-//
-//                    try? item.BumpNextDueDate()
-//                }
-//                
-//                do {
-//                    try modelContext.save()
-//                } catch {
-//                    modelContext.rollback()
-//                    debugPrint("An error saving has occured")
-//                }
-//            }
-//
-//            didCancel = false
-//            selectedPaydays.removeAll()
-//        }
-//
-//        func reserveBillsDismiss(modelContext: ModelContext) {
-//            if didCancel || selectedAccount == nil {
-//                didCancel = false
-//                return
-//            }
-//
-//            try? modelContext.transaction {
-//                selectedUpcomingTransactions.forEach { item in
-//                    selectedAccount!.currentBalance += item.amount
-//                    selectedAccount!.outstandingBalance += item.amount
-//                    selectedAccount!.outstandingItemCount += 1
-//                    selectedAccount!.transactionCount += 1
-//
-//                    modelContext.insert(AccountTransaction(recurringTransaction: item, account: selectedAccount!))
-//
-//                    try? item.BumpNextDueDate()
-//                }
-//
-//                do {
-//                    try modelContext.save()
-//                } catch {
-//                    modelContext.rollback()
-//                    debugPrint("An error saving has occured")
-//                }
-//            }
-//
-//            didCancel = false
-//            selectedUpcomingTransactions.removeAll()
-//        }
+        func reserveReserveDialogDismiss(transactionType: TransactionType) {
+            if didCancelReserveDialog || selectedAccountFromReserveDialog == nil {
+                didCancelReserveDialog = false
+                return
+            }
+
+            switch transactionType {
+            case .credit:
+                dataSource.reserveTransactions(selectedCreditRecurringTransactions, account: selectedAccountFromReserveDialog!)
+                selectedCreditRecurringTransactions = []
+            case .debit:
+                dataSource.reserveTransactions(selectedDebitRecurringTransactions, account: selectedAccountFromReserveDialog!)
+                selectedDebitRecurringTransactions = []
+            }
+
+            // refresh screen's data, since it is all reserved and not pending - we just need to do this.
+            reservedTransactions = dataSource.fetchAllReservedTransactions()
+
+            didCancelReserveDialog = false
+
+        }
+
     }
 }

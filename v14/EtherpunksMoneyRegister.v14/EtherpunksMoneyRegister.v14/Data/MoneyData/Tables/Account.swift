@@ -75,7 +75,7 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
             self.lastBalancedUTC = Date(
                 timeIntervalSinceReferenceDate: localTimeInterval)
         } else {
-            debugPrint("Failed to convert UTC string to Date object.")
+            print("Failed to convert UTC string to Date object.")
             self.lastBalancedUTC = nil
         }
 
@@ -87,7 +87,7 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
             self.lastBalancedUTC = Date(
                 timeIntervalSinceReferenceDate: localTimeInterval)
         } else {
-            debugPrint("Failed to convert UTC string to Date object.")
+            print("Failed to convert UTC string to Date object.")
         }
 
     }

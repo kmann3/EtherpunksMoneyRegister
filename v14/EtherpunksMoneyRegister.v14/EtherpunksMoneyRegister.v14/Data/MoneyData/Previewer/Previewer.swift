@@ -12,10 +12,6 @@ import SwiftUI
 
 @MainActor
 class Previewer {
-
-    let isDbInMemory: Bool = true
-
-    private static let now: Date = Date()
     public let bankAccount: Account = Account(
         id: UUID(uuidString: "12345678-1234-1234-1234-123456789abc")!,
         name: "Chase Bank",
@@ -27,8 +23,6 @@ class Previewer {
         sortIndex: Int64.max,
         lastBalancedUTC: "2024-09-12T17:40:31.594+0000",
         createdOnUTC: "2024-09-13T17:40:31.594+0000")
-
-    public let container: ModelContainer
 
     // Tags
     public let billsTag: TransactionTag
@@ -42,40 +36,17 @@ class Previewer {
     // Fake Transactions
     public let burgerKingTransaction: AccountTransaction
     public var cvsTransaction: AccountTransaction
-    public var discordTransaction: AccountTransaction
-    public var huluPendingTransaction: AccountTransaction
-    public var verizonReservedTransaction: AccountTransaction
+    public let discordTransaction: AccountTransaction
+    public let huluPendingTransaction: AccountTransaction
+    public let verizonReservedTransaction: AccountTransaction
 
     // Fake Recurring Transactions
     public let billGroup: RecurringGroup
     public var discordRecurringTransaction: RecurringTransaction
     public var verizonRecurringTransaction: RecurringTransaction
 
-    init() {
-        let schema = Schema([
-            Account.self,
-            AccountTransaction.self,
-            RecurringGroup.self,
-            RecurringTransaction.self,
-            TransactionFile.self,
-            TransactionTag.self
-        ])
-        let config = ModelConfiguration(isStoredInMemoryOnly: isDbInMemory)
-        container = try! ModelContainer(for: schema, configurations: config)
-
-        debugPrint("-----------------")
-        debugPrint(Date().toDebugDate())
-        debugPrint("-----------------")
-        if isDbInMemory {
-            debugPrint("Database is in memory.")
-        } else {
-            debugPrint(
-                "Database Location: \(container.mainContext.sqliteLocation)")
-        }
-        debugPrint("Generating fake data. This may take a little bit.")
-
-        // Bank accounts
-        container.mainContext.insert(bankAccount)
+    init(modelContext: ModelContext) {
+        modelContext.insert(bankAccount)
 
         // Tags
         billsTag = TransactionTag(name: "bills")
@@ -86,13 +57,13 @@ class Previewer {
         pharmacyTag = TransactionTag(name: "pharmacy")
         streamingTag = TransactionTag(name: "streaming")
 
-        container.mainContext.insert(billsTag)
-        container.mainContext.insert(ffTag)
-        container.mainContext.insert(fuelTag)
-        container.mainContext.insert(incomeTag)
-        container.mainContext.insert(medicalTag)
-        container.mainContext.insert(pharmacyTag)
-        container.mainContext.insert(streamingTag)
+        modelContext.insert(billsTag)
+        modelContext.insert(ffTag)
+        modelContext.insert(fuelTag)
+        modelContext.insert(incomeTag)
+        modelContext.insert(medicalTag)
+        modelContext.insert(pharmacyTag)
+        modelContext.insert(streamingTag)
 
         // Recurring Groups
         billGroup = RecurringGroup(name: "Bills")
@@ -106,7 +77,7 @@ class Previewer {
             transactionTags: [ffTag],
             clearedOnUTC: Date().addingTimeInterval(-1_000_000)
         )
-        Previewer.insertTransaction(account: bankAccount, transaction: burgerKingTransaction, context: container.mainContext)
+        Previewer.insertTransaction(account: bankAccount, transaction: burgerKingTransaction, context: modelContext)
 
         // CVS
         cvsTransaction = AccountTransaction(
@@ -123,7 +94,7 @@ class Previewer {
             clearedOnUTC: Date(),
             balancedOnUTC: Date()
         )
-        Previewer.insertTransaction(account: bankAccount, transaction: cvsTransaction, context: container.mainContext)
+        Previewer.insertTransaction(account: bankAccount, transaction: cvsTransaction, context: modelContext)
 
         // DISCORD
         discordRecurringTransaction = RecurringTransaction(
@@ -150,10 +121,10 @@ class Previewer {
             pendingOnUTC: Date(),
             clearedOnUTC: Date()
         )
-        Previewer.insertTransaction(account: bankAccount, transaction: discordTransaction, context: container.mainContext)
+        Previewer.insertTransaction(account: bankAccount, transaction: discordTransaction, context: modelContext)
 
         discordRecurringTransaction.transactions = [discordTransaction]
-        container.mainContext.insert(discordRecurringTransaction)
+        modelContext.insert(discordRecurringTransaction)
 
         // HULU
         huluPendingTransaction = AccountTransaction(
@@ -167,7 +138,7 @@ class Previewer {
             pendingOnUTC: Date(),
             clearedOnUTC: nil
         )
-        Previewer.insertTransaction(account: bankAccount, transaction: huluPendingTransaction, context: container.mainContext)
+        Previewer.insertTransaction(account: bankAccount, transaction: huluPendingTransaction, context: modelContext)
 
         // VERIZON
         verizonRecurringTransaction = RecurringTransaction(
@@ -195,27 +166,7 @@ class Previewer {
             pendingOnUTC: nil,
             clearedOnUTC: nil
         )
-        Previewer.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: container.mainContext)
-
-//        container.mainContext.insert(createTransaction(name: "Test 1", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 2", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 3", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 4", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 5", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 6", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 7", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 8", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 9", account: bankAccount, amount: 5.37, pending: nil, cleared: nil))
-//
-//        container.mainContext.insert(createTransaction(name: "Test 1", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 2", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 3", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 4", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 5", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 6", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 7", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 8", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
-//        container.mainContext.insert(createTransaction(name: "Test 9", account: bankAccount, amount: 5.37, pending: Date(), cleared: nil))
+        Previewer.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: modelContext)
 
         Task {
             let monkeyData = await downloadEtherpunkMonkeyAsync()
@@ -230,33 +181,35 @@ class Previewer {
                     accountTransaction: self.cvsTransaction
                 )
 
-                container.mainContext.insert(cvsAttachmentFile)
+                modelContext.insert(cvsAttachmentFile)
+            } else {
+                print("Error generating attachment transaction - monkey logo")
             }
         }
 
         discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
         verizonRecurringTransaction.nextDueDate = getNextDueDate(day: 28)
 
-        importTestRecurringData()
+        importTestRecurringData(modelContext: modelContext)
 
-        container.mainContext.insert(billGroup)
+        modelContext.insert(billGroup)
 
         do {
-            try container.mainContext.save()
+            try modelContext.save()
         } catch {
-            debugPrint(error)
+            print(error)
         }
 
-        debugPrint("Done generating data at \(Date().toDebugDate())")
-        debugPrint("Main account id: \(bankAccount.id.uuidString)")
+        print("Done generating data at \(Date().toDebugDate())")
+        print("Main account id: \(bankAccount.id.uuidString)")
     }
 
-    func importTestRecurringData() {
+    func importTestRecurringData(modelContext: ModelContext) {
         let path = "/Users/kennithmann/Downloads/dev/tmpData.sqlite3"
 
         let fileManager = FileManager.default
         if !fileManager.fileExists(atPath: path) {
-            debugPrint("Test data could not be found to be imported at \(path)")
+            print("Test data could not be found to be imported at \(path)")
             return
         }
 
@@ -323,7 +276,7 @@ class Previewer {
                     recurringTransaction.nextDueDate = recurringTransaction.frequencyDateValue
                     break
                 default:
-                    debugPrint("Error parsing frequency: \(row[frequencyCol])")
+                    print("Error parsing frequency: \(row[frequencyCol])")
                 }
 
                 if recurringTransaction.nextDueDate! < Date() {
@@ -338,16 +291,16 @@ class Previewer {
                     verizonRecurringTransaction = recurringTransaction
                     break
                 default:
-                    container.mainContext.insert(recurringTransaction)
+                    modelContext.insert(recurringTransaction)
                     break
                 }
 
-                try container.mainContext.save()
+                try modelContext.save()
             }
             
 
         } catch {
-            debugPrint(error)
+            print(error)
         }
     }
 
@@ -407,7 +360,7 @@ class Previewer {
         "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
 
         guard let url = URL(string: monkeyUrlString) else {
-            debugPrint("Invalid URL: \(monkeyUrlString)")
+            print("Invalid URL: \(monkeyUrlString)")
             return nil
         }
 
@@ -429,10 +382,5 @@ class Previewer {
         account.transactionCount += 1
         transaction.balance = account.currentBalance
         context.insert(transaction)
-    }
-
-    public func generatePreviewData(modelContext: ModelContext) {
-        //Previewer.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: container.mainContext)
-        modelContext.insert(Account(name: "Kenny", startingBalance: 20.00))
     }
 }
