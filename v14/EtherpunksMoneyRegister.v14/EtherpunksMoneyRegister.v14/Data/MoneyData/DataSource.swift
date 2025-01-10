@@ -50,7 +50,8 @@ final class MoneyDataSource: Sendable {
         print("-----------------")
         print("Database Location: \(self.modelContext.sqliteLocation)")
 
-        previewer = Previewer(modelContext: modelContext)
+        previewer = Previewer()
+        previewer.commitToDb(modelContext)
         #endif
     }
 

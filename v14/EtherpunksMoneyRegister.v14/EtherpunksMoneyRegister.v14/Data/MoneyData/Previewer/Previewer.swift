@@ -45,8 +45,11 @@ class Previewer {
     public var discordRecurringTransaction: RecurringTransaction
     public var verizonRecurringTransaction: RecurringTransaction
 
-    init(modelContext: ModelContext) {
-        modelContext.insert(bankAccount)
+    // Fake attachments
+
+    public var cvsAttachmentFile: TransactionFile
+
+    init() {
 
         // Tags
         billsTag = TransactionTag(name: "bills")
@@ -57,13 +60,6 @@ class Previewer {
         pharmacyTag = TransactionTag(name: "pharmacy")
         streamingTag = TransactionTag(name: "streaming")
 
-        modelContext.insert(billsTag)
-        modelContext.insert(ffTag)
-        modelContext.insert(fuelTag)
-        modelContext.insert(incomeTag)
-        modelContext.insert(medicalTag)
-        modelContext.insert(pharmacyTag)
-        modelContext.insert(streamingTag)
 
         // Recurring Groups
         billGroup = RecurringGroup(name: "Bills")
@@ -77,7 +73,6 @@ class Previewer {
             transactionTags: [ffTag],
             clearedOnUTC: Date().addingTimeInterval(-1_000_000)
         )
-        Previewer.insertTransaction(account: bankAccount, transaction: burgerKingTransaction, context: modelContext)
 
         // CVS
         cvsTransaction = AccountTransaction(
@@ -94,7 +89,6 @@ class Previewer {
             clearedOnUTC: Date(),
             balancedOnUTC: Date()
         )
-        Previewer.insertTransaction(account: bankAccount, transaction: cvsTransaction, context: modelContext)
 
         // DISCORD
         discordRecurringTransaction = RecurringTransaction(
@@ -121,10 +115,8 @@ class Previewer {
             pendingOnUTC: Date(),
             clearedOnUTC: Date()
         )
-        Previewer.insertTransaction(account: bankAccount, transaction: discordTransaction, context: modelContext)
 
         discordRecurringTransaction.transactions = [discordTransaction]
-        modelContext.insert(discordRecurringTransaction)
 
         // HULU
         huluPendingTransaction = AccountTransaction(
@@ -138,7 +130,6 @@ class Previewer {
             pendingOnUTC: Date(),
             clearedOnUTC: nil
         )
-        Previewer.insertTransaction(account: bankAccount, transaction: huluPendingTransaction, context: modelContext)
 
         // VERIZON
         verizonRecurringTransaction = RecurringTransaction(
@@ -166,22 +157,20 @@ class Previewer {
             pendingOnUTC: nil,
             clearedOnUTC: nil
         )
-        Previewer.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: modelContext)
 
+        cvsAttachmentFile = TransactionFile(
+            name: "Etherpunk Logo",
+            filename: "monkey.jpg",
+            notes: "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.",
+            data: Data(),
+            isTaxRelated: true,
+            accountTransaction: self.cvsTransaction
+        )
+        
         Task {
             let monkeyData = await downloadEtherpunkMonkeyAsync()
             if monkeyData != nil {
-                let cvsAttachmentFile: TransactionFile = TransactionFile(
-                    name: "Etherpunk Logo",
-                    filename: "monkey.jpg",
-                    notes:
-                        "My etherpunk logo, which is quite cool. A friend made it years ago. Some more text to take up notes space.",
-                    data: monkeyData!,
-                    isTaxRelated: true,
-                    accountTransaction: self.cvsTransaction
-                )
-
-                modelContext.insert(cvsAttachmentFile)
+                cvsAttachmentFile.data = monkeyData!
             } else {
                 print("Error generating attachment transaction - monkey logo")
             }
@@ -189,16 +178,6 @@ class Previewer {
 
         discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
         verizonRecurringTransaction.nextDueDate = getNextDueDate(day: 28)
-
-        importTestRecurringData(modelContext: modelContext)
-
-        modelContext.insert(billGroup)
-
-        do {
-            try modelContext.save()
-        } catch {
-            print(error)
-        }
 
         print("Done generating data at \(Date().toDebugDate())")
         print("Main account id: \(bankAccount.id.uuidString)")
@@ -382,5 +361,34 @@ class Previewer {
         account.transactionCount += 1
         transaction.balance = account.currentBalance
         context.insert(transaction)
+    }
+
+    func commitToDb(_ modelContext: ModelContext) {
+        modelContext.insert(bankAccount)
+        modelContext.insert(billsTag)
+        modelContext.insert(ffTag)
+        modelContext.insert(fuelTag)
+        modelContext.insert(incomeTag)
+        modelContext.insert(medicalTag)
+        modelContext.insert(pharmacyTag)
+        modelContext.insert(streamingTag)
+        Previewer.insertTransaction(account: bankAccount, transaction: burgerKingTransaction, context: modelContext)
+        Previewer.insertTransaction(account: bankAccount, transaction: cvsTransaction, context: modelContext)
+        Previewer.insertTransaction(account: bankAccount, transaction: discordTransaction, context: modelContext)
+        modelContext.insert(discordRecurringTransaction)
+        Previewer.insertTransaction(account: bankAccount, transaction: huluPendingTransaction, context: modelContext)
+        modelContext.insert(verizonRecurringTransaction)
+        Previewer.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: modelContext)
+
+        modelContext.insert(cvsAttachmentFile)
+        importTestRecurringData(modelContext: modelContext)
+
+        modelContext.insert(billGroup)
+
+        do {
+            try modelContext.save()
+        } catch {
+            print(error)
+        }
     }
 }

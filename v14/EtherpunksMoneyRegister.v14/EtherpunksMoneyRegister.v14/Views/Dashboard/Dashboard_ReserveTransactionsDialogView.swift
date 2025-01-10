@@ -124,8 +124,10 @@ struct Dashboard_ReserveTransactionsDialogView: View {
 }
 
 #Preview {
-    let ds = MoneyDataSource()
-    Dashboard_ReserveTransactionsDialogView(reserveList: [ds.previewer.discordRecurringTransaction, ds.previewer.verizonRecurringTransaction],
-                                            selectedAccount: .constant(ds.previewer.bankAccount),
-                                            didCancel: .constant(false))
+    let p = Previewer()
+    Dashboard_ReserveTransactionsDialogView(
+        reserveList: [p.discordRecurringTransaction, p.verizonRecurringTransaction],
+        selectedAccount: .constant(p.bankAccount),
+        didCancel: .constant(false)
+    )
 }

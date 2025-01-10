@@ -100,7 +100,6 @@ struct Dashboard_AccountItemView: View {
 }
 
 #Preview {
-    let ds = MoneyDataSource()
-
-    Dashboard_AccountItemView(acctData: ds.previewer.bankAccount)
+    //let ds = MoneyDataSource()
+    Dashboard_AccountItemView(acctData: Previewer().bankAccount)
 }
