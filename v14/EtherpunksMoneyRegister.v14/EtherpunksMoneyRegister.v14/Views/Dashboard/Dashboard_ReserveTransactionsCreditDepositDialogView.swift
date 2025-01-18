@@ -27,16 +27,7 @@ struct Dashboard_ReserveTransactionsCreditDepositDialogView: View {
         _didCancel = didCancel
         _selectedAccount = selectedAccount
         _depositeDate = depositeDate
-
-        if (amount.wrappedValue == nil) {
-            _amount = amount
-            self.viewModel.displayAmount = ""
-        } else {
-            _amount = amount
-            self.viewModel.displayAmount = amount.wrappedValue!.formatted()
-        }
-
-        self.viewModel.date = depositeDate.wrappedValue
+        _amount = amount
     }
 
     var body: some View {
@@ -94,7 +85,7 @@ struct Dashboard_ReserveTransactionsCreditDepositDialogView: View {
                         }
 
                         HStack {
-                            NullableDatePicker(name: "Date", selectedDate: $viewModel.date)
+                            NullableDatePicker(name: "Date", selectedDate: $depositeDate)
                             Spacer()
                         }
                     }
@@ -128,9 +119,6 @@ struct Dashboard_ReserveTransactionsCreditDepositDialogView: View {
                 Spacer()
 
                 Button {
-
-                    print(self.viewModel.displayAmount)
-                    print(self.amount ?? 0.1)
                     didCancel = false
                     dismiss()
                 } label: {

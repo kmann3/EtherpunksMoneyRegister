@@ -19,8 +19,6 @@ extension Dashboard_ReserveTransactionsCreditDepositDialogView {
         private let dataSource: MoneyDataSource
 
         var accounts: [Account]
-        var displayAmount: String = ""
-        var date: Date? = Date()
         var reserveTransaction: RecurringTransaction
 
         init(dataSource: MoneyDataSource = MoneyDataSource.shared, transactionToReserve: RecurringTransaction) {
