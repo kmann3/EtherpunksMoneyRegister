@@ -74,19 +74,26 @@ struct DashboardView: View {
                     }
                     List {
                         Section(header: Text("Recurring Debits")) {
-                            HStack {
-                                Spacer()
-                                Button {
-                                    if viewModel.selectedDebitRecurringTransactions.count > 0 {
-                                        viewModel.isConfirmReserveDebitDialogShowing.toggle()
-                                    }
-                                } label: {
-                                    Text("Reserve")
+                            ForEach(viewModel.upcomingRecurringGroups, id: \.self) { group in
+                                Dashboard_RecurringGroupView(
+                                    recurringGroup: group,
+                                    isSelected: viewModel.selectedDebitGroups.contains(group),
+                                    action: {
+                                        if viewModel.selectedDebitGroups.contains(group) {
+                                            viewModel.selectedDebitGroups.removeAll(where: { $0 == group })
+                                        } else {
+                                            viewModel.selectedDebitGroups.append(group)
+                                        }
+                                })
+                                .onTapGesture {
+                                    viewModel.selectedDebitGroups.removeAll()
+                                    viewModel.selectedDebitGroups.append(group)
+                                    viewModel.isConfirmReserveDebitDialogShowing.toggle()
                                 }
-                                .opacity(1)
+                                .frame(alignment: .center)
                             }
 
-                            ForEach(viewModel.upcomingDebitRecurringTransactions, id: \.self) { debitItem in
+                            ForEach(viewModel.upcomingNonGroupDebitRecurringTransactions, id: \.self) { debitItem in
                                 Dashboard_RecurringItemView(
                                     recurringItem: debitItem,
                                     isSelected: viewModel.selectedDebitRecurringTransactions.contains(debitItem)
@@ -109,7 +116,8 @@ struct DashboardView: View {
         .sheet(isPresented: $viewModel.isConfirmReserveCreditDialogShowing, onDismiss: {viewModel.reserveReserveDialogDismiss(transactionType: .credit)}) {
             if !$viewModel.selectedCreditRecurringTransactions.isEmpty {
                 Dashboard_ReserveTransactionsDialogView(
-                    reserveList: viewModel.selectedCreditRecurringTransactions,
+                    reserveGroups: [],
+                    reserveTransactions: viewModel.selectedDebitRecurringTransactions,
                     selectedAccount: $viewModel.selectedAccountFromReserveDialog,
                     didCancel: $viewModel.didCancelReserveDialog
                 )
@@ -119,7 +127,8 @@ struct DashboardView: View {
         .sheet(isPresented: $viewModel.isConfirmReserveDebitDialogShowing, onDismiss: {viewModel.reserveReserveDialogDismiss(transactionType: .debit)}) {
             if !$viewModel.selectedDebitRecurringTransactions.isEmpty {
                 Dashboard_ReserveTransactionsDialogView(
-                    reserveList: viewModel.selectedDebitRecurringTransactions,
+                    reserveGroups: viewModel.selectedDebitGroups,
+                    reserveTransactions: viewModel.selectedDebitRecurringTransactions,
                     selectedAccount: $viewModel.selectedAccountFromReserveDialog,
                     didCancel: $viewModel.didCancelReserveDialog
                 )
@@ -210,6 +219,6 @@ struct DashboardView: View {
     let ds = MoneyDataSource()
     DashboardView(viewModel: DashboardView.ViewModel(dataSource: ds))
 #if os(macOS)
-        .frame(width: 900, height: 500)
+        .frame(width: 900, height: 600)
 #endif
 }

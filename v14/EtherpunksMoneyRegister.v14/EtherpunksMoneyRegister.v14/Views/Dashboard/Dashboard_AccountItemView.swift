@@ -77,7 +77,7 @@ struct Dashboard_AccountItemView: View {
                 Spacer()
 
                 Text(
-                    acctData.lastBalancedUTC?.toSummaryDate2() ?? "never"
+                    acctData.lastBalancedUTC?.toSummaryDateMMMDY() ?? "never"
                 )
                 .font(.headline)
                 .foregroundStyle(.secondary)

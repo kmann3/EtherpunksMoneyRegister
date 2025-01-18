@@ -11,8 +11,8 @@ import SwiftUI
 
 @MainActor
 final class MoneyDataSource: Sendable {
-    private let modelContainer: ModelContainer
-    private let modelContext: ModelContext
+    public let modelContainer: ModelContainer
+    public let modelContext: ModelContext
 
     static let shared = MoneyDataSource()
     static let pathStore = PathStore()
@@ -49,6 +49,7 @@ final class MoneyDataSource: Sendable {
         print(Date().toDebugDate())
         print("-----------------")
         print("Database Location: \(self.modelContext.sqliteLocation)")
+        print("-----------------")
 
         previewer = Previewer()
         previewer.commitToDb(modelContext)
@@ -153,11 +154,43 @@ final class MoneyDataSource: Sendable {
         }
 
         let query = try! modelContext.fetch(fetchDescriptor)
-
+        // could use fetchCount and then do a different query to just get the most recent one
         if query.count > 0 {
             return (query.first!.accountTransactions?.count ?? 0, query.first?.createdOnUTC ?? nil)
         } else {
             return (0, nil)
+        }
+    }
+
+    func fetchUpcomingRecurringGroups() -> [RecurringGroup] {
+        do {
+            return try modelContext.fetch(FetchDescriptor<RecurringGroup>(
+                sortBy: [
+                    SortDescriptor(\RecurringGroup.name)
+                ]
+            ))
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+
+    func fetchUpcomingRecurringNonGroupDebits() -> [RecurringTransaction] {
+        do {
+            return try modelContext.fetch(FetchDescriptor<RecurringTransaction>(
+                predicate: #Predicate<RecurringTransaction> {
+                    if $0.amount < 0 && $0.recurringGroup == nil {
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+                ,sortBy: [
+                    SortDescriptor(\RecurringTransaction.nextDueDate),
+                    SortDescriptor(\RecurringTransaction.name)
+                ]
+            ))
+        } catch {
+            fatalError(error.localizedDescription)
         }
     }
 
@@ -175,8 +208,26 @@ final class MoneyDataSource: Sendable {
         }
     }
 
-    func reserveTransactions(_ transactions: [RecurringTransaction], account: Account) {
+    func reserveTransactions(groups: [RecurringGroup], transactions: [RecurringTransaction], account: Account) {
         try? modelContext.transaction {
+
+            if groups.count > 0 {
+                groups.forEach { item in
+                    if item.recurringTransactions != nil {
+                        item.recurringTransactions!.forEach { transaction in
+                            account.currentBalance += transaction.amount
+                            account.outstandingBalance += transaction.amount
+                            account.outstandingItemCount += 1
+                            account.transactionCount += 1
+                            
+                            modelContext.insert(AccountTransaction(recurringTransaction: transaction, account: account))
+                            
+                            try? transaction.BumpNextDueDate()
+                        }
+                    }
+                }
+            }
+
             transactions.forEach { item in
                 account.currentBalance += item.amount
                 account.outstandingBalance += item.amount

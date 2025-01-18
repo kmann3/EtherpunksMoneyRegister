@@ -24,10 +24,12 @@ extension DashboardView {
         var reservedTransactions: [AccountTransaction]
         
         var upcomingCreditRecurringTransactions: [RecurringTransaction]
-        var upcomingDebitRecurringTransactions: [RecurringTransaction]
+        var upcomingNonGroupDebitRecurringTransactions: [RecurringTransaction]
+        var upcomingRecurringGroups: [RecurringGroup] = []
 
         var selectedCreditRecurringTransactions: [RecurringTransaction] = []
         var selectedDebitRecurringTransactions: [RecurringTransaction] = []
+        var selectedDebitGroups: [RecurringGroup] = []
 
         var isConfirmReserveCreditDialogShowing: Bool = false
         var isConfirmReserveDebitDialogShowing: Bool = false
@@ -41,8 +43,9 @@ extension DashboardView {
             accounts = dataSource.fetchAccounts()
             reservedTransactions = dataSource.fetchAllReservedTransactions()
             pendingTransactions = dataSource.fetchAllPendingTransactions()
-            upcomingDebitRecurringTransactions = dataSource.fetchUpcomingRecurringTransactions(transactionType: .debit)
+            upcomingNonGroupDebitRecurringTransactions = dataSource.fetchUpcomingRecurringNonGroupDebits()
             upcomingCreditRecurringTransactions = dataSource.fetchUpcomingRecurringTransactions(transactionType: .credit)
+            upcomingRecurringGroups = dataSource.fetchUpcomingRecurringGroups()
         }
 
         func reserveReserveDialogDismiss(transactionType: TransactionType) {
@@ -53,15 +56,21 @@ extension DashboardView {
 
             switch transactionType {
             case .credit:
-                dataSource.reserveTransactions(selectedCreditRecurringTransactions, account: selectedAccountFromReserveDialog!)
+                dataSource.reserveTransactions(groups: [], transactions: selectedCreditRecurringTransactions, account: selectedAccountFromReserveDialog!)
                 selectedCreditRecurringTransactions = []
             case .debit:
-                dataSource.reserveTransactions(selectedDebitRecurringTransactions, account: selectedAccountFromReserveDialog!)
+                dataSource
+                    .reserveTransactions(
+                        groups: selectedDebitGroups,
+                        transactions: selectedDebitRecurringTransactions,
+                        account: selectedAccountFromReserveDialog!
+                    )
                 selectedDebitRecurringTransactions = []
             }
 
             // refresh screen's data, since it is all reserved and not pending - we just need to do this.
             reservedTransactions = dataSource.fetchAllReservedTransactions()
+            accounts = dataSource.fetchAccounts()
 
             didCancelReserveDialog = false
 

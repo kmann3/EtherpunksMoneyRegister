@@ -21,20 +21,31 @@ extension Decimal {
 }
 
 extension Date {
-    func toSummaryDate() -> String {
+    /// Sat, Jan 11
+    func toSummaryDateMMMDEEE() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
         dateFormatter.setLocalizedDateFormatFromTemplate("MMM d - EEE")
         return dateFormatter.string(from: self)
     }
 
-    func toSummaryDate2() -> String {
+    /// Jan 11, 2025
+    func toSummaryDateMMMDY() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
         dateFormatter.setLocalizedDateFormatFromTemplate("MMM d y")
         return dateFormatter.string(from: self)
     }
 
+    /// Jan 11
+    func toSummaryDateMMMDD() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.setLocalizedDateFormatFromTemplate("MMM dd")
+        return dateFormatter.string(from: self)
+    }
+
+    /// Sat, Jan 11, 2025 at 02:24:59 -0600
     func toDebugDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current

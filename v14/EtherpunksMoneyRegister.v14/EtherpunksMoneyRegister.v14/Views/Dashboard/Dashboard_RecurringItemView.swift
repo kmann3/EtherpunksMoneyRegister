@@ -19,13 +19,18 @@ struct Dashboard_RecurringItemView: View {
                     .frame(maxWidth: 200, alignment: .leading)
                     .foregroundStyle(isSelected ? Color.black : Color.blue)
                 Spacer()
-                Text(recurringItem.nextDueDate?.toSummaryDate() ?? "")
+                Text(recurringItem.nextDueDate?.toSummaryDateMMMDEEE() ?? "")
                     .frame(maxWidth: 200, alignment: .center)
                     .foregroundStyle(isSelected ? Color.black : Color.blue)
                 Spacer()
-                Text("$\(Currency(amount: recurringItem.amount).amount)")
+                Text(
+                    recurringItem.amount,
+                    format: .currency(
+                        code: Locale.current.currency?.identifier ?? "USD")
+                )
                     .frame(maxWidth: 150, alignment: .trailing)
                     .foregroundStyle(isSelected ? Color.black : Color.blue)
+
             }
         }
         #if os(macOS)

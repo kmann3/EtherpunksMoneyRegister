@@ -14,8 +14,8 @@ struct Dashboard_ReserveTransactionsDialogView: View {
     @Binding var didCancel: Bool
     @Binding var selectedAccount: Account?
 
-    init(reserveList: [RecurringTransaction], selectedAccount: Binding<Account?>, didCancel: Binding<Bool>) {
-        _viewModel = StateObject(wrappedValue: ViewModel(listToReserve: reserveList))
+    init(reserveGroups: [RecurringGroup], reserveTransactions: [RecurringTransaction], selectedAccount: Binding<Account?>, didCancel: Binding<Bool>) {
+        _viewModel = StateObject(wrappedValue: ViewModel(groupsToReserve: reserveGroups, transactionsToReserve: reserveTransactions))
         _didCancel = didCancel
         _selectedAccount = selectedAccount
     }
@@ -43,7 +43,15 @@ struct Dashboard_ReserveTransactionsDialogView: View {
                         .padding(.bottom, 10)
 
                     VStack {
-                        ForEach(viewModel.reserveList) { transaction in
+                        ForEach(viewModel.reserveGroups) { group in
+                            Text(group.name)
+                        }
+                    }
+                    
+                    Divider()
+
+                    VStack {
+                        ForEach(viewModel.reserveTransactions) { transaction in
                             Text(transaction.name)
                         }
                     }
@@ -126,7 +134,8 @@ struct Dashboard_ReserveTransactionsDialogView: View {
 #Preview {
     let p = Previewer()
     Dashboard_ReserveTransactionsDialogView(
-        reserveList: [p.discordRecurringTransaction, p.verizonRecurringTransaction],
+        reserveGroups: [],
+        reserveTransactions: [p.discordRecurringTransaction, p.verizonRecurringTransaction],
         selectedAccount: .constant(p.bankAccount),
         didCancel: .constant(false)
     )

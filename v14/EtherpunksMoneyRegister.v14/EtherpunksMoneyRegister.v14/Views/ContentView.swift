@@ -46,6 +46,7 @@ struct ContentView: View {
                     value: MenuOptionsEnum.tags
                 ) {
                     TagView()
+                        .modelContext(MoneyDataSource.shared.modelContext)
                 }
                 .customizationID(MenuOptionsEnum.tags.tabId)
 
@@ -126,6 +127,7 @@ struct ContentView: View {
                         }
                 case .tag_List:
                     TagView()
+                        .modelContext(MoneyDataSource.shared.modelContext)
 
                 case .transaction_Create: Text("TBI")
                 case .transaction_Detail(let transaction): Text("TBI: \(transaction.name)")

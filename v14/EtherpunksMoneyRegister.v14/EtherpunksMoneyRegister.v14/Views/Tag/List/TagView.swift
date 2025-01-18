@@ -5,10 +5,14 @@
 //  Created by Kennith Mann on 1/10/25.
 //
 
+import SwiftData
 import SwiftUI
 
 struct TagView: View {
+    @Environment(\.modelContext) var modelContext
     @State var viewModel = ViewModel()
+
+    @Query(sort: \TransactionTag.name) var tagz: [TransactionTag]
 
     var body: some View {
         VStack {
@@ -20,6 +24,9 @@ struct TagView: View {
                     Text("New")
                 }
                 .padding()
+            }
+            List(tagz) { t in
+                Text(t.name)
             }
             List {
                 Section(
@@ -71,4 +78,5 @@ struct TagView: View {
 
 #Preview {
     TagView()
+        .modelContext(MoneyDataSource.shared.modelContext)
 }

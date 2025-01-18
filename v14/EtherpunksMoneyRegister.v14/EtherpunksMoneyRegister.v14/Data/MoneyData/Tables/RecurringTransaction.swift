@@ -31,8 +31,6 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
     public var frequencyDateValue: Date? = nil
     public var createdOnUTC: Date = Date()
 
-
-
     private var transactionTypeRaw: TransactionType.RawValue = TransactionType.debit.rawValue
 
     public var debugDescription: String {

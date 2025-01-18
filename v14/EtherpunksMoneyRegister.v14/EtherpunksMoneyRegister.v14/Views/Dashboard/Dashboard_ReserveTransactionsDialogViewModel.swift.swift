@@ -19,13 +19,14 @@ extension Dashboard_ReserveTransactionsDialogView {
         private let dataSource: MoneyDataSource
 
         var accounts: [Account]
-        var reserveList: [RecurringTransaction]
+        var reserveGroups: [RecurringGroup]
+        var reserveTransactions: [RecurringTransaction]
 
-
-        init(dataSource: MoneyDataSource = MoneyDataSource.shared, listToReserve: [RecurringTransaction]) {
+        init(dataSource: MoneyDataSource = MoneyDataSource.shared, groupsToReserve: [RecurringGroup] , transactionsToReserve: [RecurringTransaction]) {
             self.dataSource = dataSource
             accounts = dataSource.fetchAccounts()
-            reserveList = listToReserve.sorted(by: {$0.name < $1.name })
+            reserveGroups = groupsToReserve.sorted(by: {$0.name < $1.name})
+            reserveTransactions = transactionsToReserve.sorted(by: {$0.name < $1.name })
         }
     }
 }
