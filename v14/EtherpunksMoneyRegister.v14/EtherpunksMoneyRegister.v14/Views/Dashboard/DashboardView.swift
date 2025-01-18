@@ -75,34 +75,33 @@ struct DashboardView: View {
                     List {
                         Section(header: Text("Recurring Debits")) {
                             ForEach(viewModel.upcomingRecurringGroups, id: \.self) { group in
-                                Dashboard_RecurringGroupView(
-                                    recurringGroup: group,
-                                    isSelected: viewModel.selectedDebitGroups.contains(group),
-                                    action: {
-                                        if viewModel.selectedDebitGroups.contains(group) {
-                                            viewModel.selectedDebitGroups.removeAll(where: { $0 == group })
-                                        } else {
+                                HStack {
+                                    Spacer()
+                                    
+                                    Dashboard_RecurringGroupView(
+                                        recurringGroup: group,
+                                        isSelected: false,
+                                        action: {
+                                            viewModel.selectedDebitGroups.removeAll()
+                                            viewModel.selectedDebitRecurringTransactions.removeAll()
                                             viewModel.selectedDebitGroups.append(group)
-                                        }
-                                })
-                                .onTapGesture {
-                                    viewModel.selectedDebitGroups.removeAll()
-                                    viewModel.selectedDebitGroups.append(group)
-                                    viewModel.isConfirmReserveDebitDialogShowing.toggle()
+                                            viewModel.isConfirmReserveDebitDialogShowing.toggle()
+                                        })
+
+                                    Spacer()
                                 }
-                                .frame(alignment: .center)
+
                             }
 
                             ForEach(viewModel.upcomingNonGroupDebitRecurringTransactions, id: \.self) { debitItem in
                                 Dashboard_RecurringItemView(
                                     recurringItem: debitItem,
-                                    isSelected: viewModel.selectedDebitRecurringTransactions.contains(debitItem)
+                                    isSelected: false
                                 ) {
-                                    if viewModel.selectedDebitRecurringTransactions.contains(debitItem) {
-                                        viewModel.selectedDebitRecurringTransactions.removeAll(where: { $0 == debitItem })
-                                    } else {
-                                        viewModel.selectedDebitRecurringTransactions.append(debitItem)
-                                    }
+                                    viewModel.selectedDebitGroups.removeAll()
+                                    viewModel.selectedDebitRecurringTransactions.removeAll()
+                                    viewModel.selectedDebitRecurringTransactions.append(debitItem)
+                                    viewModel.isConfirmReserveDebitDialogShowing.toggle()
                                 }
                             }
                         }

@@ -18,14 +18,20 @@ struct Dashboard_RecurringGroupView: View {
                 Text("Group: \(recurringGroup.name)")
                     .foregroundStyle(isSelected ? Color.black : Color.white)
                     .frame(alignment: .leading)
+                    .padding(.bottom, 5)
+                Divider()
 
                 if recurringGroup.recurringTransactions != nil {
                     ForEach(
                         recurringGroup.recurringTransactions!.sorted(by: { ($0.nextDueDate!, $0.name) < ($1.nextDueDate!, $1.name) })
                     ) { recurringTransaction in
-                        Text("\t - \(recurringTransaction.name) [\(recurringTransaction.nextDueDate?.toSummaryDateMMMDD() ?? "")]")
-                        .foregroundStyle(isSelected ? Color.black : Color.white)
-                        .frame(alignment: .trailing)
+                        HStack {
+                            Text("\t - \(recurringTransaction.name) [\(recurringTransaction.nextDueDate?.toSummaryDateMMMDD() ?? "")]")
+                                .foregroundStyle(isSelected ? Color.black : Color.white)
+
+                            Spacer()
+                        }
+                        //.frame(alignment: .trailing)
                     }
                 } else {
                     Text("Nil")
