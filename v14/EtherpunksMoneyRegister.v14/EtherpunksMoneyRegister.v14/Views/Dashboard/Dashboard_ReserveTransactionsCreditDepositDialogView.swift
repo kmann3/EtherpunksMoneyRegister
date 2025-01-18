@@ -15,19 +15,23 @@ struct Dashboard_ReserveTransactionsCreditDepositDialogView: View {
     @StateObject var viewModel: ViewModel
     @Binding var didCancel: Bool
     @Binding var selectedAccount: Account?
-    @Binding var amount: Decimal?
+    @Binding var amount: Decimal
     @Binding var depositeDate: Date?
+
+    @Binding var isCleared: Bool
 
     init(reserveTransaction: RecurringTransaction,
          selectedAccount: Binding<Account?>,
-         amount: Binding<Decimal?>,
+         amount: Binding<Decimal>,
          depositeDate: Binding<Date?>,
+         isCleared: Binding<Bool>,
          didCancel: Binding<Bool>) {
         _viewModel = StateObject(wrappedValue: ViewModel(transactionToReserve: reserveTransaction))
         _didCancel = didCancel
         _selectedAccount = selectedAccount
         _depositeDate = depositeDate
         _amount = amount
+        _isCleared = isCleared
     }
 
     var body: some View {
@@ -88,6 +92,12 @@ struct Dashboard_ReserveTransactionsCreditDepositDialogView: View {
                             NullableDatePicker(name: "Date", selectedDate: $depositeDate)
                             Spacer()
                         }
+
+                        HStack {
+                            Toggle("Is Cleared?", isOn: $isCleared)
+                                .toggleStyle(.checkbox)
+                            Spacer()
+                        }
                     }
 
                     .padding(.vertical, 10)
@@ -143,7 +153,7 @@ struct Dashboard_ReserveTransactionsCreditDepositDialogView: View {
 }
 
 #Preview {
-    @Previewable @State var amount: Decimal? = 43.55
+    @Previewable @State var amount: Decimal = 43.55
     @Previewable @State var depositeDate: Date? = nil
     let p = Previewer()
     Dashboard_ReserveTransactionsCreditDepositDialogView(
@@ -151,6 +161,7 @@ struct Dashboard_ReserveTransactionsCreditDepositDialogView: View {
         selectedAccount: .constant(p.bankAccount),
         amount: $amount,
         depositeDate: $depositeDate,
+        isCleared: .constant(false),
         didCancel: .constant(false)
     )
 }

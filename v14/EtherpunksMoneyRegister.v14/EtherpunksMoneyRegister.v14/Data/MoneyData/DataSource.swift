@@ -208,6 +208,33 @@ final class MoneyDataSource: Sendable {
         }
     }
 
+    func reserveDeposits(deposit: RecurringTransaction, account: Account, amount: Decimal, selectedDate: Date?, isCleared: Bool) {
+        try? modelContext.transaction {
+            let depositTransaction = AccountTransaction(recurringTransaction: deposit, account: account)
+            depositTransaction.amount = amount
+            depositTransaction.pendingOnUTC = selectedDate
+            if isCleared {
+                depositTransaction.clearedOnUTC = selectedDate
+            } else {
+                depositTransaction.clearedOnUTC = nil
+                account.outstandingBalance += amount
+                account.outstandingItemCount += 1
+            }
+            account.transactionCount += 1
+            modelContext.insert(depositTransaction)
+            account.currentBalance += amount
+            try deposit.BumpNextDueDate()
+
+            do {
+                try modelContext.save()
+            } catch {
+                print(error)
+                modelContext.rollback()
+            }
+        }
+
+    }
+
     func reserveTransactions(groups: [RecurringGroup], transactions: [RecurringTransaction], account: Account) {
         try? modelContext.transaction {
 

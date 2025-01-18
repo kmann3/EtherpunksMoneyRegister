@@ -49,25 +49,14 @@ struct DashboardView: View {
                 VStack {
                     List {
                         Section(header: Text("Recurring Credit")) {
-                            HStack {
-                                Spacer()
-                                Button {
-                                    if viewModel.selectedCreditRecurringTransactions.count > 0 {
-                                        viewModel.isConfirmReserveCreditDialogShowing.toggle()
-                                    }
-                                } label: {
-                                    Text("Deposit")
-                                }
-                                .opacity(1)
-                            }
-
                             ForEach(viewModel.upcomingCreditRecurringTransactions, id: \.self) { creditItem in
-                                Dashboard_RecurringItemView(recurringItem: creditItem, isSelected: viewModel.selectedCreditRecurringTransactions.contains(creditItem)) {
-                                    if viewModel.selectedCreditRecurringTransactions.contains(creditItem) {
-                                        viewModel.selectedCreditRecurringTransactions.removeAll(where: { $0 == creditItem })
-                                    } else {
-                                        viewModel.selectedCreditRecurringTransactions.append(creditItem)
-                                    }
+                                Dashboard_RecurringItemView(recurringItem: creditItem, isSelected: false) {
+                                    viewModel.selectedCreditRecurringTransactions.removeAll()
+                                    viewModel.selectedCreditRecurringTransactions.append(creditItem)
+                                    viewModel.returnAmount = creditItem.amount
+                                    viewModel.selectedDate = Date()
+                                    viewModel.isCleared = true
+                                    viewModel.isConfirmReserveCreditDialogShowing.toggle()
                                 }
                             }
                         }
@@ -114,10 +103,12 @@ struct DashboardView: View {
         }
         .sheet(isPresented: $viewModel.isConfirmReserveCreditDialogShowing, onDismiss: {viewModel.reserveReserveDialogDismiss(transactionType: .credit)}) {
             if !$viewModel.selectedCreditRecurringTransactions.isEmpty {
-                Dashboard_ReserveTransactionsDialogView(
-                    reserveGroups: [],
-                    reserveTransactions: viewModel.selectedDebitRecurringTransactions,
+                Dashboard_ReserveTransactionsCreditDepositDialogView(
+                    reserveTransaction: viewModel.selectedCreditRecurringTransactions.first!,
                     selectedAccount: $viewModel.selectedAccountFromReserveDialog,
+                    amount: $viewModel.returnAmount,
+                    depositeDate: $viewModel.selectedDate,
+                    isCleared: $viewModel.isCleared,
                     didCancel: $viewModel.didCancelReserveDialog
                 )
             }

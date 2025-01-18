@@ -36,6 +36,9 @@ extension DashboardView {
 
         var selectedAccountFromReserveDialog: Account? = nil
         var didCancelReserveDialog: Bool = false
+        var returnAmount: Decimal = 0
+        var selectedDate: Date? = Date()
+        var isCleared: Bool = true
 
         init(dataSource: MoneyDataSource = MoneyDataSource.shared) {
             self.dataSource = dataSource
@@ -56,7 +59,14 @@ extension DashboardView {
 
             switch transactionType {
             case .credit:
-                dataSource.reserveTransactions(groups: [], transactions: selectedCreditRecurringTransactions, account: selectedAccountFromReserveDialog!)
+                dataSource
+                    .reserveDeposits(
+                        deposit: selectedDebitRecurringTransactions.first!,
+                        account: selectedAccountFromReserveDialog!,
+                        amount: returnAmount,
+                        selectedDate: selectedDate,
+                        isCleared: isCleared
+                    )
                 selectedCreditRecurringTransactions = []
             case .debit:
                 dataSource
