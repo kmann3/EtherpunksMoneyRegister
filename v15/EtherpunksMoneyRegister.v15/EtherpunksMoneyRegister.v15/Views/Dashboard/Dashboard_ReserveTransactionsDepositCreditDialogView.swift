@@ -14,29 +14,16 @@ struct Dashboard_ReserveTransactionsDepositCreditDialogView: View {
 
     @StateObject var viewModel: ViewModel
     @Binding var didCancel: Bool
-    @Binding var selectedAccount: Account?
-    @Binding var amount: Decimal
-    @Binding var notes: String
-    @Binding var depositeDate: Date?
+    @Binding var returnTransaction: AccountTransaction
 
-    //@Binding var returnTransaction: AccountTransaction
-
-    @Binding var isCleared: Bool
+    @State var isCleared: Bool = false
 
     init(reserveTransaction: RecurringTransaction,
-         selectedAccount: Binding<Account?>,
-         amount: Binding<Decimal>,
-         depositeDate: Binding<Date?>,
-         notes: Binding<String>,
-         isCleared: Binding<Bool>,
+         returnTransaction: Binding<AccountTransaction>,
          didCancel: Binding<Bool>) {
         _viewModel = StateObject(wrappedValue: ViewModel(transactionToReserve: reserveTransaction))
         _didCancel = didCancel
-        _selectedAccount = selectedAccount
-        _depositeDate = depositeDate
-        _notes = notes
-        _amount = amount
-        _isCleared = isCleared
+        _returnTransaction = returnTransaction
     }
 
     var body: some View {
@@ -75,7 +62,7 @@ struct Dashboard_ReserveTransactionsDepositCreditDialogView: View {
                                     .sRGB, red: 125 / 255, green: 125 / 255,
                                     blue: 125 / 255, opacity: 0.5))
                     )
-                    .frame(maxWidth: .infinity, alignment: .center)
+                    .frame(minWidth: 300, maxWidth: .infinity, alignment: .center)
                     .padding(.vertical, 30)
                 }
 
@@ -86,39 +73,39 @@ struct Dashboard_ReserveTransactionsDepositCreditDialogView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
 
                     VStack {
-                        Picker("Account", selection: $selectedAccount) {
+                        Picker("Account", selection: $returnTransaction.account) {
                             ForEach(viewModel.accounts) { account in
                                 Text(account.name)
                                     .tag(account)
                             }
                         }
-                        .onAppear {
-                            if viewModel.accounts.count > 0  && viewModel.reserveTransaction.defaultAccount != nil {
-                                selectedAccount = viewModel.reserveTransaction.defaultAccount!
-                            } else if viewModel.accounts.count == 1 {
-                                selectedAccount = viewModel.accounts[0]
-                            }
-                        }
 
                         HStack {
                             Text("Amount")
-                            TextField("Amount", value: $amount, format: .currency(code: locale.currency?.identifier ?? "USD"))
+                            TextField("Amount", value: $returnTransaction.amount, format: .currency(code: locale.currency?.identifier ?? "USD"))
                         }
 
                         HStack {
-                            NullableDatePicker(name: "Date", selectedDate: $depositeDate)
+                            NullableDatePicker(name: "Date", selectedDate: $returnTransaction.pendingOnUTC)
                             Spacer()
                         }
 
                         HStack {
                             Toggle("Is Cleared?", isOn: $isCleared)
                                 .toggleStyle(.checkbox)
+                                .onChange(of: isCleared) {
+                                    if isCleared == true {
+                                        returnTransaction.clearedOnUTC = Date()
+                                    } else {
+                                        returnTransaction.clearedOnUTC = nil
+                                    }
+                                }
                             Spacer()
                         }
 
                         HStack {
                             Text("Notes")
-                            TextField("Notes", text: $notes, axis: .vertical)
+                            TextField("Notes", text: $returnTransaction.notes, axis: .vertical)
                                 .lineLimit(3...10)
 
                         }
@@ -170,9 +157,6 @@ struct Dashboard_ReserveTransactionsDepositCreditDialogView: View {
                 )
             )
         }
-        .onAppear {
-            selectedAccount = viewModel.accounts.first!
-        }
     }
 }
 
@@ -182,11 +166,7 @@ struct Dashboard_ReserveTransactionsDepositCreditDialogView: View {
     let p = Previewer()
     Dashboard_ReserveTransactionsDepositCreditDialogView(
         reserveTransaction: p.discordRecurringTransaction,
-        selectedAccount: .constant(p.bankAccount),
-        amount: $amount,
-        depositeDate: $depositeDate,
-        notes: .constant(""),
-        isCleared: .constant(false),
+        returnTransaction: .constant(p.cvsTransaction),
         didCancel: .constant(false)
     )
 }

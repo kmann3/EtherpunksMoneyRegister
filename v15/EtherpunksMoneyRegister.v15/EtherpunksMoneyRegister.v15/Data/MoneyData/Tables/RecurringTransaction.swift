@@ -89,6 +89,10 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
         self.VerifySignage()
     }
 
+    init() {
+        
+    }
+
     public static func transactionTypeFilter(type: TransactionType) -> Predicate<RecurringTransaction> {
         let rawValue = type.rawValue
         return #Predicate<RecurringTransaction> {

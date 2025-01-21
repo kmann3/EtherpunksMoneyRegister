@@ -27,20 +27,18 @@ extension DashboardView {
         var upcomingNonGroupDebitRecurringTransactions: [RecurringTransaction]
         var upcomingRecurringGroups: [RecurringGroup] = []
 
-        var selectedCreditRecurringTransaction: RecurringTransaction? = nil
-        var selectedDebitRecurringTransactions: [RecurringTransaction] = []
-        var selectedDebitGroups: [RecurringGroup] = []
+        var isConfirmReserveDebitGroupDialogShowing: Bool = false
+        var selectedDebitGroup: RecurringGroup = RecurringGroup()
+        var returnTransactions: [AccountTransaction] = []
+
+        var isConfirmReserveDebitTransactionDialogShowing: Bool = false
+        var selectedDebitRecurringTransaction: RecurringTransaction = RecurringTransaction()
 
         var isConfirmDepositCreditDialogShowing: Bool = false
-        var isConfirmReserveDebitDialogShowing: Bool = false
+        var returnTransaction: AccountTransaction = AccountTransaction()
+        var selectedCreditRecurringTransaction: RecurringTransaction = RecurringTransaction()
 
-        var returnTransaction: AccountTransaction? = nil
-        var returnTransactionGroup: [AccountTransaction] = []
-        var selectedAccountFromReserveDialog: Account? = nil
         var didCancelReserveDialog: Bool = false
-        var returnAmount: Decimal = 0
-        var selectedDate: Date? = Date()
-        var isCleared: Bool = true
 
         init(dataSource: MoneyDataSource = MoneyDataSource.shared) {
             self.dataSource = dataSource
@@ -53,40 +51,51 @@ extension DashboardView {
             upcomingRecurringGroups = dataSource.fetchUpcomingRecurringGroups()
         }
 
-        func reserveReserveDialogDismiss(transactionType: TransactionType) {
-            if didCancelReserveDialog || selectedAccountFromReserveDialog == nil {
+        func refreshScreen() {
+            reservedTransactions = dataSource.fetchAllReservedTransactions()
+            pendingTransactions = dataSource.fetchAllPendingTransactions()
+            accounts = dataSource.fetchAccounts()
+        }
+
+        func reserveDepositCreditDialogDismiss() {
+            if didCancelReserveDialog {
                 didCancelReserveDialog = false
                 return
             }
 
-            switch transactionType {
-            case .credit:
-                dataSource
-                    .reserveDeposits(
-                        deposit: selectedCreditRecurringTransactions.first!,
-                        account: selectedAccountFromReserveDialog!,
-                        amount: returnAmount,
-                        selectedDate: selectedDate,
-                        isCleared: isCleared
-                    )
-                selectedCreditRecurringTransactions = []
-            case .debit:
-                dataSource
-                    .reserveTransactions(
-                        groups: selectedDebitGroups,
-                        transactions: selectedDebitRecurringTransactions,
-                        account: selectedAccountFromReserveDialog!
-                    )
-                selectedDebitRecurringTransactions = []
-            }
+            dataSource.ReserveCreditDeposit(
+                recurringTransaction: selectedCreditRecurringTransaction,
+                newTransaction: returnTransaction
+            )
 
-            // refresh screen's data, since it is all reserved and not pending - we just need to do this.
-            reservedTransactions = dataSource.fetchAllReservedTransactions()
-            accounts = dataSource.fetchAccounts()
-
-            didCancelReserveDialog = false
-
+            refreshScreen()
         }
 
+        func reserveDepositDebitGroupDialogDismiss() {
+            if didCancelReserveDialog {
+                didCancelReserveDialog = false
+                return
+            }
+
+            dataSource.ReserveDebitGroup(
+                group: selectedDebitGroup,
+                newTransactions: returnTransactions)
+
+            refreshScreen()
+        }
+
+        func reserveDepositDebitTransactionDialogDismiss() {
+            if didCancelReserveDialog {
+                didCancelReserveDialog = false
+                return
+            }
+
+            dataSource.ReserveDebitTransaction(
+                recurringTransaction: selectedDebitRecurringTransaction,
+                newTransaction: returnTransaction
+            )
+
+            refreshScreen()
+        }
     }
 }

@@ -7,17 +7,21 @@
 
 import SwiftUI
 
-struct Dashboard_ReserveTransactionsDialogView: View {
+struct Dashboard_ReserveDebitTransactionDialogView: View {
     @Environment(\.dismiss) var dismiss
     
     @StateObject var viewModel: ViewModel
+    @Binding var returnTransaction: AccountTransaction
     @Binding var didCancel: Bool
-    @Binding var selectedAccount: Account?
 
-    init(reserveGroups: [RecurringGroup], reserveTransactions: [RecurringTransaction], selectedAccount: Binding<Account?>, didCancel: Binding<Bool>) {
-        _viewModel = StateObject(wrappedValue: ViewModel(groupsToReserve: reserveGroups, transactionsToReserve: reserveTransactions))
+    init(
+        reserveTransaction: RecurringTransaction,
+        returnTransaction: Binding<AccountTransaction>,
+        didCancel: Binding<Bool>
+    ) {
+        _viewModel = StateObject(wrappedValue: ViewModel(transactionToReserve: reserveTransaction))
+        _returnTransaction = returnTransaction
         _didCancel = didCancel
-        _selectedAccount = selectedAccount
     }
 
     var body: some View {
@@ -39,32 +43,25 @@ struct Dashboard_ReserveTransactionsDialogView: View {
 
             HStack {
                 VStack {
-                    Text("Transactions")
-                        .padding(.bottom, 10)
+                    Text("Transaction")
+                        .padding(.trailing, 25)
+                        .padding(.bottom, 5)
+                        .frame(maxWidth: .infinity, alignment: .center)
 
-                    VStack {
-                        ForEach(viewModel.reserveGroups) { group in
-                            Text(group.name)
-                        }
-                    }
-                    
                     Divider()
 
-                    VStack {
-                        ForEach(viewModel.reserveTransactions) { transaction in
-                            Text(transaction.name)
-                        }
-                    }
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 25)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(
-                                Color(
-                                    .sRGB, red: 125 / 255, green: 125 / 255,
-                                    blue: 125 / 255, opacity: 0.5))
-                    )
-                    .frame(maxWidth: .infinity, alignment: .center)
+                    Text(viewModel.reserveTransaction.name)
+                        .padding(.vertical, 15)
+                        .padding(.horizontal, 25)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(
+                                    Color(
+                                        .sRGB, red: 125 / 255, green: 125 / 255,
+                                        blue: 125 / 255, opacity: 0.5))
+                        )
+                        .frame(minWidth: 300, maxWidth: .infinity, alignment: .center)
+                        .padding(.vertical, 30)
                 }
 
                 VStack {
@@ -73,7 +70,7 @@ struct Dashboard_ReserveTransactionsDialogView: View {
                         .padding(.bottom, 25)
                         .frame(maxWidth: .infinity, alignment: .center)
 
-                    Picker("Account", selection: $selectedAccount) {
+                    Picker("Account", selection: $returnTransaction.account) {
                         ForEach(viewModel.accounts) { account in
                             Text(account.name)
                                 .tag(account)
@@ -88,7 +85,7 @@ struct Dashboard_ReserveTransactionsDialogView: View {
                                     .sRGB, red: 125 / 255, green: 125 / 255,
                                     blue: 125 / 255, opacity: 0.5))
                     )
-                    .frame(maxWidth: .infinity, alignment: .center)
+                    .frame(minWidth: 300,maxWidth: .infinity, alignment: .center)
 
                 }
             }
@@ -125,18 +122,14 @@ struct Dashboard_ReserveTransactionsDialogView: View {
                 )
             )
         }
-        .onAppear {
-            selectedAccount = viewModel.accounts.first!
-        }
     }
 }
 
 #Preview {
     let p = Previewer()
-    Dashboard_ReserveTransactionsDialogView(
-        reserveGroups: [],
-        reserveTransactions: [p.discordRecurringTransaction, p.verizonRecurringTransaction],
-        selectedAccount: .constant(p.bankAccount),
+    Dashboard_ReserveDebitTransactionDialogView(
+        reserveTransaction: p.discordRecurringTransaction,
+        returnTransaction: .constant(p.discordTransaction),
         didCancel: .constant(false)
     )
 }

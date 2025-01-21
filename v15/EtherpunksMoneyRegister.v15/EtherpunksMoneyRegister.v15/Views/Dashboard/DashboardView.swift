@@ -21,6 +21,7 @@ struct DashboardView: View {
                                 viewModel.pathStore.navigateTo(
                                     route: .transaction_List(account: account))
                             }
+                            .frame(minWidth: 200)
                     }
                     Spacer()
                 }
@@ -49,16 +50,12 @@ struct DashboardView: View {
                 VStack {
                     List {
                         Section(header: Text("Recurring Credit")) {
-                            ForEach(viewModel.upcomingCreditRecurringTransactions, id: \.self) { creditItem in
+                            ForEach(viewModel.upcomingCreditRecurringTransactions.sorted(by: {$0.nextDueDate ?? Date() < $1.nextDueDate ?? Date()}), id: \.self) { creditItem in
                                 Dashboard_RecurringItemView(
                                     recurringItem: creditItem) {
                                         viewModel.selectedCreditRecurringTransaction = creditItem
+                                        viewModel.returnTransaction = AccountTransaction(recurringTransaction: creditItem)
                                         viewModel.isConfirmDepositCreditDialogShowing.toggle()
-//                                        viewModel.selectedCreditRecurringTransactions.append(creditItem)
-//                                        viewModel.returnAmount = creditItem.amount
-//                                        viewModel.selectedDate = Date()
-//                                        viewModel.isCleared = true
-//                                        viewModel.isConfirmReserveCreditDialogShowing.toggle()
                                 }
                             }
                         }
@@ -72,7 +69,13 @@ struct DashboardView: View {
 
                                     Dashboard_RecurringGroupView(
                                         recurringGroup: group) {
-                                            // TODO: Implement
+                                            viewModel.selectedDebitGroup = group
+                                            viewModel.returnTransactions = []
+                                            group.recurringTransactions!.forEach { t in
+                                                viewModel.returnTransactions.append(AccountTransaction(recurringTransaction: t))
+                                            }
+
+                                            viewModel.isConfirmReserveDebitGroupDialogShowing.toggle()
                                         }
 
                                     Spacer()
@@ -80,11 +83,16 @@ struct DashboardView: View {
 
                             }
 
-                            ForEach(viewModel.upcomingNonGroupDebitRecurringTransactions, id: \.self) { debitItem in
+                            ForEach(
+                                viewModel.upcomingNonGroupDebitRecurringTransactions.sorted(by: {$0.nextDueDate ?? Date() < $1.nextDueDate ?? Date()}),
+                                id: \.self
+                            ) { debitItem in
                                 Dashboard_RecurringItemView(
                                     recurringItem: debitItem
                                 ) {
-                                    // TODO: Implement
+                                    viewModel.selectedDebitRecurringTransaction = debitItem
+                                    viewModel.returnTransaction = AccountTransaction(recurringTransaction: debitItem)
+                                    viewModel.isConfirmReserveDebitTransactionDialogShowing.toggle()
                                 }
                             }
                         }
@@ -92,8 +100,32 @@ struct DashboardView: View {
 
                     Spacer()
                 }
-                .frame(width: 400)
+                .frame(width: 500)
             }
+        }
+        .sheet(isPresented: $viewModel.isConfirmDepositCreditDialogShowing, onDismiss: {viewModel.reserveDepositCreditDialogDismiss()}) {
+            Dashboard_ReserveTransactionsDepositCreditDialogView(
+                reserveTransaction: viewModel.selectedCreditRecurringTransaction,
+                returnTransaction: $viewModel.returnTransaction,
+                didCancel: $viewModel.didCancelReserveDialog
+            )
+        }
+        .sheet(isPresented: $viewModel.isConfirmReserveDebitGroupDialogShowing, onDismiss: {viewModel.reserveDepositDebitGroupDialogDismiss()}) {
+            Dashboard_ReserveDebitGroupDialogView(
+                reserveGroup: viewModel.selectedDebitGroup,
+                returnTransactions: $viewModel.returnTransactions,
+                didCancel: $viewModel.didCancelReserveDialog
+            )
+        }
+        .sheet(
+            isPresented: $viewModel.isConfirmReserveDebitTransactionDialogShowing,
+            onDismiss: {viewModel.reserveDepositDebitTransactionDialogDismiss()
+            }) {
+                Dashboard_ReserveDebitTransactionDialogView(
+                reserveTransaction: viewModel.selectedDebitRecurringTransaction,
+                returnTransaction: $viewModel.returnTransaction,
+                didCancel: $viewModel.didCancelReserveDialog
+            )
         }
         #endif
 

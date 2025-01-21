@@ -10,7 +10,7 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-extension Dashboard_ReserveTransactionsDialogView {
+extension Dashboard_ReserveDebitGroupDialogView {
 
     @MainActor
     @Observable
@@ -19,14 +19,14 @@ extension Dashboard_ReserveTransactionsDialogView {
         private let dataSource: MoneyDataSource
 
         var accounts: [Account]
-        var reserveGroups: [RecurringGroup]
-        var reserveTransactions: [RecurringTransaction]
+        var reserveGroup: RecurringGroup
+        var selectedAccount: Account = Account()
 
-        init(dataSource: MoneyDataSource = MoneyDataSource.shared, groupsToReserve: [RecurringGroup] , transactionsToReserve: [RecurringTransaction]) {
+        init(dataSource: MoneyDataSource = MoneyDataSource.shared, groupToReserve: RecurringGroup) {
             self.dataSource = dataSource
             accounts = dataSource.fetchAccounts()
-            reserveGroups = groupsToReserve.sorted(by: {$0.name < $1.name})
-            reserveTransactions = transactionsToReserve.sorted(by: {$0.name < $1.name })
+            reserveGroup = groupToReserve
+            selectedAccount = reserveGroup.recurringTransactions!.first!.defaultAccount ?? accounts.first!
         }
     }
 }
