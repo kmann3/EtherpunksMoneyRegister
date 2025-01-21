@@ -1,0 +1,649 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AAE2009C2D3F727C00480DB6 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = AAE2009B2D3F727C00480DB6 /* SQLite */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AAE200462D3F70FD00480DB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AAE200292D3F70FB00480DB6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AAE200302D3F70FB00480DB6;
+			remoteInfo = EtherpunksMoneyRegister.v15;
+		};
+		AAE200502D3F70FD00480DB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AAE200292D3F70FB00480DB6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AAE200302D3F70FB00480DB6;
+			remoteInfo = EtherpunksMoneyRegister.v15;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AAE200312D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtherpunksMoneyRegister.v15.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAE200452D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EtherpunksMoneyRegister.v15Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAE2004F2D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EtherpunksMoneyRegister.v15UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AAE200572D3F70FD00480DB6 /* Exceptions for "EtherpunksMoneyRegister.v15" folder in "EtherpunksMoneyRegister.v15" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = AAE200302D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15 */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		AAE200332D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15 */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AAE200572D3F70FD00480DB6 /* Exceptions for "EtherpunksMoneyRegister.v15" folder in "EtherpunksMoneyRegister.v15" target */,
+			);
+			path = EtherpunksMoneyRegister.v15;
+			sourceTree = "<group>";
+		};
+		AAE200482D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15Tests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = EtherpunksMoneyRegister.v15Tests;
+			sourceTree = "<group>";
+		};
+		AAE200522D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15UITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = EtherpunksMoneyRegister.v15UITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AAE2002E2D3F70FB00480DB6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAE2009C2D3F727C00480DB6 /* SQLite in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAE200422D3F70FD00480DB6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAE2004C2D3F70FD00480DB6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AAE200282D3F70FB00480DB6 = {
+			isa = PBXGroup;
+			children = (
+				AAE200332D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15 */,
+				AAE200482D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15Tests */,
+				AAE200522D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15UITests */,
+				AAE2009A2D3F727C00480DB6 /* Frameworks */,
+				AAE200322D3F70FB00480DB6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AAE200322D3F70FB00480DB6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AAE200312D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15.app */,
+				AAE200452D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15Tests.xctest */,
+				AAE2004F2D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15UITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AAE2009A2D3F727C00480DB6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AAE200302D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AAE200582D3F70FD00480DB6 /* Build configuration list for PBXNativeTarget "EtherpunksMoneyRegister.v15" */;
+			buildPhases = (
+				AAE2002D2D3F70FB00480DB6 /* Sources */,
+				AAE2002E2D3F70FB00480DB6 /* Frameworks */,
+				AAE2002F2D3F70FB00480DB6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				AAE200332D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15 */,
+			);
+			name = EtherpunksMoneyRegister.v15;
+			packageProductDependencies = (
+				AAE2009B2D3F727C00480DB6 /* SQLite */,
+			);
+			productName = EtherpunksMoneyRegister.v15;
+			productReference = AAE200312D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AAE200442D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AAE2005D2D3F70FD00480DB6 /* Build configuration list for PBXNativeTarget "EtherpunksMoneyRegister.v15Tests" */;
+			buildPhases = (
+				AAE200412D3F70FD00480DB6 /* Sources */,
+				AAE200422D3F70FD00480DB6 /* Frameworks */,
+				AAE200432D3F70FD00480DB6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AAE200472D3F70FD00480DB6 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				AAE200482D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15Tests */,
+			);
+			name = EtherpunksMoneyRegister.v15Tests;
+			packageProductDependencies = (
+			);
+			productName = EtherpunksMoneyRegister.v15Tests;
+			productReference = AAE200452D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		AAE2004E2D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AAE200602D3F70FD00480DB6 /* Build configuration list for PBXNativeTarget "EtherpunksMoneyRegister.v15UITests" */;
+			buildPhases = (
+				AAE2004B2D3F70FD00480DB6 /* Sources */,
+				AAE2004C2D3F70FD00480DB6 /* Frameworks */,
+				AAE2004D2D3F70FD00480DB6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AAE200512D3F70FD00480DB6 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				AAE200522D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15UITests */,
+			);
+			name = EtherpunksMoneyRegister.v15UITests;
+			packageProductDependencies = (
+			);
+			productName = EtherpunksMoneyRegister.v15UITests;
+			productReference = AAE2004F2D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AAE200292D3F70FB00480DB6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					AAE200302D3F70FB00480DB6 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					AAE200442D3F70FD00480DB6 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = AAE200302D3F70FB00480DB6;
+					};
+					AAE2004E2D3F70FD00480DB6 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = AAE200302D3F70FB00480DB6;
+					};
+				};
+			};
+			buildConfigurationList = AAE2002C2D3F70FB00480DB6 /* Build configuration list for PBXProject "EtherpunksMoneyRegister.v15" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AAE200282D3F70FB00480DB6;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				AAE200972D3F71FA00480DB6 /* XCRemoteSwiftPackageReference "SQLite" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = AAE200322D3F70FB00480DB6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AAE200302D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15 */,
+				AAE200442D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15Tests */,
+				AAE2004E2D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15UITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AAE2002F2D3F70FB00480DB6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAE200432D3F70FD00480DB6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAE2004D2D3F70FD00480DB6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AAE2002D2D3F70FB00480DB6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAE200412D3F70FD00480DB6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAE2004B2D3F70FD00480DB6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AAE200472D3F70FD00480DB6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AAE200302D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15 */;
+			targetProxy = AAE200462D3F70FD00480DB6 /* PBXContainerItemProxy */;
+		};
+		AAE200512D3F70FD00480DB6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AAE200302D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15 */;
+			targetProxy = AAE200502D3F70FD00480DB6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		AAE200592D3F70FD00480DB6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = EtherpunksMoneyRegister.v15/EtherpunksMoneyRegister_v15.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"EtherpunksMoneyRegister.v15/Preview Content\"";
+				DEVELOPMENT_TEAM = SNH2E6X8CL;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EtherpunksMoneyRegister.v15/Info.plist;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.etherpunk.EtherpunksMoneyRegister-v15";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		AAE2005A2D3F70FD00480DB6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = EtherpunksMoneyRegister.v15/EtherpunksMoneyRegister_v15.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"EtherpunksMoneyRegister.v15/Preview Content\"";
+				DEVELOPMENT_TEAM = SNH2E6X8CL;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EtherpunksMoneyRegister.v15/Info.plist;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.etherpunk.EtherpunksMoneyRegister-v15";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
+		AAE2005B2D3F70FD00480DB6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AAE2005C2D3F70FD00480DB6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		AAE2005E2D3F70FD00480DB6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SNH2E6X8CL;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.etherpunk.EtherpunksMoneyRegister-v15Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EtherpunksMoneyRegister.v15.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EtherpunksMoneyRegister.v15";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		AAE2005F2D3F70FD00480DB6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SNH2E6X8CL;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.etherpunk.EtherpunksMoneyRegister-v15Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EtherpunksMoneyRegister.v15.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EtherpunksMoneyRegister.v15";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
+		AAE200612D3F70FD00480DB6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SNH2E6X8CL;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.etherpunk.EtherpunksMoneyRegister-v15UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_TARGET_NAME = EtherpunksMoneyRegister.v15;
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		AAE200622D3F70FD00480DB6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SNH2E6X8CL;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.etherpunk.EtherpunksMoneyRegister-v15UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_TARGET_NAME = EtherpunksMoneyRegister.v15;
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AAE2002C2D3F70FB00480DB6 /* Build configuration list for PBXProject "EtherpunksMoneyRegister.v15" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAE2005B2D3F70FD00480DB6 /* Debug */,
+				AAE2005C2D3F70FD00480DB6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AAE200582D3F70FD00480DB6 /* Build configuration list for PBXNativeTarget "EtherpunksMoneyRegister.v15" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAE200592D3F70FD00480DB6 /* Debug */,
+				AAE2005A2D3F70FD00480DB6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AAE2005D2D3F70FD00480DB6 /* Build configuration list for PBXNativeTarget "EtherpunksMoneyRegister.v15Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAE2005E2D3F70FD00480DB6 /* Debug */,
+				AAE2005F2D3F70FD00480DB6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AAE200602D3F70FD00480DB6 /* Build configuration list for PBXNativeTarget "EtherpunksMoneyRegister.v15UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAE200612D3F70FD00480DB6 /* Debug */,
+				AAE200622D3F70FD00480DB6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AAE200972D3F71FA00480DB6 /* XCRemoteSwiftPackageReference "SQLite" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.15.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AAE2009B2D3F727C00480DB6 /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAE200972D3F71FA00480DB6 /* XCRemoteSwiftPackageReference "SQLite" */;
+			productName = SQLite;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = AAE200292D3F70FB00480DB6 /* Project object */;
+}
