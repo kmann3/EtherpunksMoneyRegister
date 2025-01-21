@@ -26,7 +26,11 @@ struct EtherpunksMoneyRegister_v15App: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+#if os(macOS)
+                .frame(minWidth: 1000, minHeight: 750)
+#endif
         }
         .modelContainer(sharedModelContainer)
+
     }
 }

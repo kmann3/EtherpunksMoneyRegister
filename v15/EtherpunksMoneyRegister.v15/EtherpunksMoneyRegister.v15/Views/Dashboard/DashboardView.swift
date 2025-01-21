@@ -32,6 +32,9 @@ struct DashboardView: View {
                         Section(header: Text("Reserved Transactions")) {
                             ForEach(viewModel.reservedTransactions) { reserved in
                                 Dashboard_TransactionItemView(transaction: reserved)
+                                    .onTapGesture {
+                                        viewModel.pathStore.navigateTo(route: .transaction_Edit(transaction: reserved))
+                                    }
                             }
                         }
                     }
@@ -39,6 +42,9 @@ struct DashboardView: View {
                         Section(header: Text("Pending Transactions")) {
                             ForEach(viewModel.pendingTransactions) { pending in
                                 Dashboard_TransactionItemView(transaction: pending)
+                                    .onTapGesture {
+                                        viewModel.pathStore.navigateTo(route: .transaction_Edit(transaction: pending))
+                                    }
                             }
                         }
                     }
@@ -56,6 +62,11 @@ struct DashboardView: View {
                                         viewModel.selectedCreditRecurringTransaction = creditItem
                                         viewModel.returnTransaction = AccountTransaction(recurringTransaction: creditItem)
                                         viewModel.isConfirmDepositCreditDialogShowing.toggle()
+                                }
+                                .contextMenu {
+                                    Button(action: {
+                                        viewModel.pathStore.navigateTo(route: .recurringTransaction_Edit(recTrans: creditItem))
+                                    }, label: { Label("Edit: \(creditItem.name)", systemImage: "icon") })
                                 }
                             }
                         }
@@ -77,6 +88,12 @@ struct DashboardView: View {
 
                                             viewModel.isConfirmReserveDebitGroupDialogShowing.toggle()
                                         }
+                                        .contextMenu {
+                                            Button(action: {
+                                                viewModel.pathStore
+                                                    .navigateTo(route: .recurringGroup_Edit(recGroup: group))
+                                            }, label: { Label("Edit: \(group.name)", systemImage: "icon") })
+                                        }
 
                                     Spacer()
                                 }
@@ -93,6 +110,11 @@ struct DashboardView: View {
                                     viewModel.selectedDebitRecurringTransaction = debitItem
                                     viewModel.returnTransaction = AccountTransaction(recurringTransaction: debitItem)
                                     viewModel.isConfirmReserveDebitTransactionDialogShowing.toggle()
+                                }
+                                .contextMenu {
+                                    Button(action: {
+                                        viewModel.pathStore.navigateTo(route: .recurringTransaction_Edit(recTrans: debitItem))
+                                    }, label: { Label("Edit: \(debitItem.name)", systemImage: "icon") })
                                 }
                             }
                         }
@@ -141,6 +163,6 @@ struct DashboardView: View {
     let ds = MoneyDataSource()
     DashboardView(viewModel: DashboardView.ViewModel(dataSource: ds))
 #if os(macOS)
-        .frame(width: 900, height: 600)
+        .frame(minWidth: 1000, minHeight: 750)
 #endif
 }

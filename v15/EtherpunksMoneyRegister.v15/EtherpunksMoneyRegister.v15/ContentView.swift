@@ -97,11 +97,13 @@ struct ContentView: View {
             .navigationDestination(for: PathStore.Route.self) { route in
                 switch route {
                 case .account_Create: Text("TBI")
-                case .account_Details(let account): Text("TBI: \(account.name)")
+                case .account_Details(let account):
+                    Text("TBI: \(account.name)")
                 case .account_Edit: Text("TBI")
                 case .account_List:
                     //AccountsView()
                     Text("TBI")
+
 
                 case .dashboard:
                     Text("TBI")
@@ -155,6 +157,6 @@ struct ContentView: View {
 #Preview {
     ContentView()
 #if os(macOS)
-        .frame(width: 900, height: 600)
+        .frame(minWidth: 1000, minHeight: 750)
 #endif
 }
