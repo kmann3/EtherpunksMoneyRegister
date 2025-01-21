@@ -61,7 +61,7 @@ extension DashboardView {
             case .credit:
                 dataSource
                     .reserveDeposits(
-                        deposit: selectedDebitRecurringTransactions.first!,
+                        deposit: selectedCreditRecurringTransactions.first!,
                         account: selectedAccountFromReserveDialog!,
                         amount: returnAmount,
                         selectedDate: selectedDate,
