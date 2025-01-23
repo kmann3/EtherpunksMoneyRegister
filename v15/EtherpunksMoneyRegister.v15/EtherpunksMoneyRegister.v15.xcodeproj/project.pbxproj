@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AAE2009C2D3F727C00480DB6 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = AAE2009B2D3F727C00480DB6 /* SQLite */; };
+		AA9DFF692D42336C000FE204 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = AA9DFF682D42336C000FE204 /* SQLite */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,7 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AAE2009C2D3F727C00480DB6 /* SQLite in Frameworks */,
+				AA9DFF692D42336C000FE204 /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +138,7 @@
 			);
 			name = EtherpunksMoneyRegister.v15;
 			packageProductDependencies = (
-				AAE2009B2D3F727C00480DB6 /* SQLite */,
+				AA9DFF682D42336C000FE204 /* SQLite */,
 			);
 			productName = EtherpunksMoneyRegister.v15;
 			productReference = AAE200312D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15.app */;
@@ -223,7 +223,7 @@
 			mainGroup = AAE200282D3F70FB00480DB6;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				AAE200972D3F71FA00480DB6 /* XCRemoteSwiftPackageReference "SQLite" */,
+				AA9DFF672D423361000FE204 /* XCRemoteSwiftPackageReference "SQLite" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AAE200322D3F70FB00480DB6 /* Products */;
@@ -627,7 +627,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		AAE200972D3F71FA00480DB6 /* XCRemoteSwiftPackageReference "SQLite" */ = {
+		AA9DFF672D423361000FE204 /* XCRemoteSwiftPackageReference "SQLite" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
 			requirement = {
@@ -638,9 +638,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AAE2009B2D3F727C00480DB6 /* SQLite */ = {
+		AA9DFF682D42336C000FE204 /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = AAE200972D3F71FA00480DB6 /* XCRemoteSwiftPackageReference "SQLite" */;
+			package = AA9DFF672D423361000FE204 /* XCRemoteSwiftPackageReference "SQLite" */;
 			productName = SQLite;
 		};
 /* End XCSwiftPackageProductDependency section */

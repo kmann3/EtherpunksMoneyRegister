@@ -54,8 +54,12 @@ struct Dashboard_FullSummaryView: View {
                 .frame(maxWidth: 750, maxHeight: 1, alignment: .center)
                 .padding(.horizontal, 25)
 
+            Text("Outstanding")
+                .font(.headline)
+                .foregroundStyle(.secondary)
+            
             HStack {
-                Text("Outstanding Items:")
+                Text("Items:")
                     .font(.headline)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 15)
@@ -69,7 +73,7 @@ struct Dashboard_FullSummaryView: View {
             }
 
             HStack {
-                Text("Outstanding Amount:")
+                Text("Amount:")
                     .font(.headline)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 15)

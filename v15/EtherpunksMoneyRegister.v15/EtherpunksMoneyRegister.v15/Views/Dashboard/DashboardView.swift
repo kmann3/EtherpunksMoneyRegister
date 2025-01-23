@@ -76,6 +76,7 @@ struct DashboardView: View {
                             }
                         }
                     }
+                    .frame(height: 200)
 
                     List {
                         Section(header: Text("Recurring Debits")) {
@@ -124,7 +125,6 @@ struct DashboardView: View {
                             }
                         }
                     }
-
                     Spacer()
                 }
                 .frame(width: 500)

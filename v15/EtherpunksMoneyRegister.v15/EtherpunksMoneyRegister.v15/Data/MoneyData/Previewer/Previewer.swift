@@ -220,7 +220,7 @@ class Previewer {
                     name: row[accountNameCol2]
                 )
                 if account.name == "Chase" {
-                    print("skipping Chase")
+                    //debugPrint("skipping Chase")
                     continue
                 } else {
                     accountDictionary.updateValue(account, forKey: row[accountIdCol2].uuidString)
@@ -299,7 +299,7 @@ class Previewer {
                     modelContext.insert(recurringTransaction)
                     break
                 }
-                print("Saving: \(recurringTransaction.name)")
+                //debugPrint("Saving: \(recurringTransaction.name)")
                 try modelContext.save()
             }
 
