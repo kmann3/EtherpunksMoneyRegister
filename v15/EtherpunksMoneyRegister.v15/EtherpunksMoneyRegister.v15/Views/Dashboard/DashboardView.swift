@@ -17,7 +17,7 @@ struct DashboardView: View {
                 VStack {
                     Text("Primary overview")
                     Dashboard_FullSummaryView(accounts: viewModel.accounts)
-                        .padding()
+                        .padding(5)
                         .frame(minWidth: 200)
 
                     List(viewModel.accounts) { account in

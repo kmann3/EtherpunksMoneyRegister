@@ -219,7 +219,8 @@ class Previewer {
                     id: row[accountIdCol2],
                     name: row[accountNameCol2]
                 )
-                if row[accountIdCol2].uuidString == "12345678-1234-1234-1234-123456789abc" {
+                if account.name == "Chase" {
+                    print("skipping Chase")
                     continue
                 } else {
                     accountDictionary.updateValue(account, forKey: row[accountIdCol2].uuidString)
@@ -227,7 +228,7 @@ class Previewer {
                 }
             }
             
-            try? modelContext.save()
+            try modelContext.save()
 
 
             billGroup.recurringTransactions = []
@@ -239,7 +240,6 @@ class Previewer {
                     transactionType: row[transactionTypeCol] == "debit" ? TransactionType.debit : TransactionType.credit,
                     amount: Decimal.init(string: row[amountCol])!
                     )
-
                 recurringTransaction.defaultAccount = accountDictionary[row[accountIdCol].uuidString] ?? bankAccount
 
                 if(row[groupNameCol] != nil) {
@@ -299,11 +299,11 @@ class Previewer {
                     modelContext.insert(recurringTransaction)
                     break
                 }
-
+                print("Saving: \(recurringTransaction.name)")
                 try modelContext.save()
             }
-            
 
+            try modelContext.save()
         } catch {
             print(error)
         }
