@@ -178,6 +178,7 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
         self.isTaxRelated = recurringTransaction.isTaxRelated
         self.transactionTags = recurringTransaction.transactionTags
         self.recurringTransaction = recurringTransaction
+        self.recurringTransactionId = recurringTransaction.id
         self.dueDate = recurringTransaction.nextDueDate
 
         VerifySignage()

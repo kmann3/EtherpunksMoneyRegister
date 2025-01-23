@@ -62,7 +62,9 @@ struct Dashboard_ReserveDebitGroupDialogView: View {
                 }
 
                 VStack {
-                    Text("Accounts")
+                    Text("Use Default Account")
+
+                    Text("If no default account use: ")
                         .padding(.trailing, 25)
                         .padding(.bottom, 25)
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -102,8 +104,10 @@ struct Dashboard_ReserveDebitGroupDialogView: View {
                 Spacer()
 
                 Button {
-                    returnTransactions.forEach { t in
-                        t.account = viewModel.selectedAccount
+                    returnTransactions.forEach { rt in
+                        if rt.account == nil {
+                            rt.account = viewModel.selectedAccount
+                        }
                     }
                     didCancel = false
                     dismiss()

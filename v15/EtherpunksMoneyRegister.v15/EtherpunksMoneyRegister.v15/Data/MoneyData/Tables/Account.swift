@@ -141,4 +141,13 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
         self.name = name
         self.startingBalance = startingBalance
     }
+
+    init(
+        id: UUID,
+        name: String
+    ) {
+        self.id = id
+        self.name = name
+        
+    }
 }

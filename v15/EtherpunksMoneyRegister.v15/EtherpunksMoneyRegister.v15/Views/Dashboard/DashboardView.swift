@@ -15,6 +15,11 @@ struct DashboardView: View {
         VStack {
             HStack {
                 VStack {
+                    Text("Primary overview")
+                    Dashboard_FullSummaryView(accounts: viewModel.accounts)
+                        .padding()
+                        .frame(minWidth: 200)
+
                     List(viewModel.accounts) { account in
                         Dashboard_AccountItemView(acctData: account)
                             .onTapGesture {

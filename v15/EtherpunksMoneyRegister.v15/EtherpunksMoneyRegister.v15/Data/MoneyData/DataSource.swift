@@ -235,17 +235,19 @@ final class MoneyDataSource: Sendable {
     func ReserveDebitGroup(group: RecurringGroup, newTransactions: [AccountTransaction]) {
         try? modelContext.transaction {
 
-            let account = newTransactions.first!.account!
             group.recurringTransactions!.forEach { item in
-                account.currentBalance += item.amount
-                account.outstandingBalance += item.amount
-                account.outstandingItemCount += 1
-                account.transactionCount += 1
                 try? item.BumpNextDueDate()
             }
 
             do {
-                newTransactions.forEach { modelContext.insert($0) }
+                newTransactions.forEach {
+                    let transactionAccount = $0.account!
+                    transactionAccount.currentBalance += $0.amount
+                    transactionAccount.outstandingBalance += $0.amount
+                    transactionAccount.outstandingItemCount += 1
+                    transactionAccount.transactionCount += 1
+                    modelContext.insert($0)
+                }
                 try modelContext.save()
             } catch {
                 print(error)

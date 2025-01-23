@@ -191,7 +191,8 @@ class Previewer {
             print("Test data could not be found to be imported at \(path)")
             return
         }
-
+//12345678-1234-1234-1234-123456789abc
+//87654321-4321-4231-4321-987654321cba
         do {
             typealias Expression = SQLite.Expression
             let db = try Connection(path)
@@ -206,6 +207,28 @@ class Previewer {
             let frequencyDayOfWeekCol = Expression<String?>("FrequencyDayOfWeek")
             let frequencyDateCol = Expression<String?>("FrequencyDate")
             let groupNameCol = Expression<String?>("GroupName")
+            let accountIdCol = Expression<UUID>("AccountId")
+
+            let accountTable = Table("Accounts")
+            let accountIdCol2 = Expression<UUID>("Id")
+            let accountNameCol2 = Expression<String>("Name")
+
+            var accountDictionary = ["12345678-1234-1234-1234-123456789abc": bankAccount]
+            for row in try db.prepare(accountTable) {
+                let account: Account = Account(
+                    id: row[accountIdCol2],
+                    name: row[accountNameCol2]
+                )
+                if row[accountIdCol2].uuidString == "12345678-1234-1234-1234-123456789abc" {
+                    continue
+                } else {
+                    accountDictionary.updateValue(account, forKey: row[accountIdCol2].uuidString)
+                    modelContext.insert(account)
+                }
+            }
+            
+            try? modelContext.save()
+
 
             billGroup.recurringTransactions = []
 
@@ -217,8 +240,8 @@ class Previewer {
                     amount: Decimal.init(string: row[amountCol])!
                     )
 
-                recurringTransaction.defaultAccount = bankAccount
-                
+                recurringTransaction.defaultAccount = accountDictionary[row[accountIdCol].uuidString] ?? bankAccount
+
                 if(row[groupNameCol] != nil) {
                     if(row[groupNameCol] == "bills") {
                         recurringTransaction.recurringGroup = billGroup

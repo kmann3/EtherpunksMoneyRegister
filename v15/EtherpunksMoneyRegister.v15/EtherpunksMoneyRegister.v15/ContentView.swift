@@ -96,55 +96,55 @@ struct ContentView: View {
 #endif
             .navigationDestination(for: PathStore.Route.self) { route in
                 switch route {
-                case .account_Create: Text("TBI")
+                case .account_Create: Text("TBI - Accont Create")
                 case .account_Details(let account):
-                    Text("TBI: \(account.name)")
-                case .account_Edit: Text("TBI")
+                    Text("TBI - Account Details: \(account.name)")
+                case .account_Edit: Text("TBI - Account Edit")
                 case .account_List:
                     //AccountsView()
-                    Text("TBI")
+                    Text("TBI - Account List")
 
 
                 case .dashboard:
-                    Text("TBI")
+                    Text("Dashboard")
 //                    DashboardView()
 //                        .onAppear {
 //                            viewModel.pathStore.selectedTab = .dashboard
 //                        }
 
-                case .recurringGroup_Create: Text("TBI")
-                case .recurringGroup_Details: Text("TBI")
-                case .recurringGroup_Edit: Text("TBI")
-                case .recurringGroup_List: Text("TBI")
+                case .recurringGroup_Create: Text("TBI - Recurring Group Create")
+                case .recurringGroup_Details: Text("TBI - Recurring Group Details")
+                case .recurringGroup_Edit: Text("TBI - Recurring Group Edit")
+                case .recurringGroup_List: Text("TBI - Recurring Group List")
 
-                case .recurringTransaction_Create: Text("TBI")
-                case .recurringTransaction_Details: Text("TBI")
-                case .recurringTransaction_Edit: Text("TBI")
-                case .recurringTransaction_List: Text("TBI")
+                case .recurringTransaction_Create: Text("TBI - Recurring Transaction Crate")
+                case .recurringTransaction_Details: Text("TBI - Recurring Transaction Details")
+                case .recurringTransaction_Edit: Text("TBI - Recurring Transaction Edit")
+                case .recurringTransaction_List: Text("TBI - Recrring Transaction List")
 
-                case .report_Tax: Text("TBI")
+                case .report_Tax: Text("TBI - Report: Tax")
 
                 case .tag_Create:
-                    Text("TBI")
+                    Text("TBI - Tag Create")
 //                    TagEditorView(tag: TransactionTag(name: ""))
 //                        .onAppear {
 //                            viewModel.pathStore.selectedTab = .tags
 //                        }
                 case .tag_Edit(let tag):
-                    Text("Tag: \(tag.name)")
+                    Text("TBI Tag Edit: \(tag.name)")
 //                    TagEditorView(tag: tag)
 //                        .onAppear {
 //                            viewModel.pathStore.selectedTab = .tags
 //                        }
                 case .tag_List:
-                    Text("TBI")
+                    Text("TBI - Tag List")
 //                    TagView()
 //                        .modelContext(MoneyDataSource.shared.modelContext)
 
-                case .transaction_Create: Text("TBI")
-                case .transaction_Detail(let transaction): Text("TBI: \(transaction.name)")
-                case .transaction_Edit: Text("TBI")
-                case .transaction_List(let account): Text("TBI: \(account.name)")
+                case .transaction_Create: Text("TBI - Transaction Create")
+                case .transaction_Detail(let transaction): Text("TBI - Transaction Details \(transaction.name)")
+                case .transaction_Edit(let transaction): Text("TBI - Transaction Edit \(transaction.name)")
+                case .transaction_List(let account): Text("TBI - TransactionList \(account.name)")
                 }
             }
         }
