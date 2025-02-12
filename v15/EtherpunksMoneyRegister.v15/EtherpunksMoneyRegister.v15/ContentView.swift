@@ -101,8 +101,7 @@ struct ContentView: View {
                     Text("TBI - Account Details: \(account.name)")
                 case .account_Edit: Text("TBI - Account Edit")
                 case .account_List:
-                    //AccountsView()
-                    Text("TBI - Account List")
+                    AccountView()
 
 
                 case .dashboard:
