@@ -62,10 +62,12 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
     /// The background color indicating the status of the transaction.
     public var backgroundColor: Color {
         switch self.transactionStatus {
-        case .cleared:
+        case .balanced:
             Color(
                 .sRGB, red: 0 / 255, green: 150 / 255, blue: 25 / 255,
                 opacity: 0.5)
+        case .cleared:
+            Color.clear
         case .empty:
             Color.clear
         case .recurring:
@@ -95,6 +97,8 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
         } else {
             if self.recurringTransactionId != nil {
                 return .recurring
+            } else if self.balancedOnUTC != nil {
+                return .balanced
             } else if self.clearedOnUTC != nil {
                 return .cleared
             }

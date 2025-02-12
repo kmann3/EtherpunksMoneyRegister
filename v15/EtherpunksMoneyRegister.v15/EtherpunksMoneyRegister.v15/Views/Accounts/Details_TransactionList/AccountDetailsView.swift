@@ -4,6 +4,8 @@
 //
 //  Created by Kennith Mann on 2/7/25.
 //
+// Summary:
+//      This view lists transactions for an account. This will be the primary use of the application.
 
 import SwiftUI
 
@@ -15,7 +17,16 @@ struct AccountDetailsView: View {
     }
 
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            Section(header: Text("Account Details")) {
+                AccountItemView(acctData: viewModel.account)
+            }
+            Section(header: Text("Transactions"), footer: Text("End of list")) {
+                ForEach(viewModel.accountTransactions, id: \.id) { tran in
+                        TransactionListItemView(transaction: tran)
+                }
+            }
+        }
     }
 }
 

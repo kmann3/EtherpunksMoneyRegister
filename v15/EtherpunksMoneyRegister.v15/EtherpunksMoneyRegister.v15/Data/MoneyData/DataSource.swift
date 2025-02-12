@@ -85,6 +85,24 @@ final class MoneyDataSource: Sendable {
         }
     }
 
+    func fetchAccountTransactions(account: Account) -> [AccountTransaction] {
+        let id = account.id
+        do {
+            return try modelContext.fetch(FetchDescriptor<AccountTransaction>(
+                predicate: #Predicate<AccountTransaction> { transaction in
+                    if transaction.accountId == id {
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+                ,sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
+            ))
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+
     func fetchAllPendingTransactions() -> [AccountTransaction] {
         do {
             return try modelContext.fetch(FetchDescriptor<AccountTransaction>(

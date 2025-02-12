@@ -8,6 +8,7 @@
 import Foundation
 
 enum TransactionStatus: Codable, CustomStringConvertible {
+    case balanced
     case cleared
     case empty
     case pending
@@ -16,6 +17,7 @@ enum TransactionStatus: Codable, CustomStringConvertible {
 
     var description: String {
         switch self {
+        case .balanced: return "Balanced"
         case .cleared: return "Cleared"
         case .empty: return "Empty"
         case .pending: return "Pending"

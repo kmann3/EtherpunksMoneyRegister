@@ -21,18 +21,18 @@ extension AccountDetailsView {
         var account: Account
 
         var accountTransactions: [AccountTransaction] = []
-        private var isLoading = false
-        private var hasMoreTransactions = true
-        private var currentAccountTransactionPage = 0
-        private var currentSearchPage = 0
-        private var transactionsPerPage = 10
+//        private var isLoading = false
+//        private var hasMoreTransactions = true
+//        private var currentAccountTransactionPage = 0
+//        private var currentSearchPage = 0
+//        private var transactionsPerPage = 10
 
         init(dataSource: MoneyDataSource = MoneyDataSource.shared, account: Account) {
             self.dataSource = dataSource
             self.pathStore = MoneyDataSource.pathStore
             self.account = account
 
-            // Fill transactions
+            self.accountTransactions = self.dataSource.fetchAccountTransactions(account: self.account)
         }
     }
 }
