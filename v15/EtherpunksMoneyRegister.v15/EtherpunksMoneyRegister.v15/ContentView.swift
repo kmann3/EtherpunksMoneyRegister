@@ -28,8 +28,7 @@ struct ContentView: View {
                     systemImage: MenuOptionsEnum.accounts.iconName,
                     value: MenuOptionsEnum.accounts
                 ) {
-                    Text("Accounts")
-                    //AccountsView()
+                    AccountView()
                 }
                 .customizationID(MenuOptionsEnum.accounts.tabId)
 
@@ -99,10 +98,10 @@ struct ContentView: View {
                 case .account_Create: Text("TBI - Accont Create")
                 case .account_Details(let account):
                     Text("TBI - Account Details: \(account.name)")
+                    //AccountView(accountToLoad: account)
                 case .account_Edit: Text("TBI - Account Edit")
                 case .account_List:
                     AccountView()
-
 
                 case .dashboard:
                     Text("Dashboard")
@@ -143,10 +142,13 @@ struct ContentView: View {
                 case .transaction_Create: Text("TBI - Transaction Create")
                 case .transaction_Detail(let transaction): Text("TBI - Transaction Details \(transaction.name)")
                 case .transaction_Edit(let transaction): Text("TBI - Transaction Edit \(transaction.name)")
-                case .transaction_List(let account): Text("TBI - TransactionList \(account.name)")
+                case .transaction_List(let account):
+                    //Text("TBI - TransactionList \(account.name)")
+                    AccountView(accountToLoad: account)
                 }
             }
         }
+        .padding(20)
         .frame(
             minWidth: 850, maxWidth: .infinity, minHeight: 500,
             maxHeight: .infinity)
