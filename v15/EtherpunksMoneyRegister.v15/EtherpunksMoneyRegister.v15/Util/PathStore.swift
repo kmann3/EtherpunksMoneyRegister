@@ -39,6 +39,10 @@ class PathStore {
 
         case report_Tax
 
+        case search
+
+        case settings
+
         case tag_Create
         case tag_Edit(tag: TransactionTag)
         case tag_List

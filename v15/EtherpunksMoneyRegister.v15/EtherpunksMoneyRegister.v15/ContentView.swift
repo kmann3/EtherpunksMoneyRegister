@@ -10,148 +10,128 @@ import SwiftData
 
 struct ContentView: View {
     @State var viewModel = ViewModel()
+    @State private var route: PathStore.Route? = .dashboard
+    @State private var selectedRoute: PathStore.Route? = nil
+    @State private var selectedSubRoute: PathStore.Route? = nil
 
     var body: some View {
-        NavigationStack(path: $viewModel.pathStore.path) {
-            TabView(selection: $viewModel.pathStore.selectedTab) {
-                Tab(
-                    MenuOptionsEnum.dashboard.title,
-                    systemImage: MenuOptionsEnum.dashboard.iconName,
-                    value: MenuOptionsEnum.dashboard
-                ) {
-                    DashboardView()
-                }
-                .customizationID(MenuOptionsEnum.dashboard.tabId)
-
-                Tab(
-                    MenuOptionsEnum.accounts.title,
-                    systemImage: MenuOptionsEnum.accounts.iconName,
-                    value: MenuOptionsEnum.accounts
-                ) {
-                    AccountView()
-                }
-                .customizationID(MenuOptionsEnum.accounts.tabId)
-
-                Tab(
-                    MenuOptionsEnum.recurringTransactions.title,
-                    systemImage: MenuOptionsEnum.recurringTransactions.iconName,
-                    value: MenuOptionsEnum.recurringTransactions
-                ) {
-                    Text("Recurring Transactions")
-                    //RecurringTransactionsView()
-                }
-                .customizationID(MenuOptionsEnum.recurringTransactions.tabId)
-
-                Tab(
-                    MenuOptionsEnum.tags.title,
-                    systemImage: MenuOptionsEnum.tags.iconName,
-                    value: MenuOptionsEnum.tags
-                ) {
-                    Text("Tags")
-                    //TagView()
-                }
-                .customizationID(MenuOptionsEnum.tags.tabId)
-
-                Tab(
-                    MenuOptionsEnum.reports.title,
-                    systemImage: MenuOptionsEnum.reports.iconName,
-                    value: MenuOptionsEnum.reports
-                ) {
-                    Text("Reports")
-                    //ReportsView()
-                }
-                .customizationID(MenuOptionsEnum.reports.tabId)
-
-                Tab(
-                    MenuOptionsEnum.search.title,
-                    systemImage: MenuOptionsEnum.search.iconName,
-                    value: MenuOptionsEnum
-                        .search
-                ) {
-                    Text("Search")
-                    //SearchView()
-                }
-                .customizationID(MenuOptionsEnum.search.tabId)
-
-                Tab(
-                    MenuOptionsEnum.settings.title,
-                    systemImage: MenuOptionsEnum.settings.iconName,
-                    value: MenuOptionsEnum.settings
-                ) {
-                    //SettingsView()
-                }
-                .customizationID(MenuOptionsEnum.settings.tabId)
-#if os(iOS)
-                Tab(value: .search, role: .search) {
-                    // TODO: Mobile search
-                    //SearchView()
-                }
-#endif
-            }
-#if os(macOS)
-            .tabViewStyle(.grouped)
-#else
-            .tabViewStyle(.automatic)
-#endif
-            .navigationDestination(for: PathStore.Route.self) { route in
-                switch route {
-                case .account_Create: Text("TBI - Accont Create")
-                case .account_Details(let account):
-                    Text("TBI - Account Details: \(account.name)")
-                    //AccountView(accountToLoad: account)
-                case .account_Edit: Text("TBI - Account Edit")
-                case .account_List:
-                    AccountView()
-
-                case .dashboard:
+        NavigationSplitView {
+            List(selection: $selectedRoute) {
+                NavigationLink(value:  PathStore.Route.dashboard) {
                     Text("Dashboard")
-//                    DashboardView()
-//                        .onAppear {
-//                            viewModel.pathStore.selectedTab = .dashboard
-//                        }
+                }
 
-                case .recurringGroup_Create: Text("TBI - Recurring Group Create")
-                case .recurringGroup_Details: Text("TBI - Recurring Group Details")
-                case .recurringGroup_Edit: Text("TBI - Recurring Group Edit")
-                case .recurringGroup_List: Text("TBI - Recurring Group List")
+                NavigationLink(value:  PathStore.Route.recurringGroup_List) {
+                    Text("Recurring Groups")
+                }
 
-                case .recurringTransaction_Create: Text("TBI - Recurring Transaction Crate")
-                case .recurringTransaction_Details: Text("TBI - Recurring Transaction Details")
-                case .recurringTransaction_Edit: Text("TBI - Recurring Transaction Edit")
-                case .recurringTransaction_List: Text("TBI - Recrring Transaction List")
+                NavigationLink(value:  PathStore.Route.recurringTransaction_List) {
+                    Text("Recurring Transactions")
+                }
 
-                case .report_Tax: Text("TBI - Report: Tax")
+                NavigationLink(value:  PathStore.Route.tag_List) {
+                    Text("Tags")
+                }
 
-                case .tag_Create:
-                    Text("TBI - Tag Create")
-//                    TagEditorView(tag: TransactionTag(name: ""))
-//                        .onAppear {
-//                            viewModel.pathStore.selectedTab = .tags
-//                        }
-                case .tag_Edit(let tag):
-                    Text("TBI Tag Edit: \(tag.name)")
-//                    TagEditorView(tag: tag)
-//                        .onAppear {
-//                            viewModel.pathStore.selectedTab = .tags
-//                        }
-                case .tag_List:
-                    Text("TBI - Tag List")
-//                    TagView()
-//                        .modelContext(MoneyDataSource.shared.modelContext)
+                NavigationLink(value:  PathStore.Route.settings) {
+                    Text("Settings")
+                }
 
-                case .transaction_Create: Text("TBI - Transaction Create")
-                case .transaction_Detail(let transaction): Text("TBI - Transaction Details \(transaction.name)")
-                case .transaction_Edit(let transaction): Text("TBI - Transaction Edit \(transaction.name)")
-                case .transaction_List(let account):
-                    //Text("TBI - TransactionList \(account.name)")
-                    AccountView(accountToLoad: account)
+                NavigationLink(value:  PathStore.Route.search) {
+                    Text("Search")
+                }
+
+                Divider()
+
+                Text("Accounts")
+
+                Divider()
+
+                ForEach(viewModel.accounts, id: \.id) { account in
+                    NavigationLink(value: PathStore.Route.transaction_List(account: account)) {
+                        Text(account.name)
+                    }
+                }
+
+                Text("")
+                NavigationLink(value:  PathStore.Route.account_Create) {
+                    Text("New Account")
                 }
             }
+        } content: {
+            if let selectedRoute {
+                switch selectedRoute {
+                case .dashboard:
+                    DashboardView() { r in
+                        switch r {
+                        case .recurringGroup_Edit(let group):
+                            changeRoute(r, value: group)
+
+                        case .recurringTransaction_Edit(let rec):
+                            changeRoute(r, value: rec)
+
+                        case .transaction_Detail(let transaction):
+                            changeRoute(r, value: transaction)
+
+                        case .transaction_List(let account):
+                            changeRoute(r, value: account)
+                        default: break
+                        }
+                    }
+                case .recurringGroup_List: Text("TBI - Recurring Group List")
+                case .recurringTransaction_List: Text("TBI - Recurring Transaction List")
+                case .tag_List: Text("TBI - Tag List")
+                case .settings: Text("TBI - Settings")
+                case .transaction_List(let account): Text("TBI - Transaction List \(account)")
+                default: Text("TBI - \(selectedRoute)")
+                }
+            }
+
+        } detail: {
+
+            if let selectedSubRoute {
+                switch selectedSubRoute {
+                case .account_Details(let account): Text("TBI - Account Details: \(account)")
+                case .recurringGroup_Details(let recGroup): Text("TBI - Recurring Group Details: \(recGroup)")
+                case .recurringGroup_Edit(let recGroup): Text("TBI - Recurring Group Edit: \(recGroup)")
+                case .recurringTransaction_Details(let recTrans): Text("TBI - Recurring Transaction Details: \(recTrans)")
+                case .recurringTransaction_Edit(let recTrans): Text("TBI - Recurring Transaction Edit: \(recTrans)")
+                case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag)")
+                case .transaction_Detail(let transaction): Text("TBI - Transaction Detail: \(transaction)")
+                case .transaction_List(let account): Text("TBI - TransactionList \(account)")
+                default:
+                    Text("Empty")
+                }
+            }
+
         }
         .padding(20)
         .frame(
-            minWidth: 850, maxWidth: .infinity, minHeight: 500,
+            minWidth: 950, maxWidth: .infinity, minHeight: 500,
             maxHeight: .infinity)
+    }
+
+    func changeRoute(_ route: PathStore.Route, value: Any?) {
+        switch route {
+        case .recurringGroup_Edit:
+            self.selectedRoute =
+                .recurringGroup_List
+            self.selectedSubRoute = .recurringGroup_Edit(recGroup: value as! RecurringGroup)
+
+        case .recurringTransaction_Edit(let rec): self.selectedRoute =
+                .recurringTransaction_List
+            self.selectedSubRoute = .recurringTransaction_Edit(recTrans: rec)
+
+        case .transaction_Detail:
+            let transaction = value as! AccountTransaction
+            self.selectedRoute = .transaction_List(account: transaction.account!)
+            self.selectedSubRoute = .transaction_Detail(transaction: transaction)
+
+        case .transaction_List:
+            self.selectedRoute = .transaction_List(account: value as! Account)
+            self.selectedSubRoute = nil
+        default: break
+        }
     }
 }
 

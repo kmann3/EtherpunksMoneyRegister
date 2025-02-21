@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DashboardView: View {
     @State var viewModel = ViewModel()
+    var handler: (PathStore.Route) -> Void
 
     var body: some View {
         #if os(macOS)
@@ -18,15 +19,16 @@ struct DashboardView: View {
                     Text("Primary overview")
                     Dashboard_FullSummaryView(accounts: viewModel.accounts)
                         .padding(5)
-                        .frame(minWidth: 200)
+                        .frame(minWidth: 300)
 
                     List(viewModel.accounts) { account in
-                        Dashboard_AccountItemView(acctData: account)
+                            Dashboard_AccountItemView(acctData: account)
+
                             .onTapGesture {
-                                viewModel.pathStore.navigateTo(
-                                    route: .transaction_List(account: account))
+                                let route = PathStore.Route.transaction_List(account: account)
+                                handler(route)
                             }
-                            .frame(minWidth: 200)
+                            .frame(minWidth: 300)
                     }
                     Spacer()
                 }
@@ -38,7 +40,8 @@ struct DashboardView: View {
                             ForEach(viewModel.reservedTransactions) { reserved in
                                 Dashboard_TransactionItemView(transaction: reserved)
                                     .onTapGesture {
-                                        viewModel.pathStore.navigateTo(route: .transaction_Edit(transaction: reserved))
+                                        let route = PathStore.Route.transaction_Detail(transaction: reserved)
+                                        handler(route)
                                     }
                             }
                         }
@@ -48,7 +51,8 @@ struct DashboardView: View {
                             ForEach(viewModel.pendingTransactions) { pending in
                                 Dashboard_TransactionItemView(transaction: pending)
                                     .onTapGesture {
-                                        viewModel.pathStore.navigateTo(route: .transaction_Edit(transaction: pending))
+                                        let route = PathStore.Route.transaction_Detail(transaction: pending)
+                                        handler(route)
                                     }
                             }
                         }
@@ -70,7 +74,8 @@ struct DashboardView: View {
                                 }
                                 .contextMenu {
                                     Button(action: {
-                                        viewModel.pathStore.navigateTo(route: .recurringTransaction_Edit(recTrans: creditItem))
+                                        let route = PathStore.Route.recurringTransaction_Edit(recTrans: creditItem)
+                                        handler(route)
                                     }, label: { Label("Edit: \(creditItem.name)", systemImage: "icon") })
                                 }
                             }
@@ -96,8 +101,8 @@ struct DashboardView: View {
                                         }
                                         .contextMenu {
                                             Button(action: {
-                                                viewModel.pathStore
-                                                    .navigateTo(route: .recurringGroup_Edit(recGroup: group))
+                                                let route = PathStore.Route.recurringGroup_Edit(recGroup: group)
+                                                handler(route)
                                             }, label: { Label("Edit: \(group.name)", systemImage: "icon") })
                                         }
 
@@ -119,7 +124,8 @@ struct DashboardView: View {
                                 }
                                 .contextMenu {
                                     Button(action: {
-                                        viewModel.pathStore.navigateTo(route: .recurringTransaction_Edit(recTrans: debitItem))
+                                        let route = PathStore.Route.recurringTransaction_Edit(recTrans: debitItem)
+                                        handler(route)
                                     }, label: { Label("Edit: \(debitItem.name)", systemImage: "icon") })
                                 }
                             }
@@ -127,7 +133,7 @@ struct DashboardView: View {
                     }
                     Spacer()
                 }
-                .frame(width: 500)
+                .frame(width: 400)
             }
         }
         .sheet(isPresented: $viewModel.isConfirmDepositCreditDialogShowing, onDismiss: {viewModel.reserveDepositCreditDialogDismiss()}) {
@@ -166,7 +172,7 @@ struct DashboardView: View {
 
 #Preview {
     let ds = MoneyDataSource()
-    DashboardView(viewModel: DashboardView.ViewModel(dataSource: ds))
+    DashboardView(viewModel: DashboardView.ViewModel(dataSource: ds), handler: { _ in })
 #if os(macOS)
         .frame(minWidth: 1000, minHeight: 750)
 #endif

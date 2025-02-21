@@ -31,7 +31,7 @@ struct Dashboard_AccountItemView: View {
                 Text("Available")
                     .font(.headline)
                     .foregroundStyle(.secondary)
-                    .padding(.horizontal, 5)
+                    .padding(.horizontal, 15)
 
                 Spacer()
 
@@ -42,14 +42,14 @@ struct Dashboard_AccountItemView: View {
                 )
                 .font(.headline)
                 .foregroundStyle(.secondary)
-                .padding(.horizontal, 5)
+                .padding(.horizontal, 15)
             }
 
             HStack {
                 Text("Exected Balance")
                     .font(.headline)
                     .foregroundStyle(.secondary)
-                    .padding(.horizontal, 5)
+                    .padding(.horizontal, 15)
 
                 Spacer()
 
@@ -60,7 +60,7 @@ struct Dashboard_AccountItemView: View {
                 )
                 .font(.headline)
                 .foregroundStyle(.secondary)
-                .padding(.horizontal, 5)
+                .padding(.horizontal, 15)
             }
 
             Rectangle()
@@ -72,7 +72,7 @@ struct Dashboard_AccountItemView: View {
                 Text("Last Balanced:")
                     .font(.headline)
                     .foregroundStyle(.secondary)
-                    .padding(.horizontal, 5)
+                    .padding(.horizontal, 15)
 
                 Spacer()
 
@@ -81,7 +81,7 @@ struct Dashboard_AccountItemView: View {
                 )
                 .font(.headline)
                 .foregroundStyle(.secondary)
-                .padding(.horizontal, 5)
+                .padding(.horizontal, 15)
             }
         }
         .cornerRadius(10)
