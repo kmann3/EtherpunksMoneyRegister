@@ -92,7 +92,9 @@ struct Dashboard_ReserveTransactionsDepositCreditDialogView: View {
 
                         HStack {
                             Toggle("Is Cleared?", isOn: $isCleared)
+                            #if os(macOS)
                                 .toggleStyle(.checkbox)
+                            #endif
                                 .onChange(of: isCleared) {
                                     if isCleared == true {
                                         returnTransaction.clearedOnUTC = Date()

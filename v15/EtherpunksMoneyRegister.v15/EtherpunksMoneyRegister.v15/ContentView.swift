@@ -41,9 +41,17 @@ struct ContentView: View {
                     Text("Search")
                 }
 
-                Divider()
+                Text("")
 
-                Text("Accounts")
+                HStack {
+                    Text("Accounts")
+                    Spacer()
+                    Button {
+                        changeRoute(.account_Create, value: nil)
+                    } label: {
+                        Text("+")
+                    }
+                }
 
                 Divider()
 
@@ -51,11 +59,6 @@ struct ContentView: View {
                     NavigationLink(value: PathStore.Route.transaction_List(account: account)) {
                         Text(account.name)
                     }
-                }
-
-                Text("")
-                NavigationLink(value:  PathStore.Route.account_Create) {
-                    Text("New Account")
                 }
             }
         } content: {
@@ -113,6 +116,9 @@ struct ContentView: View {
 
     func changeRoute(_ route: PathStore.Route, value: Any?) {
         switch route {
+        case .account_Create:
+            self.selectedRoute = .account_Create
+            self.selectedSubRoute = nil
         case .recurringGroup_Edit:
             self.selectedRoute =
                 .recurringGroup_List
