@@ -9,11 +9,13 @@
 
 import SwiftUI
 
-struct AccountDetailsView: View {
+struct AccountTransactionsView: View {
     @State var viewModel: ViewModel
+    var handler: (PathStore.Route) -> Void
 
-    init(account: Account) {
+    init(account: Account, _ handler: @escaping (PathStore.Route) -> Void) {
         viewModel = ViewModel(account: account)
+        self.handler = handler
     }
 
     var body: some View {
@@ -24,6 +26,9 @@ struct AccountDetailsView: View {
             Section(header: Text("Transactions"), footer: Text("End of list")) {
                 ForEach(viewModel.accountTransactions, id: \.id) { tran in
                         TransactionListItemView(transaction: tran)
+                        .onTapGesture { t in
+                            handler(PathStore.Route.transaction_Detail(transaction: tran))
+                        }
                 }
             }
         }
@@ -31,5 +36,5 @@ struct AccountDetailsView: View {
 }
 
 #Preview {
-    AccountDetailsView(account: Previewer().bankAccount)
+    AccountTransactionsView(account: Previewer().bankAccount) {_ in }
 }

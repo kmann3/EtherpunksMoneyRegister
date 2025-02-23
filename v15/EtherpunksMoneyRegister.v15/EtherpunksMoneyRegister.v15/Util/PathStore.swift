@@ -53,6 +53,16 @@ class PathStore {
         case transaction_List(account: Account)
     }
 
+    func getVariable(route: Route) -> Any? {
+        switch route {
+        case .account_Details(let account):
+            return account
+        
+        default:
+            return nil
+        }
+    }
+
     private let savePath = URL.documentsDirectory.appending(path: "SavedPath")
 
     init() {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AccountItemView: View {
-    var acctData: Account
+    @State var acctData: Account
 
     var body: some View {
         VStack {

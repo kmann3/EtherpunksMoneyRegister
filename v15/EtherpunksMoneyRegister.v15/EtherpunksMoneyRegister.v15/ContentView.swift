@@ -56,7 +56,9 @@ struct ContentView: View {
                 Divider()
 
                 ForEach(viewModel.accounts, id: \.id) { account in
-                    NavigationLink(value: PathStore.Route.transaction_List(account: account)) {
+                    Button {
+                        changeRoute(.transaction_List(account: account), value: account)
+                    } label: {
                         Text(account.name)
                     }
                 }
@@ -84,8 +86,20 @@ struct ContentView: View {
                 case .recurringGroup_List: Text("TBI - Recurring Group List")
                 case .recurringTransaction_List: Text("TBI - Recurring Transaction List")
                 case .tag_List: Text("TBI - Tag List")
+                case .transaction_List(let account):
+                    AccountTransactionsView(account: account) { r in
+                        switch r {
+                        case .transaction_Detail(let transaction):
+
+                            changeRoute(r, value: transaction)
+                        default:
+                            debugPrint(r)
+                            break
+                        }
+                    }
+                    .frame(width: 300)
+
                 case .settings: Text("TBI - Settings")
-                case .transaction_List(let account): Text("TBI - Transaction List \(account)")
                 default: Text("TBI - \(selectedRoute)")
                 }
             }
@@ -94,14 +108,31 @@ struct ContentView: View {
 
             if let selectedSubRoute {
                 switch selectedSubRoute {
-                case .account_Details(let account): Text("TBI - Account Details: \(account)")
+                case .account_Details(let account):
+                    AccountTransactionsView(account: account) { t in
+                        changeRoute(t, value: nil)
+                    }
+
                 case .recurringGroup_Details(let recGroup): Text("TBI - Recurring Group Details: \(recGroup)")
                 case .recurringGroup_Edit(let recGroup): Text("TBI - Recurring Group Edit: \(recGroup)")
                 case .recurringTransaction_Details(let recTrans): Text("TBI - Recurring Transaction Details: \(recTrans)")
                 case .recurringTransaction_Edit(let recTrans): Text("TBI - Recurring Transaction Edit: \(recTrans)")
                 case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag)")
-                case .transaction_Detail(let transaction): Text("TBI - Transaction Detail: \(transaction)")
-                case .transaction_List(let account): Text("TBI - TransactionList \(account)")
+                case .transaction_Detail(let transaction):
+                    Text("TBI - Transaction Detail: \(transaction)")
+
+                case .transaction_List(let account):
+                    AccountTransactionsView(account: account) { r in
+                        switch r {
+                        case .transaction_Detail(let transaction):
+
+                            changeRoute(r, value: transaction)
+                        default:
+                            debugPrint(r)
+                            break
+                        }
+                    }
+                    .frame(width: 600)
                 default:
                     Text("Empty")
                 }
@@ -119,6 +150,7 @@ struct ContentView: View {
         case .account_Create:
             self.selectedRoute = .account_Create
             self.selectedSubRoute = nil
+            
         case .recurringGroup_Edit:
             self.selectedRoute =
                 .recurringGroup_List
