@@ -118,8 +118,9 @@ struct ContentView: View {
                 case .recurringTransaction_Details(let recTrans): Text("TBI - Recurring Transaction Details: \(recTrans)")
                 case .recurringTransaction_Edit(let recTrans): Text("TBI - Recurring Transaction Edit: \(recTrans)")
                 case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag)")
+
                 case .transaction_Detail(let transaction):
-                    Text("TBI - Transaction Detail: \(transaction)")
+                    AccountTransactionView(tran: transaction)
 
                 case .transaction_List(let account):
                     AccountTransactionsView(account: account) { r in
