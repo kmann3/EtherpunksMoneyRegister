@@ -56,9 +56,7 @@ struct ContentView: View {
                 Divider()
 
                 ForEach(viewModel.accounts, id: \.id) { account in
-                    Button {
-                        changeRoute(.transaction_List(account: account), value: account)
-                    } label: {
+                    NavigationLink(value: PathStore.Route.transaction_List(account: account)) {
                         Text(account.name)
                     }
                 }
@@ -90,7 +88,6 @@ struct ContentView: View {
                     AccountTransactionsView(account: account) { r in
                         switch r {
                         case .transaction_Detail(let transaction):
-
                             changeRoute(r, value: transaction)
                         default:
                             debugPrint(r)
@@ -103,7 +100,6 @@ struct ContentView: View {
                 default: Text("TBI - \(selectedRoute)")
                 }
             }
-
         } detail: {
 
             if let selectedSubRoute {
@@ -121,12 +117,10 @@ struct ContentView: View {
 
                 case .transaction_Detail(let transaction):
                     AccountTransactionView(tran: transaction)
-
                 case .transaction_List(let account):
                     AccountTransactionsView(account: account) { r in
                         switch r {
                         case .transaction_Detail(let transaction):
-
                             changeRoute(r, value: transaction)
                         default:
                             debugPrint(r)
