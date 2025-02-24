@@ -16,13 +16,11 @@ extension AccountTransactionView {
     class ViewModel {
         @ObservationIgnored
         private let dataSource: MoneyDataSource
-        var pathStore: PathStore
 
         var tran: AccountTransaction
 
         init(dataSource: MoneyDataSource = MoneyDataSource.shared, tran: AccountTransaction) {
             self.dataSource = dataSource
-            self.pathStore = MoneyDataSource.pathStore
 
             self.tran = tran
             // We need to load almost everthing EXCEPT the attached files. Those might be very large. We'll download those at the last second but pull the meta-data for users
