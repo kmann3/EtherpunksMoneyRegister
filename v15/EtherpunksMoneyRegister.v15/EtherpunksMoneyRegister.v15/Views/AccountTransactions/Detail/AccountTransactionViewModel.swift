@@ -25,6 +25,10 @@ extension AccountTransactionView {
             self.pathStore = MoneyDataSource.pathStore
 
             self.tran = tran
+            // We need to load almost everthing EXCEPT the attached files. Those might be very large. We'll download those at the last second but pull the meta-data for users
+
+            //self.tran.loadDetailDisplayData()
+            //self.whatever.loadMetaDataForAttachmentsForTransaction()
         }
 
 
