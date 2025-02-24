@@ -15,14 +15,11 @@ extension ContentView {
         @ObservationIgnored
         private let dataSource: MoneyDataSource
 
-        var pathStore: PathStore
-
         var accounts: [Account]
 
         @MainActor
         init(dataSource: MoneyDataSource = MoneyDataSource.shared) {
             self.dataSource = dataSource
-            self.pathStore = MoneyDataSource.pathStore
             self.accounts = dataSource.fetchAccounts()
         }
     }

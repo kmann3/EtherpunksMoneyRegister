@@ -16,7 +16,6 @@ extension AccountTransactionsView {
     class ViewModel {
         @ObservationIgnored
         private let dataSource: MoneyDataSource
-        var pathStore: PathStore
 
         var account: Account
 
@@ -24,7 +23,6 @@ extension AccountTransactionsView {
 
         init(dataSource: MoneyDataSource = MoneyDataSource.shared, account: Account) {
             self.dataSource = dataSource
-            self.pathStore = MoneyDataSource.pathStore
             self.account = account
 
             self.accountTransactions = self.dataSource.fetchAccountTransactions(account: self.account)

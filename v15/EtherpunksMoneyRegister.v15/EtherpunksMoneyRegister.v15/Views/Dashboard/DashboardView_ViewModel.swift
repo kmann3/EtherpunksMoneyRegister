@@ -17,8 +17,6 @@ extension DashboardView {
         @ObservationIgnored
         private let dataSource: MoneyDataSource
 
-        var pathStore: PathStore
-
         var accounts: [Account]
         var pendingTransactions: [AccountTransaction]
         var reservedTransactions: [AccountTransaction]
@@ -42,7 +40,6 @@ extension DashboardView {
 
         init(dataSource: MoneyDataSource = MoneyDataSource.shared) {
             self.dataSource = dataSource
-            self.pathStore = MoneyDataSource.pathStore
             accounts = dataSource.fetchAccounts()
             reservedTransactions = dataSource.fetchAllReservedTransactions()
             pendingTransactions = dataSource.fetchAllPendingTransactions()

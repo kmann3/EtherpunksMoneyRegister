@@ -15,7 +15,6 @@ final class MoneyDataSource: Sendable {
     public let modelContext: ModelContext
 
     static let shared = MoneyDataSource()
-    static let pathStore = PathStore()
 
 #if DEBUG
     public let previewer: Previewer
