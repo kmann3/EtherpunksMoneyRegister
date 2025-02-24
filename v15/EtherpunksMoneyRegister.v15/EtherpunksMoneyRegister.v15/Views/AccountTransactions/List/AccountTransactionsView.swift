@@ -36,5 +36,5 @@ struct AccountTransactionsView: View {
 }
 
 #Preview {
-    AccountTransactionsView(account: Previewer().bankAccount) {_ in }
+    AccountTransactionsView(account: Previewer().bankAccount) { _ in }
 }
