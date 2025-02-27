@@ -49,8 +49,8 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
             - recurringTransactionId: \(recurringTransactionId?.uuidString ?? "none")
             - dueDate: \(dueDate?.toDebugDate() ?? "nil")
             - pendingOnUTC: \(pendingOnUTC?.toDebugDate() ?? "nil")
-            - clearedOnUTC:\(clearedOnUTC?.toDebugDate() ?? "nil")
-            - balancedOnUTC:\(balancedOnUTC?.toDebugDate() ?? "nil")
+            - clearedOnUTC: \(clearedOnUTC?.toDebugDate() ?? "nil")
+            - balancedOnUTC: \(balancedOnUTC?.toDebugDate() ?? "nil")
             - createdOnUTC: \(createdOnUTC.toDebugDate())
             - --- Calculated fields:
             - backgroundColor: \(backgroundColor)
