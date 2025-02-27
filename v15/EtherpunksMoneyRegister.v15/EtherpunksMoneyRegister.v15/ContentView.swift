@@ -10,7 +10,6 @@ import SwiftData
 
 struct ContentView: View {
     @State var viewModel = ViewModel()
-    @State private var route: PathStore.Route? = .dashboard
     @State private var selectedRoute: PathStore.Route? = nil
     @State private var selectedSubRoute: PathStore.Route? = nil
 
@@ -85,8 +84,12 @@ struct ContentView: View {
                 case .recurringTransaction_List: Text("TBI - Recurring Transaction List")
                 case .tag_List: Text("TBI - Tag List")
                 case .transaction_List(let account):
-                    AccountTransactionsView(account: account) { r in
+                    AccountTransactionListView(account: account) { r in
                         switch r {
+
+                        case .account_Details(let account):
+                            changeRoute(r, value: account)
+
                         case .transaction_Detail(let transaction):
                             changeRoute(r, value: transaction)
                         default:
@@ -105,21 +108,27 @@ struct ContentView: View {
             if let selectedSubRoute {
                 switch selectedSubRoute {
                 case .account_Details(let account):
-                    AccountTransactionsView(account: account) { t in
-                        changeRoute(t, value: nil)
-                    }
+                    Text("TBI - Account Details: \(account.name)")
 
-                case .recurringGroup_Details(let recGroup): Text("TBI - Recurring Group Details: \(recGroup)")
-                case .recurringGroup_Edit(let recGroup): Text("TBI - Recurring Group Edit: \(recGroup)")
-                case .recurringTransaction_Details(let recTrans): Text("TBI - Recurring Transaction Details: \(recTrans)")
-                case .recurringTransaction_Edit(let recTrans): Text("TBI - Recurring Transaction Edit: \(recTrans)")
+                case .recurringGroup_Details(let recGroup):
+                    Text("TBI - Recurring Group Details: \(recGroup)")
+                case .recurringGroup_Edit(let recGroup):
+                    Text("TBI - Recurring Group Edit: \(recGroup)")
+                case .recurringTransaction_Details(let recTrans):
+                    Text("TBI - Recurring Transaction Details: \(recTrans)")
+                case .recurringTransaction_Edit(let recTrans):
+                    Text("TBI - Recurring Transaction Edit: \(recTrans)")
                 case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag)")
 
                 case .transaction_Detail(let transaction):
                     AccountTransactionView(tran: transaction)
+
                 case .transaction_List(let account):
-                    AccountTransactionsView(account: account) { r in
+                    AccountTransactionListView(account: account) { r in
                         switch r {
+                        case .account_Details(let account):
+                            changeRoute(r, value: account)
+
                         case .transaction_Detail(let transaction):
                             changeRoute(r, value: transaction)
                         default:
@@ -141,11 +150,18 @@ struct ContentView: View {
     }
 
     func changeRoute(_ route: PathStore.Route, value: Any?) {
+        print("Change Route: \(route)")
+        print("")
+        print("Value: \(value.debugDescription)")
         switch route {
         case .account_Create:
             self.selectedRoute = .account_Create
             self.selectedSubRoute = nil
-            
+
+        case .account_Details:
+            self.selectedRoute = .transaction_List(account: value as! Account)
+            self.selectedSubRoute = .account_Details(account: value as! Account)
+
         case .recurringGroup_Edit:
             self.selectedRoute =
                 .recurringGroup_List

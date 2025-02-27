@@ -247,7 +247,7 @@ struct AccountTransactionView: View {
                             //                                        )
                             //                            )
                         } label: {
-                            Label("Edit transaction", systemImage: "pencil")
+                            Label("Edit transaction - \(self.viewModel.tran.name)", systemImage: "pencil")
                         }
                         
                         Divider()

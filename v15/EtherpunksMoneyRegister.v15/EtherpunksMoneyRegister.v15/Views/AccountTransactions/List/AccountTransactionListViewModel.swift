@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-extension AccountTransactionsView {
+extension AccountTransactionListView {
 
     @MainActor
     @Observable
