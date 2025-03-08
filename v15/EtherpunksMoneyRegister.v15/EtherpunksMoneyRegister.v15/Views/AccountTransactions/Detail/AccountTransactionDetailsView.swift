@@ -167,7 +167,24 @@ struct AccountTransactionDetailsView: View {
                         }
                 }
             }
-            
+
+            if self.viewModel.tran.notes != "" {
+                Text(self.viewModel.tran.notes)
+            }
+
+            Section(header: Text("Misc")) {
+                HStack {
+                    Text("Created On: ")
+                    Text(
+                        self.viewModel.tran.createdOnUTC,
+                        format: .dateTime.month().day())
+                    Text("@")
+                    Text(
+                        self.viewModel.tran.createdOnUTC,
+                        format: .dateTime.hour().minute().second())
+                }
+            }
+
             Section(header: Text("Files")) {
                 Text("Files: \(self.viewModel.tran.fileCount)")
                 
@@ -216,63 +233,6 @@ struct AccountTransactionDetailsView: View {
                             }
                         }
                         .padding()
-                    }
-                }
-                //                if self.viewModel.transactionFiles.count > 0 {
-                //                    ForEach(self.viewModel.transactionFiles) { file in
-                //                        VStack(alignment: .leading) {
-                //                            if file.name != file.filename {
-                //                                HStack {
-                //                                    Text("Name: \(file.name)")
-                //                                }
-                //                            }
-                //                            HStack {
-                //                                Text("Filename: \(file.filename)")
-                //                                Button("View") {
-                //                                    viewModel.downloadFileForViewing(file: file)
-                //                                }.quickLookPreview($viewModel.url)
-                //                            }
-                //
-                //                            HStack {
-                //                                Text("Created On: ")
-                //                                Text(
-                //                                    file.createdOnUTC,
-                //                                    format: .dateTime.month().day())
-                //                                Text("@")
-                //                                Text(
-                //                                    file.createdOnUTC,
-                //                                    format: .dateTime.hour().minute().second())
-                //                            }
-                //
-                //                            HStack {
-                //                                Text(
-                //                                    "Tax Document: \(file.isTaxRelated == true ? "Yes" : "No")"
-                //                                )
-                //                            }
-                //
-                //                            HStack {
-                //                                Text("Notes: \(file.notes)")
-                //                            }
-                //                        }.padding()
-                //                    }
-                //                }
-                //            }
-                
-                if self.viewModel.tran.notes != "" {
-                    Section(header: Text("Notes")) {
-                        Text(self.viewModel.tran.notes)
-                    }
-                }
-                Section(header: Text("Misc")) {
-                    HStack {
-                        Text("Created On: ")
-                        Text(
-                            self.viewModel.tran.createdOnUTC,
-                            format: .dateTime.month().day())
-                        Text("@")
-                        Text(
-                            self.viewModel.tran.createdOnUTC,
-                            format: .dateTime.hour().minute().second())
                     }
                 }
             }

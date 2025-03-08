@@ -176,9 +176,6 @@ class Previewer {
             }
         }
 
-        print("File ID: \(cvsAttachmentFile.transactionId?.uuidString ?? "N/A") - with cvs id: \(cvsTransaction.id.uuidString)")
-
-
         discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
         verizonRecurringTransaction.nextDueDate = getNextDueDate(day: 28)
 
