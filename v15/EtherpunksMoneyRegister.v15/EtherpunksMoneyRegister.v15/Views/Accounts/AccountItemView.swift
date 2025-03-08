@@ -142,5 +142,5 @@ struct AccountItemView: View {
 }
 
 #Preview {
-    AccountItemView(acctData: Previewer().bankAccount)
+    AccountItemView(acctData: MoneyDataSource.shared.previewer.bankAccount)
 }

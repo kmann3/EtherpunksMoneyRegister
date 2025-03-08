@@ -7,16 +7,24 @@
 
 import SwiftUI
 
-struct AccountTransactionView: View {
+struct AccountTransactionDetailsView: View {
     var viewModel: ViewModel
-    
-    init(tran: AccountTransaction) {
+    var handler: (PathStore.Route) -> Void
+
+    init(tran: AccountTransaction, _ handler: @escaping (PathStore.Route) -> Void) {
         self.viewModel = ViewModel(tran: tran)
+        self.handler = handler
     }
-    
+
     var body: some View {
         List {
-            Text("Name: \(self.viewModel.tran.name)")
+            HStack {
+                Text("Name: \(self.viewModel.tran.name)")
+                Spacer()
+                Button("Edit Transaction") {
+                    print("edit")
+                }
+            }
             Text(
                 "Type: \(self.viewModel.tran.transactionType == .debit ? "Debit" : "Credit")"
             )
@@ -44,7 +52,7 @@ struct AccountTransactionView: View {
                     ) { tag in
                         Text(tag.name)
                             .onTapGesture {
-                                // router.navigateTo(route: .tag_Edit(tag: tag))
+                                handler(PathStore.Route.tag_Details(tag: tag))
                             }
                     }
                 }
@@ -119,6 +127,9 @@ struct AccountTransactionView: View {
                         self.viewModel.tran.dueDate!,
                         format: .dateTime.month().day())
                 }
+                .onTapGesture {
+                    handler(PathStore.Route.recurringTransaction_Edit(recTrans: viewModel.tran.recurringTransaction!))
+                }
             }
             
             if self.viewModel.tran.confirmationNumber != "" {
@@ -133,31 +144,26 @@ struct AccountTransactionView: View {
                     Text("Recurring Transaction: ")
                     Text(self.viewModel.tran.recurringTransaction!.name)
                         .onTapGesture {
-                            //                            router
-                            //                                .navigateTo(
-                            //                                    route:
-                            //                                            .recurringTransaction_Details(
-                            //                                                recTrans: self.viewModel
-                            //                                                    .recurringTransaction!
-                            //                                            )
-                            //                                )
+                            handler(PathStore.Route.recurringTransaction_Details(recTrans: viewModel.tran.recurringTransaction!))
                         }
                 }
+            } else {
+                Button("Create Recurring Transaction") {
+                    handler(PathStore.Route.recurringTransaction_Create_FromTrans(tran: self.viewModel.tran))
+                }
             }
-            
+
             if self.viewModel.tran.recurringTransaction?.recurringGroup != nil {
                 HStack {
                     Text("Recurring Group: ")
                     Text(self.viewModel.tran.recurringTransaction!.recurringGroup!.name)
                         .onTapGesture {
-                            //                            router
-                            //                                .navigateTo(
-                            //                                    route:
-                            //                                            .recurringGroup_Details(
-                            //                                                recGroup: self.viewModel
-                            //                                                    .recurringGroup!
-                            //                                            )
-                            //                                )
+                            if viewModel.tran.recurringTransaction!.recurringGroup != nil {
+                                handler(PathStore.Route.recurringGroup_Details(recGroup: viewModel.tran.recurringTransaction!.recurringGroup!))
+                            } else {
+                                print("group not loaded")
+                            }
+
                         }
                 }
             }
@@ -176,7 +182,42 @@ struct AccountTransactionView: View {
                         Text("Add Photo")
                     }
                 }
-                
+
+                if self.viewModel.files.count > 0 {
+                    ForEach(self.viewModel.files, id: \.self) { file in
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text("Filename: \(file.filename)")
+                                Button("View") {
+                                    //viewModel.downloadFileForViewing(file: file)
+                                }
+                                //.quickLookPreview($viewModel.url)
+                            }
+
+                            HStack {
+                                Text("Created On: ")
+                                Text(
+                                    file.createdOnUTC,
+                                    format: .dateTime.month().day())
+                                Text("@")
+                                Text(
+                                    file.createdOnUTC,
+                                    format: .dateTime.hour().minute().second())
+                            }
+
+                            HStack {
+                                Text(
+                                    "Tax Document: \(file.isTaxRelated == true ? "Yes" : "No")"
+                                )
+                            }
+
+                            HStack {
+                                Text("Notes: \(file.notes)")
+                            }
+                        }
+                        .padding()
+                    }
+                }
                 //                if self.viewModel.transactionFiles.count > 0 {
                 //                    ForEach(self.viewModel.transactionFiles) { file in
                 //                        VStack(alignment: .leading) {
@@ -235,50 +276,10 @@ struct AccountTransactionView: View {
                     }
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Menu {
-                        Button {
-                            //                        router
-                            //                            .navigateTo(
-                            //                                route:
-                            //                                        .transaction_Edit(
-                            //                                            transaction: viewModel.transaction
-                            //                                        )
-                            //                            )
-                        } label: {
-                            Label("Edit transaction - \(self.viewModel.tran.name)", systemImage: "pencil")
-                        }
-                        
-                        Divider()
-                        
-                        Button {
-                            viewModel.addNewDocument()
-                        } label: {
-                            Label("Attach file", systemImage: "doc")
-                        }
-                        Button {
-                            viewModel.addNewPhoto()
-                        } label: {
-                            Label("Attach photo", systemImage: "photo")
-                        }
-                        
-                        Divider()
-                        
-                        Button {} label: {
-                            Label(
-                                "Create Recurring Transaction",
-                                systemImage: "repeat")
-                        }
-                    } label: {
-                        Label("Menu", systemImage: "ellipsis.circle")
-                    }
-                }
-            }
         }
     }
 }
 
 #Preview {
-    AccountTransactionView(tran: Previewer().discordTransaction)
+    AccountTransactionDetailsView(tran: MoneyDataSource.shared.previewer.cvsTransaction) { _ in }
 }

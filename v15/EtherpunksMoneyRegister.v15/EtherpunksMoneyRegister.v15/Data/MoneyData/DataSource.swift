@@ -179,6 +179,26 @@ final class MoneyDataSource: Sendable {
         }
     }
 
+    func fetchTransactionFiles(tran: AccountTransaction) -> [TransactionFile] {
+        let id = tran.id
+        do {
+            return try modelContext.fetch(FetchDescriptor<TransactionFile>(
+                predicate: #Predicate<TransactionFile> {
+                    if $0.transactionId == id {
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+                ,
+                sortBy: [SortDescriptor(\TransactionFile.createdOnUTC, order: .reverse)]
+
+            ))
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+
     func fetchUpcomingRecurringGroups() -> [RecurringGroup] {
         do {
             return try modelContext.fetch(FetchDescriptor<RecurringGroup>(

@@ -126,7 +126,7 @@ struct Dashboard_ReserveDebitTransactionDialogView: View {
 }
 
 #Preview {
-    let p = Previewer()
+    let p = MoneyDataSource.shared.previewer
     Dashboard_ReserveDebitTransactionDialogView(
         reserveTransaction: p.discordRecurringTransaction,
         returnTransaction: .constant(p.discordTransaction),

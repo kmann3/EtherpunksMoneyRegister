@@ -65,5 +65,5 @@ struct TransactionListItemView: View {
 }
 
 #Preview {
-    TransactionListItemView(transaction: Previewer().cvsTransaction)
+    TransactionListItemView(transaction: MoneyDataSource.shared.previewer.cvsTransaction)
 }

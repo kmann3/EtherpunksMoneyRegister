@@ -33,6 +33,7 @@ class PathStore {
         case recurringGroup_List
 
         case recurringTransaction_Create
+        case recurringTransaction_Create_FromTrans(tran: AccountTransaction)
         case recurringTransaction_Details(recTrans: RecurringTransaction)
         case recurringTransaction_Edit(recTrans: RecurringTransaction)
         case recurringTransaction_List
@@ -44,6 +45,7 @@ class PathStore {
         case settings
 
         case tag_Create
+        case tag_Details(tag: TransactionTag)
         case tag_Edit(tag: TransactionTag)
         case tag_List
 

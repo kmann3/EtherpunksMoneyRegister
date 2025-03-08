@@ -130,7 +130,7 @@ struct Dashboard_ReserveDebitGroupDialogView: View {
 }
 
 #Preview {
-    let p = Previewer()
+    let p = MoneyDataSource.shared.previewer
     Dashboard_ReserveDebitGroupDialogView(reserveGroup: p.billGroup, returnTransactions: .constant([p.discordTransaction]), didCancel: .constant(false)
     )
 }

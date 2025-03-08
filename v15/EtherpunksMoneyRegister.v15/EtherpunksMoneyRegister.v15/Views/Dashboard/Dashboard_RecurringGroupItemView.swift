@@ -50,5 +50,5 @@ struct Dashboard_RecurringGroupView: View {
 }
 
 #Preview("Unselected") {
-    Dashboard_RecurringGroupView(recurringGroup: Previewer().billGroup, action: {})
+    Dashboard_RecurringGroupView(recurringGroup: MoneyDataSource.shared.previewer.billGroup, action: {})
 }

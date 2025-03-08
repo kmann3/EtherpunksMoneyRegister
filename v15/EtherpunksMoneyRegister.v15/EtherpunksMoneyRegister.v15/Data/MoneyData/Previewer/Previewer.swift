@@ -166,7 +166,7 @@ class Previewer {
             isTaxRelated: true,
             accountTransaction: self.cvsTransaction
         )
-        
+
         Task {
             let monkeyData = await downloadEtherpunkMonkeyAsync()
             if monkeyData != nil {
@@ -175,6 +175,9 @@ class Previewer {
                 print("Error generating attachment transaction - monkey logo")
             }
         }
+
+        print("File ID: \(cvsAttachmentFile.transactionId?.uuidString ?? "N/A") - with cvs id: \(cvsTransaction.id.uuidString)")
+
 
         discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
         verizonRecurringTransaction.nextDueDate = getNextDueDate(day: 28)
@@ -407,7 +410,9 @@ class Previewer {
         Previewer.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: modelContext)
 
         modelContext.insert(cvsAttachmentFile)
+
         importTestRecurringData(modelContext: modelContext)
+
 
         modelContext.insert(billGroup)
 

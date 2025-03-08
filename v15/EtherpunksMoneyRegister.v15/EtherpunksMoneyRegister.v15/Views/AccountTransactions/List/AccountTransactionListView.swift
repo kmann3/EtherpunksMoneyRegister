@@ -43,7 +43,7 @@ struct AccountTransactionListView: View {
 }
 
 #Preview {
-    AccountTransactionListView(account: Previewer().bankAccount) { _ in }
+    AccountTransactionListView(account: MoneyDataSource.shared.previewer.bankAccount) { _ in }
 }
 
 #Preview {

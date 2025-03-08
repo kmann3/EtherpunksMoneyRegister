@@ -165,7 +165,7 @@ struct Dashboard_ReserveTransactionsDepositCreditDialogView: View {
 #Preview {
     @Previewable @State var amount: Decimal = 43.54
     @Previewable @State var depositeDate: Date? = nil
-    let p = Previewer()
+    let p = MoneyDataSource.shared.previewer
     Dashboard_ReserveTransactionsDepositCreditDialogView(
         reserveTransaction: p.discordRecurringTransaction,
         returnTransaction: .constant(p.cvsTransaction),

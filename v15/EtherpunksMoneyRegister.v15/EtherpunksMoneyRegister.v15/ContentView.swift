@@ -110,44 +110,42 @@ struct ContentView: View {
         } detail: {
 
             if let selectedSubRoute {
-                Text("TBI: \(selectedSubRoute)")
+                switch selectedSubRoute {
+                case .account_Details(let account):
+                    Text("TBI - Account Details: \(account.name)")
+
+                case .recurringGroup_Details(let recGroup):
+                    Text("TBI - Recurring Group Details: \(recGroup)")
+                case .recurringGroup_Edit(let recGroup):
+                    Text("TBI - Recurring Group Edit: \(recGroup)")
+                case .recurringTransaction_Details(let recTrans):
+                    Text("TBI - Recurring Transaction Details: \(recTrans)")
+                case .recurringTransaction_Edit(let recTrans):
+                    Text("TBI - Recurring Transaction Edit: \(recTrans)")
+                case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag)")
+
+                case .transaction_Detail(let transaction):
+                    AccountTransactionDetailsView(tran: transaction) { action in
+                    }
+
+                case .transaction_List(let account):
+                    AccountTransactionListView(account: account) { r in
+                        switch r {
+                        case .account_Details(let account):
+                            changeRoute(r, value: account)
+
+                        case .transaction_Detail(let transaction):
+                            changeRoute(r, value: transaction)
+                        default:
+                            debugPrint(r)
+                            break
+                        }
+                    }
+                    .frame(width: 600)
+                default:
+                    Text("Empty")
+                }
             }
-//            if let selectedSubRoute {
-//                switch selectedSubRoute {
-//                case .account_Details(let account):
-//                    Text("TBI - Account Details: \(account.name)")
-//
-//                case .recurringGroup_Details(let recGroup):
-//                    Text("TBI - Recurring Group Details: \(recGroup)")
-//                case .recurringGroup_Edit(let recGroup):
-//                    Text("TBI - Recurring Group Edit: \(recGroup)")
-//                case .recurringTransaction_Details(let recTrans):
-//                    Text("TBI - Recurring Transaction Details: \(recTrans)")
-//                case .recurringTransaction_Edit(let recTrans):
-//                    Text("TBI - Recurring Transaction Edit: \(recTrans)")
-//                case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag)")
-//
-//                case .transaction_Detail(let transaction):
-//                    AccountTransactionView(tran: transaction)
-//
-//                case .transaction_List(let account):
-//                    AccountTransactionListView(account: account) { r in
-//                        switch r {
-//                        case .account_Details(let account):
-//                            changeRoute(r, value: account)
-//
-//                        case .transaction_Detail(let transaction):
-//                            changeRoute(r, value: transaction)
-//                        default:
-//                            debugPrint(r)
-//                            break
-//                        }
-//                    }
-//                    .frame(width: 600)
-//                default:
-//                    Text("Empty")
-//                }
-//            }
 
         }
         .padding(20)

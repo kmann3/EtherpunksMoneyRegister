@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-extension AccountTransactionView {
+extension AccountTransactionDetailsView {
 
     @MainActor
     @Observable
@@ -18,15 +18,13 @@ extension AccountTransactionView {
         private let dataSource: MoneyDataSource
 
         var tran: AccountTransaction
+        var files: [TransactionFile] = []
 
         init(dataSource: MoneyDataSource = MoneyDataSource.shared, tran: AccountTransaction) {
             self.dataSource = dataSource
 
             self.tran = tran
-            // We need to load almost everthing EXCEPT the attached files. Those might be very large. We'll download those at the last second but pull the meta-data for users
-
-            //self.tran.loadDetailDisplayData()
-            //self.whatever.loadMetaDataForAttachmentsForTransaction()
+            self.files = self.dataSource.fetchTransactionFiles(tran: self.tran)
         }
 
 
