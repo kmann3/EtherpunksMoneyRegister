@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AccountTransactionView: View {
-    @State var viewModel: ViewModel
+    var viewModel: ViewModel
     
     init(tran: AccountTransaction) {
         self.viewModel = ViewModel(tran: tran)

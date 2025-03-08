@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import Combine
 
 struct AccountItemView: View {
-    @State var acctData: Account
+    var acctData: Account
 
     var body: some View {
         VStack {
