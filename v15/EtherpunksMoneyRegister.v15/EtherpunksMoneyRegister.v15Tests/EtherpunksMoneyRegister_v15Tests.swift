@@ -13,4 +13,8 @@ struct EtherpunksMoneyRegister_v15Tests {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.
     }
 
+    // Test adding a transaction
+
+    // Test moving a transaction from one account to another
+
 }

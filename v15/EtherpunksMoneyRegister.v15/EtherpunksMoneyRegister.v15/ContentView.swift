@@ -85,7 +85,9 @@ struct ContentView: View {
                     }
                 case .recurringGroup_List: Text("TBI - Recurring Group List")
                 case .recurringTransaction_List: Text("TBI - Recurring Transaction List")
-                case .tag_List: Text("TBI - Tag List")
+                case .tag_List:
+                    TagListView { action in
+                    }
 
                 case .transaction_List(let account):
                     AccountTransactionListView(account: account) { r in
@@ -113,6 +115,8 @@ struct ContentView: View {
                 switch selectedSubRoute {
                 case .account_Details(let account):
                     Text("TBI - Account Details: \(account.name)")
+                case .account_Edit(let account):
+                    Text("TBI - Account Edit: \(account.name)")
 
                 case .recurringGroup_Details(let recGroup):
                     Text("TBI - Recurring Group Details: \(recGroup)")
@@ -189,10 +193,17 @@ struct ContentView: View {
             self.selectedRoute = .transaction_List(account: account)
             self.selectedSubRoute = .account_Details(account: account)
 
-        case .account_Edit://(let account):
+        case .account_Edit(let account):
+            // If we're editing from the transaction list then replace a transaction detail with the edit screen
+            if (self.selectedRoute == .transaction_List(account: account)) {
+                self.selectedSubRoute = .account_Edit(account: account)
+            } else {
+                self.selectedRoute = .account_List
+                self.selectedSubRoute = .account_Edit(account: account)
+            }
             break
 
-        case .account_List:
+        case .account_List: // Is this even used anymore now?
             break
 
         case .dashboard:
@@ -215,10 +226,14 @@ struct ContentView: View {
         case .recurringTransaction_Create:
             break
 
-        case .recurringTransaction_Create_FromTrans://(let tran):
+        case .recurringTransaction_Create_FromTrans(let tran):
+            self.selectedRoute = .recurringTransaction_List
+            self.selectedSubRoute = .recurringTransaction_Create_FromTrans(tran: tran)
             break
 
-        case .recurringTransaction_Details://(let recTrans):
+        case .recurringTransaction_Details(let recTrans):
+            self.selectedRoute = .recurringTransaction_List
+            self.selectedSubRoute = .recurringTransaction_Details(recTrans: recTrans)
             break
 
         case .recurringTransaction_Edit(let recTrans):
@@ -230,12 +245,18 @@ struct ContentView: View {
             break
 
         case .report_Tax:
+            self.selectedRoute = .report_Tax
+            self.selectedSubRoute = nil
             break
 
         case .search:
+            self.selectedRoute = .search
+            self.selectedSubRoute = nil
             break
 
         case .settings:
+            self.selectedRoute = .settings
+            self.selectedSubRoute = nil
             break
 
         case .tag_Create:
@@ -248,6 +269,8 @@ struct ContentView: View {
             break
 
         case .tag_List:
+            self.selectedRoute = .tag_List
+            self.selectedSubRoute = nil
             break
 
         case .transaction_Create:

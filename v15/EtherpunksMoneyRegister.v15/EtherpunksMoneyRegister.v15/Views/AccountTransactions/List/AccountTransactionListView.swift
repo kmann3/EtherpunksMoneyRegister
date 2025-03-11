@@ -23,13 +23,13 @@ struct AccountTransactionListView: View {
             if self.viewModel.account != nil {
                 List {
                     Section(header: Text("Account Details")) {
-                        AccountItemView(acctData: viewModel.account!)
+                        AccountItemView(acctData: self.viewModel.account!)
                             .onTapGesture {
-                                handler(PathStore.Route.account_Details(account: viewModel.account!))
+                                handler(PathStore.Route.account_Details(account: self.viewModel.account!))
                             }
                     }
                     Section(header: Text("Transactions"), footer: Text("End of list")) {
-                        ForEach(viewModel.accountTransactions, id: \.id) { tran in
+                        ForEach(self.viewModel.accountTransactions, id: \.id) { tran in
                             TransactionListItemView(transaction: tran)
                                 .onTapGesture { t in
                                     handler(PathStore.Route.transaction_Detail(transaction: tran))
