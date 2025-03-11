@@ -22,15 +22,26 @@ struct AccountTransactionDetailsView: View {
                 Text("Name: \(self.viewModel.tran.name)")
                 Spacer()
                 Button("Edit Transaction") {
-                    print("edit")
+                    handler(PathStore.Route.transaction_Edit(transaction: self.viewModel.tran))
                 }
             }
             Text(
                 "Type: \(self.viewModel.tran.transactionType == .debit ? "Debit" : "Credit")"
             )
-            Text(
-                "Account: \(self.viewModel.tran.account?.name ?? "Error loading account")"
-            )
+            HStack {
+                Text("Account: ")
+                Text(
+                    "\(self.viewModel.tran.account?.name ?? "Error loading account")"
+                )
+                .onTapGesture {
+                    if self.viewModel.tran.account != nil {
+                        handler(PathStore.Route.account_Edit(account: self.viewModel.tran.account!))
+                    }
+                }
+                .underline()
+                .foregroundColor(.blue)
+
+            }
             HStack {
                 Text("Amount: ")
                 Text(
@@ -54,6 +65,9 @@ struct AccountTransactionDetailsView: View {
                             .onTapGesture {
                                 handler(PathStore.Route.tag_Details(tag: tag))
                             }
+                            .underline()
+                            .foregroundColor(.blue)
+                            .padding(2)
                     }
                 }
             }
@@ -62,6 +76,9 @@ struct AccountTransactionDetailsView: View {
                 Text(
                     "Tax Related: \(self.viewModel.tran.isTaxRelated == true ? "Yes" : "No")"
                 )
+                .onTapGesture {
+                    handler(PathStore.Route.report_Tax)
+                }
             }
             
             HStack {
@@ -96,7 +113,8 @@ struct AccountTransactionDetailsView: View {
                     Text(
                         self.viewModel.tran.pendingOnUTC!,
                         format: .dateTime.hour().minute().second())
-                }.background(self.viewModel.tran.backgroundColor)
+                }
+                .background(self.viewModel.tran.backgroundColor)
             } else {
                 Text("Pending: ").background(
                     self.viewModel.tran.backgroundColor)
@@ -126,10 +144,17 @@ struct AccountTransactionDetailsView: View {
                     Text(
                         self.viewModel.tran.dueDate!,
                         format: .dateTime.month().day())
+                    .underline()
+                    .foregroundColor(.blue)
                 }
                 .onTapGesture {
-                    handler(PathStore.Route.recurringTransaction_Edit(recTrans: viewModel.tran.recurringTransaction!))
+                    if(self.viewModel.tran.recurringTransaction != nil) {
+                        handler(PathStore.Route.recurringTransaction_Edit(recTrans: self.viewModel.tran.recurringTransaction!))
+                    } else {
+                        debugPrint("error with recurring transaction")
+                    }
                 }
+
             }
             
             if self.viewModel.tran.confirmationNumber != "" {
@@ -143,13 +168,19 @@ struct AccountTransactionDetailsView: View {
                 HStack {
                     Text("Recurring Transaction: ")
                     Text(self.viewModel.tran.recurringTransaction!.name)
-                        .onTapGesture {
-                            handler(PathStore.Route.recurringTransaction_Details(recTrans: viewModel.tran.recurringTransaction!))
-                        }
+                        .underline()
+                        .foregroundColor(.blue)
                 }
+                .onTapGesture {
+                    handler(PathStore.Route.recurringTransaction_Details(recTrans: viewModel.tran.recurringTransaction!))
+                }
+
             } else {
-                Button("Create Recurring Transaction") {
-                    handler(PathStore.Route.recurringTransaction_Create_FromTrans(tran: self.viewModel.tran))
+                HStack {
+                    Text("Reccuring Transaction: ")
+                    Button("Create Recurring Transaction") {
+                        handler(PathStore.Route.recurringTransaction_Create_FromTrans(tran: self.viewModel.tran))
+                    }
                 }
             }
 
@@ -157,14 +188,20 @@ struct AccountTransactionDetailsView: View {
                 HStack {
                     Text("Recurring Group: ")
                     Text(self.viewModel.tran.recurringTransaction!.recurringGroup!.name)
-                        .onTapGesture {
-                            if viewModel.tran.recurringTransaction!.recurringGroup != nil {
-                                handler(PathStore.Route.recurringGroup_Details(recGroup: viewModel.tran.recurringTransaction!.recurringGroup!))
-                            } else {
-                                print("group not loaded")
-                            }
+                        .underline()
+                        .foregroundColor(.blue)
+                }
+                .onTapGesture {
+                    if viewModel.tran.recurringTransaction!.recurringGroup != nil {
+                        handler(PathStore.Route.recurringGroup_Details(recGroup: self.viewModel.tran.recurringTransaction!.recurringGroup!))
+                    } else {
+                        print("group not loaded")
+                    }
 
-                        }
+                }
+            } else {
+                HStack {
+                    Text("Recurring Group: None")
                 }
             }
 
@@ -183,22 +220,14 @@ struct AccountTransactionDetailsView: View {
                         self.viewModel.tran.createdOnUTC,
                         format: .dateTime.hour().minute().second())
                 }
+
+                HStack {
+                    Text("ID: \(self.viewModel.tran.id)")
+                }
             }
 
             Section(header: Text("Files")) {
                 Text("Files: \(self.viewModel.tran.fileCount)")
-                
-                HStack {
-                    Button(action: viewModel.addNewDocument) {
-                        Text("Add Document")
-                    }
-                    
-                    Spacer()
-                    
-                    Button(action: viewModel.addNewPhoto) {
-                        Text("Add Photo")
-                    }
-                }
 
                 if self.viewModel.files.count > 0 {
                     ForEach(self.viewModel.files, id: \.self) { file in
@@ -242,4 +271,10 @@ struct AccountTransactionDetailsView: View {
 
 #Preview {
     AccountTransactionDetailsView(tran: MoneyDataSource.shared.previewer.cvsTransaction) { _ in }
+}
+
+#Preview {
+    AccountTransactionDetailsView(tran: MoneyDataSource.shared.previewer.verizonReservedTransaction) { foo in
+        print(foo.self as PathStore.Route)
+    }
 }

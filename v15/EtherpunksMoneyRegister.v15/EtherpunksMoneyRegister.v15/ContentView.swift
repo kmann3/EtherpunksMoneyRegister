@@ -10,7 +10,7 @@ import SwiftData
 
 struct ContentView: View {
     @State var viewModel = ViewModel()
-    @State private var selectedRoute: PathStore.Route? = nil
+    @State private var selectedRoute: PathStore.Route? = .dashboard
     @State private var selectedSubRoute: PathStore.Route? = nil
 
     var body: some View {
@@ -46,7 +46,7 @@ struct ContentView: View {
                     Text("Accounts")
                     Spacer()
                     Button {
-                        changeRoute(.account_Create, value: nil)
+                        changeRoute(.account_Create)
                     } label: {
                         Text("+")
                     }
@@ -69,17 +69,17 @@ struct ContentView: View {
                 case .dashboard:
                     DashboardView() { r in
                         switch r {
-                        case .recurringGroup_Edit(let group):
-                            changeRoute(r, value: group)
+                        case .recurringGroup_Edit:
+                            changeRoute(r)
 
-                        case .recurringTransaction_Edit(let rec):
-                            changeRoute(r, value: rec)
+                        case .recurringTransaction_Edit:
+                            changeRoute(r)
 
-                        case .transaction_Detail(let transaction):
-                            changeRoute(r, value: transaction)
+                        case .transaction_Detail:
+                            changeRoute(r)
 
-                        case .transaction_List(let account):
-                            changeRoute(r, value: account)
+                        case .transaction_List:
+                            changeRoute(r)
                         default: break
                         }
                     }
@@ -91,11 +91,11 @@ struct ContentView: View {
                     AccountTransactionListView(account: account) { r in
                         switch r {
 
-                        case .account_Details(let account):
-                            changeRoute(r, value: account)
+                        case .account_Details:
+                            changeRoute(r)
 
-                        case .transaction_Detail(let transaction):
-                            changeRoute(r, value: transaction)
+                        case .transaction_Detail:
+                            changeRoute(r)
                         default:
                             debugPrint(r)
                             break
@@ -126,18 +126,43 @@ struct ContentView: View {
 
                 case .transaction_Detail(let transaction):
                     AccountTransactionDetailsView(tran: transaction) { action in
+                        debugPrint(action)
+                        switch action {
+                        case .account_Edit:
+                            changeRoute(action)
+                        case .recurringGroup_Details:
+                            changeRoute(action)
+                        case .recurringTransaction_Create_FromTrans:
+                            changeRoute(action)
+                        case .recurringTransaction_Details:
+                            changeRoute(action)
+                        case .recurringTransaction_Edit:
+                            changeRoute(action)
+                        case .tag_Details:
+                            changeRoute(action)
+                        case .transaction_Edit:
+                            changeRoute(action)
+
+                        default:
+                            #if DEBUG
+                            debugPrint(action)
+                            #endif
+                            break
+                        }
                     }
 
                 case .transaction_List(let account):
-                    AccountTransactionListView(account: account) { r in
-                        switch r {
-                        case .account_Details(let account):
-                            changeRoute(r, value: account)
+                    AccountTransactionListView(account: account) { action in
+                        switch action {
+                        case .account_Details:
+                            changeRoute(action)
 
-                        case .transaction_Detail(let transaction):
-                            changeRoute(r, value: transaction)
+                        case .transaction_Detail:
+                            changeRoute(action)
                         default:
-                            debugPrint(r)
+                            #if DEBUG
+                            debugPrint(action)
+                            #endif
                             break
                         }
                     }
@@ -154,34 +179,92 @@ struct ContentView: View {
             maxHeight: .infinity)
     }
 
-    func changeRoute(_ route: PathStore.Route, value: Any?) {
+    func changeRoute(_ route: PathStore.Route) {
         switch route {
         case .account_Create:
             self.selectedRoute = .account_Create
             self.selectedSubRoute = nil
 
-        case .account_Details:
-            self.selectedRoute = .transaction_List(account: value as! Account)
-            self.selectedSubRoute = .account_Details(account: value as! Account)
+        case .account_Details(let account):
+            self.selectedRoute = .transaction_List(account: account)
+            self.selectedSubRoute = .account_Details(account: account)
 
-        case .recurringGroup_Edit:
-            self.selectedRoute =
-                .recurringGroup_List
-            self.selectedSubRoute = .recurringGroup_Edit(recGroup: value as! RecurringGroup)
+        case .account_Edit://(let account):
+            break
 
-        case .recurringTransaction_Edit(let rec): self.selectedRoute =
-                .recurringTransaction_List
-            self.selectedSubRoute = .recurringTransaction_Edit(recTrans: rec)
+        case .account_List:
+            break
 
-        case .transaction_Detail:
-            let transaction = value as! AccountTransaction
-            self.selectedRoute = .transaction_List(account: transaction.account!)
-            self.selectedSubRoute = .transaction_Detail(transaction: transaction)
+        case .dashboard:
+            break
 
-        case .transaction_List:
-            self.selectedRoute = .transaction_List(account: value as! Account)
+        case .recurringGroup_Create:
+            break
+
+        case .recurringGroup_Details://(let recGroup):
+            break
+
+        case .recurringGroup_Edit(let recGroup):
+            self.selectedRoute = .recurringGroup_List
+            self.selectedSubRoute = .recurringGroup_Edit(recGroup: recGroup)
+            break
+
+        case .recurringGroup_List:
+            break
+
+        case .recurringTransaction_Create:
+            break
+
+        case .recurringTransaction_Create_FromTrans://(let tran):
+            break
+
+        case .recurringTransaction_Details://(let recTrans):
+            break
+
+        case .recurringTransaction_Edit(let recTrans):
+            self.selectedRoute = .recurringTransaction_List
+            self.selectedSubRoute = .recurringTransaction_Edit(recTrans: recTrans)
+            break
+
+        case .recurringTransaction_List:
+            break
+
+        case .report_Tax:
+            break
+
+        case .search:
+            break
+
+        case .settings:
+            break
+
+        case .tag_Create:
+            break
+
+        case .tag_Details://(let tag):
+            break
+
+        case .tag_Edit://(let tag):
+            break
+
+        case .tag_List:
+            break
+
+        case .transaction_Create:
+            break
+
+        case .transaction_Edit:
+            break
+
+        case .transaction_Detail(let tran):
+            self.selectedRoute = .transaction_List(account: tran.account!)
+            self.selectedSubRoute = .transaction_Detail(transaction: tran)
+            break
+
+        case .transaction_List(let account):
+            self.selectedRoute = .transaction_List(account: account)
             self.selectedSubRoute = nil
-        default: break
+            break
         }
     }
 }

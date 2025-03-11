@@ -127,6 +127,7 @@ class Previewer {
             notes: "",
             confirmationNumber: "1Z49C",
             isTaxRelated: true,
+            transactionTags: [billsTag],
             pendingOnUTC: Date(),
             clearedOnUTC: nil
         )
@@ -154,6 +155,7 @@ class Previewer {
             isTaxRelated: true,
             transactionTags: [billsTag],
             recurringTransaction: verizonRecurringTransaction,
+            dueDate: Date(),
             pendingOnUTC: nil,
             clearedOnUTC: nil
         )

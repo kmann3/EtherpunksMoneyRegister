@@ -11,6 +11,7 @@ import SwiftUI
 
 @Observable
 class PathStore {
+
     var path: NavigationPath {
         didSet {
             save()
@@ -20,6 +21,7 @@ class PathStore {
     var selectedTab: MenuOptionsEnum = .dashboard
 
     enum Route: Hashable {
+
         case account_Create
         case account_Details(account: Account)
         case account_Edit(account: Account)
