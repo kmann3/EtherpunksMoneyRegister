@@ -64,8 +64,11 @@ struct ContentView: View {
         } content: {
             if let selectedRoute {
                 switch selectedRoute {
-                case .account_List:
-                    AccountTransactionListView(account: nil) { _ in }
+                case .account_Create: Text("TBI - Account Create")
+                case .account_List: Text("Account List")
+                case .account_Edit(let account): Text("TBI - Account Edit \(account)")
+                case .account_Details(let account): Text("TBI - Account Details \(account)")
+
                 case .dashboard:
                     DashboardView() { r in
                         switch r {
@@ -83,12 +86,58 @@ struct ContentView: View {
                         default: break
                         }
                     }
+
+                case .recurringGroup_Create: Text("TBI - Recurring Group Create")
+                case .recurringGroup_Details(let recGroup): Text("TBI - Recurring Group Details: \(recGroup)")
+                case .recurringGroup_Edit(let recGroup): Text("TBI - Recurring Group Edit: \(recGroup)")
                 case .recurringGroup_List: Text("TBI - Recurring Group List")
+
+                case .recurringTransaction_Create: Text("TBI - Recurring Transaction Create")
+                case .recurringTransaction_Create_FromTrans(let transID): Text("TBI - Recurring Transaction Create From Transaction: \(transID)")
+                case .recurringTransaction_Details(let recTran): Text("TBI - Recurring Transaction Details: \(recTran)")
+                case .recurringTransaction_Edit(let recTran): Text("TBI - Recurring Transaction Edit: \(recTran)")
                 case .recurringTransaction_List: Text("TBI - Recurring Transaction List")
+
+                case .report_Tax: Text("TBI - Report Tax")
+                case .search: Text("TBI - Search")
+                case .settings: Text("TBI - Settings")
+
+                case .tag_Create: Text("TBI - Tag Create")
+                case .tag_Details(let tag): Text("TBI - Tag Details: \(tag)")
+                case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag)")
                 case .tag_List:
-                    TagListView { action in
+                    TagListView { r in
+                        changeRoute(r)
                     }
 
+                case .transaction_Create: Text("TBI - Transaction Create")
+                case .transaction_Detail(let transaction):
+                    AccountTransactionDetailsView(tran: transaction) { action in
+                        debugPrint(action)
+                        switch action {
+                        case .account_Edit:
+                            changeRoute(action)
+                        case .recurringGroup_Details:
+                            changeRoute(action)
+                        case .recurringTransaction_Create_FromTrans:
+                            changeRoute(action)
+                        case .recurringTransaction_Details:
+                            changeRoute(action)
+                        case .recurringTransaction_Edit:
+                            changeRoute(action)
+                        case .tag_Details:
+                            changeRoute(action)
+                        case .transaction_Edit:
+                            changeRoute(action)
+
+                        default:
+#if DEBUG
+                            debugPrint(action)
+#endif
+                            break
+                        }
+                    }
+                case .transaction_Edit(let transaction): Text("TBI - Transaction Edit \(transaction)")
                 case .transaction_List(let account):
                     AccountTransactionListView(account: account) { r in
                         switch r {
@@ -104,30 +153,40 @@ struct ContentView: View {
                         }
                     }
                     .frame(width: 300)
-
-                case .settings: Text("TBI - Settings")
-                default: Text("TBI - \(selectedRoute)")
                 }
             }
         } detail: {
 
             if let selectedSubRoute {
                 switch selectedSubRoute {
-                case .account_Details(let account):
-                    Text("TBI - Account Details: \(account.name)")
-                case .account_Edit(let account):
-                    Text("TBI - Account Edit: \(account.name)")
+                case .account_Create: Text("TBI - Account Create")
+                case .account_List: Text("Account List")
+                case .account_Edit(let account): Text("TBI - Account Edit \(account)")
+                case .account_Details(let account): Text("TBI - Account Details \(account)")
 
-                case .recurringGroup_Details(let recGroup):
-                    Text("TBI - Recurring Group Details: \(recGroup)")
-                case .recurringGroup_Edit(let recGroup):
-                    Text("TBI - Recurring Group Edit: \(recGroup)")
-                case .recurringTransaction_Details(let recTrans):
-                    Text("TBI - Recurring Transaction Details: \(recTrans)")
-                case .recurringTransaction_Edit(let recTrans):
-                    Text("TBI - Recurring Transaction Edit: \(recTrans)")
+                case .dashboard: Text("TBI - Dashboard")
+
+                case .recurringGroup_Create: Text("TBI - Recurring Group Create")
+                case .recurringGroup_Details(let recGroup): Text("TBI - Recurring Group Details: \(recGroup)")
+                case .recurringGroup_Edit(let recGroup): Text("TBI - Recurring Group Edit: \(recGroup)")
+                case .recurringGroup_List: Text("TBI - Recurring Group List")
+
+                case .recurringTransaction_Create: Text("TBI - Recurring Transaction Create")
+                case .recurringTransaction_Create_FromTrans(let transID): Text("TBI - Recurring Transaction Create From Transaction: \(transID)")
+                case .recurringTransaction_Details(let recTran): Text("TBI - Recurring Transaction Details: \(recTran)")
+                case .recurringTransaction_Edit(let recTran): Text("TBI - Recurring Transaction Edit: \(recTran)")
+                case .recurringTransaction_List: Text("TBI - Recurring Transaction List")
+
+                case .report_Tax: Text("TBI - Report Tax")
+                case .search: Text("TBI - Search")
+                case .settings: Text("TBI - Settings")
+
+                case .tag_Create: Text("TBI - Tag Create")
+                case .tag_Details(let tag): Text("TBI - Tag Details: \(tag)")
                 case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag)")
+                case .tag_List: Text("TBI - Tag List")
 
+                case .transaction_Create: Text("TBI - Transaction Create")
                 case .transaction_Detail(let transaction):
                     AccountTransactionDetailsView(tran: transaction) { action in
                         debugPrint(action)
@@ -155,6 +214,7 @@ struct ContentView: View {
                         }
                     }
 
+                case .transaction_Edit(let transaction): Text("TBI - Transaction Edit \(transaction)")
                 case .transaction_List(let account):
                     AccountTransactionListView(account: account) { action in
                         switch action {
@@ -171,8 +231,6 @@ struct ContentView: View {
                         }
                     }
                     .frame(width: 600)
-                default:
-                    Text("Empty")
                 }
             }
 
@@ -207,6 +265,8 @@ struct ContentView: View {
             break
 
         case .dashboard:
+            self.selectedRoute = .dashboard
+            self.selectedSubRoute = nil
             break
 
         case .recurringGroup_Create:
@@ -262,7 +322,9 @@ struct ContentView: View {
         case .tag_Create:
             break
 
-        case .tag_Details://(let tag):
+        case .tag_Details(let tag):
+            self.selectedRoute = .tag_List
+            self.selectedSubRoute = .tag_Details(tag: tag)
             break
 
         case .tag_Edit://(let tag):

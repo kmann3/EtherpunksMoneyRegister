@@ -22,11 +22,26 @@ struct TagListView: View {
                 .bold(true)
                 .font(.title)
             ForEach(self.viewModel.tags, id: \.self) { tag in
-                HStack {
-                    Text("\(tag.name)")
-                    Spacer()
-                         Text("[Transactions:\(tag.accountTransactions?.count ?? 0) | Recurring:\(tag.recurringTransactions?.count ?? 0)]")
-
+                VStack {
+                    HStack {
+                        Text(tag.name)
+                        Spacer()
+                    }
+                    HStack {
+                        Text("\tTransaction #:\t\(tag.accountTransactions?.count ?? 0)")
+                        Spacer()
+                    }
+                    #if os(macOS)
+                    HStack {
+                        Text("\tRecurring #:\t\t\(tag.recurringTransactions?.count ?? 0)")
+                        Spacer()
+                    }
+                    #else
+                    HStack {
+                        Text("\tRecurring #:\t\(tag.recurringTransactions?.count ?? 0)")
+                        Spacer()
+                    }
+                    #endif
                 }
                 .onTapGesture { t in
                     handler(PathStore.Route.tag_Details(tag: tag))
