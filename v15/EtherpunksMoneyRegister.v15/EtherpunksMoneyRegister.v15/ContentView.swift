@@ -270,9 +270,13 @@ struct ContentView: View {
             break
 
         case .recurringGroup_Create:
+            self.selectedRoute = .recurringGroup_List
+            self.selectedSubRoute = .recurringGroup_Create
             break
 
-        case .recurringGroup_Details://(let recGroup):
+        case .recurringGroup_Details(let recGroup):
+            self.selectedRoute = .recurringGroup_List
+            self.selectedSubRoute = .recurringGroup_Details(recGroup: recGroup)
             break
 
         case .recurringGroup_Edit(let recGroup):
@@ -323,8 +327,12 @@ struct ContentView: View {
             break
 
         case .tag_Details(let tag):
-            self.selectedRoute = .tag_List
-            self.selectedSubRoute = .tag_Details(tag: tag)
+            if case .transaction_Detail = self.selectedSubRoute {
+                self.selectedSubRoute = .tag_Details(tag: tag)
+            } else {
+                self.selectedRoute = .tag_List
+                self.selectedSubRoute = .tag_Details(tag: tag)
+            }
             break
 
         case .tag_Edit://(let tag):
