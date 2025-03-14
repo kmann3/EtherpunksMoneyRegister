@@ -39,6 +39,7 @@ struct AccountTransactionListView: View {
                 }
             }
         }
+        .frame(width: 400)
     }
 }
 

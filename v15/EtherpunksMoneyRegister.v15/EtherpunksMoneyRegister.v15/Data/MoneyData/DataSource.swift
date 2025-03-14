@@ -16,26 +16,27 @@ final class MoneyDataSource: Sendable {
 
     static let shared = MoneyDataSource()
 
+    public static let shema = Schema([
+        Account.self,
+        AccountTransaction.self,
+        RecurringGroup.self,
+        RecurringTransaction.self,
+        TransactionFile.self,
+        TransactionTag.self
+    ])
+
 #if DEBUG
     public let previewer: Previewer
 #endif
 
     init() {
         self.modelContainer = {
-            let schema = Schema([
-                Account.self,
-                AccountTransaction.self,
-                RecurringGroup.self,
-                RecurringTransaction.self,
-                TransactionFile.self,
-                TransactionTag.self
-            ])
 
             let config = ModelConfiguration(isStoredInMemoryOnly: true)
 
             do {
 
-                return try ModelContainer(for: schema, configurations: [config])
+                return try ModelContainer(for: MoneyDataSource.shema, configurations: [config])
             } catch {
                 fatalError("fatal error: Could not create ModelContainer: \(error)")
             }

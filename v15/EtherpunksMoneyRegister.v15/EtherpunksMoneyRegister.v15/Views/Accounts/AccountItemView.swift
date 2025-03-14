@@ -15,7 +15,7 @@ struct AccountItemView: View {
         VStack {
             HStack {
                 Text(acctData.name)
-                    .frame(maxWidth: .infinity, alignment: .center)
+                    .frame(maxWidth: 900, alignment: .center)
                     .font(.title2)
                     .foregroundStyle(.blue)
                     .padding(
@@ -64,9 +64,10 @@ struct AccountItemView: View {
                 .padding(.horizontal, 5)
             }
 
-            Rectangle().fill(Color.gray).frame(
-                width: .infinity, height: 1, alignment: .center
-            ).padding(.horizontal, 25)
+            Rectangle()
+                .fill(Color.gray)
+                .frame(width: .infinity, height: 1, alignment: .center)
+                .padding(.horizontal, 25)
 
             HStack {
                 Text("Oustanding")

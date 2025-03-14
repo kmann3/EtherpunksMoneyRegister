@@ -19,7 +19,6 @@ struct DashboardView: View {
                     Text("Primary overview")
                     Dashboard_FullSummaryView(accounts: viewModel.accounts)
                         .padding(5)
-                        .frame(minWidth: 300)
 
                     List(viewModel.accounts) { account in
                             Dashboard_AccountItemView(acctData: account)
@@ -28,10 +27,11 @@ struct DashboardView: View {
                                 let route = PathStore.Route.transaction_List(account: account)
                                 handler(route)
                             }
-                            .frame(minWidth: 300)
+
                     }
                     Spacer()
                 }
+                .frame(minWidth: 300, maxWidth: 300)
                 Spacer()
 
                 VStack {

@@ -266,6 +266,7 @@ struct AccountTransactionDetailsView: View {
                 }
             }
         }
+        .frame(width: 450)
     }
 }
 
