@@ -8,13 +8,25 @@
 import SwiftUI
 
 struct TagDetailView: View {
-    @State var viewModel = ViewModel()
+
+    var viewModel: ViewModel
+    var handler: (PathStore.Route) -> Void
+
+    init(tag: TransactionTag, _ handler: @escaping (PathStore.Route) -> Void) {
+        self.viewModel = ViewModel(tag: tag)
+        self.handler = handler
+    }
 
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            Text("Tag info: \(self.viewModel.tag.name)")
+        }
+        .frame(width: 450)
     }
+
+
 }
 
 #Preview {
-    TagDetailView()
+    TagDetailView(tag: MoneyDataSource.shared.previewer.billsTag, { _ in })
 }

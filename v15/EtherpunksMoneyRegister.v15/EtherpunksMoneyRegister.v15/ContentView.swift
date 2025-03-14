@@ -77,7 +77,6 @@ struct ContentView: View {
                     .onAppear {
                         self.selectedSubRoute = nil
                     }
-                    //.frame(minWidth: 975)
 
                 case .recurringGroup_Create: Text("TBI - Recurring Group Create")
                 case .recurringGroup_Details(let recGroup): Text("TBI - Recurring Group Details: \(recGroup)")
@@ -95,7 +94,10 @@ struct ContentView: View {
                 case .settings: Text("TBI - Settings")
 
                 case .tag_Create: Text("TBI - Tag Create")
-                case .tag_Details(let tag): Text("TBI - Tag Details: \(tag)")
+                case .tag_Details(let tag):
+                    TagDetailView(tag: tag) { action in
+                        changeRoute(action)
+                    }
                 case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag)")
                 case .tag_List:
                     TagListView { action in
@@ -140,7 +142,10 @@ struct ContentView: View {
                 case .settings: Text("TBI - Settings")
 
                 case .tag_Create: Text("TBI - Tag Create")
-                case .tag_Details(let tag): Text("TBI - Tag Details: \(tag)")
+                case .tag_Details(let tag):
+                    TagDetailView(tag: tag) { action in
+                        changeRoute(action)
+                    }
                 case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag)")
                 case .tag_List: Text("TBI - Tag List")
 
@@ -252,7 +257,8 @@ struct ContentView: View {
             break
 
         case .tag_Details(let tag):
-            if case .transaction_Detail = self.selectedSubRoute {
+            if case .transaction_Detail(let transaction) = self.selectedSubRoute {
+                self.selectedRoute = .transaction_List(account: transaction.account!)
                 self.selectedSubRoute = .tag_Details(tag: tag)
             } else {
                 self.selectedRoute = .tag_List

@@ -16,9 +16,15 @@ extension TagDetailView {
     class ViewModel {
         @ObservationIgnored
         private let dataSource: MoneyDataSource
+        var tag: TransactionTag
 
-        init(dataSource: MoneyDataSource = MoneyDataSource.shared) {
+        var transactions: [Transaction] = []
+
+        init(dataSource: MoneyDataSource = MoneyDataSource.shared, tag: TransactionTag) {
             self.dataSource = dataSource
+            self.tag = tag
+
+            // datasource.getTransactionsFromTag
         }
     }
 }
