@@ -29,11 +29,14 @@ extension AccountTransactionListView {
             self.accountList = self.dataSource.fetchAccounts()
 
             loadAccountTransactions()
+
         }
 
         func loadAccountTransactions() {
             if account != nil {
                 self.accountTransactions = self.dataSource.fetchAccountTransactions(account: self.account!)
+            } else {
+                debugPrint("Account is null, cannot load transactions")
             }
         }
     }

@@ -32,7 +32,7 @@ final class MoneyDataSource: Sendable {
     init() {
         self.modelContainer = {
 
-            let config = ModelConfiguration(isStoredInMemoryOnly: true)
+            let config = ModelConfiguration(isStoredInMemoryOnly: false)
 
             do {
 
