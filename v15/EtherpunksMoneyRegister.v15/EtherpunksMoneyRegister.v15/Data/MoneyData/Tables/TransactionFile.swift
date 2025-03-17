@@ -10,13 +10,13 @@ import SwiftData
 
 @Model
 final class TransactionFile: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
-    @Attribute(.unique) public var id: UUID = UUID()
+    @Attribute(.unique) public var id: String = UUID().uuidString
     public var name: String = ""
     public var filename: String = ""
     public var notes: String = ""
     public var data: Data? = nil
     public var isTaxRelated: Bool = false
-    public var transactionId: UUID? = nil
+    public var transactionId: String? = nil
     @Relationship(deleteRule: .noAction) public var transaction: AccountTransaction?
 
     // other types of files?

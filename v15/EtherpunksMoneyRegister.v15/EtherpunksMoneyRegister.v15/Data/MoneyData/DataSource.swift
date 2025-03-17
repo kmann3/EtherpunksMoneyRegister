@@ -290,11 +290,16 @@ final class MoneyDataSource: Sendable {
 
             do {
                 newTransactions.forEach {
+                    debugPrint("##### INSERT  ########")
+                    debugPrint($0)
+                    debugPrint("#############")
                     let transactionAccount = $0.account!
                     transactionAccount.currentBalance += $0.amount
                     transactionAccount.outstandingBalance += $0.amount
                     transactionAccount.outstandingItemCount += 1
                     transactionAccount.transactionCount += 1
+                    $0.balance = transactionAccount.currentBalance
+
                     modelContext.insert($0)
                 }
                 try modelContext.save()

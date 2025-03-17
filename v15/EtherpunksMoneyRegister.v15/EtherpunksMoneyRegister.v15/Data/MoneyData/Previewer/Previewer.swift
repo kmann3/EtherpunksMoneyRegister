@@ -182,7 +182,7 @@ class Previewer {
         verizonRecurringTransaction.nextDueDate = getNextDueDate(day: 28)
 
         print("Done generating data at \(Date().toDebugDate())")
-        print("Main account id: \(bankAccount.id.uuidString)")
+        print("Main account id: \(bankAccount.id)")
     }
 
     func importTestRecurringData(modelContext: ModelContext) {
@@ -222,7 +222,6 @@ class Previewer {
                     name: row[accountNameCol2]
                 )
                 if account.name == "Chase" {
-                    //debugPrint("skipping Chase")
                     continue
                 } else {
                     accountDictionary.updateValue(account, forKey: row[accountIdCol2].uuidString)

@@ -11,9 +11,9 @@ import SwiftUI
 
 @Model
 final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
-    @Attribute(.unique) public var id: UUID = UUID()
-    public var accountId: UUID? = nil
+    @Attribute(.unique) public var id: String = UUID().uuidString
     public var account: Account? = nil
+    public var accountId: String? = nil
     public var name: String = ""
     public var transactionType: TransactionType = TransactionType.debit
     public var amount: Decimal = 0
@@ -23,7 +23,7 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
     public var isTaxRelated: Bool = false
     public var fileCount: Int = 0
     @Relationship(deleteRule: .noAction, inverse: \TransactionTag.accountTransactions) public var transactionTags: [TransactionTag]? = nil
-    public var recurringTransactionId: UUID? = nil
+    public var recurringTransactionId: String? = nil
     @Relationship(deleteRule: .noAction, inverse: \RecurringTransaction.transactions) public var recurringTransaction: RecurringTransaction? = nil
     public var dueDate: Date? = nil
     public var pendingOnUTC: Date? = nil
@@ -35,8 +35,8 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
         return """
             AccountTransaction:
             - id: \(id)
-            - accountId: \(accountId?.uuidString ?? "nil")
-            - account: \(account == nil ? "Account is nil" : "Account is loaded")
+            - accountId: \(String(describing: accountId))
+            - account: \(account == nil ? "Account is nil" : "Account is loaded: \(account!.name)")
             - name: \(name)
             - transactionType: \(transactionType)
             - amount: \(amount)
@@ -46,7 +46,7 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
             - isTaxRelated: \(isTaxRelated)
             - fileCount: \(fileCount)
             - transactionTags: \(transactionTags == nil ? "Tags are nil" : "Tags are loaded")
-            - recurringTransactionId: \(recurringTransactionId?.uuidString ?? "none")
+            - recurringTransactionId: \(String(describing: recurringTransactionId))
             - dueDate: \(dueDate?.toDebugDate() ?? "nil")
             - pendingOnUTC: \(pendingOnUTC?.toDebugDate() ?? "nil")
             - clearedOnUTC: \(clearedOnUTC?.toDebugDate() ?? "nil")
@@ -175,6 +175,7 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
 
     init(recurringTransaction: RecurringTransaction) {
         self.account = recurringTransaction.defaultAccount ?? nil
+        self.accountId = recurringTransaction.defaultAccount?.id ?? nil
         self.name = recurringTransaction.name
         self.transactionType = recurringTransaction.transactionType
         self.amount = recurringTransaction.amount
@@ -184,6 +185,10 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
         self.recurringTransaction = recurringTransaction
         self.recurringTransactionId = recurringTransaction.id
         self.dueDate = recurringTransaction.nextDueDate
+
+        debugPrint("##### CRERATE FROM RECURRING  ########")
+        debugPrint(self)
+        debugPrint("#############")
 
         VerifySignage()
     }

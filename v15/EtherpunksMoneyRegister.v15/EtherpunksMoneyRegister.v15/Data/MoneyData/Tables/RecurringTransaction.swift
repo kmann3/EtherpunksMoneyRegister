@@ -10,7 +10,7 @@ import SwiftData
 
 @Model
 final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
-    @Attribute(.unique) public var id: UUID = UUID()
+    @Attribute(.unique) public var id: String = UUID().uuidString
     public var name: String = ""
     public var transactionType: TransactionType {
         get { TransactionType(rawValue: transactionTypeRaw) ?? .debit }
@@ -18,11 +18,12 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
     }
     public var amount: Decimal = 0
     public var defaultAccount: Account? = nil
+    public var defaultAccountId: String? = nil
     public var notes: String = ""
     public var isTaxRelated: Bool = false
     public var nextDueDate: Date? = nil
     @Relationship(deleteRule: .noAction, inverse: \TransactionTag.recurringTransactions) public var transactionTags: [TransactionTag]? = nil
-    public var recurringGroupId: UUID? = nil
+    public var recurringGroupId: String? = nil
     @Relationship(deleteRule: .noAction, inverse: \RecurringGroup.recurringTransactions) public var recurringGroup: RecurringGroup? = nil
     public var transactions: [AccountTransaction]? = nil
     public var frequency: RecurringFrequency = RecurringFrequency.unknown
@@ -38,6 +39,8 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
             RecurringTransaction:
             - id: \(id)
             - name: \(name)
+            - default account: \(defaultAccount == nil ? "Account is nil" : "Account is loaded")
+            - default account Id: \(String(describing: defaultAccountId))
             - transactionType: \(transactionType)
             - amount: \(amount)
             - notes: \(notes)
@@ -69,11 +72,12 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
         frequencyDayOfWeek: DayOfWeek? = nil,
         frequencyDateValue: Date? = nil
     ) {
-        self.id = id
+        self.id = id.uuidString
         self.name = name
         self.transactionType = transactionType
         self.amount = amount
         self.defaultAccount = defaultAccount
+        self.defaultAccountId = defaultAccount?.id ?? nil
         self.notes = notes
         self.isTaxRelated = isTaxRelated
         self.nextDueDate = nextDueDate

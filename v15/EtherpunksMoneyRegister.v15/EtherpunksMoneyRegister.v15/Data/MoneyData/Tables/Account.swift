@@ -11,7 +11,7 @@ import SwiftUI
 
 @Model
 final class Account: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
-    @Attribute(.unique) public var id: UUID = UUID()
+    @Attribute(.unique) public var id: String = UUID().uuidString
     public var name: String = ""
     public var startingBalance: Decimal = 0
     public var currentBalance: Decimal = 0
@@ -54,7 +54,7 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
         lastBalancedUTC: String,
         createdOnUTC: String
     ) {
-        self.id = id
+        self.id = id.uuidString
         self.name = name
         self.startingBalance = startingBalance
         self.currentBalance = currentBalance
@@ -123,7 +123,7 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
         sortIndex: Int64,
         lastBalancedUTC: Date?
     ) {
-        self.id = id
+        self.id = id.uuidString
         self.name = name
         self.startingBalance = startingBalance
         self.currentBalance = currentBalance
@@ -146,7 +146,7 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
         id: UUID,
         name: String
     ) {
-        self.id = id
+        self.id = id.uuidString
         self.name = name
         
     }
