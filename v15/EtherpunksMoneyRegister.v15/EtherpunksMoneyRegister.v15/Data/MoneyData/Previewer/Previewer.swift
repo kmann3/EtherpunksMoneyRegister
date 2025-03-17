@@ -50,7 +50,7 @@ class Previewer {
     public var cvsAttachmentFile: TransactionFile
 
     init() {
-
+        
         // Tags
         billsTag = TransactionTag(name: "bills")
         ffTag = TransactionTag(name: "fast-food")

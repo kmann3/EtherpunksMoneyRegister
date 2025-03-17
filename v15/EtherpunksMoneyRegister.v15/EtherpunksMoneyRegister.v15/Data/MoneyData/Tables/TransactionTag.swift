@@ -13,7 +13,7 @@ final class TransactionTag: ObservableObject, CustomDebugStringConvertible, Iden
     @Attribute(.unique) public var id: UUID = UUID()
     public var name: String = ""
     @Relationship(deleteRule: .noAction) public var accountTransactions: [AccountTransaction]? = nil
-    @Relationship(deleteRule: .nullify) public var recurringTransactions: [RecurringTransaction]? = nil
+    @Relationship(deleteRule: .noAction) public var recurringTransactions: [RecurringTransaction]? = nil // The delete rule should be nullify by during debugging, it's a pain to clear all the values here without giving errors. Blame SwiftData for being poorly made.
     public var createdOnUTC: Date = Date()
 
     public var debugDescription: String {

@@ -35,7 +35,6 @@ final class MoneyDataSource: Sendable {
             let config = ModelConfiguration(isStoredInMemoryOnly: false)
 
             do {
-
                 return try ModelContainer(for: MoneyDataSource.shema, configurations: [config])
             } catch {
                 fatalError("fatal error: Could not create ModelContainer: \(error)")
@@ -50,6 +49,18 @@ final class MoneyDataSource: Sendable {
         print("-----------------")
         print("Database Location: \(self.modelContext.sqliteLocation)")
         print("-----------------")
+
+        do {
+            try modelContext.delete(model: Account.self)
+            try modelContext.delete(model: AccountTransaction.self)
+            try modelContext.delete(model: RecurringGroup.self)
+            try modelContext.delete(model: RecurringTransaction.self)
+            try modelContext.delete(model: TransactionFile.self)
+            try modelContext.delete(model: TransactionTag.self)
+        } catch {
+            print("Failed to clear database. Err: \(error)")
+        }
+
 
         previewer = Previewer()
         previewer.commitToDb(modelContext)
