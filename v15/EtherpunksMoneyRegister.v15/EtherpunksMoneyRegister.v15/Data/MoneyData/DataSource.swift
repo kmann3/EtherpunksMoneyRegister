@@ -290,9 +290,9 @@ final class MoneyDataSource: Sendable {
 
             do {
                 newTransactions.forEach {
-                    debugPrint("##### INSERT  ########")
-                    debugPrint($0)
-                    debugPrint("#############")
+                    if $0.account == nil || $0.accountId == nil {
+                        fatalError("Nil account for recurring -> transaction: \($0.name)")
+                    }
                     let transactionAccount = $0.account!
                     transactionAccount.currentBalance += $0.amount
                     transactionAccount.outstandingBalance += $0.amount

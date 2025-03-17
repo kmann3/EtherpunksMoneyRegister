@@ -186,10 +186,6 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
         self.recurringTransactionId = recurringTransaction.id
         self.dueDate = recurringTransaction.nextDueDate
 
-        debugPrint("##### CRERATE FROM RECURRING  ########")
-        debugPrint(self)
-        debugPrint("#############")
-
         VerifySignage()
     }
 
