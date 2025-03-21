@@ -171,8 +171,7 @@ struct DashboardView: View {
 }
 
 #Preview {
-    let ds = MoneyDataSource()
-    DashboardView(viewModel: DashboardView.ViewModel(dataSource: ds), handler: { _ in })
+    DashboardView(viewModel: DashboardView.ViewModel(), handler: { _ in })
 #if os(macOS)
         .frame(minWidth: 1000, minHeight: 750)
 #endif

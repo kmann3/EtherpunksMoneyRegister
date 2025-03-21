@@ -106,6 +106,5 @@ struct Dashboard_FullSummaryView: View {
 }
 
 #Preview {
-    let p = MoneyDataSource.shared.previewer
-    Dashboard_FullSummaryView(accounts: [p.bankAccount])
+    Dashboard_FullSummaryView(accounts: [MoneyDataSource.shared.previewer.bankAccount])
 }
