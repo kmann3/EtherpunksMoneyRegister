@@ -133,7 +133,7 @@ struct DashboardView: View {
                     }
                     Spacer()
                 }
-                .frame(width: 400)
+                .frame(width: 300)
             }
         }
         .sheet(isPresented: $viewModel.isConfirmDepositCreditDialogShowing, onDismiss: {viewModel.reserveDepositCreditDialogDismiss()}) {
