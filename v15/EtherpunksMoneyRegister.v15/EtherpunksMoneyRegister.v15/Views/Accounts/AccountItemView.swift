@@ -66,7 +66,7 @@ struct AccountItemView: View {
 
             Rectangle()
                 .fill(Color.gray)
-                .frame(width: .infinity, height: 1, alignment: .center)
+                .frame(maxWidth: .infinity, maxHeight: 1, alignment: .center)
                 .padding(.horizontal, 25)
 
             HStack {
