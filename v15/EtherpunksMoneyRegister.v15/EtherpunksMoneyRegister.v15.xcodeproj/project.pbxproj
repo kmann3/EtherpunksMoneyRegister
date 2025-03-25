@@ -52,16 +52,6 @@
 			path = EtherpunksMoneyRegister.v15;
 			sourceTree = "<group>";
 		};
-		AAE200482D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15Tests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = EtherpunksMoneyRegister.v15Tests;
-			sourceTree = "<group>";
-		};
-		AAE200522D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15UITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = EtherpunksMoneyRegister.v15UITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,8 +84,6 @@
 			isa = PBXGroup;
 			children = (
 				AAE200332D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15 */,
-				AAE200482D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15Tests */,
-				AAE200522D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15UITests */,
 				AAE2009A2D3F727C00480DB6 /* Frameworks */,
 				AAE200322D3F70FB00480DB6 /* Products */,
 			);
@@ -157,9 +145,6 @@
 			dependencies = (
 				AAE200472D3F70FD00480DB6 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				AAE200482D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15Tests */,
-			);
 			name = EtherpunksMoneyRegister.v15Tests;
 			packageProductDependencies = (
 			);
@@ -179,9 +164,6 @@
 			);
 			dependencies = (
 				AAE200512D3F70FD00480DB6 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				AAE200522D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15UITests */,
 			);
 			name = EtherpunksMoneyRegister.v15UITests;
 			packageProductDependencies = (
