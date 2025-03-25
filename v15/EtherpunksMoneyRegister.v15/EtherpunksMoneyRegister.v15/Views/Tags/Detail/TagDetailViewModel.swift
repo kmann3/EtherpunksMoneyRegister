@@ -18,13 +18,20 @@ extension TagDetailView {
         private let dataSource: MoneyDataSource
         var tag: TransactionTag
 
-        var transactions: [Transaction] = []
+        var transactions: [AccountTransaction] = []
+        var recurringTransactions: [RecurringTransaction] = []
+        var lastUsed: Date? = nil
+        var itemCount: Int = 0
 
         init(dataSource: MoneyDataSource = MoneyDataSource.shared, tag: TransactionTag) {
             self.dataSource = dataSource
             self.tag = tag
 
-            // datasource.getTransactionsFromTag
+            let foo = dataSource.fetchTagItemData(tag)
+            self.transactions = foo.transactions
+            self.recurringTransactions = foo.recurringTransactions
+            self.lastUsed = foo.lastUsed
+            self.itemCount = foo.count
         }
     }
 }

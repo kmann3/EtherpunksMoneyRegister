@@ -22,7 +22,7 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
     public var confirmationNumber: String = ""
     public var isTaxRelated: Bool = false
     public var fileCount: Int = 0
-    @Relationship(deleteRule: .noAction, inverse: \TransactionTag.accountTransactions) public var transactionTags: [TransactionTag]? = nil
+    @Relationship(deleteRule: .noAction, inverse: \TransactionTag.accountTransactions) public var transactionTags: [TransactionTag]? = []
     public var recurringTransactionId: String? = nil
     @Relationship(deleteRule: .noAction, inverse: \RecurringTransaction.transactions) public var recurringTransaction: RecurringTransaction? = nil
     public var dueDate: Date? = nil

@@ -166,7 +166,7 @@ final class MoneyDataSource: Sendable {
         }
     }
 
-    func fetchTagItemData(_ transactionTag: TransactionTag) -> (count: Int, lastUsed: Date?) {
+    func fetchTagItemData(_ transactionTag: TransactionTag) -> (count: Int, lastUsed: Date?, transactions: [AccountTransaction], recurringTransactions: [RecurringTransaction]) {
         let tagId = transactionTag.id
 
         var fetchDescriptor: FetchDescriptor<TransactionTag> {
@@ -177,18 +177,18 @@ final class MoneyDataSource: Sendable {
             )
             descriptor.fetchLimit = 1
             descriptor.relationshipKeyPathsForPrefetching = [
-                \.accountTransactions
+                \.accountTransactions,
+                 \.recurringTransactions
             ]
             return descriptor
         }
 
         let query = try! modelContext.fetch(fetchDescriptor)
-        // could use fetchCount and then do a different query to just get the most recent one
-        if query.count > 0 {
-            return (query.first!.accountTransactions?.count ?? 0, query.first?.createdOnUTC ?? nil)
-        } else {
-            return (0, nil)
-        }
+
+        return (query.first?.accountTransactions?.count ?? 0,
+                query.first?.createdOnUTC ?? nil,
+                query.first?.accountTransactions ?? [],
+                query.first?.recurringTransactions ?? [])
     }
 
     func fetchTransactionFiles(tran: AccountTransaction) -> [TransactionFile] {
