@@ -187,8 +187,8 @@ final class MoneyDataSource: Sendable {
 
         return (query.first?.accountTransactions?.count ?? 0,
                 query.first?.createdOnUTC ?? nil,
-                query.first?.accountTransactions ?? [],
-                query.first?.recurringTransactions ?? [])
+                query.first?.accountTransactions?.sorted(by: {$0.createdOnUTC > $1.createdOnUTC}) ?? [],
+                query.first?.recurringTransactions?.sorted(by: {$0.name < $1.name}) ?? [])
     }
 
     func fetchTransactionFiles(tran: AccountTransaction) -> [TransactionFile] {

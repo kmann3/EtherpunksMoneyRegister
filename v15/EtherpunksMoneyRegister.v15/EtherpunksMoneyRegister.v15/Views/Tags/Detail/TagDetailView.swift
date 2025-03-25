@@ -42,55 +42,65 @@ struct TagDetailView: View {
                 }
             }
             Section(header: Text("Recurring"), footer: Text("End of list")) {
-                ForEach(self.viewModel.recurringTransactions, id: \.id) { rtran in
-                    VStack {
-                        HStack {
+                Grid() {
+                    GridRow {
+                        Text("Name")
+                        Text("Default Account")
+                        Text("Next Due Date")
+                        Text("Amount")
+                    }
+                    .font(.headline)
+
+                    ForEach(self.viewModel.recurringTransactions, id: \.id) { rtran in
+                        GridRow {
                             Text("\(rtran.name)")
-                            Spacer()
                             Text("\(rtran.defaultAccount?.name ?? "")")
-                            Spacer()
                             if rtran.nextDueDate != nil {
                                 Text(
                                     rtran.nextDueDate!,
                                     format: .dateTime.year().month().day())
-                                Spacer()
                             } else {
-                                Spacer()
+                                Text("")
                             }
                             Text(
                                 rtran.amount,
                                 format: .currency(
                                     code: Locale.current.currency?.identifier ?? "USD"))
-
                         }
-                    }
-                    .onTapGesture { action in
-                        handler(PathStore.Route.recurringTransaction_Details(recTrans: rtran))
+                        .onTapGesture { action in
+                            handler(PathStore.Route.recurringTransaction_Details(recTrans: rtran))
+                        }
+
                     }
                 }
             }
 
             Section(header: Text("Transactions"), footer: Text("End of list")) {
-                ForEach(self.viewModel.transactions, id: \.id) { tran in
-                    VStack {
-                        HStack {
-                            Text("\(tran.name)")
-                            Spacer()
-                            Text("\(tran.account!.name)")
-                            Spacer()
-                            Text(
-                                tran.createdOnUTC,
-                                format: .dateTime.year().month().day())
-                            Spacer()
-                            Text(
-                                tran.amount,
-                                format: .currency(
-                                    code: Locale.current.currency?.identifier ?? "USD"))
-
-                        }
+                Grid() {
+                    GridRow {
+                        Text("Name")
+                        Text("Account")
+                        Text("Created On")
+                        Text("Amount")
                     }
-                    .onTapGesture { t in
-                        handler(PathStore.Route.transaction_Detail(transaction: tran))
+                    .font(.headline)
+                    ForEach(self.viewModel.transactions, id: \.id) { tran in
+                        GridRow {
+                            Text("\(tran.name)")
+                            Text("\(tran.account!.name)")
+                            HStack {
+                                Text(tran.createdOnUTC,
+                                     format: .dateTime.year().month().day())
+                                Text(
+                                    self.viewModel.lastUsed!,
+                                    format: .dateTime.minute().second())
+                            }
+                            Text(tran.amount,
+                                format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                        }
+                        .onTapGesture { t in
+                            handler(PathStore.Route.transaction_Detail(transaction: tran))
+                        }
                     }
                 }
             }
@@ -102,5 +112,5 @@ struct TagDetailView: View {
 }
 
 #Preview {
-    TagDetailView(tag: MoneyDataSource.shared.previewer.billsTag, { _ in })
+    TagDetailView(tag: MoneyDataSource.shared.previewer.billsTag, { a in debugPrint(a) })
 }
