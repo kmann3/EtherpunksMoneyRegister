@@ -96,6 +96,7 @@ class Previewer {
             name: "Discord",
             transactionType: .debit,
             amount: -13.99,
+            defaultAccount: bankAccount,
             transactionTags: [billsTag],
             recurringGroup: billGroup,
             frequency: .monthly,
@@ -138,6 +139,7 @@ class Previewer {
             name: "Verizon",
             transactionType: TransactionType.debit,
             amount: 104.00,
+            defaultAccount: bankAccount,
             notes: "",
             transactionTags: [billsTag],
             recurringGroup: billGroup,
@@ -239,9 +241,9 @@ class Previewer {
                     id: row[idCol],
                     name: row[nameCol],
                     transactionType: row[transactionTypeCol] == "debit" ? TransactionType.debit : TransactionType.credit,
-                    amount: Decimal.init(string: row[amountCol])!
+                    amount: Decimal.init(string: row[amountCol])!,
+                    defaultAccount: accountDictionary[row[accountIdCol].uuidString] ?? bankAccount
                     )
-                recurringTransaction.defaultAccount = accountDictionary[row[accountIdCol].uuidString] ?? bankAccount
 
                 if(row[groupNameCol] != nil) {
                     if(row[groupNameCol] == "bills") {

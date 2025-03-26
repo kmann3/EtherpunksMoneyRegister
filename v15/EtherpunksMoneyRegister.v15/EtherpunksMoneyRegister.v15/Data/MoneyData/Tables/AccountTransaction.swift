@@ -12,7 +12,7 @@ import SwiftUI
 @Model
 final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
     @Attribute(.unique) public var id: String = UUID().uuidString
-    public var account: Account? = nil
+    public var account: Account
     public var accountId: String? = nil
     public var name: String = ""
     public var transactionType: TransactionType = TransactionType.debit
@@ -36,7 +36,7 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
             AccountTransaction:
             - id: \(id)
             - accountId: \(String(describing: accountId))
-            - account: \(account == nil ? "Account is nil" : "Account is loaded: \(account!.name)")
+            - account: \(account.name)
             - name: \(name)
             - transactionType: \(transactionType)
             - amount: \(amount)
@@ -174,12 +174,12 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
     }
 
     init(recurringTransaction: RecurringTransaction) {
-        self.account = recurringTransaction.defaultAccount ?? nil
-        self.accountId = recurringTransaction.defaultAccount?.id ?? nil
+        self.account = recurringTransaction.defaultAccount
+        self.accountId = recurringTransaction.defaultAccount.id
         self.name = recurringTransaction.name
         self.transactionType = recurringTransaction.transactionType
         self.amount = recurringTransaction.amount
-        self.balance = recurringTransaction.defaultAccount?.currentBalance ?? 0
+        self.balance = recurringTransaction.defaultAccount.currentBalance
         self.isTaxRelated = recurringTransaction.isTaxRelated
         self.transactionTags = recurringTransaction.transactionTags
         self.recurringTransaction = recurringTransaction
@@ -187,10 +187,6 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
         self.dueDate = recurringTransaction.nextDueDate
 
         VerifySignage()
-    }
-
-    init() {
-        
     }
 
     func VerifySignage() {

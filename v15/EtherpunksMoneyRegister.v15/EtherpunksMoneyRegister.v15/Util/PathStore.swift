@@ -33,12 +33,14 @@ class PathStore {
         case recurringGroup_Details(recGroup: RecurringGroup)
         case recurringGroup_Edit(recGroup: RecurringGroup)
         case recurringGroup_List
+        case recurringGroup_Reserve(recGroup: RecurringGroup)
 
         case recurringTransaction_Create
         case recurringTransaction_Create_FromTrans(tran: AccountTransaction)
         case recurringTransaction_Details(recTrans: RecurringTransaction)
         case recurringTransaction_Edit(recTrans: RecurringTransaction)
         case recurringTransaction_List
+        case recurringTransaction_Reserve(recTrans: RecurringTransaction)
 
         case report_Tax
 

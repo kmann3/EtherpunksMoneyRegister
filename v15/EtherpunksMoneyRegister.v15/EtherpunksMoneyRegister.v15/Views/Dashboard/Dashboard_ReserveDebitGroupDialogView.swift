@@ -105,9 +105,7 @@ struct Dashboard_ReserveDebitGroupDialogView: View {
 
                 Button {
                     returnTransactions.forEach { rt in
-                        if rt.account == nil {
-                            rt.account = self.viewModel.selectedAccount
-                        }
+                        rt.account = self.viewModel.selectedAccount
                     }
                     didCancel = false
                     dismiss()

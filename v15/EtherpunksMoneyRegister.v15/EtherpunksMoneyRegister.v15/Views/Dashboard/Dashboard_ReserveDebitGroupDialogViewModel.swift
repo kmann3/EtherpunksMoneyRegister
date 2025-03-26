@@ -26,7 +26,7 @@ extension Dashboard_ReserveDebitGroupDialogView {
             self.dataSource = dataSource
             accounts = dataSource.fetchAccounts()
             reserveGroup = groupToReserve
-            selectedAccount = reserveGroup.recurringTransactions!.first!.defaultAccount ?? accounts.first!
+            selectedAccount = reserveGroup.recurringTransactions!.first!.defaultAccount
         }
     }
 }

@@ -259,7 +259,7 @@ final class MoneyDataSource: Sendable {
 
     func ReserveCreditDeposit(recurringTransaction: RecurringTransaction, newTransaction: AccountTransaction) {
         try? modelContext.transaction {
-            let account = newTransaction.account!
+            let account = newTransaction.account
             newTransaction.balance = account.currentBalance + newTransaction.amount
 
             if newTransaction.clearedOnUTC == nil {
@@ -290,10 +290,7 @@ final class MoneyDataSource: Sendable {
 
             do {
                 newTransactions.forEach {
-                    if $0.account == nil || $0.accountId == nil {
-                        fatalError("Nil account for recurring -> transaction: \($0.name)")
-                    }
-                    let transactionAccount = $0.account!
+                    let transactionAccount = $0.account
                     transactionAccount.currentBalance += $0.amount
                     transactionAccount.outstandingBalance += $0.amount
                     transactionAccount.outstandingItemCount += 1
@@ -312,7 +309,7 @@ final class MoneyDataSource: Sendable {
 
     func ReserveDebitTransaction(recurringTransaction: RecurringTransaction, newTransaction: AccountTransaction) {
         try? modelContext.transaction {
-            let account = newTransaction.account!
+            let account = newTransaction.account
             newTransaction.balance = account.currentBalance + newTransaction.amount
 
             if newTransaction.clearedOnUTC == nil {

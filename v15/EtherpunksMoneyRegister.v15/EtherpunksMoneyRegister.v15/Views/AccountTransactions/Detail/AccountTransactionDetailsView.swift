@@ -31,12 +31,10 @@ struct AccountTransactionDetailsView: View {
             HStack {
                 Text("Account: ")
                 Text(
-                    "\(self.viewModel.tran.account?.name ?? "Error loading account")"
+                    "\(self.viewModel.tran.account.name)"
                 )
                 .onTapGesture {
-                    if self.viewModel.tran.account != nil {
-                        handler(PathStore.Route.account_Edit(account: self.viewModel.tran.account!))
-                    }
+                    handler(PathStore.Route.account_Edit(account: self.viewModel.tran.account))
                 }
                 .underline()
                 .foregroundColor(.blue)

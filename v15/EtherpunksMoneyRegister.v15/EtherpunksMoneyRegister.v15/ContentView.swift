@@ -82,12 +82,14 @@ struct ContentView: View {
                 case .recurringGroup_Details(let recGroup): Text("TBI - Recurring Group Details: \(recGroup)")
                 case .recurringGroup_Edit(let recGroup): Text("TBI - Recurring Group Edit: \(recGroup)")
                 case .recurringGroup_List: Text("TBI - Recurring Group List")
+                case .recurringGroup_Reserve(let recGroup): Text("TBI - Recurring Group Reserver: \(recGroup)")
 
                 case .recurringTransaction_Create: Text("TBI - Recurring Transaction Create")
                 case .recurringTransaction_Create_FromTrans(let transID): Text("TBI - Recurring Transaction Create From Transaction: \(transID)")
                 case .recurringTransaction_Details(let recTran): Text("TBI - Recurring Transaction Details: \(recTran)")
                 case .recurringTransaction_Edit(let recTran): Text("TBI - Recurring Transaction Edit: \(recTran)")
                 case .recurringTransaction_List: Text("TBI - Recurring Transaction List")
+                case .recurringTransaction_Reserve(let recTran): Text("TBI - Recurring Transaction Reserve: \(recTran)")
 
                 case .report_Tax: Text("TBI - Report Tax")
                 case .search: Text("TBI - Search")
@@ -130,12 +132,15 @@ struct ContentView: View {
                 case .recurringGroup_Details(let recGroup): Text("TBI - Recurring Group Details: \(recGroup)")
                 case .recurringGroup_Edit(let recGroup): Text("TBI - Recurring Group Edit: \(recGroup)")
                 case .recurringGroup_List: Text("TBI - Recurring Group List")
+                case .recurringGroup_Reserve(let recGroup):
+                    ReserveGroupViewView(group: recGroup) { action in changeRoute(action) }
 
                 case .recurringTransaction_Create: Text("TBI - Recurring Transaction Create")
                 case .recurringTransaction_Create_FromTrans(let transID): Text("TBI - Recurring Transaction Create From Transaction: \(transID)")
                 case .recurringTransaction_Details(let recTran): Text("TBI - Recurring Transaction Details: \(recTran)")
                 case .recurringTransaction_Edit(let recTran): Text("TBI - Recurring Transaction Edit: \(recTran)")
                 case .recurringTransaction_List: Text("TBI - Recurring Transaction List")
+                case .recurringTransaction_Reserve(let recTran): Text("TBI - Recurring Transaction Reserve: \(recTran)")
 
                 case .report_Tax: Text("TBI - Report Tax")
                 case .search: Text("TBI - Search")
@@ -215,6 +220,10 @@ struct ContentView: View {
         case .recurringGroup_List:
             break
 
+        case .recurringGroup_Reserve(let recGroup):
+            self.selectedRoute = .recurringGroup_List
+            self.selectedSubRoute = .recurringGroup_Reserve(recGroup: recGroup)
+
         case .recurringTransaction_Create:
             break
 
@@ -235,6 +244,10 @@ struct ContentView: View {
 
         case .recurringTransaction_List:
             break
+
+        case .recurringTransaction_Reserve(let recTrans):
+            self.selectedRoute = .recurringTransaction_List
+            self.selectedSubRoute = .recurringTransaction_Reserve(recTrans: recTrans)
 
         case .report_Tax:
             self.selectedRoute = .report_Tax
@@ -258,7 +271,7 @@ struct ContentView: View {
 
         case .tag_Details(let tag):
             if case .transaction_Detail(let transaction) = self.selectedSubRoute {
-                self.selectedRoute = .transaction_List(account: transaction.account!)
+                self.selectedRoute = .transaction_List(account: transaction.account)
                 self.selectedSubRoute = .tag_Details(tag: tag)
             } else {
                 self.selectedRoute = .tag_List
@@ -280,12 +293,12 @@ struct ContentView: View {
             break
 
         case .transaction_Edit(let tran):
-            self.selectedRoute = .transaction_List(account: tran.account!)
+            self.selectedRoute = .transaction_List(account: tran.account)
             self.selectedSubRoute = .transaction_Edit(transaction: tran)
             break
 
         case .transaction_Detail(let tran):
-            self.selectedRoute = .transaction_List(account: tran.account!)
+            self.selectedRoute = .transaction_List(account: tran.account)
             self.selectedSubRoute = .transaction_Detail(transaction: tran)
             break
 

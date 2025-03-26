@@ -17,7 +17,7 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
         set { transactionTypeRaw = newValue.rawValue }
     }
     public var amount: Decimal = 0
-    public var defaultAccount: Account? = nil
+    public var defaultAccount: Account
     public var defaultAccountId: String? = nil
     public var notes: String = ""
     public var isTaxRelated: Bool = false
@@ -39,7 +39,7 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
             RecurringTransaction:
             - id: \(id)
             - name: \(name)
-            - default account: \(defaultAccount == nil ? "Account is nil" : "Account is loaded")
+            - default account: \(defaultAccount.name)
             - default account Id: \(String(describing: defaultAccountId))
             - transactionType: \(transactionType)
             - amount: \(amount)
@@ -60,7 +60,7 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
         name: String,
         transactionType: TransactionType = .debit,
         amount: Decimal = 0.0,
-        defaultAccount: Account? = nil,
+        defaultAccount: Account,
         notes: String = "",
         isTaxRelated: Bool = false,
         nextDueDate: Date? = nil,
@@ -74,10 +74,9 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
     ) {
         self.id = id.uuidString
         self.name = name
-        self.transactionType = transactionType
         self.amount = amount
         self.defaultAccount = defaultAccount
-        self.defaultAccountId = defaultAccount?.id ?? nil
+        self.defaultAccountId = defaultAccount.id
         self.notes = notes
         self.isTaxRelated = isTaxRelated
         self.nextDueDate = nextDueDate
@@ -90,13 +89,10 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
         self.frequencyDayOfWeek = frequencyDayOfWeek
         self.frequencyDateValue = frequencyDateValue
 
+        self.transactionType = transactionType
+
         self.VerifySignage()
     }
-
-    init() {
-        
-    }
-
     public static func transactionTypeFilter(type: TransactionType) -> Predicate<RecurringTransaction> {
         let rawValue = type.rawValue
         return #Predicate<RecurringTransaction> {

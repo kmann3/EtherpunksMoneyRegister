@@ -54,7 +54,7 @@ struct TagDetailView: View {
                     ForEach(self.viewModel.recurringTransactions, id: \.id) { rtran in
                         GridRow {
                             Text("\(rtran.name)")
-                            Text("\(rtran.defaultAccount?.name ?? "")")
+                            Text(rtran.defaultAccount.name)
                             if rtran.nextDueDate != nil {
                                 Text(
                                     rtran.nextDueDate!,
@@ -87,13 +87,10 @@ struct TagDetailView: View {
                     ForEach(self.viewModel.transactions, id: \.id) { tran in
                         GridRow {
                             Text("\(tran.name)")
-                            Text("\(tran.account!.name)")
+                            Text("\(tran.account.name)")
                             HStack {
                                 Text(tran.createdOnUTC,
                                      format: .dateTime.year().month().day())
-                                Text(
-                                    self.viewModel.lastUsed!,
-                                    format: .dateTime.minute().second())
                             }
                             Text(tran.amount,
                                 format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
