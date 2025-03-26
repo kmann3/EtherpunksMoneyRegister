@@ -13,7 +13,7 @@ extension ReserveGroupViewView {
 
     @MainActor
     @Observable
-    class ViewModel {
+    class ViewModel : ObservableObject {
         @ObservationIgnored
         private let dataSource: MoneyDataSource
 
@@ -26,25 +26,26 @@ extension ReserveGroupViewView {
             self.accounts = dataSource.fetchAccounts()
             self.reserveGroup = reserveGroup
 
-            self.reserveGroup.recurringTransactions!.forEach {
-                transactionQueue.append(AccountTransactionQueueItem(account: $0.defaultAccount, recurringTransaction: $0))
+            self.reserveGroup.recurringTransactions!.sorted(by: ({$0.name < $1.name})).forEach {
+                transactionQueue.append(AccountTransactionQueueItem(recurringTransaction: $0))
             }
         }
     }
 
-    public class AccountTransactionQueueItem {
-        var account: Account
+    public class AccountTransactionQueueItem: Identifiable, ObservableObject {
+        var id: UUID = UUID()
         var accountTransaction: AccountTransaction
-        var amount: Decimal = 0
-        var isEnabled: Bool = true
-        var isSkipped: Bool = false
+        var action: Action = .enable
 
-        init(account: Account, recurringTransaction: RecurringTransaction, amount: Decimal = 0, isEnabled: Bool = true, isSkipped: Bool = false) {
-            self.account = account
+        init(recurringTransaction: RecurringTransaction) {
             self.accountTransaction = AccountTransaction(recurringTransaction: recurringTransaction)
-            self.amount = amount
-            self.isEnabled = isEnabled
-            self.isSkipped = isSkipped
+            self.accountTransaction.amount = abs(recurringTransaction.amount)
         }
+    }
+
+    enum Action {
+        case enable
+        case skip
+        case ignore
     }
 }

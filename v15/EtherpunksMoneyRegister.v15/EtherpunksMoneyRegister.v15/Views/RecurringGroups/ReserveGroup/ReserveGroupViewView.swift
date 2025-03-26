@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ReserveGroupViewView: View {
-    var viewModel: ViewModel
+    @StateObject var viewModel: ViewModel
     var handler: (PathStore.Route) -> Void
 
     init(group: RecurringGroup, _ handler: @escaping (PathStore.Route) -> Void) {
-        self.viewModel = ViewModel(reserveGroup: group)
+        _viewModel = StateObject(wrappedValue: ViewModel(reserveGroup: group))
         self.handler = handler
     }
 
@@ -35,14 +35,20 @@ struct ReserveGroupViewView: View {
 
             Grid() {
                 GridRow {
+                    Text("Action")
                     Text("Name")
                     Text("Due Date")
                     Text("Amount")
                     Text("Account")
                 }
 
-                ForEach(self.viewModel.transactionQueue, id: \.accountTransaction.id) { rt in
+                ForEach($viewModel.transactionQueue) { $rt in
                     GridRow {
+                        Picker("", selection: $rt.action) {
+                            Text("Reserve").tag(Action.enable)
+                            Text("Skip").tag(Action.skip)
+                            Text("Ignore").tag(Action.ignore)
+                        }
                         Text(rt.accountTransaction.name)
 
                         if rt.accountTransaction.dueDate == nil {
@@ -52,99 +58,33 @@ struct ReserveGroupViewView: View {
                                  format: .dateTime.month().day())
                         }
 
-                        Text(rt.accountTransaction.amount,
-                             format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                        TextField("Amount", value: $rt.accountTransaction.amount ,format: .number)
+                            .multilineTextAlignment(.center)
 
-                            Text("acc")
-//                            Picker("Account", selection: $viewModel.selectedAccount) {
-//                                ForEach(viewModel.accounts.sorted(by: {$0.name < $1.name})) { account in
-//                                    Text(account.name)
-//                                        .tag(account)
-//                                }
-//                            }
-//                            .padding(.vertical, 10)
-//                            .padding(.horizontal, 25)
-//                            .overlay(
-//                                RoundedRectangle(cornerRadius: 10)
-//                                    .stroke(
-//                                        Color(
-//                                            .sRGB, red: 125 / 255, green: 125 / 255,
-//                                            blue: 125 / 255, opacity: 0.5))
-//                            )
-//                            .frame(minWidth: 300, maxWidth: .infinity, alignment: .center)
+                        Picker("", selection: $rt.accountTransaction.account) {
+                            ForEach($viewModel.accounts) { $acc in
+                                Text(acc.name).tag(acc)
+                            }
+                        }
+                        .pickerStyle(.menu)
                     }
                 }
-
             }
-
-//            HStack {
-//                VStack {
-//                    Text("Transactions")
-//                        .padding(.trailing, 25)
-//                        .padding(.bottom, 5)
-//                        .frame(maxWidth: .infinity, alignment: .center)
-//
-//                     VStack {
-//                         ForEach(viewModel.reserveGroup.recurringTransactions!.sorted(by: {$0.name < $1.name})) { t in
-//                             Text(t.name)
-//                         }
-//                     }
-//                     .padding(.vertical, 10)
-//                     .padding(.horizontal, 25)
-//                     .overlay(
-//                         RoundedRectangle(cornerRadius: 10)
-//                             .stroke(
-//                                 Color(
-//                                     .sRGB, red: 125 / 255, green: 125 / 255,
-//                                     blue: 125 / 255, opacity: 0.5))
-//                     )
-//                     .frame(maxWidth: .infinity, alignment: .center)
-//                }
-//
-//                VStack {
-//                    Text("Acc")
-//                     Text("Use Default Account")
-//
-//                     Text("If no default account use: ")
-//                         .padding(.trailing, 25)
-//                         .padding(.bottom, 25)
-//                         .frame(maxWidth: .infinity, alignment: .center)
-//
-//                     Picker("Account", selection: $viewModel.selectedAccount) {
-//                         ForEach(viewModel.accounts.sorted(by: {$0.name < $1.name})) { account in
-//                             Text(account.name)
-//                                 .tag(account)
-//                         }
-//                     }
-//                     .padding(.vertical, 10)
-//                     .padding(.horizontal, 25)
-//                     .overlay(
-//                         RoundedRectangle(cornerRadius: 10)
-//                             .stroke(
-//                                 Color(
-//                                     .sRGB, red: 125 / 255, green: 125 / 255,
-//                                     blue: 125 / 255, opacity: 0.5))
-//                     )
-//                     .frame(minWidth: 300, maxWidth: .infinity, alignment: .center)
-//
-//                }
-//            }
 
             Divider()
 
             HStack {
-                Button {
-                } label: {
-                    Text("Cancel")
+                Button("Cancel") {
                 }
                 .frame(minWidth: 100, alignment: .center)
                 .padding(.bottom, 5)
 
                 Spacer()
 
-                Button {
-                } label: {
-                    Text("Reserve")
+                Button("Reserve") {
+                    $viewModel.transactionQueue.forEach { $q in
+                        print("\(q.accountTransaction.name) (\(q.accountTransaction.amount)): \(q.action)")
+                    }
                 }
                 .frame(minWidth: 100, alignment: .center)
                 .padding(.bottom, 5)
