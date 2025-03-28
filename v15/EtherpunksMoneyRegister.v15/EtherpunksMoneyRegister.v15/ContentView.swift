@@ -195,6 +195,7 @@ struct ContentView: View {
             break
 
         case .account_List: // Is this even used anymore now?
+            debugPrint(".Account_List not yet implemented")
             break
 
         case .dashboard:
@@ -218,6 +219,8 @@ struct ContentView: View {
             break
 
         case .recurringGroup_List:
+            self.selectedRoute = .recurringGroup_List
+            self.selectedSubRoute = nil
             break
 
         case .recurringGroup_Reserve(let recGroup):
@@ -225,6 +228,8 @@ struct ContentView: View {
             self.selectedSubRoute = .recurringGroup_Reserve(recGroup: recGroup)
 
         case .recurringTransaction_Create:
+            self.selectedRoute = .recurringTransaction_List
+            self.selectedSubRoute = .recurringTransaction_Create
             break
 
         case .recurringTransaction_Create_FromTrans(let tran):
@@ -243,6 +248,8 @@ struct ContentView: View {
             break
 
         case .recurringTransaction_List:
+            self.selectedRoute = .recurringTransaction_List
+            self.selectedSubRoute = nil
             break
 
         case .recurringTransaction_Reserve(let recTrans):
@@ -290,6 +297,7 @@ struct ContentView: View {
             break
 
         case .transaction_Create:
+            debugPrint(".transaction_Create is not yet implemented")
             break
 
         case .transaction_Edit(let tran):
