@@ -24,8 +24,7 @@ struct DashboardView: View {
                             Dashboard_AccountItemView(acctData: account)
 
                             .onTapGesture {
-                                let route = PathStore.Route.transaction_List(account: account)
-                                handler(route)
+                                handler(PathStore.Route.transaction_List(account: account))
                             }
 
                     }
@@ -40,8 +39,7 @@ struct DashboardView: View {
                             ForEach(viewModel.reservedTransactions) { reserved in
                                 Dashboard_TransactionItemView(transaction: reserved)
                                     .onTapGesture {
-                                        let route = PathStore.Route.transaction_Detail(transaction: reserved)
-                                        handler(route)
+                                        handler(PathStore.Route.transaction_Detail(transaction: reserved))
                                     }
                             }
                         }
@@ -51,8 +49,7 @@ struct DashboardView: View {
                             ForEach(viewModel.pendingTransactions) { pending in
                                 Dashboard_TransactionItemView(transaction: pending)
                                     .onTapGesture {
-                                        let route = PathStore.Route.transaction_Detail(transaction: pending)
-                                        handler(route)
+                                        handler(PathStore.Route.transaction_Detail(transaction: pending))
                                     }
                             }
                         }
@@ -72,8 +69,7 @@ struct DashboardView: View {
                                 }
                                 .contextMenu {
                                     Button(action: {
-                                        let route = PathStore.Route.recurringTransaction_Edit(recTrans: creditItem)
-                                        handler(route)
+                                        handler(PathStore.Route.recurringTransaction_Edit(recTrans: creditItem))
                                     }, label: { Label("Edit: \(creditItem.name)", systemImage: "icon") })
                                 }
                             }
@@ -86,7 +82,6 @@ struct DashboardView: View {
                             ForEach(viewModel.upcomingRecurringGroups, id: \.self) { group in
                                 HStack {
                                     Spacer()
-
                                     Dashboard_RecurringGroupView(
                                         recurringGroup: group) {
                                             handler(PathStore.Route.recurringGroup_Reserve(recGroup: group))

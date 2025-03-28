@@ -83,7 +83,8 @@ struct ReserveGroupViewView: View {
 
                 Button("Reserve") {
                     $viewModel.transactionQueue.forEach { $q in
-                        print("\(q.accountTransaction.name) (\(q.accountTransaction.amount)): \(q.action)")
+                        print("\(q.accountTransaction.name) (\(q.accountTransaction.amount)): \(q.action) -> \(q.accountTransaction.account.name)")
+                        // TODO: Save the information and then change the route back to dashboard
                     }
                 }
                 .frame(minWidth: 100, alignment: .center)
