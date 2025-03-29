@@ -48,6 +48,7 @@ struct RecurringGroupListView: View {
                 }
             }
         }
+        .frame(minWidth: 300)
     }
 }
 

@@ -34,28 +34,30 @@ struct RecurringTransactionListView: View {
                     Text("Name")
                     Text("Amount")
                     Text("Next due")
+                    Text("Group")
                 }
                 .font(.headline)
                 Divider()
 
-                ForEach(self.viewModel.recurringTransactions, id: \.id) { tran in
+                ForEach(self.viewModel.recurringTransactions, id: \.id) { recTran in
                     GridRow {
-                        Text(tran.name)
-                        Text(tran.amount.toDisplayString())
-                        Text(tran.nextDueDate.toSummaryDateMMMDEEE())
+                        Text(recTran.name)
+                        Text(recTran.amount.toDisplayString())
+                        Text(recTran.nextDueDate.toSummaryDateMMMDEEE())
+                        Text(recTran.recurringGroup?.name ?? "")
                     }
-                    .background(self.viewModel.selectedRecurringTransaction?.id == tran.id ? Color.blue.opacity(0.3) : Color.clear)
+                    .background(self.viewModel.selectedRecurringTransaction?.id == recTran.id ? Color.blue.opacity(0.3) : Color.clear)
 
                     .padding(.horizontal, 2)
 
                     .onTapGesture { t in
-                        handler(PathStore.Route.recurringTransaction_Details(recTrans: tran))
+                        handler(PathStore.Route.recurringTransaction_Details(recTran: recTran))
                     }
                     Divider()
                 }
             }
-            .overlay(Rectangle().stroke(Color.gray, lineWidth: 1)) // Outer border
         }
+        .frame(minWidth: 400)
     }
 }
 

@@ -51,24 +51,22 @@ struct TagDetailView: View {
                     }
                     .font(.headline)
 
-                    ForEach(self.viewModel.recurringTransactions, id: \.id) { rtran in
+                    ForEach(self.viewModel.recurringTransactions, id: \.id) { recTran in
                         GridRow {
-                            Text("\(rtran.name)")
-                            Text(rtran.defaultAccount.name)
-                            if rtran.nextDueDate != nil {
+                            Text("\(recTran.name)")
+                            Text(recTran.defaultAccount.name)
+                            if recTran.nextDueDate != nil {
                                 Text(
-                                    rtran.nextDueDate!,
+                                    recTran.nextDueDate!,
                                     format: .dateTime.year().month().day())
                             } else {
                                 Text("")
                             }
                             Text(
-                                rtran.amount,
-                                format: .currency(
-                                    code: Locale.current.currency?.identifier ?? "USD"))
+                                recTran.amount.toDisplayString())
                         }
                         .onTapGesture { action in
-                            handler(PathStore.Route.recurringTransaction_Details(recTrans: rtran))
+                            handler(PathStore.Route.recurringTransaction_Details(recTran: recTran))
                         }
 
                     }
@@ -92,8 +90,7 @@ struct TagDetailView: View {
                                 Text(tran.createdOnUTC,
                                      format: .dateTime.year().month().day())
                             }
-                            Text(tran.amount,
-                                format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                            Text(tran.amount.toDisplayString())
                         }
                         .onTapGesture { t in
                             handler(PathStore.Route.transaction_Detail(transaction: tran))

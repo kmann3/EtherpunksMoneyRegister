@@ -105,7 +105,7 @@ struct AccountTransactionDetailsView: View {
                 }
                 .onTapGesture {
                     if(self.viewModel.tran.recurringTransaction != nil) {
-                        handler(PathStore.Route.recurringTransaction_Edit(recTrans: self.viewModel.tran.recurringTransaction!))
+                        handler(PathStore.Route.recurringTransaction_Edit(recTran: self.viewModel.tran.recurringTransaction!))
                     } else {
                         debugPrint("error with recurring transaction")
                     }
@@ -128,14 +128,14 @@ struct AccountTransactionDetailsView: View {
                         .foregroundColor(.blue)
                 }
                 .onTapGesture {
-                    handler(PathStore.Route.recurringTransaction_Details(recTrans: viewModel.tran.recurringTransaction!))
+                    handler(PathStore.Route.recurringTransaction_Details(recTran: viewModel.tran.recurringTransaction!))
                 }
 
             } else {
                 HStack {
                     Text("Reccuring Transaction: ")
                     Button("Create Recurring Transaction") {
-                        handler(PathStore.Route.recurringTransaction_Create_FromTrans(tran: self.viewModel.tran))
+                        handler(PathStore.Route.recurringTransaction_Create_FromTran(tran: self.viewModel.tran))
                     }
                 }
             }

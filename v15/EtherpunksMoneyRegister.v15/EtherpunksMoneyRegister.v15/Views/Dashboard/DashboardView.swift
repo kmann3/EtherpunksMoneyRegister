@@ -65,11 +65,11 @@ struct DashboardView: View {
                             ForEach(viewModel.upcomingCreditRecurringTransactions.sorted(by: {$0.nextDueDate ?? Date() < $1.nextDueDate ?? Date()}), id: \.self) { creditItem in
                                 Dashboard_RecurringItemView(
                                     recurringItem: creditItem) {
-                                        handler(PathStore.Route.recurringTransaction_Reserve(recTrans: creditItem))
+                                        handler(PathStore.Route.recurringTransaction_Reserve(recTran: creditItem))
                                 }
                                 .contextMenu {
                                     Button(action: {
-                                        handler(PathStore.Route.recurringTransaction_Edit(recTrans: creditItem))
+                                        handler(PathStore.Route.recurringTransaction_Edit(recTran: creditItem))
                                     }, label: { Label("Edit: \(creditItem.name)", systemImage: "icon") })
                                 }
                             }
@@ -104,11 +104,11 @@ struct DashboardView: View {
                                 Dashboard_RecurringItemView(
                                     recurringItem: debitItem
                                 ) {
-                                    handler(PathStore.Route.recurringTransaction_Reserve(recTrans: debitItem))
+                                    handler(PathStore.Route.recurringTransaction_Reserve(recTran: debitItem))
                                 }
                                 .contextMenu {
                                     Button(action: {
-                                        handler(PathStore.Route.recurringTransaction_Edit(recTrans: debitItem))
+                                        handler(PathStore.Route.recurringTransaction_Edit(recTran: debitItem))
                                     }, label: { Label("Edit: \(debitItem.name)", systemImage: "icon") })
                                 }
                             }
