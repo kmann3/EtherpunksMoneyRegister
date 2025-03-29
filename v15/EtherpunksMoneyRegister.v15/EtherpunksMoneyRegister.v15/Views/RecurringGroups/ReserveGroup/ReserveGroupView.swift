@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ReserveGroupViewView: View {
+struct ReserveGroupView: View {
     @StateObject var viewModel: ViewModel
     var handler: (PathStore.Route) -> Void
 
@@ -82,10 +82,8 @@ struct ReserveGroupViewView: View {
                 Spacer()
 
                 Button("Reserve") {
-                    $viewModel.transactionQueue.forEach { $q in
-                        print("\(q.accountTransaction.name) (\(q.accountTransaction.amount)): \(q.action) -> \(q.accountTransaction.account.name)")
-                        // TODO: Save the information and then change the route back to dashboard
-                    }
+                    self.viewModel.saveTransactions()
+                    handler(PathStore.Route.dashboard)
                 }
                 .frame(minWidth: 100, alignment: .center)
                 .padding(.bottom, 5)
@@ -104,5 +102,5 @@ struct ReserveGroupViewView: View {
 
 #Preview {
     let p = MoneyDataSource.shared.previewer
-    ReserveGroupViewView(group: p.billGroup) { action in debugPrint(action) }
+    ReserveGroupView(group: p.billGroup) { action in debugPrint(action) }
 }

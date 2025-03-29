@@ -257,109 +257,153 @@ final class MoneyDataSource: Sendable {
         }
     }
 
-    func ReserveCreditDeposit(recurringTransaction: RecurringTransaction, newTransaction: AccountTransaction) {
+//    func reserveCreditDeposit(recurringTransaction: RecurringTransaction, newTransaction: AccountTransaction) {
+//        try? modelContext.transaction {
+//            let account = newTransaction.account
+//            newTransaction.balance = account.currentBalance + newTransaction.amount
+//
+//            if newTransaction.clearedOnUTC == nil {
+//                account.outstandingBalance += newTransaction.amount
+//                account.outstandingItemCount += 1
+//            }
+//
+//            account.transactionCount += 1
+//            account.currentBalance = newTransaction.balance!
+//
+//            do {
+//                try recurringTransaction.BumpNextDueDate()
+//                modelContext.insert(newTransaction)
+//                try modelContext.save()
+//            } catch {
+//                print(error)
+//                modelContext.rollback()
+//            }
+//        }
+//    }
+//
+//    func reserveDebitGroup(group: RecurringGroup, newTransactions: [AccountTransaction]) {
+//        try? modelContext.transaction {
+//
+//            group.recurringTransactions!.forEach { item in
+//                try? item.BumpNextDueDate()
+//            }
+//
+//            do {
+//                newTransactions.forEach {
+//                    let transactionAccount = $0.account
+//                    transactionAccount.currentBalance += $0.amount
+//                    transactionAccount.outstandingBalance += $0.amount
+//                    transactionAccount.outstandingItemCount += 1
+//                    transactionAccount.transactionCount += 1
+//                    $0.balance = transactionAccount.currentBalance
+//
+//                    modelContext.insert($0)
+//                }
+//                try modelContext.save()
+//            } catch {
+//                print(error)
+//                modelContext.rollback()
+//            }
+//        }
+//    }
+//
+//    func reserveDebitTransaction(recurringTransaction: RecurringTransaction, newTransaction: AccountTransaction) {
+//        try? modelContext.transaction {
+//            let account = newTransaction.account
+//            newTransaction.balance = account.currentBalance + newTransaction.amount
+//
+//            if newTransaction.clearedOnUTC == nil {
+//                account.outstandingBalance += newTransaction.amount
+//                account.outstandingItemCount += 1
+//            }
+//
+//            account.transactionCount += 1
+//            account.currentBalance = newTransaction.balance!
+//
+//            do {
+//                try recurringTransaction.BumpNextDueDate()
+//                modelContext.insert(newTransaction)
+//                try modelContext.save()
+//            } catch {
+//                print(error)
+//                modelContext.rollback()
+//            }
+//        }
+//    }
+//
+//    func reserveTransactions(groups: [RecurringGroup], transactions: [RecurringTransaction], account: Account) {
+//        try? modelContext.transaction {
+//
+//            if groups.count > 0 {
+//                groups.forEach { item in
+//                    if item.recurringTransactions != nil {
+//                        item.recurringTransactions!.forEach { transaction in
+//                            account.currentBalance += transaction.amount
+//                            account.outstandingBalance += transaction.amount
+//                            account.outstandingItemCount += 1
+//                            account.transactionCount += 1
+//                            
+//                            modelContext.insert(AccountTransaction(recurringTransaction: transaction))
+//                            
+//                            try? transaction.BumpNextDueDate()
+//                        }
+//                    }
+//                }
+//            }
+//
+//            transactions.forEach { item in
+//                account.currentBalance += item.amount
+//                account.outstandingBalance += item.amount
+//                account.outstandingItemCount += 1
+//                account.transactionCount += 1
+//
+//                modelContext.insert(AccountTransaction(recurringTransaction: item))
+//
+//                try? item.BumpNextDueDate()
+//            }
+//
+//            do {
+//                try modelContext.save()
+//            } catch {
+//                print(error)
+//                modelContext.rollback()
+//            }
+//        }
+//    }
+
+    func save(recurringTransactions: [ReserveGroupView.AccountTransactionQueueItem]) {
         try? modelContext.transaction {
-            let account = newTransaction.account
-            newTransaction.balance = account.currentBalance + newTransaction.amount
+            recurringTransactions.forEach { item in
+                item.accountTransaction.VerifySignage()
+                item.accountTransaction.createdOnUTC = Date()
+                
+                switch item.action {
+                case .enable:
+                    item.accountTransaction.account.currentBalance += item.recurringTransaction.amount
+                    item.accountTransaction.account.outstandingBalance += item.recurringTransaction.amount
+                    item.accountTransaction.account.outstandingItemCount += 1
+                    item.accountTransaction.account.transactionCount += 1
 
-            if newTransaction.clearedOnUTC == nil {
-                account.outstandingBalance += newTransaction.amount
-                account.outstandingItemCount += 1
-            }
+                    item.accountTransaction.transactionType = item.recurringTransaction.transactionType
+                    item.accountTransaction.recurringTransaction = item.recurringTransaction
+                    item.accountTransaction.balance! += item.recurringTransaction.amount
+                    item.accountTransaction.VerifySignage()
+                    item.accountTransaction.createdOnUTC = Date()
 
-            account.transactionCount += 1
-            account.currentBalance = newTransaction.balance!
-
-            do {
-                try recurringTransaction.BumpNextDueDate()
-                modelContext.insert(newTransaction)
-                try modelContext.save()
-            } catch {
-                print(error)
-                modelContext.rollback()
-            }
-        }
-    }
-
-    func ReserveDebitGroup(group: RecurringGroup, newTransactions: [AccountTransaction]) {
-        try? modelContext.transaction {
-
-            group.recurringTransactions!.forEach { item in
-                try? item.BumpNextDueDate()
-            }
-
-            do {
-                newTransactions.forEach {
-                    let transactionAccount = $0.account
-                    transactionAccount.currentBalance += $0.amount
-                    transactionAccount.outstandingBalance += $0.amount
-                    transactionAccount.outstandingItemCount += 1
-                    transactionAccount.transactionCount += 1
-                    $0.balance = transactionAccount.currentBalance
-
-                    modelContext.insert($0)
+                    modelContext.insert(item.accountTransaction)
+                    break
+                case .ignore:
+                    debugPrint("Ignoring: \(item.accountTransaction.name)")
+                    item.accountTransaction.recurringTransaction = nil
+                    modelContext.delete(item.accountTransaction)
+                    break
+                case .skip:
+                    debugPrint("Skipping: \(item.accountTransaction.name)")
+                    item.accountTransaction.recurringTransaction = nil
+                    modelContext.delete(item.accountTransaction)
+                    try? item.recurringTransaction.BumpNextDueDate()
+                    break
                 }
-                try modelContext.save()
-            } catch {
-                print(error)
-                modelContext.rollback()
-            }
-        }
-    }
-
-    func ReserveDebitTransaction(recurringTransaction: RecurringTransaction, newTransaction: AccountTransaction) {
-        try? modelContext.transaction {
-            let account = newTransaction.account
-            newTransaction.balance = account.currentBalance + newTransaction.amount
-
-            if newTransaction.clearedOnUTC == nil {
-                account.outstandingBalance += newTransaction.amount
-                account.outstandingItemCount += 1
-            }
-
-            account.transactionCount += 1
-            account.currentBalance = newTransaction.balance!
-
-            do {
-                try recurringTransaction.BumpNextDueDate()
-                modelContext.insert(newTransaction)
-                try modelContext.save()
-            } catch {
-                print(error)
-                modelContext.rollback()
-            }
-        }
-    }
-
-    func reserveTransactions(groups: [RecurringGroup], transactions: [RecurringTransaction], account: Account) {
-        try? modelContext.transaction {
-
-            if groups.count > 0 {
-                groups.forEach { item in
-                    if item.recurringTransactions != nil {
-                        item.recurringTransactions!.forEach { transaction in
-                            account.currentBalance += transaction.amount
-                            account.outstandingBalance += transaction.amount
-                            account.outstandingItemCount += 1
-                            account.transactionCount += 1
-                            
-                            modelContext.insert(AccountTransaction(recurringTransaction: transaction))
-                            
-                            try? transaction.BumpNextDueDate()
-                        }
-                    }
-                }
-            }
-
-            transactions.forEach { item in
-                account.currentBalance += item.amount
-                account.outstandingBalance += item.amount
-                account.outstandingItemCount += 1
-                account.transactionCount += 1
-
-                modelContext.insert(AccountTransaction(recurringTransaction: item))
-
-                try? item.BumpNextDueDate()
             }
 
             do {

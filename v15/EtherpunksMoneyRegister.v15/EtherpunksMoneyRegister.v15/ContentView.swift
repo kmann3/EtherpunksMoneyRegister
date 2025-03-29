@@ -133,7 +133,7 @@ struct ContentView: View {
                 case .recurringGroup_Edit(let recGroup): Text("TBI - Recurring Group Edit: \(recGroup)")
                 case .recurringGroup_List: Text("TBI - Recurring Group List")
                 case .recurringGroup_Reserve(let recGroup):
-                    ReserveGroupViewView(group: recGroup) { action in changeRoute(action) }
+                    ReserveGroupView(group: recGroup) { action in changeRoute(action) }
 
                 case .recurringTransaction_Create: Text("TBI - Recurring Transaction Create")
                 case .recurringTransaction_Create_FromTrans(let transID): Text("TBI - Recurring Transaction Create From Transaction: \(transID)")

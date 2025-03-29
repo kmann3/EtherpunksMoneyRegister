@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-extension ReserveGroupViewView {
+extension ReserveGroupView {
 
     @MainActor
     @Observable
@@ -30,16 +30,22 @@ extension ReserveGroupViewView {
                 transactionQueue.append(AccountTransactionQueueItem(recurringTransaction: $0))
             }
         }
+
+        func saveTransactions() {
+            self.dataSource.save(recurringTransactions: self.transactionQueue)
+        }
     }
 
     public class AccountTransactionQueueItem: Identifiable, ObservableObject {
         var id: UUID = UUID()
+        var recurringTransaction: RecurringTransaction
         var accountTransaction: AccountTransaction
         var action: Action = .enable
 
         init(recurringTransaction: RecurringTransaction) {
+            self.recurringTransaction = recurringTransaction
             self.accountTransaction = AccountTransaction(recurringTransaction: recurringTransaction)
-            self.accountTransaction.amount = abs(recurringTransaction.amount)
+            self.accountTransaction.amount = recurringTransaction.amount
         }
     }
 
