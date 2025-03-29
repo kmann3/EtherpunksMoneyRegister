@@ -18,10 +18,15 @@ extension TagListView {
         private let dataSource: MoneyDataSource
 
         var tags: [TransactionTag] = []
+        var selectedTag: TransactionTag? = nil
 
-        init(dataSource: MoneyDataSource = MoneyDataSource.shared) {
+        init(_ dataSource: MoneyDataSource = MoneyDataSource.shared, selectedTag: TransactionTag? = nil) {
             self.dataSource = dataSource
             self.tags = self.dataSource.fetchAllTags()
+
+            if selectedTag != nil {
+                self.selectedTag = selectedTag
+            }
         }
     }
 }

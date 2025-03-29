@@ -51,7 +51,7 @@ class PathStore {
         case tag_Create
         case tag_Details(tag: TransactionTag)
         case tag_Edit(tag: TransactionTag)
-        case tag_List
+        case tag_List(tag: TransactionTag?)
 
         case transaction_Create
         case transaction_Detail(transaction: AccountTransaction)

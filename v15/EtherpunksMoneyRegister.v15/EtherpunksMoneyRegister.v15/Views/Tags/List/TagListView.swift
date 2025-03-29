@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct TagListView: View {
-    var viewModel = ViewModel()
+    var viewModel: ViewModel
     var handler: (PathStore.Route) -> Void
 
-    init(viewModel: TagListView.ViewModel = ViewModel(), _ handler: @escaping (PathStore.Route) -> Void) {
-        self.viewModel = viewModel
+    init(selectedTag: TransactionTag? = nil, _ handler: @escaping (PathStore.Route) -> Void) {
+        self.viewModel = ViewModel(selectedTag: selectedTag)
         self.handler = handler
     }
 
@@ -21,7 +21,7 @@ struct TagListView: View {
             Text("Tags")
                 .bold(true)
                 .font(.title)
-            ForEach(self.viewModel.tags, id: \.self) { tag in
+            ForEach(self.viewModel.tags, id: \.id) { tag in
                 VStack {
                     HStack {
                         Text(tag.name)
@@ -43,6 +43,8 @@ struct TagListView: View {
                     }
                     #endif
                 }
+                .background(self.viewModel.selectedTag?.id == tag.id ? Color.blue.opacity(0.3) : Color.clear)
+
                 .onTapGesture { t in
                     handler(PathStore.Route.tag_Details(tag: tag))
                 }

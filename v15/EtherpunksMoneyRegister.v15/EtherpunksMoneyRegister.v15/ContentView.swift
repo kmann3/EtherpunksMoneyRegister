@@ -28,7 +28,7 @@ struct ContentView: View {
                     Text("Recurring Transactions")
                 }
 
-                NavigationLink(value:  PathStore.Route.tag_List) {
+                NavigationLink(value:  PathStore.Route.tag_List(tag: nil)) {
                     Text("Tags")
                 }
 
@@ -101,8 +101,8 @@ struct ContentView: View {
                         changeRoute(action)
                     }
                 case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag)")
-                case .tag_List:
-                    TagListView { action in
+                case .tag_List(let tag):
+                    TagListView(selectedTag: tag) { action in
                         changeRoute(action)
                     }
 
@@ -272,7 +272,7 @@ struct ContentView: View {
             break
 
         case .tag_Create:
-            self.selectedRoute = .tag_List
+            self.selectedRoute = .tag_List(tag: nil)
             self.selectedSubRoute = .tag_Create
             break
 
@@ -281,18 +281,18 @@ struct ContentView: View {
                 self.selectedRoute = .transaction_List(account: transaction.account)
                 self.selectedSubRoute = .tag_Details(tag: tag)
             } else {
-                self.selectedRoute = .tag_List
+                self.selectedRoute = .tag_List(tag: tag)
                 self.selectedSubRoute = .tag_Details(tag: tag)
             }
             break
 
         case .tag_Edit(let tag):
-            self.selectedRoute = .tag_List
+            self.selectedRoute = .tag_List(tag: tag)
             self.selectedSubRoute = .tag_Edit(tag: tag)
             break
 
         case .tag_List:
-            self.selectedRoute = .tag_List
+            self.selectedRoute = .tag_List(tag: nil)
             self.selectedSubRoute = nil
             break
 
