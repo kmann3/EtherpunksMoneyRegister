@@ -96,6 +96,23 @@ struct ReserveGroupView: View {
                     .init(top: 2, leading: 0, bottom: 5, trailing: 0)
                 )
             )
+            Divider()
+            HStack {
+                Text("Note on action:")
+                Spacer()
+            }
+            HStack {
+                Text("Skip = Bump the due date but don't create the transaction")
+                Spacer()
+            }
+            HStack {
+                Text("Ignore = Don't bump the due date, don't create the transaction;")
+                Spacer()
+            }
+            HStack {
+                Text("\t as in you will handle this at a later date")
+                Spacer()
+            }
         }
     }
 }
