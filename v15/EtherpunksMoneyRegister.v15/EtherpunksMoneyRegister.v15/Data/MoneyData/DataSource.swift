@@ -43,7 +43,7 @@ final class MoneyDataSource: Sendable {
 
         self.modelContext = self.modelContainer.mainContext
 
-        #if DEBUG
+#if DEBUG
         print("-----------------")
         print(Date().toDebugDate())
         print("-----------------")
@@ -64,7 +64,7 @@ final class MoneyDataSource: Sendable {
 
         previewer = Previewer()
         previewer.commitToDb(modelContext)
-        #endif
+#endif
     }
 
     func createTag(_ tag: TransactionTag) {
@@ -129,7 +129,7 @@ final class MoneyDataSource: Sendable {
                     }
                 }
                 ,sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
-                ))
+            ))
         } catch {
             fatalError(error.localizedDescription)
         }
@@ -138,7 +138,17 @@ final class MoneyDataSource: Sendable {
     func fetchAllRecurringGroups() -> [RecurringGroup] {
         do {
             return try modelContext.fetch(FetchDescriptor<RecurringGroup>(
-               sortBy: [SortDescriptor(\RecurringGroup.name, order: .reverse)]
+                sortBy: [SortDescriptor(\RecurringGroup.name, order: .forward)]
+            ))
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+
+    func fetchAllRecurringTransactions() -> [RecurringTransaction] {
+        do {
+            return try modelContext.fetch(FetchDescriptor<RecurringTransaction>(
+                sortBy: [SortDescriptor(\RecurringTransaction.name, order: .forward)]
             ))
         } catch {
             fatalError(error.localizedDescription)

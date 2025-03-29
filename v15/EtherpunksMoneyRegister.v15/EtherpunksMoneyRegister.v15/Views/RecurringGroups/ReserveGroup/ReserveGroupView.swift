@@ -58,7 +58,7 @@ struct ReserveGroupView: View {
                                  format: .dateTime.month().day())
                         }
 
-                        Text(rt.accountTransaction.amount, format: .currency(code: "USD"))
+                        Text(rt.accountTransaction.amount.toDisplayString())
                             .frame(maxWidth: .infinity, alignment: .center)
 
                         Picker("", selection: $rt.accountTransaction.account) {

@@ -18,11 +18,46 @@ extension Decimal {
     func toDouble() -> Double {
         return NSDecimalNumber(decimal: self).doubleValue
     }
+
+    func toDisplayString() -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = Locale.current
+        return formatter.string(from: self as NSDecimalNumber) ?? "\(self)"
+    }
+}
+
+extension Date? {
+    /// Sat, Jan 11
+    func toSummaryDateMMMDEEE() -> String {
+
+        if self == nil {
+            return "n/a"
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.setLocalizedDateFormatFromTemplate("MMM d - EEE")
+        return dateFormatter.string(from: self!)
+    }
+
+    /// Jan 11
+    func toSummaryDateMMMDD() -> String {
+        if self == nil {
+            return "n/a"
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.setLocalizedDateFormatFromTemplate("MMM dd")
+        return dateFormatter.string(from: self!)
+    }
 }
 
 extension Date {
     /// Sat, Jan 11
     func toSummaryDateMMMDEEE() -> String {
+
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
         dateFormatter.setLocalizedDateFormatFromTemplate("MMM d - EEE")

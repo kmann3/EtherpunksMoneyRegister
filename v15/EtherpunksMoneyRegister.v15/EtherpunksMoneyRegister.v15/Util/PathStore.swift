@@ -39,7 +39,7 @@ class PathStore {
         case recurringTransaction_Create_FromTrans(tran: AccountTransaction)
         case recurringTransaction_Details(recTrans: RecurringTransaction)
         case recurringTransaction_Edit(recTrans: RecurringTransaction)
-        case recurringTransaction_List
+        case recurringTransaction_List(recTrans: RecurringTransaction?)
         case recurringTransaction_Reserve(recTrans: RecurringTransaction)
 
         case report_Tax

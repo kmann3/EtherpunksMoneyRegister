@@ -24,7 +24,7 @@ struct ContentView: View {
                     Text("Recurring Groups")
                 }
 
-                NavigationLink(value:  PathStore.Route.recurringTransaction_List) {
+                NavigationLink(value:  PathStore.Route.recurringTransaction_List(recTrans: nil)) {
                     Text("Recurring Transactions")
                 }
 
@@ -91,7 +91,8 @@ struct ContentView: View {
                 case .recurringTransaction_Create_FromTrans(let transID): Text("TBI - Recurring Transaction Create From Transaction: \(transID)")
                 case .recurringTransaction_Details(let recTran): Text("TBI - Recurring Transaction Details: \(recTran)")
                 case .recurringTransaction_Edit(let recTran): Text("TBI - Recurring Transaction Edit: \(recTran)")
-                case .recurringTransaction_List: Text("TBI - Recurring Transaction List")
+                case .recurringTransaction_List(let recTran):
+                    RecurringTransactionListView(selectedRecurringTransaction: recTran) { action in changeRoute(action)}
                 case .recurringTransaction_Reserve(let recTran): Text("TBI - Recurring Transaction Reserve: \(recTran)")
 
                 case .report_Tax: Text("TBI - Report Tax")
@@ -144,7 +145,8 @@ struct ContentView: View {
                 case .recurringTransaction_Create_FromTrans(let transID): Text("TBI - Recurring Transaction Create From Transaction: \(transID)")
                 case .recurringTransaction_Details(let recTran): Text("TBI - Recurring Transaction Details: \(recTran)")
                 case .recurringTransaction_Edit(let recTran): Text("TBI - Recurring Transaction Edit: \(recTran)")
-                case .recurringTransaction_List: Text("TBI - Recurring Transaction List")
+                case .recurringTransaction_List(let recTran):
+                    RecurringTransactionListView(selectedRecurringTransaction: recTran) { action in changeRoute(action)}
                 case .recurringTransaction_Reserve(let recTran): Text("TBI - Recurring Transaction Reserve: \(recTran)")
 
                 case .report_Tax: Text("TBI - Report Tax")
@@ -233,32 +235,32 @@ struct ContentView: View {
             self.selectedSubRoute = .recurringGroup_Reserve(recGroup: recGroup)
 
         case .recurringTransaction_Create:
-            self.selectedRoute = .recurringTransaction_List
+            self.selectedRoute = .recurringTransaction_List(recTrans: nil)
             self.selectedSubRoute = .recurringTransaction_Create
             break
 
         case .recurringTransaction_Create_FromTrans(let tran):
-            self.selectedRoute = .recurringTransaction_List
+            self.selectedRoute = .recurringTransaction_List(recTrans: nil)
             self.selectedSubRoute = .recurringTransaction_Create_FromTrans(tran: tran)
             break
 
         case .recurringTransaction_Details(let recTrans):
-            self.selectedRoute = .recurringTransaction_List
+            self.selectedRoute = .recurringTransaction_List(recTrans: recTrans)
             self.selectedSubRoute = .recurringTransaction_Details(recTrans: recTrans)
             break
 
         case .recurringTransaction_Edit(let recTrans):
-            self.selectedRoute = .recurringTransaction_List
+            self.selectedRoute = .recurringTransaction_List(recTrans: recTrans)
             self.selectedSubRoute = .recurringTransaction_Edit(recTrans: recTrans)
             break
 
         case .recurringTransaction_List:
-            self.selectedRoute = .recurringTransaction_List
+            self.selectedRoute = .recurringTransaction_List(recTrans: nil)
             self.selectedSubRoute = nil
             break
 
         case .recurringTransaction_Reserve(let recTrans):
-            self.selectedRoute = .recurringTransaction_List
+            self.selectedRoute = .recurringTransaction_List(recTrans: recTrans)
             self.selectedSubRoute = .recurringTransaction_Reserve(recTrans: recTrans)
 
         case .report_Tax:

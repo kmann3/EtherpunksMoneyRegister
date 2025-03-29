@@ -23,9 +23,7 @@ struct Dashboard_RecurringItemView: View {
                     .foregroundStyle(Color.white)
                 Spacer()
                 Text(
-                    recurringItem.amount,
-                    format: .currency(
-                        code: Locale.current.currency?.identifier ?? "USD")
+                    recurringItem.amount.toDisplayString()
                 )
                     .frame(maxWidth: 150, alignment: .trailing)
                     .foregroundStyle(Color.white)

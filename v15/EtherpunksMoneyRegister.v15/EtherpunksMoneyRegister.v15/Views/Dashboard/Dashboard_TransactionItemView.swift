@@ -26,16 +26,12 @@ struct Dashboard_TransactionItemView: View {
                 Spacer()
                 if transaction.amount > 0 {
                     Text(
-                        transaction.amount,
-                        format: .currency(
-                            code: Locale.current.currency?.identifier ?? "USD")
+                        transaction.amount.toDisplayString()
                     )
                     .foregroundStyle(.green)
                 } else {
                     Text(
-                        transaction.amount,
-                        format: .currency(
-                            code: Locale.current.currency?.identifier ?? "USD"))
+                        transaction.amount.toDisplayString())
                 }
             }
 
