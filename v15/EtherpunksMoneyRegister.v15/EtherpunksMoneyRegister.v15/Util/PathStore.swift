@@ -32,7 +32,7 @@ class PathStore {
         case recurringGroup_Create
         case recurringGroup_Details(recGroup: RecurringGroup)
         case recurringGroup_Edit(recGroup: RecurringGroup)
-        case recurringGroup_List
+        case recurringGroup_List(recGroup: RecurringGroup?)
         case recurringGroup_Reserve(recGroup: RecurringGroup)
 
         case recurringTransaction_Create

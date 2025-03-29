@@ -18,9 +18,17 @@ struct TagListView: View {
 
     var body: some View {
         List {
-            Text("Tags")
-                .bold(true)
-                .font(.title)
+            HStack {
+                Text("Tags")
+                    .bold(true)
+                    .font(.title)
+                Spacer()
+                Button {
+                    handler(PathStore.Route.tag_Create)
+                } label: {
+                    Text("+")
+                }
+            }
             ForEach(self.viewModel.tags, id: \.id) { tag in
                 VStack {
                     HStack {

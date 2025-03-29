@@ -20,7 +20,7 @@ struct ContentView: View {
                     Text("Dashboard")
                 }
 
-                NavigationLink(value:  PathStore.Route.recurringGroup_List) {
+                NavigationLink(value:  PathStore.Route.recurringGroup_List(recGroup: nil)) {
                     Text("Recurring Groups")
                 }
 
@@ -81,7 +81,10 @@ struct ContentView: View {
                 case .recurringGroup_Create: Text("TBI - Recurring Group Create")
                 case .recurringGroup_Details(let recGroup): Text("TBI - Recurring Group Details: \(recGroup)")
                 case .recurringGroup_Edit(let recGroup): Text("TBI - Recurring Group Edit: \(recGroup)")
-                case .recurringGroup_List: Text("TBI - Recurring Group List")
+                case .recurringGroup_List(let recGroup):
+                    RecurringGroupListView(selectedGroup: recGroup) { action in
+                        changeRoute(action)
+                    }
                 case .recurringGroup_Reserve(let recGroup): Text("TBI - Recurring Group Reserver: \(recGroup)")
 
                 case .recurringTransaction_Create: Text("TBI - Recurring Transaction Create")
@@ -131,7 +134,9 @@ struct ContentView: View {
                 case .recurringGroup_Create: Text("TBI - Recurring Group Create")
                 case .recurringGroup_Details(let recGroup): Text("TBI - Recurring Group Details: \(recGroup)")
                 case .recurringGroup_Edit(let recGroup): Text("TBI - Recurring Group Edit: \(recGroup)")
-                case .recurringGroup_List: Text("TBI - Recurring Group List")
+                case .recurringGroup_List(let recGroup): RecurringGroupListView(selectedGroup: recGroup) { action in
+                    changeRoute(action)
+                }
                 case .recurringGroup_Reserve(let recGroup):
                     ReserveGroupView(group: recGroup) { action in changeRoute(action) }
 
@@ -204,27 +209,27 @@ struct ContentView: View {
             break
 
         case .recurringGroup_Create:
-            self.selectedRoute = .recurringGroup_List
+            self.selectedRoute = .recurringGroup_List(recGroup: nil)
             self.selectedSubRoute = .recurringGroup_Create
             break
 
         case .recurringGroup_Details(let recGroup):
-            self.selectedRoute = .recurringGroup_List
+            self.selectedRoute = .recurringGroup_List(recGroup: recGroup)
             self.selectedSubRoute = .recurringGroup_Details(recGroup: recGroup)
             break
 
         case .recurringGroup_Edit(let recGroup):
-            self.selectedRoute = .recurringGroup_List
+            self.selectedRoute = .recurringGroup_List(recGroup: recGroup)
             self.selectedSubRoute = .recurringGroup_Edit(recGroup: recGroup)
             break
 
         case .recurringGroup_List:
-            self.selectedRoute = .recurringGroup_List
+            self.selectedRoute = .recurringGroup_List(recGroup: nil)
             self.selectedSubRoute = nil
             break
 
         case .recurringGroup_Reserve(let recGroup):
-            self.selectedRoute = .recurringGroup_List
+            self.selectedRoute = .recurringGroup_List(recGroup: recGroup)
             self.selectedSubRoute = .recurringGroup_Reserve(recGroup: recGroup)
 
         case .recurringTransaction_Create:

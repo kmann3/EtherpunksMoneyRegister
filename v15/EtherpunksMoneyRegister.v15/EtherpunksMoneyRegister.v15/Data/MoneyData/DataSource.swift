@@ -135,6 +135,16 @@ final class MoneyDataSource: Sendable {
         }
     }
 
+    func fetchAllRecurringGroups() -> [RecurringGroup] {
+        do {
+            return try modelContext.fetch(FetchDescriptor<RecurringGroup>(
+               sortBy: [SortDescriptor(\RecurringGroup.name, order: .reverse)]
+            ))
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+
     func fetchAllReservedTransactions() -> [AccountTransaction] {
         do {
             return try modelContext.fetch(FetchDescriptor<AccountTransaction>(

@@ -101,6 +101,5 @@ struct ReserveGroupView: View {
 }
 
 #Preview {
-    let p = MoneyDataSource.shared.previewer
-    ReserveGroupView(group: p.billGroup) { action in debugPrint(action) }
+    ReserveGroupView(group: MoneyDataSource.shared.previewer.billGroup) { action in debugPrint(action) }
 }
