@@ -60,7 +60,7 @@ struct RecurringTransactionDetailView: View {
                 Text("Group: \(self.viewModel.recTran.recurringGroup?.name ?? "none")")
                 Spacer()
             }
-            
+
             HStack {
                 Text("Notes: \(self.viewModel.recTran.notes)")
                 Spacer()
@@ -72,7 +72,7 @@ struct RecurringTransactionDetailView: View {
             }
 
         }
-            .frame(minWidth: 300)
+        .frame(minWidth: 300)
     }
 }
 
