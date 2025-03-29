@@ -37,9 +37,7 @@ struct AccountItemView: View {
                 Spacer()
 
                 Text(
-                    acctData.currentBalance,
-                    format: .currency(
-                        code: Locale.current.currency?.identifier ?? "USD")
+                    acctData.currentBalance.toDisplayString()
                 )
                 .font(.headline)
                 .foregroundStyle(.secondary)
@@ -55,9 +53,7 @@ struct AccountItemView: View {
                 Spacer()
 
                 Text(
-                    acctData.currentBalance - acctData.outstandingBalance,
-                    format: .currency(
-                        code: Locale.current.currency?.identifier ?? "USD")
+                    (acctData.currentBalance - acctData.outstandingBalance).toDisplayString()
                 )
                 .font(.headline)
                 .foregroundStyle(.secondary)
@@ -78,9 +74,7 @@ struct AccountItemView: View {
                 Spacer()
 
                 Text(
-                    acctData.outstandingBalance,
-                    format: .currency(
-                        code: Locale.current.currency?.identifier ?? "USD")
+                    acctData.outstandingBalance.toDisplayString()
                 )
                 .font(.headline)
                 .foregroundStyle(.secondary)
