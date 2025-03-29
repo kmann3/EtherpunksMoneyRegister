@@ -35,11 +35,11 @@ struct ReserveGroupViewView: View {
 
             Grid() {
                 GridRow {
-                    Text("Action")
-                    Text("Name")
-                    Text("Due Date")
-                    Text("Amount")
-                    Text("Account")
+                    Text("Action").bold()
+                    Text("Name").bold()
+                    Text("Due Date").bold()
+                    Text("Amount").bold()
+                    Text("Account").bold()
                 }
 
                 ForEach($viewModel.transactionQueue) { $rt in
@@ -58,8 +58,8 @@ struct ReserveGroupViewView: View {
                                  format: .dateTime.month().day())
                         }
 
-                        TextField("Amount", value: $rt.accountTransaction.amount ,format: .number)
-                            .multilineTextAlignment(.center)
+                        Text(rt.accountTransaction.amount, format: .currency(code: "USD"))
+                            .frame(maxWidth: .infinity, alignment: .center)
 
                         Picker("", selection: $rt.accountTransaction.account) {
                             ForEach($viewModel.accounts) { $acc in
