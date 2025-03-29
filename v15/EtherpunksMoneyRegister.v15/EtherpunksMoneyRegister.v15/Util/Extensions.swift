@@ -80,6 +80,13 @@ extension Date {
         return dateFormatter.string(from: self)
     }
 
+    func toShortDetailString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.setLocalizedDateFormatFromTemplate("MMM dd @ HH:mm:ss")
+        return dateFormatter.string(from: self)
+    }
+
     /// Sat, Jan 11, 2025 at 02:24:59 -0600
     func toDebugDate() -> String {
         let dateFormatter = DateFormatter()
@@ -88,6 +95,8 @@ extension Date {
             "EEE, dd MMM yyyy HH:mm:ssZ")
         return dateFormatter.string(from: self)
     }
+
+    
 }
 
 extension ModelContext {

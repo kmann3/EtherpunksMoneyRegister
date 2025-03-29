@@ -21,10 +21,10 @@ struct TransactionListItemView: View {
                 Text(transaction.name)
                 Spacer()
                 if transaction.amount > 0 {
-                    Text(transaction.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                    Text(transaction.amount.toDisplayString())
                         .foregroundStyle(.green)
                 } else {
-                    Text(transaction.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                    Text(transaction.amount.toDisplayString())
                 }
             }
 
@@ -41,7 +41,7 @@ struct TransactionListItemView: View {
 
                 Spacer()
 
-                Text(transaction.balance ?? 0, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                Text(transaction.balance?.toDisplayString() ?? "")
                     .font(.caption)
             }
 

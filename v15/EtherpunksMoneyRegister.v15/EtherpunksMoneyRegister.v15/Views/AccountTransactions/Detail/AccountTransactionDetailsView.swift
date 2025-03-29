@@ -43,9 +43,7 @@ struct AccountTransactionDetailsView: View {
             HStack {
                 Text("Amount: ")
                 Text(
-                    self.viewModel.tran.amount,
-                    format: .currency(
-                        code: Locale.current.currency?.identifier ?? "USD"))
+                    self.viewModel.tran.amount.toDisplayString())
             }
             
             if self.viewModel.tran.transactionTags != nil {
@@ -78,62 +76,22 @@ struct AccountTransactionDetailsView: View {
                     handler(PathStore.Route.report_Tax)
                 }
             }
-            
-            HStack {
-                if self.viewModel.tran.balancedOnUTC != nil {
-                    Text("Balanced On: ")
-                    Text(
-                        self.viewModel.tran.balancedOnUTC!,
-                        format: .dateTime.month().day())
-                    Text("@")
-                    Text(
-                        self.viewModel.tran.balancedOnUTC!,
-                        format: .dateTime.hour().minute().second())
-                } else {
-                    Text("Balanced On: nil")
-                }
-            }
-            
+
+            Text("Balanced On:  \(self.viewModel.tran.balancedOnUTC?.toShortDetailString() ?? "nil")")
+
             Text(
                 "Transaction Status: \(self.viewModel.tran.transactionStatus)"
             )
             
             // Reserved > Pending > Recurring > Cleared
             // Red      > Yellow  > Blue      > Green
-            
-            if self.viewModel.tran.pendingOnUTC != nil {
-                HStack {
-                    Text("Pending: ")
-                    Text(
-                        self.viewModel.tran.pendingOnUTC!,
-                        format: .dateTime.month().day())
-                    Text("@")
-                    Text(
-                        self.viewModel.tran.pendingOnUTC!,
-                        format: .dateTime.hour().minute().second())
-                }
+
+            Text("Pending: \(self.viewModel.tran.pendingOnUTC?.toShortDetailString() ?? "")")
                 .background(self.viewModel.tran.backgroundColor)
-            } else {
-                Text("Pending: ").background(
-                    self.viewModel.tran.backgroundColor)
-            }
-            
-            if self.viewModel.tran.clearedOnUTC != nil {
-                HStack {
-                    Text("Cleared: ")
-                    Text(
-                        self.viewModel.tran.clearedOnUTC!,
-                        format: .dateTime.month().day())
-                    Text("@")
-                    Text(
-                        self.viewModel.tran.clearedOnUTC!,
-                        format: .dateTime.hour().minute().second())
-                }.background(self.viewModel.tran.backgroundColor)
-            } else {
-                Text("Cleared: ").background(
-                    self.viewModel.tran.backgroundColor)
-            }
-            
+
+            Text("Cleared: \(self.viewModel.tran.clearedOnUTC?.toShortDetailString() ?? "")")
+                .background(self.viewModel.tran.backgroundColor)
+
             // Recurring Transaction
             
             if self.viewModel.tran.dueDate != nil {
@@ -208,16 +166,7 @@ struct AccountTransactionDetailsView: View {
             }
 
             Section(header: Text("Misc")) {
-                HStack {
-                    Text("Created On: ")
-                    Text(
-                        self.viewModel.tran.createdOnUTC,
-                        format: .dateTime.month().day())
-                    Text("@")
-                    Text(
-                        self.viewModel.tran.createdOnUTC,
-                        format: .dateTime.hour().minute().second())
-                }
+                Text("Balanced On:  \(self.viewModel.tran.createdOnUTC.toShortDetailString())")
 
                 HStack {
                     Text("ID: \(self.viewModel.tran.id)")
@@ -233,21 +182,12 @@ struct AccountTransactionDetailsView: View {
                             HStack {
                                 Text("Filename: \(file.filename)")
                                 Button("View") {
-                                    //viewModel.downloadFileForViewing(file: file)
+                                    //TODO: viewModel.downloadFileForViewing(file: file)
                                 }
-                                //.quickLookPreview($viewModel.url)
+                                // TODO: .quickLookPreview($viewModel.url)
                             }
 
-                            HStack {
-                                Text("Created On: ")
-                                Text(
-                                    file.createdOnUTC,
-                                    format: .dateTime.month().day())
-                                Text("@")
-                                Text(
-                                    file.createdOnUTC,
-                                    format: .dateTime.hour().minute().second())
-                            }
+                            Text("Balanced On:  \(file.createdOnUTC.toShortDetailString())")
 
                             HStack {
                                 Text(
