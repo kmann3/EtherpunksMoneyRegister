@@ -80,6 +80,7 @@ extension Date {
         return dateFormatter.string(from: self)
     }
 
+    /// Jan 05 @ 08:31:50
     func toShortDetailString() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current

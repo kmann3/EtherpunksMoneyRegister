@@ -25,6 +25,52 @@ struct RecurringTransactionDetailView: View {
                     handler(PathStore.Route.recurringTransaction_Edit(recTran: self.viewModel.recTran))
                 }
             }
+            HStack {
+                Text("Transaction Type: \(self.viewModel.recTran.transactionType)")
+                Spacer()
+            }
+
+            HStack {
+                Text("Default Account: \(self.viewModel.recTran.defaultAccount.name)")
+                Spacer()
+            }
+
+
+            HStack {
+                Text("Is Tax Related: \(self.viewModel.recTran.isTaxRelated ? "Yes" : "No")")
+                Spacer()
+            }
+
+            HStack {
+                Text("Next Due Date: \(self.viewModel.recTran.nextDueDate?.toSummaryDateMMMDY() ?? "unknown")")
+                Spacer()
+            }
+
+            HStack {
+                Text("Frequency: ")
+                Spacer()
+            }
+
+            HStack {
+                Text("Transaction Count: ")
+                Spacer()
+            }
+
+            HStack {
+                Text("Group: \(self.viewModel.recTran.recurringGroup?.name ?? "none")")
+                Spacer()
+            }
+            
+            HStack {
+                Text("Notes: \(self.viewModel.recTran.notes)")
+                Spacer()
+            }
+
+            HStack {
+                Text("Created On: \(self.viewModel.recTran.createdOnUTC.toDebugDate())")
+                Spacer()
+            }
+
         }
             .frame(minWidth: 300)
     }
