@@ -29,7 +29,7 @@ struct RecurringGroupListView: View {
                     Text("+")
                 }
             }
-            Grid {
+            Grid(horizontalSpacing: 0, verticalSpacing: 2) {
                 GridRow {
                     Text("Name")
                     Text("RT#")

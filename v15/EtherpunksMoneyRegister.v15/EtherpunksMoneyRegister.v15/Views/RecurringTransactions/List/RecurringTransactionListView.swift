@@ -29,7 +29,7 @@ struct RecurringTransactionListView: View {
                     Text("+")
                 }
             }
-            Grid {
+            Grid(horizontalSpacing: 0, verticalSpacing: 5) {
                 GridRow {
                     Text("Name")
                     Text("Amount")
