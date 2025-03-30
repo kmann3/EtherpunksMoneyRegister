@@ -187,7 +187,7 @@ struct AccountTransactionDetailsView: View {
                                 // TODO: .quickLookPreview($viewModel.url)
                             }
 
-                            Text("Balanced On:  \(file.createdOnUTC.toShortDetailString())")
+                            Text("Created On:  \(file.createdOnUTC.toShortDetailString())")
 
                             HStack {
                                 Text(
