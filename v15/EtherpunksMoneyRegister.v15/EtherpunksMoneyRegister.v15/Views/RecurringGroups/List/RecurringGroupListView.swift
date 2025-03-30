@@ -29,22 +29,26 @@ struct RecurringGroupListView: View {
                     Text("+")
                 }
             }
-            ForEach(self.viewModel.recurringGroups, id: \.id) { group in
-                VStack {
-                    HStack {
-                        Text(group.name)
-                        Spacer()
-                    }
-
-                    HStack {
-                        Text("\tRecurring Transactions #:\t\(group.recurringTransactions?.count ?? 0)")
-                        Spacer()
-                    }
+            Grid {
+                GridRow {
+                    Text("Name")
+                    Text("RT#")
+                    Text("Amount")
                 }
-                .background(self.viewModel.selectedGroup?.id == group.id ? Color.blue.opacity(0.3) : Color.clear)
+                .font(.headline)
+                Divider()
 
-                .onTapGesture { t in
-                    handler(PathStore.Route.recurringGroup_Details(recGroup: group))
+                ForEach(self.viewModel.recurringGroups, id: \.id) { group in
+                    GridRow {
+                        Text(group.name)
+                        Text("\(group.recurringTransactions?.count ?? 0)")
+                        Text("\((group.recurringTransactions?.reduce(Decimal(0)) { $0 + $1.amount } ?? Decimal(0)).toDisplayString())")
+                    }
+                    .padding(.vertical, 3)
+                    .background(self.viewModel.selectedGroup?.id == group.id ? Color.blue.opacity(0.3) : Color.clear)
+                    .onTapGesture {
+                        handler(PathStore.Route.recurringGroup_Details(recGroup: group))
+                    }
                 }
             }
         }
@@ -53,5 +57,5 @@ struct RecurringGroupListView: View {
 }
 
 #Preview {
-    RecurringGroupListView() { action in }
+    RecurringGroupListView() { action in debugPrint(action) }
 }
