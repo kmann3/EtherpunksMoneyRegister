@@ -41,16 +41,28 @@ struct RecurringTransactionListView: View {
 
                 ForEach(self.viewModel.recurringTransactions, id: \.id) { recTran in
                     GridRow {
-                        Text(recTran.name)
-                        Text(recTran.amount.toDisplayString())
-                        Text(recTran.nextDueDate.toSummaryDateMMMDEEE())
-                        Text(recTran.recurringGroup?.name ?? "")
+                        ZStack {
+                            self.viewModel.selectedRecurringTransaction?.id == recTran.id ? Color.blue.opacity(0.3) : Color.clear
+                            Text(recTran.name)
+                        }
+
+                        ZStack {
+                            self.viewModel.selectedRecurringTransaction?.id == recTran.id ? Color.blue.opacity(0.3) : Color.clear
+                            Text(recTran.amount.toDisplayString())
+                        }
+
+                        ZStack {
+                            self.viewModel.selectedRecurringTransaction?.id == recTran.id ? Color.blue.opacity(0.3) : Color.clear
+                            Text(recTran.nextDueDate.toSummaryDateMMMDEEE())
+                        }
+
+                        ZStack {
+                            self.viewModel.selectedRecurringTransaction?.id == recTran.id ? Color.blue.opacity(0.3) : Color.clear
+                            Text(recTran.recurringGroup?.name ?? "")
+                        }
                     }
-                    .background(self.viewModel.selectedRecurringTransaction?.id == recTran.id ? Color.blue.opacity(0.3) : Color.clear)
 
-                    .padding(.horizontal, 2)
-
-                    .onTapGesture { t in
+                    .onTapGesture {
                         handler(PathStore.Route.recurringTransaction_Details(recTran: recTran))
                     }
                     Divider()
@@ -62,5 +74,5 @@ struct RecurringTransactionListView: View {
 }
 
 #Preview {
-    RecurringTransactionListView() { action in }
+    RecurringTransactionListView(selectedRecurringTransaction: MoneyDataSource.shared.previewer.discordRecurringTransaction) { action in debugPrint(action)}
 }

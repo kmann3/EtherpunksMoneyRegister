@@ -40,12 +40,22 @@ struct RecurringGroupListView: View {
 
                 ForEach(self.viewModel.recurringGroups, id: \.id) { group in
                     GridRow {
-                        Text(group.name)
-                        Text("\(group.recurringTransactions?.count ?? 0)")
-                        Text("\((group.recurringTransactions?.reduce(Decimal(0)) { $0 + $1.amount } ?? Decimal(0)).toDisplayString())")
+                        ZStack {
+                            self.viewModel.selectedGroup?.id == group.id ? Color.blue.opacity(0.3) : Color.clear
+                            Text(group.name)
+                        }
+
+                        ZStack {
+                            self.viewModel.selectedGroup?.id == group.id ? Color.blue.opacity(0.3) : Color.clear
+                            Text("\(group.recurringTransactions?.count ?? 0)")
+                        }
+
+                        ZStack {
+                            self.viewModel.selectedGroup?.id == group.id ? Color.blue.opacity(0.3) : Color.clear
+                            Text("\((group.recurringTransactions?.reduce(Decimal(0)) { $0 + $1.amount } ?? Decimal(0)).toDisplayString())")
+                        }
                     }
                     .padding(.vertical, 3)
-                    .background(self.viewModel.selectedGroup?.id == group.id ? Color.blue.opacity(0.3) : Color.clear)
                     .onTapGesture {
                         handler(PathStore.Route.recurringGroup_Details(recGroup: group))
                     }
@@ -54,6 +64,10 @@ struct RecurringGroupListView: View {
         }
         .frame(minWidth: 300)
     }
+}
+
+#Preview {
+    RecurringGroupListView(selectedGroup: MoneyDataSource.shared.previewer.billGroup) { action in debugPrint(action) }
 }
 
 #Preview {
