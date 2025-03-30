@@ -62,5 +62,5 @@ struct TagListView: View {
 }
 
 #Preview {
-    TagListView() { _ in }
+    TagListView(selectedTag: MoneyDataSource.shared.previewer.billsTag) { _ in }
 }
