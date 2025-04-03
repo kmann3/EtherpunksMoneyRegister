@@ -182,9 +182,12 @@ struct AccountTransactionDetailsView: View {
                             HStack {
                                 Text("Filename: \(file.filename)")
                                 Button("View") {
-                                    //TODO: viewModel.downloadFileForViewing(file: file)
+                                    if file.data == nil {
+                                        print("File \(file.filename) has no data")
+                                    } else {
+                                    QuickLookPreviewController().showPreview(for: file.data!, fileName: file.filename)
+                                    }
                                 }
-                                // TODO: .quickLookPreview($viewModel.url)
                             }
 
                             Text("Created On:  \(file.createdOnUTC.toShortDetailString())")
