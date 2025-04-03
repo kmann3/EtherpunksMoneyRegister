@@ -57,4 +57,22 @@ final class TransactionFile: ObservableObject, CustomDebugStringConvertible, Ide
         self.transaction = accountTransaction
         self.transactionId = accountTransaction.id
     }
+
+    func getFormattedFileSize() -> String {
+        let formatter = ByteCountFormatter()
+        formatter.countStyle = .file
+        if self.data == nil {
+            return "nil"
+        } else {
+            return formatter.string(fromByteCount: Int64(self.data!.count))
+        }
+    }
 }
+
+//extension Data {
+//    func formattedSize() -> String {
+//        let formatter = ByteCountFormatter()
+//        formatter.countStyle = .file
+//        return formatter.string(fromByteCount: Int64(self.count))
+//    }
+//}

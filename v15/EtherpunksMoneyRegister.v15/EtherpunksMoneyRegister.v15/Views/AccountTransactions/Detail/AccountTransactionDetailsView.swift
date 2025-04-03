@@ -167,10 +167,8 @@ struct AccountTransactionDetailsView: View {
 
             Section(header: Text("Misc")) {
                 Text("Balanced On:  \(self.viewModel.tran.createdOnUTC.toShortDetailString())")
-
-                HStack {
-                    Text("ID: \(self.viewModel.tran.id)")
-                }
+                Text("ID: \(self.viewModel.tran.id)")
+                Text("CreatedOn: \(self.viewModel.tran.createdOnUTC.toDebugDate())")
             }
 
             Section(header: Text("Files")) {
@@ -192,6 +190,7 @@ struct AccountTransactionDetailsView: View {
                                 }
                             }
 
+                            Text("Size: \(file.getFormattedFileSize())")
                             Text("Created On:  \(file.createdOnUTC.toShortDetailString())")
 
                             HStack {

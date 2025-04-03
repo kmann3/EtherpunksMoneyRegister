@@ -96,8 +96,6 @@ extension Date {
             "EEE, dd MMM yyyy HH:mm:ssZ")
         return dateFormatter.string(from: self)
     }
-
-    
 }
 
 extension ModelContext {
