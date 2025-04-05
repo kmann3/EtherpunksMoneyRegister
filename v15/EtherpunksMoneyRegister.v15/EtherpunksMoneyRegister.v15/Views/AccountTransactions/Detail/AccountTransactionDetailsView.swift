@@ -38,14 +38,13 @@ struct AccountTransactionDetailsView: View {
                 }
                 .underline()
                 .foregroundColor(.blue)
-
             }
             HStack {
                 Text("Amount: ")
                 Text(
                     self.viewModel.tran.amount.toDisplayString())
             }
-            
+
             if self.viewModel.tran.transactionTags != nil {
                 VStack {
                     HStack {
@@ -67,7 +66,7 @@ struct AccountTransactionDetailsView: View {
                     }
                 }
             }
-            
+
             HStack {
                 Text(
                     "Tax Related: \(self.viewModel.tran.isTaxRelated == true ? "Yes" : "No")"
@@ -82,7 +81,7 @@ struct AccountTransactionDetailsView: View {
             Text(
                 "Transaction Status: \(self.viewModel.tran.transactionStatus)"
             )
-            
+
             // Reserved > Pending > Recurring > Cleared
             // Red      > Yellow  > Blue      > Green
 
@@ -93,33 +92,33 @@ struct AccountTransactionDetailsView: View {
                 .background(self.viewModel.tran.backgroundColor)
 
             // Recurring Transaction
-            
+
             if self.viewModel.tran.dueDate != nil {
                 HStack {
                     Text("Due date: ")
                     Text(
                         self.viewModel.tran.dueDate!,
-                        format: .dateTime.month().day())
+                        format: .dateTime.month().day()
+                    )
                     .underline()
                     .foregroundColor(.blue)
                 }
                 .onTapGesture {
-                    if(self.viewModel.tran.recurringTransaction != nil) {
+                    if self.viewModel.tran.recurringTransaction != nil {
                         handler(PathStore.Route.recurringTransaction_Edit(recTran: self.viewModel.tran.recurringTransaction!))
                     } else {
                         debugPrint("error with recurring transaction")
                     }
                 }
-
             }
-            
+
             if self.viewModel.tran.confirmationNumber != "" {
                 HStack {
                     Text("Confirmation: ")
                     Text(self.viewModel.tran.confirmationNumber)
                 }
             }
-            
+
             if self.viewModel.tran.recurringTransaction != nil {
                 HStack {
                     Text("Recurring Transaction: ")
@@ -153,7 +152,6 @@ struct AccountTransactionDetailsView: View {
                     } else {
                         print("group not loaded")
                     }
-
                 }
             } else {
                 HStack {
@@ -183,7 +181,7 @@ struct AccountTransactionDetailsView: View {
                                     if file.data == nil {
                                         print("File \(file.filename) has no data")
                                     } else {
-                                    QuickLookPreviewController().showPreview(for: file.data!, fileName: file.filename)
+                                        QuickLookPreviewController().showPreview(for: file.data!, fileName: file.filename)
 
                                         // TODO: we need to purge temp files
                                     }

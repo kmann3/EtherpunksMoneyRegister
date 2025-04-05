@@ -86,11 +86,12 @@ struct Dashboard_AccountItemView: View {
                 .stroke(
                     Color(
                         .sRGB, red: 125 / 255, green: 125 / 255,
-                        blue: 125 / 255, opacity: 0.5))
+                        blue: 125 / 255, opacity: 0.5
+                    ))
         )
         .contentShape(Rectangle())
 #if os(macOS)
-        .padding(.all, 5)
+            .padding(.all, 5)
 #endif
     }
 }

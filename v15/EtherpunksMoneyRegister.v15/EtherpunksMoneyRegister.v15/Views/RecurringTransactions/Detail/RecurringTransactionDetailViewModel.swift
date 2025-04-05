@@ -10,7 +10,6 @@ import SwiftData
 import SwiftUI
 
 extension RecurringTransactionDetailView {
-
     @MainActor
     @Observable
     class ViewModel {

@@ -10,7 +10,6 @@ import SwiftData
 import SwiftUI
 
 extension DashboardView {
-
     @MainActor
     @Observable
     class ViewModel {
@@ -24,17 +23,6 @@ extension DashboardView {
         var upcomingCreditRecurringTransactions: [RecurringTransaction]
         var upcomingNonGroupDebitRecurringTransactions: [RecurringTransaction]
         var upcomingRecurringGroups: [RecurringGroup] = []
-//
-//        var isConfirmReserveDebitGroupDialogShowing: Bool = false
-//        var selectedDebitGroup: RecurringGroup = RecurringGroup()
-//        var returnTransactions: [AccountTransaction] = []
-//
-//        var isConfirmReserveDebitTransactionDialogShowing: Bool = false
-//        var selectedDebitRecurringTransaction: RecurringTransaction = RecurringTransaction()
-//
-//        var isConfirmDepositCreditDialogShowing: Bool = false
-//        var returnTransaction: AccountTransaction = AccountTransaction()
-//        var selectedCreditRecurringTransaction: RecurringTransaction = RecurringTransaction()
 
         var didCancelReserveDialog: Bool = false
 
@@ -53,46 +41,5 @@ extension DashboardView {
             pendingTransactions = dataSource.fetchAllPendingTransactions()
             accounts = dataSource.fetchAccounts()
         }
-
-//        func reserveDepositCreditDialogDismiss() {
-//            if didCancelReserveDialog {
-//                didCancelReserveDialog = false
-//                return
-//            }
-//
-//            dataSource.ReserveCreditDeposit(
-//                recurringTransaction: selectedCreditRecurringTransaction,
-//                newTransaction: returnTransaction
-//            )
-//
-//            refreshScreen()
-//        }
-//
-//        func reserveDepositDebitGroupDialogDismiss() {
-//            if didCancelReserveDialog {
-//                didCancelReserveDialog = false
-//                return
-//            }
-//
-//            dataSource.ReserveDebitGroup(
-//                group: selectedDebitGroup,
-//                newTransactions: returnTransactions)
-//
-//            refreshScreen()
-//        }
-//
-//        func reserveDepositDebitTransactionDialogDismiss() {
-//            if didCancelReserveDialog {
-//                didCancelReserveDialog = false
-//                return
-//            }
-//
-//            dataSource.ReserveDebitTransaction(
-//                recurringTransaction: selectedDebitRecurringTransaction,
-//                newTransaction: returnTransaction
-//            )
-//
-//            refreshScreen()
-//        }
     }
 }

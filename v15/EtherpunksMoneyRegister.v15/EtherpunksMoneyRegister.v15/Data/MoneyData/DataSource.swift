@@ -31,7 +31,6 @@ final class MoneyDataSource: Sendable {
 
     init() {
         self.modelContainer = {
-
             let config = ModelConfiguration(isStoredInMemoryOnly: false)
 
             do {
@@ -41,13 +40,13 @@ final class MoneyDataSource: Sendable {
             }
         }()
 
-        self.modelContext = self.modelContainer.mainContext
+        self.modelContext = modelContainer.mainContext
 
 #if DEBUG
         print("-----------------")
         print(Date().toDebugDate())
         print("-----------------")
-        print("Database Location: \(self.modelContext.sqliteLocation)")
+        print("Database Location: \(modelContext.sqliteLocation)")
         print("-----------------")
 
         do {
@@ -61,8 +60,7 @@ final class MoneyDataSource: Sendable {
             print("Failed to clear database. Err: \(error)")
         }
 
-
-        previewer = Previewer()
+        self.previewer = Previewer()
         previewer.commitToDb(modelContext)
 #endif
     }
@@ -106,8 +104,8 @@ final class MoneyDataSource: Sendable {
                     } else {
                         return false
                     }
-                }
-                ,sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
+                },
+                sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
             ))
         } catch {
             fatalError(error.localizedDescription)
@@ -127,8 +125,8 @@ final class MoneyDataSource: Sendable {
                     } else {
                         return false
                     }
-                }
-                ,sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
+                },
+                sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
             ))
         } catch {
             fatalError(error.localizedDescription)
@@ -168,8 +166,8 @@ final class MoneyDataSource: Sendable {
                     } else {
                         return false
                     }
-                }
-                ,sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
+                },
+                sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
             ))
         } catch {
             fatalError(error.localizedDescription)
@@ -198,7 +196,7 @@ final class MoneyDataSource: Sendable {
             descriptor.fetchLimit = 1
             descriptor.relationshipKeyPathsForPrefetching = [
                 \.accountTransactions,
-                 \.recurringTransactions
+                \.recurringTransactions
             ]
             return descriptor
         }
@@ -207,8 +205,8 @@ final class MoneyDataSource: Sendable {
 
         return (query.first?.accountTransactions?.count ?? 0,
                 query.first?.createdOnUTC ?? nil,
-                query.first?.accountTransactions?.sorted(by: {$0.createdOnUTC > $1.createdOnUTC}) ?? [],
-                query.first?.recurringTransactions?.sorted(by: {$0.name < $1.name}) ?? [])
+                query.first?.accountTransactions?.sorted(by: { $0.createdOnUTC > $1.createdOnUTC }) ?? [],
+                query.first?.recurringTransactions?.sorted(by: { $0.name < $1.name }) ?? [])
     }
 
     func fetchTransactionFiles(tran: AccountTransaction) -> [TransactionFile] {
@@ -221,8 +219,8 @@ final class MoneyDataSource: Sendable {
                     } else {
                         return false
                     }
-                }
-                ,
+                },
+
                 sortBy: [SortDescriptor(\TransactionFile.createdOnUTC, order: .reverse)]
 
             ))
@@ -247,13 +245,13 @@ final class MoneyDataSource: Sendable {
         do {
             return try modelContext.fetch(FetchDescriptor<RecurringTransaction>(
                 predicate: #Predicate<RecurringTransaction> {
-                    if $0.amount < 0 && $0.recurringGroup == nil {
+                    if $0.amount < 0, $0.recurringGroup == nil {
                         return true
                     } else {
                         return false
                     }
-                }
-                ,sortBy: [
+                },
+                sortBy: [
                     SortDescriptor(\RecurringTransaction.nextDueDate),
                     SortDescriptor(\RecurringTransaction.name)
                 ]
@@ -266,8 +264,8 @@ final class MoneyDataSource: Sendable {
     func fetchUpcomingRecurringTransactions(transactionType: TransactionType) -> [RecurringTransaction] {
         do {
             return try modelContext.fetch(FetchDescriptor<RecurringTransaction>(
-                predicate: RecurringTransaction.transactionTypeFilter(type: transactionType)
-                ,sortBy: [
+                predicate: RecurringTransaction.transactionTypeFilter(type: transactionType),
+                sortBy: [
                     SortDescriptor(\RecurringTransaction.nextDueDate),
                     SortDescriptor(\RecurringTransaction.name)
                 ]
@@ -362,9 +360,9 @@ final class MoneyDataSource: Sendable {
 //                            account.outstandingBalance += transaction.amount
 //                            account.outstandingItemCount += 1
 //                            account.transactionCount += 1
-//                            
+//
 //                            modelContext.insert(AccountTransaction(recurringTransaction: transaction))
-//                            
+//
 //                            try? transaction.BumpNextDueDate()
 //                        }
 //                    }
@@ -393,10 +391,10 @@ final class MoneyDataSource: Sendable {
 
     func save(recurringTransactions: [ReserveGroupView.AccountTransactionQueueItem]) {
         try? modelContext.transaction {
-            recurringTransactions.forEach { item in
+            for item in recurringTransactions {
                 item.accountTransaction.VerifySignage()
                 item.accountTransaction.createdOnUTC = Date()
-                
+
                 switch item.action {
                 case .enable:
                     item.accountTransaction.account.currentBalance += item.recurringTransaction.amount
@@ -411,18 +409,15 @@ final class MoneyDataSource: Sendable {
                     item.accountTransaction.createdOnUTC = Date()
 
                     modelContext.insert(item.accountTransaction)
-                    break
                 case .ignore:
                     debugPrint("Ignoring: \(item.accountTransaction.name)")
                     item.accountTransaction.recurringTransaction = nil
                     modelContext.delete(item.accountTransaction)
-                    break
                 case .skip:
                     debugPrint("Skipping: \(item.accountTransaction.name)")
                     item.accountTransaction.recurringTransaction = nil
                     modelContext.delete(item.accountTransaction)
                     try? item.recurringTransaction.BumpNextDueDate()
-                    break
                 }
             }
 

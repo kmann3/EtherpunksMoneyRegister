@@ -22,9 +22,7 @@ struct AccountDetailView: View {
                 HStack {
                     Text("Name: \(self.viewModel.account.name)")
                     Spacer()
-                    Button("Edit Account") {
-                        
-                    }
+                    Button("Edit Account") {}
                 }
                 Text("startingBalance: \(self.viewModel.account.startingBalance)")
                 Text("currentBalance: \(self.viewModel.account.currentBalance)")

@@ -33,7 +33,7 @@ struct ReserveGroupView: View {
 
             Divider()
 
-            Grid() {
+            Grid {
                 GridRow {
                     Text("Action").bold()
                     Text("Name").bold()
@@ -74,10 +74,9 @@ struct ReserveGroupView: View {
             Divider()
 
             HStack {
-                Button("Cancel") {
-                }
-                .frame(minWidth: 100, alignment: .center)
-                .padding(.bottom, 5)
+                Button("Cancel") {}
+                    .frame(minWidth: 100, alignment: .center)
+                    .padding(.bottom, 5)
 
                 Spacer()
 

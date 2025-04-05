@@ -8,10 +8,8 @@ import Swift
 import SwiftUI
 
 extension ContentView {
-
     @Observable
     class ViewModel {
-
         @ObservationIgnored
         private let dataSource: MoneyDataSource
 

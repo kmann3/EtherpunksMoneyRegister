@@ -21,12 +21,11 @@ struct DashboardView: View {
                         .padding(5)
 
                     List(viewModel.accounts) { account in
-                            Dashboard_AccountItemView(acctData: account)
+                        Dashboard_AccountItemView(acctData: account)
 
                             .onTapGesture {
                                 handler(PathStore.Route.transaction_List(account: account))
                             }
-
                     }
                     Spacer()
                 }
@@ -62,10 +61,11 @@ struct DashboardView: View {
                 VStack {
                     List {
                         Section(header: Text("Recurring Credit")) {
-                            ForEach(viewModel.upcomingCreditRecurringTransactions.sorted(by: {$0.nextDueDate ?? Date() < $1.nextDueDate ?? Date()}), id: \.self) { creditItem in
+                            ForEach(viewModel.upcomingCreditRecurringTransactions.sorted(by: { $0.nextDueDate ?? Date() < $1.nextDueDate ?? Date() }), id: \.self) { creditItem in
                                 Dashboard_RecurringItemView(
-                                    recurringItem: creditItem) {
-                                        handler(PathStore.Route.recurringTransaction_Reserve(recTran: creditItem))
+                                    recurringItem: creditItem)
+                                {
+                                    handler(PathStore.Route.recurringTransaction_Reserve(recTran: creditItem))
                                 }
                                 .contextMenu {
                                     Button(action: {
@@ -83,22 +83,22 @@ struct DashboardView: View {
                                 HStack {
                                     Spacer()
                                     Dashboard_RecurringGroupView(
-                                        recurringGroup: group) {
-                                            handler(PathStore.Route.recurringGroup_Reserve(recGroup: group))
-                                        }
-                                        .contextMenu {
-                                            Button(action: {
-                                                handler(PathStore.Route.recurringGroup_Edit(recGroup: group))
-                                            }, label: { Label("Edit: \(group.name)", systemImage: "icon") })
-                                        }
+                                        recurringGroup: group)
+                                    {
+                                        handler(PathStore.Route.recurringGroup_Reserve(recGroup: group))
+                                    }
+                                    .contextMenu {
+                                        Button(action: {
+                                            handler(PathStore.Route.recurringGroup_Edit(recGroup: group))
+                                        }, label: { Label("Edit: \(group.name)", systemImage: "icon") })
+                                    }
 
                                     Spacer()
                                 }
-
                             }
 
                             ForEach(
-                                viewModel.upcomingNonGroupDebitRecurringTransactions.sorted(by: {$0.nextDueDate ?? Date() < $1.nextDueDate ?? Date()}),
+                                viewModel.upcomingNonGroupDebitRecurringTransactions.sorted(by: { $0.nextDueDate ?? Date() < $1.nextDueDate ?? Date() }),
                                 id: \.self
                             ) { debitItem in
                                 Dashboard_RecurringItemView(
@@ -121,7 +121,6 @@ struct DashboardView: View {
         }
         #endif
 
-
         #if os(iOS)
         // TODO: Implement
         Text("iOS TBI")
@@ -131,7 +130,7 @@ struct DashboardView: View {
 
 #Preview {
     DashboardView(viewModel: DashboardView.ViewModel(), handler: { _ in })
-#if os(macOS)
+    #if os(macOS)
         .frame(minWidth: 1000, minHeight: 750)
-#endif
+    #endif
 }

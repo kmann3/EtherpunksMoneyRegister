@@ -52,8 +52,7 @@ struct TagListView: View {
                     #endif
                 }
                 .background(self.viewModel.selectedTag?.id == tag.id ? Color.blue.opacity(0.3) : Color.clear)
-
-                .onTapGesture { t in
+                .onTapGesture { _ in
                     handler(PathStore.Route.tag_Details(tag: tag))
                 }
             }

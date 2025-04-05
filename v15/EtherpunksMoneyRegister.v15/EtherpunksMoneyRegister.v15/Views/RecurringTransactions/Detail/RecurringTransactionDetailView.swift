@@ -35,7 +35,6 @@ struct RecurringTransactionDetailView: View {
                 Spacer()
             }
 
-
             HStack {
                 Text("Is Tax Related: \(self.viewModel.recTran.isTaxRelated ? "Yes" : "No")")
                 Spacer()
@@ -70,7 +69,6 @@ struct RecurringTransactionDetailView: View {
                 Text("Created On: \(self.viewModel.recTran.createdOnUTC.toDebugDate())")
                 Spacer()
             }
-
         }
         .frame(minWidth: 300)
     }

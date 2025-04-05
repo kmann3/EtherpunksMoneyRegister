@@ -10,7 +10,6 @@ import SwiftData
 import SwiftUI
 
 extension AccountTransactionDetailsView {
-
     @MainActor
     @Observable
     class ViewModel {
@@ -27,13 +26,8 @@ extension AccountTransactionDetailsView {
             self.files = self.dataSource.fetchTransactionFiles(tran: self.tran)
         }
 
+        func addNewDocument() {}
 
-        func addNewDocument() {
-
-        }
-
-        func addNewPhoto() {
-
-        }
+        func addNewPhoto() {}
     }
 }

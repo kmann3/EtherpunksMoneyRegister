@@ -10,7 +10,6 @@ import SwiftData
 import SwiftUI
 
 extension RecurringGroupListView {
-
     @MainActor
     @Observable
     class ViewModel {
@@ -18,7 +17,7 @@ extension RecurringGroupListView {
         private let dataSource: MoneyDataSource
 
         var recurringGroups: [RecurringGroup] = []
-        var selectedGroup: RecurringGroup? = nil
+        var selectedGroup: RecurringGroup?
 
         init(_ dataSource: MoneyDataSource = MoneyDataSource.shared, selectedGroup: RecurringGroup? = nil) {
             self.dataSource = dataSource

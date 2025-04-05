@@ -10,7 +10,6 @@ import SwiftData
 import SwiftUI
 
 extension AccountDetailView {
-
     @MainActor
     @Observable
     class ViewModel {

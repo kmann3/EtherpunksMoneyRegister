@@ -31,7 +31,7 @@ struct AccountTransactionListView: View {
                     Section(header: Text("Transactions"), footer: Text("End of list")) {
                         ForEach(self.viewModel.accountTransactions, id: \.id) { tran in
                             TransactionListItemView(transaction: tran)
-                                .onTapGesture { t in
+                                .onTapGesture { _ in
                                     handler(PathStore.Route.transaction_Detail(transaction: tran))
                                 }
                         }
@@ -48,5 +48,5 @@ struct AccountTransactionListView: View {
 }
 
 #Preview {
-    AccountTransactionListView() { action in print(action) }
+    AccountTransactionListView { action in print(action) }
 }

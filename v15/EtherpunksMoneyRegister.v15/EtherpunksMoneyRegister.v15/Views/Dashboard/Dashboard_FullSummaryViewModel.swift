@@ -6,15 +6,13 @@
 //
 
 import Foundation
-import Foundation
 import SwiftData
 import SwiftUI
 
 extension Dashboard_FullSummaryView {
-
     @MainActor
     @Observable
-    class ViewModel : ObservableObject {
+    class ViewModel: ObservableObject {
         @ObservationIgnored
         private let dataSource: MoneyDataSource
 
@@ -27,7 +25,7 @@ extension Dashboard_FullSummaryView {
             self.dataSource = dataSource
             self.accounts = accounts
 
-            accounts.forEach { account in
+            for account in accounts {
                 outstandingAmount = outstandingAmount + account.outstandingBalance
                 outstandingItemCount += account.outstandingItemCount
                 availableBalance = availableBalance + account.currentBalance

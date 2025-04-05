@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TagDetailView: View {
-
     var viewModel: ViewModel
     var handler: (PathStore.Route) -> Void
 
@@ -42,7 +41,7 @@ struct TagDetailView: View {
                 }
             }
             Section(header: Text("Recurring"), footer: Text("End of list")) {
-                Grid() {
+                Grid {
                     GridRow {
                         Text("Name")
                         Text("Default Account")
@@ -65,16 +64,15 @@ struct TagDetailView: View {
                             Text(
                                 recTran.amount.toDisplayString())
                         }
-                        .onTapGesture { action in
+                        .onTapGesture { _ in
                             handler(PathStore.Route.recurringTransaction_Details(recTran: recTran))
                         }
-
                     }
                 }
             }
 
             Section(header: Text("Transactions"), footer: Text("End of list")) {
-                Grid() {
+                Grid {
                     GridRow {
                         Text("Name")
                         Text("Account")
@@ -92,7 +90,7 @@ struct TagDetailView: View {
                             }
                             Text(tran.amount.toDisplayString())
                         }
-                        .onTapGesture { t in
+                        .onTapGesture { _ in
                             handler(PathStore.Route.transaction_Detail(transaction: tran))
                         }
                     }
@@ -101,10 +99,8 @@ struct TagDetailView: View {
         }
         .frame(width: 450)
     }
-
-
 }
 
 #Preview {
-    TagDetailView(tag: MoneyDataSource.shared.previewer.billsTag, { a in debugPrint(a) })
+    TagDetailView(tag: MoneyDataSource.shared.previewer.billsTag) { a in debugPrint(a) }
 }

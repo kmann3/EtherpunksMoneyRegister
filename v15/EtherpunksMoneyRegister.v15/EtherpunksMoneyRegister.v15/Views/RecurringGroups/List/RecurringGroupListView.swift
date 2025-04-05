@@ -71,5 +71,5 @@ struct RecurringGroupListView: View {
 }
 
 #Preview {
-    RecurringGroupListView() { action in print(action) }
+    RecurringGroupListView { action in print(action) }
 }

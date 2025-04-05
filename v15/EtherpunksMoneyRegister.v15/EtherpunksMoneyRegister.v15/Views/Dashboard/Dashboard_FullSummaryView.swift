@@ -40,7 +40,7 @@ struct Dashboard_FullSummaryView: View {
                 Spacer()
 
                 Text(
-                    accounts.reduce((Decimal(0))) {$0 + $1.currentBalance},
+                    accounts.reduce(Decimal(0)) { $0 + $1.currentBalance },
                     format: .currency(
                         code: Locale.current.currency?.identifier ?? "USD")
                 )
@@ -57,7 +57,7 @@ struct Dashboard_FullSummaryView: View {
             Text("Outstanding")
                 .font(.headline)
                 .foregroundStyle(.secondary)
-            
+
             HStack {
                 Text("Items:")
                     .font(.headline)
@@ -66,10 +66,10 @@ struct Dashboard_FullSummaryView: View {
 
                 Spacer()
 
-                Text(accounts.reduce(0) {$0 + $1.outstandingItemCount}.description)
-                .font(.headline)
-                .foregroundStyle(.secondary)
-                .padding(.horizontal, 15)
+                Text(accounts.reduce(0) { $0 + $1.outstandingItemCount }.description)
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 15)
             }
 
             HStack {
@@ -81,13 +81,13 @@ struct Dashboard_FullSummaryView: View {
                 Spacer()
 
                 Text(
-                    accounts.reduce(Decimal(0)) {$0 + $1.outstandingBalance},
+                    accounts.reduce(Decimal(0)) { $0 + $1.outstandingBalance },
                     format: .currency(
                         code: Locale.current.currency?.identifier ?? "USD")
                 )
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 15)
+                .font(.headline)
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 15)
             }
         }
         .cornerRadius(20)
@@ -96,11 +96,12 @@ struct Dashboard_FullSummaryView: View {
                 .stroke(
                     Color(
                         .sRGB, red: 200 / 255, green: 200 / 255,
-                        blue: 200 / 255, opacity: 0.9))
+                        blue: 200 / 255, opacity: 0.9
+                    ))
         )
         .contentShape(Rectangle())
 #if os(macOS)
-        .padding(.all, 10)
+            .padding(.all, 10)
 #endif
     }
 }

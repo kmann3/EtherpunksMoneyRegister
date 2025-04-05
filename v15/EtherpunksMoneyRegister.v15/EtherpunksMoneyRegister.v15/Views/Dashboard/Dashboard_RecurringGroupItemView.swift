@@ -12,7 +12,7 @@ struct Dashboard_RecurringGroupView: View {
     var action: () -> Void
 
     var body: some View {
-        Button(action: self.action) {
+        Button(action: action) {
             VStack {
                 Text("Group: \(recurringGroup.name)")
                     .foregroundStyle(Color.white)
@@ -43,9 +43,9 @@ struct Dashboard_RecurringGroupView: View {
         .background(Color.clear)
         #endif
         .contentShape(Rectangle())
-#if os(macOS)
-        .padding(.all, 1)
-#endif
+        #if os(macOS)
+            .padding(.all, 1)
+        #endif
     }
 }
 

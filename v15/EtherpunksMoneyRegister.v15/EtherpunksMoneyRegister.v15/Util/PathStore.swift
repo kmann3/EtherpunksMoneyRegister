@@ -11,7 +11,6 @@ import SwiftUI
 
 @Observable
 class PathStore {
-
     var path: NavigationPath {
         didSet {
             save()
@@ -21,7 +20,6 @@ class PathStore {
     var selectedTab: MenuOptionsEnum = .dashboard
 
     enum Route: Hashable {
-
         case account_Create
         case account_Details(account: Account)
         case account_Edit(account: Account)
@@ -63,7 +61,7 @@ class PathStore {
         switch route {
         case .account_Details(let account):
             return account
-        
+
         default:
             return nil
         }
@@ -98,16 +96,16 @@ class PathStore {
 
     /// Go backwards once
     public func backUpPath() {
-        self.path.removeLast(1)
+        path.removeLast(1)
     }
 
     /// Go to the beginning - home / dashboard
     public func clearPathAndGoHome() {
-        self.path.removeLast(path.count)
+        path.removeLast(path.count)
     }
 
     // https://tanaschita.com/swiftui-navigationpath/
     public func navigateTo(route: Route) {
-        self.path.append(route)
+        path.append(route)
     }
 }

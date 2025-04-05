@@ -41,7 +41,7 @@ struct Dashboard_TransactionItemView: View {
                 {
                     Text("Reserved")
                 } else if transaction.pendingOnUTC != nil
-                            && transaction.clearedOnUTC == nil
+                    && transaction.clearedOnUTC == nil
                 {
                     Text("Pending")
                 } else {
@@ -80,6 +80,7 @@ struct Dashboard_TransactionItemView: View {
         .contentShape(Rectangle())
     }
 }
+
 #Preview("Reserved") {
     Dashboard_TransactionItemView(
         transaction: AccountTransaction(
@@ -104,6 +105,7 @@ struct Dashboard_TransactionItemView: View {
         )
     )
 }
+
 #Preview("Cleared") {
     Dashboard_TransactionItemView(
         transaction: AccountTransaction(

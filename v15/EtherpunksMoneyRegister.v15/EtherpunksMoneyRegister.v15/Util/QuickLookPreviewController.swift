@@ -8,7 +8,6 @@
 import Cocoa
 import Quartz
 
-
 class QuickLookPreviewController: NSObject, QLPreviewPanelDataSource, QLPreviewPanelDelegate {
     var previewItemURL: URL?
 
@@ -51,7 +50,7 @@ class QuickLookPreviewController: NSObject, QLPreviewPanelDataSource, QLPreviewP
                 print("Error deleting temporary file: \(error)")
             }
         }
-        
+
         previewItemURL = nil
     }
 

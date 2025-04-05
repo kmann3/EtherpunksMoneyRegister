@@ -12,7 +12,7 @@ struct Dashboard_RecurringItemView: View {
     var action: () -> Void
 
     var body: some View {
-        Button(action: self.action) {
+        Button(action: action) {
             HStack {
                 Text(recurringItem.name)
                     .frame(maxWidth: 200, alignment: .leading)
@@ -25,9 +25,8 @@ struct Dashboard_RecurringItemView: View {
                 Text(
                     recurringItem.amount.toDisplayString()
                 )
-                    .frame(maxWidth: 150, alignment: .trailing)
-                    .foregroundStyle(Color.white)
-
+                .frame(maxWidth: 150, alignment: .trailing)
+                .foregroundStyle(Color.white)
             }
         }
         #if os(macOS)
@@ -37,9 +36,9 @@ struct Dashboard_RecurringItemView: View {
         .background(Color.clear)
         #endif
         .contentShape(Rectangle())
-#if os(macOS)
-        .padding(.all, 1)
-#endif
+        #if os(macOS)
+            .padding(.all, 1)
+        #endif
     }
 }
 

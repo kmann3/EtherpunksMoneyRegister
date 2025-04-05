@@ -10,7 +10,6 @@ import SwiftData
 import SwiftUI
 
 extension TagDetailView {
-
     @MainActor
     @Observable
     class ViewModel {
@@ -20,7 +19,7 @@ extension TagDetailView {
 
         var transactions: [AccountTransaction] = []
         var recurringTransactions: [RecurringTransaction] = []
-        var lastUsed: Date? = nil
+        var lastUsed: Date?
         var itemCount: Int = 0
 
         init(dataSource: MoneyDataSource = MoneyDataSource.shared, tag: TransactionTag) {

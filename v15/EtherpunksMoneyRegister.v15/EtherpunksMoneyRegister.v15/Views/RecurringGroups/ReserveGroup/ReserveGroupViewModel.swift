@@ -10,10 +10,9 @@ import SwiftData
 import SwiftUI
 
 extension ReserveGroupView {
-
     @MainActor
     @Observable
-    class ViewModel : ObservableObject {
+    class ViewModel: ObservableObject {
         @ObservationIgnored
         private let dataSource: MoneyDataSource
 
@@ -26,8 +25,8 @@ extension ReserveGroupView {
             self.accounts = dataSource.fetchAccounts()
             self.reserveGroup = reserveGroup
 
-            self.reserveGroup.recurringTransactions!.sorted(by: ({$0.name < $1.name})).forEach {
-                transactionQueue.append(AccountTransactionQueueItem(recurringTransaction: $0))
+            self.reserveGroup.recurringTransactions!.sorted(by: ({ $0.name < $1.name })).forEach {
+                self.transactionQueue.append(AccountTransactionQueueItem(recurringTransaction: $0))
             }
         }
 
@@ -37,7 +36,7 @@ extension ReserveGroupView {
     }
 
     public class AccountTransactionQueueItem: Identifiable, ObservableObject {
-        var id: UUID = UUID()
+        var id: UUID = .init()
         var recurringTransaction: RecurringTransaction
         var accountTransaction: AccountTransaction
         var action: Action = .enable

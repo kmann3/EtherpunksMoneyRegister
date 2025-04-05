@@ -10,7 +10,6 @@ import SwiftData
 import SwiftUI
 
 extension AccountTransactionListView {
-
     @MainActor
     @Observable
     class ViewModel {
@@ -28,12 +27,11 @@ extension AccountTransactionListView {
 
             self.accountList = self.dataSource.fetchAccounts()
 
-            loadAccountTransactions()
-
+            self.loadAccountTransactions()
         }
 
         func loadAccountTransactions() {
-            if account != nil {
+            if self.account != nil {
                 self.accountTransactions = self.dataSource.fetchAccountTransactions(account: self.account!)
             } else {
                 debugPrint("Account is null, cannot load transactions")

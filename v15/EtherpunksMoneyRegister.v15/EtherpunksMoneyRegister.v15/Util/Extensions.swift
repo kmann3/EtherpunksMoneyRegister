@@ -30,11 +30,10 @@ extension Decimal {
 extension Date? {
     /// Sat, Jan 11
     func toSummaryDateMMMDEEE() -> String {
-
         if self == nil {
             return "n/a"
         }
-        
+
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
         dateFormatter.setLocalizedDateFormatFromTemplate("MMM d - EEE")
@@ -46,7 +45,7 @@ extension Date? {
         if self == nil {
             return "n/a"
         }
-        
+
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
         dateFormatter.setLocalizedDateFormatFromTemplate("MMM dd")
@@ -57,7 +56,6 @@ extension Date? {
 extension Date {
     /// Sat, Jan 11
     func toSummaryDateMMMDEEE() -> String {
-
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
         dateFormatter.setLocalizedDateFormatFromTemplate("MMM d - EEE")

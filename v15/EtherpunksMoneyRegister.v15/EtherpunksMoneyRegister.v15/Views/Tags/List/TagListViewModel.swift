@@ -10,7 +10,6 @@ import SwiftData
 import SwiftUI
 
 extension TagListView {
-
     @MainActor
     @Observable
     class ViewModel {
@@ -18,7 +17,7 @@ extension TagListView {
         private let dataSource: MoneyDataSource
 
         var tags: [TransactionTag] = []
-        var selectedTag: TransactionTag? = nil
+        var selectedTag: TransactionTag?
 
         init(_ dataSource: MoneyDataSource = MoneyDataSource.shared, selectedTag: TransactionTag? = nil) {
             self.dataSource = dataSource

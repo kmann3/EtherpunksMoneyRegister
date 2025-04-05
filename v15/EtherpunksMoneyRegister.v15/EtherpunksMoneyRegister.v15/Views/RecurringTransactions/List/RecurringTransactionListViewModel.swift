@@ -10,14 +10,13 @@ import SwiftData
 import SwiftUI
 
 extension RecurringTransactionListView {
-
     @MainActor
     @Observable
     class ViewModel {
         @ObservationIgnored
         private let dataSource: MoneyDataSource
         var recurringTransactions: [RecurringTransaction] = []
-        var selectedRecurringTransaction: RecurringTransaction? = nil
+        var selectedRecurringTransaction: RecurringTransaction?
 
         init(_ dataSource: MoneyDataSource = MoneyDataSource.shared, selectedRecurringTransaction: RecurringTransaction? = nil) {
             self.dataSource = dataSource
