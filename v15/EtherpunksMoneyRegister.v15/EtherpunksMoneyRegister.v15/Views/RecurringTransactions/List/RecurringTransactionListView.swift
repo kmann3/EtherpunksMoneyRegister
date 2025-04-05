@@ -11,7 +11,7 @@ struct RecurringTransactionListView: View {
     var viewModel = ViewModel()
     var handler: (PathStore.Route) -> Void
 
-    init(selectedRecurringTransaction: RecurringTransaction? = nil, _ handler: @escaping (PathStore.Route) -> Void) {
+    init(_ selectedRecurringTransaction: RecurringTransaction? = nil, _ handler: @escaping (PathStore.Route) -> Void) {
         viewModel = ViewModel(selectedRecurringTransaction: selectedRecurringTransaction)
         self.handler = handler
     }
@@ -74,5 +74,5 @@ struct RecurringTransactionListView: View {
 }
 
 #Preview {
-    RecurringTransactionListView(selectedRecurringTransaction: MoneyDataSource.shared.previewer.discordRecurringTransaction) { action in debugPrint(action)}
+    RecurringTransactionListView(MoneyDataSource.shared.previewer.discordRecurringTransaction) { action in print(action) }
 }

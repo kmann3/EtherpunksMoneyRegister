@@ -9,7 +9,6 @@ import SwiftUI
 
 struct AccountDetailView: View {
     var viewModel: ViewModel
-
     var handler: (PathStore.Route) -> Void
 
     init(_ account: Account, _ handler: @escaping (PathStore.Route) -> Void) {
@@ -43,5 +42,5 @@ struct AccountDetailView: View {
 }
 
 #Preview {
-    AccountDetailView(MoneyDataSource.shared.previewer.bankAccount) { _ in }
+    AccountDetailView(MoneyDataSource.shared.previewer.bankAccount) { action in print(action) }
 }

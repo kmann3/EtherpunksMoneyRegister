@@ -13,7 +13,7 @@ struct AccountTransactionListView: View {
     var viewModel: ViewModel
     var handler: (PathStore.Route) -> Void
 
-    init(account: Account?, _ handler: @escaping (PathStore.Route) -> Void) {
+    init(_ account: Account? = nil, _ handler: @escaping (PathStore.Route) -> Void) {
         viewModel = ViewModel(account: account)
         self.handler = handler
     }
@@ -44,9 +44,9 @@ struct AccountTransactionListView: View {
 }
 
 #Preview {
-    AccountTransactionListView(account: MoneyDataSource.shared.previewer.bankAccount) { _ in }
+    AccountTransactionListView(MoneyDataSource.shared.previewer.bankAccount) { action in print(action) }
 }
 
 #Preview {
-    AccountTransactionListView(account: nil) { _ in }
+    AccountTransactionListView() { action in print(action) }
 }

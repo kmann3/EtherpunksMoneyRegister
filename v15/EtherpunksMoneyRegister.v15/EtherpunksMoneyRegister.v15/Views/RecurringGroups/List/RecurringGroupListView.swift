@@ -11,7 +11,7 @@ struct RecurringGroupListView: View {
     var viewModel = ViewModel()
     var handler: (PathStore.Route) -> Void
 
-    init(selectedGroup: RecurringGroup? = nil, _ handler: @escaping (PathStore.Route) -> Void) {
+    init(_ selectedGroup: RecurringGroup? = nil, _ handler: @escaping (PathStore.Route) -> Void) {
         viewModel = ViewModel(selectedGroup: selectedGroup)
         self.handler = handler
     }
@@ -67,9 +67,9 @@ struct RecurringGroupListView: View {
 }
 
 #Preview {
-    RecurringGroupListView(selectedGroup: MoneyDataSource.shared.previewer.billGroup) { action in debugPrint(action) }
+    RecurringGroupListView(MoneyDataSource.shared.previewer.billGroup) { action in print(action) }
 }
 
 #Preview {
-    RecurringGroupListView() { action in debugPrint(action) }
+    RecurringGroupListView() { action in print(action) }
 }

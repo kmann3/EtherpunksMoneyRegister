@@ -11,7 +11,7 @@ struct ReserveGroupView: View {
     @StateObject var viewModel: ViewModel
     var handler: (PathStore.Route) -> Void
 
-    init(group: RecurringGroup, _ handler: @escaping (PathStore.Route) -> Void) {
+    init(_ group: RecurringGroup, _ handler: @escaping (PathStore.Route) -> Void) {
         _viewModel = StateObject(wrappedValue: ViewModel(reserveGroup: group))
         self.handler = handler
     }
@@ -118,5 +118,5 @@ struct ReserveGroupView: View {
 }
 
 #Preview {
-    ReserveGroupView(group: MoneyDataSource.shared.previewer.billGroup) { action in debugPrint(action) }
+    ReserveGroupView(MoneyDataSource.shared.previewer.billGroup) { action in print(action) }
 }

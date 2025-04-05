@@ -11,7 +11,7 @@ struct AccountTransactionDetailsView: View {
     var viewModel: ViewModel
     var handler: (PathStore.Route) -> Void
 
-    init(tran: AccountTransaction, _ handler: @escaping (PathStore.Route) -> Void) {
+    init(_ tran: AccountTransaction, _ handler: @escaping (PathStore.Route) -> Void) {
         self.viewModel = ViewModel(tran: tran)
         self.handler = handler
     }
@@ -213,11 +213,9 @@ struct AccountTransactionDetailsView: View {
 }
 
 #Preview {
-    AccountTransactionDetailsView(tran: MoneyDataSource.shared.previewer.cvsTransaction) { _ in }
+    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.cvsTransaction) { action in print(action) }
 }
 
 #Preview {
-    AccountTransactionDetailsView(tran: MoneyDataSource.shared.previewer.verizonReservedTransaction) { foo in
-        print(foo.self as PathStore.Route)
-    }
+    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.verizonReservedTransaction) { action in print(action) }
 }

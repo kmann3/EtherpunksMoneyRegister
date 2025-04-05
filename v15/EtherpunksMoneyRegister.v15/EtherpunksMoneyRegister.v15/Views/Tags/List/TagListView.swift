@@ -11,7 +11,7 @@ struct TagListView: View {
     var viewModel: ViewModel
     var handler: (PathStore.Route) -> Void
 
-    init(selectedTag: TransactionTag? = nil, _ handler: @escaping (PathStore.Route) -> Void) {
+    init(_ selectedTag: TransactionTag? = nil, _ handler: @escaping (PathStore.Route) -> Void) {
         self.viewModel = ViewModel(selectedTag: selectedTag)
         self.handler = handler
     }
@@ -62,5 +62,5 @@ struct TagListView: View {
 }
 
 #Preview {
-    TagListView(selectedTag: MoneyDataSource.shared.previewer.billsTag) { _ in }
+    TagListView(MoneyDataSource.shared.previewer.billsTag) { action in print(action) }
 }
