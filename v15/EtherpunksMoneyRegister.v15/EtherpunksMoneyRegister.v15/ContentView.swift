@@ -131,7 +131,8 @@ struct ContentView: View {
                 case .account_Create: Text("TBI - Account Create")
                 case .account_List: Text("Account List")
                 case .account_Edit(let account): Text("TBI - Account Edit \(account)")
-                case .account_Details(let account): Text("TBI - Account Details \(account)")
+                case .account_Details(let account):
+                    AccountDetailView(account) { action in changeRoute(action) }
 
                 case .dashboard: Text("TBI - Dashboard")
 
