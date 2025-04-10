@@ -50,7 +50,7 @@ Rough order:
 * :red_circle: Reports
   * Tax related
 * :red_circle: Search
-* :red_circle: Polish
+* :red_circle: Polish : (note: Expect a LOT of visual changes here. Prior it's a: 'just get it working, look pretty later')
   * :red_circle: Dashboard
   * :red_circle: Account
   * :red_circle: Transaction
