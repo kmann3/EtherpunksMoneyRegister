@@ -148,6 +148,10 @@ final class Account: ObservableObject, CustomDebugStringConvertible, Identifiabl
     ) {
         self.id = id.uuidString
         self.name = name
-        
+
+    }
+
+    init()
+    {
     }
 }

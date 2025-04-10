@@ -22,13 +22,13 @@ struct AccountDetailView: View {
                 HStack {
                     Text("Name: \(self.viewModel.account.name)")
                     Spacer()
-                    Button("Edit Account") {}
+                    Button("Edit Account") { handler(PathStore.Route.account_Edit(account: self.viewModel.account)) }
                 }
-                Text("startingBalance: \(self.viewModel.account.startingBalance)")
-                Text("currentBalance: \(self.viewModel.account.currentBalance)")
-                Text("outstandingBalance: \(self.viewModel.account.outstandingBalance)")
-                Text("outstandingItemCount: \(self.viewModel.account.outstandingItemCount)")
-                Text("transactionCount: \(self.viewModel.account.transactionCount)")
+                Text("Transaction Count: \(self.viewModel.account.transactionCount)")
+                Text("Starting Balance: \(self.viewModel.account.startingBalance.toDisplayString())")
+                Text("Current Balance: \(self.viewModel.account.currentBalance.toDisplayString())")
+                Text("Outstanding Balance: \(self.viewModel.account.outstandingBalance.toDisplayString())")
+                Text("Outstanding Item Count: \(self.viewModel.account.outstandingItemCount)")
             }
 
             Section("Misc") {
