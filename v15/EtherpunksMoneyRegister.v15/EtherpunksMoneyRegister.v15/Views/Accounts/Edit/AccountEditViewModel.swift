@@ -28,5 +28,9 @@ extension AccountEditView {
             startingBalance = account.startingBalance.formatted()
             notes = account.notes
         }
+
+        func save() {
+            
+        }
     }
 }

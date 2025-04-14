@@ -19,6 +19,12 @@ struct AccountEditView: View {
     var body: some View {
         List {
             HStack {
+                Spacer()
+                Button("Save") {
+                    self.viewModel.save()
+                }
+            }
+            HStack {
                 Text("Account Name:")
                 TextField(text: self.$viewModel.name, prompt: Text("Required")) {
                     Text("Account name")
@@ -36,10 +42,6 @@ struct AccountEditView: View {
                 Text("Starting Balance:")
                 TextField("Amount", value: self.$viewModel.startingBalance, formatter: currencyFormatter)
                     .padding(5)
-            }
-
-            Button("Save") {
-                print("New: \(self.viewModel.startingBalance)")
             }
         }
     }

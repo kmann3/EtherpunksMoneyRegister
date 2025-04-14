@@ -12,7 +12,7 @@ struct ContentView: View {
     @State var viewModel = ViewModel()
     @State private var selectedRoute: PathStore.Route? = .dashboard
     @State private var selectedSubRoute: PathStore.Route? = nil
-
+    
     var body: some View {
         NavigationSplitView {
             List(selection: self.$selectedRoute) {
@@ -125,7 +125,7 @@ struct ContentView: View {
                 case .account_List:
                     Text("Account List")
                 case .account_Edit(let account):
-                    Text("TBI - Account Edit \(account)")
+                    AccountEditView(account) { action in self.changeRoute(action) }
                 case .account_Details(let account):
                     AccountDetailView(account) { action in self.changeRoute(action) }
                 case .dashboard: Text("TBI - Dashboard")
