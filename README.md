@@ -8,21 +8,23 @@ This is a program I plan on using personally. It's more of an ongoing project us
 
 v1-v-whatever are simply varying things I'm toying with. They aren't incremental. It's just "oh, that sounds neat, I want to check that out".
 
-* v1 : C# /  WinForms
-* v2 : C# /  WinForms
-* v3 : C# /  WPF
-* v4 : C# /  WinUI
-* Deleted previous versions because I didn't think I'd care.
-* v5 : C# /  Blazor
-* v6 : C# /  Blazor
-* v7 : C# /  Blazor
-* v9 : C# /  WPF
-* v10 : C# /  WPF
-* v11 : C# /  WPF
-* v12 : Swift/SwiftUI/SwiftData
+* :white_check_mark: v15 : Swift/SwiftUI/SwiftData
 * v13 : Swift/SwiftUI/SwiftData
 * v14 : Swift/SwiftUI/SwiftData
-* :white_check_mark: v15 : Swift/SwiftUI/SwiftData
+* v12 : Swift/SwiftUI/SwiftData
+* v11 : C# /  WPF
+* v10 : C# /  WPF
+* v9 : C# /  WPF
+* v8 : ??? I don't remember
+* v7 : C# /  Blazor
+* v6 : C# /  Blazor
+* v5 : C# /  Blazor
+* Deleted previous versions because I didn't think I'd care.
+* v4 : C# /  WinUI
+* v3 : C# /  WPF
+* v2 : C# /  WinForms
+* v1 : C# /  WinForms
+
 
 Currently on v15 - which is Apple focused. MacOS, first. Followed by iOS (mostly iPhone and then iPad), and then by apple Watch.
 
@@ -67,6 +69,9 @@ Rough order:
 * Unit Testing
 * Hard deletes or soft deletes? Currently everything is a hard delete.
 * Logging: Should there be a history table which talks about all db changes? This might allow for hard deletes while preserving information
+* Session history tracking
+  * Recoring changes
+  * Back and forward button support
 <hr />
 
 * Encrypting important things / encrypting everything / encrypting nothing
