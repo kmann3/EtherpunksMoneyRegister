@@ -31,7 +31,7 @@ extension ReserveGroupView {
         }
 
         func saveTransactions() {
-            self.dataSource.save(recurringTransactions: self.transactionQueue)
+            self.dataSource.reserveRecurringTransactions(recurringTransactions: self.transactionQueue)
         }
     }
 

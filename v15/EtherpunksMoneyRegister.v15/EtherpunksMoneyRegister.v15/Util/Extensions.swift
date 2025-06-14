@@ -15,6 +15,19 @@ extension Double {
 }
 
 extension Decimal {
+
+    static func fromDisplayString(_ string: String) -> Decimal? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = Locale.current
+
+        if let number = formatter.number(from: string) {
+            return number.decimalValue
+        } else {
+            return nil
+        }
+    }
+    
     func toDouble() -> Double {
         return NSDecimalNumber(decimal: self).doubleValue
     }
@@ -93,6 +106,19 @@ extension Date {
         dateFormatter.setLocalizedDateFormatFromTemplate(
             "EEE, dd MMM yyyy HH:mm:ssZ")
         return dateFormatter.string(from: self)
+    }
+}
+
+extension NumberFormatter {
+    static var localCurrencyFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = Locale.current
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 2
+        formatter.generatesDecimalNumbers = true
+        formatter.usesGroupingSeparator = true
+        return formatter
     }
 }
 

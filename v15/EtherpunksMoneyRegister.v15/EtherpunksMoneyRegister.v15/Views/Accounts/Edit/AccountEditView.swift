@@ -32,25 +32,19 @@ struct AccountEditView: View {
             }
 
             HStack {
+                Text("Starting Balance:")
+                CurrencyFieldView(amount: $viewModel.startingBalance)
+                    .padding(5)
+            }
+
+            HStack {
                 Text("Notes:")
                 TextField(text: self.$viewModel.notes) {
                     Text("Notes")
                 }.padding(5)
             }
-
-            HStack {
-                Text("Starting Balance:")
-                TextField("Amount", value: self.$viewModel.startingBalance, formatter: currencyFormatter)
-                    .padding(5)
-            }
         }
-    }
-
-    private var currencyFormatter: NumberFormatter {
-        let f = NumberFormatter()
-        f.numberStyle = .currency
-        f.locale = Locale.current
-        return f
+        .frame(width: 450)
     }
 }
 

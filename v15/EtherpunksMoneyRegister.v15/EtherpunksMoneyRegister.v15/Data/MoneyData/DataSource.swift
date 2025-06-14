@@ -389,7 +389,7 @@ final class MoneyDataSource: Sendable {
 //        }
 //    }
 
-    func save(recurringTransactions: [ReserveGroupView.AccountTransactionQueueItem]) {
+    func reserveRecurringTransactions(recurringTransactions: [ReserveGroupView.AccountTransactionQueueItem]) {
         try? modelContext.transaction {
             for item in recurringTransactions {
                 item.accountTransaction.VerifySignage()
@@ -427,6 +427,34 @@ final class MoneyDataSource: Sendable {
                 print(error)
                 modelContext.rollback()
             }
+        }
+    }
+
+    func updateAccount(_ account: Account, origBalance: Decimal) {
+        do {
+            try modelContext.transaction {
+                // Check if starting amount changed, and recalculate all transactions if needed
+                if origBalance != account.currentBalance {
+                    // Example: compute difference and apply to transactions
+                    let difference = account.currentBalance - origBalance
+                    
+                    // Fetch all transactions for the account
+                    let accountId = account.id
+                    let transactions = try modelContext.fetch(FetchDescriptor<AccountTransaction>(
+                        predicate: #Predicate<AccountTransaction> { $0.accountId == accountId },
+                        sortBy: [SortDescriptor(\.createdOnUTC)]
+                    ))
+                    
+                    // Adjust each transaction balance accordingly
+                    for transaction in transactions {
+                        transaction.balance? += difference
+                    }
+                }
+                
+                // Save happens automatically if no error is thrown
+            }
+        } catch {
+            fatalError(error.localizedDescription)
         }
     }
 

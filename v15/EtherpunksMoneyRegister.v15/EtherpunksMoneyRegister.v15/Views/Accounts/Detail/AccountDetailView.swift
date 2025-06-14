@@ -36,6 +36,7 @@ struct AccountDetailView: View {
                 Text("Created On: \(self.viewModel.account.createdOnUTC.toDebugDate())")
             }
         }
+        .frame(width: 450)
     }
 }
 
