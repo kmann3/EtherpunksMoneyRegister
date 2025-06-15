@@ -11,7 +11,6 @@ struct CurrencyFieldView: View {
     @Binding var amount: Decimal
     @State private var text: String = ""
     @FocusState private var isFocused: Bool
-    var onCommit: (() -> Void)? = nil
 
     var body: some View {
         HStack {
@@ -19,7 +18,7 @@ struct CurrencyFieldView: View {
                 .foregroundColor(.secondary)
                 .padding(.leading, 4)
 
-            TextField("Amount", text: $text, onCommit: { onCommit?() })
+            TextField("Amount", text: $text)
                 .focused($isFocused)
 #if os(iOS)
                 .keyboardType(.decimalPad)
@@ -29,20 +28,20 @@ struct CurrencyFieldView: View {
                     text = formatDecimal(amount)
                 }
                 .onChange(of: text) {
+                    debugPrint("text: \(text)")
                     // Use self.text directly inside
-                    let filtered = filterInput(text)
-                    if filtered != text {
-                        text = filtered
-                    }
+                    let filtered = filterInputForDecimal(text)
+
+                    self.text = filterInputForText(text)
 
                     if let decimal = Decimal(string: filtered) {
                         amount = decimal
                     }
+                    debugPrint("amount: \(amount)")
                 }
                 .onChange(of: isFocused) {
                     if !isFocused {
                         text = formatDecimal(amount)
-                        onCommit?()
                     }
                 }
                 .padding(5)
@@ -50,7 +49,19 @@ struct CurrencyFieldView: View {
         }
     }
 
-    private func filterInput(_ input: String) -> String {
+    private func filterInputForDecimal(_ input: String) -> String {
+        let allowed = "0123456789."
+        let filtered = input.filter { allowed.contains($0) }
+
+        // Only one decimal point
+        let parts = filtered.split(separator: ".")
+        if parts.count > 1 {
+            return parts.prefix(2).joined(separator: ".")
+        }
+        return filtered
+    }
+
+    private func filterInputForText(_ input: String) -> String {
         let allowed = "0123456789.,"
         let filtered = input.filter { allowed.contains($0) }
 

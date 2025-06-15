@@ -434,9 +434,9 @@ final class MoneyDataSource: Sendable {
         do {
             try modelContext.transaction {
                 // Check if starting amount changed, and recalculate all transactions if needed
-                if origBalance != account.currentBalance {
+                if origBalance != account.startingBalance {
                     // Example: compute difference and apply to transactions
-                    let difference = account.currentBalance - origBalance
+                    let difference = account.startingBalance - origBalance
                     
                     // Fetch all transactions for the account
                     let accountId = account.id

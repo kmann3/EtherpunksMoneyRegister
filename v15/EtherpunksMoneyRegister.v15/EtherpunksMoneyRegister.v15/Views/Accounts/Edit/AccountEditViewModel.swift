@@ -30,17 +30,17 @@ extension AccountEditView {
         }
 
         func save() {
-            fatalError("Not yet implemented")
             let newBalance = self.startingBalance
-//            if newBalance == nil {
-//                fatalError("Cannot convert starting balance '\(self.startingBalance)' to decimal")
-//            }
 
             let origBalance = self.account.startingBalance
+
+            debugPrint("New Balance: \(newBalance)")
+            debugPrint("Orig Balance: \(origBalance)")
             self.account.startingBalance = newBalance
             self.account.name = self.name
             self.account.notes = self.notes
             self.dataSource.updateAccount(self.account, origBalance: origBalance)
+            self.startingBalance = self.account.startingBalance
         }
     }
 }

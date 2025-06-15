@@ -35,6 +35,7 @@ struct AccountEditView: View {
                 Text("Starting Balance:")
                 CurrencyFieldView(amount: $viewModel.startingBalance)
                     .padding(5)
+
             }
 
             HStack {
