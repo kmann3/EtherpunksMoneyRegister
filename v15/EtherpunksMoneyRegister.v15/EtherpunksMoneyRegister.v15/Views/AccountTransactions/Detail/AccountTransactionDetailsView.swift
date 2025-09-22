@@ -78,8 +78,9 @@ struct AccountTransactionDetailsView: View {
 
             Text("Balanced On:  \(self.viewModel.tran.balancedOnUTC?.toShortDetailString() ?? "nil")")
 
+            // FIX: Use .description for TransactionStatus
             Text(
-                "Transaction Status: \(self.viewModel.tran.transactionStatus)"
+                "Transaction Status: \(self.viewModel.tran.transactionStatus.description)"
             )
 
             // Reserved > Pending > Recurring > Cleared
@@ -217,3 +218,4 @@ struct AccountTransactionDetailsView: View {
 #Preview {
     AccountTransactionDetailsView(MoneyDataSource.shared.previewer.verizonReservedTransaction) { action in print(action) }
 }
+

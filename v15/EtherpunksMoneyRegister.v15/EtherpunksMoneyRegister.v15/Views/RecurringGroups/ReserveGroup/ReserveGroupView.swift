@@ -35,20 +35,22 @@ struct ReserveGroupView: View {
 
             Grid {
                 GridRow {
-                    Text("Action").bold()
+                    Text("Account").bold()
                     Text("Name").bold()
                     Text("Due Date").bold()
                     Text("Amount").bold()
-                    Text("Account").bold()
+                    Text("Action").bold()
                 }
 
                 ForEach($viewModel.transactionQueue) { $rt in
                     GridRow {
-                        Picker("", selection: $rt.action) {
-                            Text("Reserve").tag(Action.enable)
-                            Text("Skip").tag(Action.skip)
-                            Text("Ignore").tag(Action.ignore)
+                        Picker("", selection: $rt.accountTransaction.account) {
+                            ForEach($viewModel.accounts) { $acc in
+                                Text(acc.name).tag(acc)
+                            }
                         }
+                        .pickerStyle(.menu)
+
                         Text(rt.accountTransaction.name)
 
                         if rt.accountTransaction.dueDate == nil {
@@ -61,12 +63,14 @@ struct ReserveGroupView: View {
                         Text(rt.accountTransaction.amount.toDisplayString())
                             .frame(maxWidth: .infinity, alignment: .center)
 
-                        Picker("", selection: $rt.accountTransaction.account) {
-                            ForEach($viewModel.accounts) { $acc in
-                                Text(acc.name).tag(acc)
-                            }
+
+
+                        Picker("", selection: $rt.action) {
+                            Text("Reserve").tag(Action.enable)
+                            Text("Skip").tag(Action.skip)
+                            Text("Ignore").tag(Action.ignore)
                         }
-                        .pickerStyle(.menu)
+
                     }
                 }
             }
@@ -113,6 +117,7 @@ struct ReserveGroupView: View {
                 Spacer()
             }
         }
+        .frame(minWidth: 450)
     }
 }
 

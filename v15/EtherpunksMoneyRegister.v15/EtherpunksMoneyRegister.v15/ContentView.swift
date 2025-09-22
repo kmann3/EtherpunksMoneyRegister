@@ -78,24 +78,24 @@ struct ContentView: View {
                 case .recurringGroup_Create:
                     Text("TBI - Recurring Group Create")
                 case .recurringGroup_Details(let recGroup):
-                    Text("TBI - Recurring Group Details: \(recGroup)")
+                    Text("TBI - Recurring Group Details: \(recGroup.name)")
                 case .recurringGroup_Edit(let recGroup):
-                    Text("TBI - Recurring Group Edit: \(recGroup)")
+                    Text("TBI - Recurring Group Edit: \(recGroup.name)")
                 case .recurringGroup_List(let recGroup):
                     RecurringGroupListView(recGroup) { action in self.changeRoute(action) }
-                case .recurringGroup_Reserve(let recGroup): Text("TBI - Recurring Group Reserver: \(recGroup)")
+                case .recurringGroup_Reserve(let recGroup): Text("TBI - Recurring Group Reserver: \(recGroup.name)")
                 case .recurringTransaction_Create:
                     Text("TBI - Recurring Transaction Create")
                 case .recurringTransaction_Create_FromTran(let tran):
-                    Text("TBI - Recurring Transaction Create From Transaction: \(tran)")
+                    Text("TBI - Recurring Transaction Create From Transaction: \(tran.name)")
                 case .recurringTransaction_Details(let recTran):
                     RecurringTransactionDetailView(recTran) { action in self.changeRoute(action) }
                 case .recurringTransaction_Edit(let recTran):
-                    Text("TBI - Recurring Transaction Edit: \(recTran)")
+                    Text("TBI - Recurring Transaction Edit: \(recTran.name)")
                 case .recurringTransaction_List(let recTran):
                     RecurringTransactionListView(recTran) { action in self.changeRoute(action) }
                 case .recurringTransaction_Reserve(let recTran):
-                    Text("TBI - Recurring Transaction Reserve: \(recTran)")
+                    Text("TBI - Recurring Transaction Reserve: \(recTran.name)")
                 case .report_Tax:
                     Text("TBI - Report Tax")
                 case .search:
@@ -106,13 +106,13 @@ struct ContentView: View {
                     Text("TBI - Tag Create")
                 case .tag_Details(let tag):
                     TagDetailView(tag: tag) { action in self.changeRoute(action) }
-                case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag)")
+                case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag.name)")
                 case .tag_List(let tag):
                     TagListView(tag) { action in self.changeRoute(action) }
                 case .transaction_Create: Text("TBI - Transaction Create")
                 case .transaction_Detail(let transaction):
                     AccountTransactionDetailsView(transaction) { action in self.changeRoute(action) }
-                case .transaction_Edit(let transaction): Text("TBI - Transaction Edit \(transaction)")
+                case .transaction_Edit(let transaction): Text("TBI - Transaction Edit \(transaction.name)")
                 case .transaction_List(let account):
                     AccountTransactionListView(account) { action in self.changeRoute(action) }
                 }
@@ -132,25 +132,27 @@ struct ContentView: View {
                 case .recurringGroup_Create:
                     Text("TBI - Recurring Group Create")
                 case .recurringGroup_Details(let recGroup):
-                    Text("TBI - Recurring Group Details: \(recGroup)")
+                    ReserveGroupView(recGroup) { action in
+                        self.changeRoute(action)
+                    }
                 case .recurringGroup_Edit(let recGroup):
-                    Text("TBI - Recurring Group Edit: \(recGroup)")
+                    Text("TBI - Recurring Group Edit: \(recGroup.name)")
                 case .recurringGroup_List(let recGroup):
                     RecurringGroupListView(recGroup) { action in self.changeRoute(action) }
                 case .recurringGroup_Reserve(let recGroup):
                     ReserveGroupView(recGroup) { action in self.changeRoute(action) }
                 case .recurringTransaction_Create: Text("TBI - Recurring Transaction Create")
-                case .recurringTransaction_Create_FromTran(let tranID): Text("TBI - Recurring Transaction Create From Transaction: \(tranID)")
+                case .recurringTransaction_Create_FromTran(let tranID): Text("TBI - Recurring Transaction Create From Transaction: \(tranID.name)")
                 case .recurringTransaction_Details(let recTran):
                     RecurringTransactionDetailView(recTran) { action in
                         self.changeRoute(action)
                     }
                 case .recurringTransaction_Edit(let recTran):
-                    Text("TBI - Recurring Transaction Edit: \(recTran)")
+                    Text("TBI - Recurring Transaction Edit: \(recTran.name)")
                 case .recurringTransaction_List(let recTran):
                     RecurringTransactionListView(recTran) { action in self.changeRoute(action) }
                 case .recurringTransaction_Reserve(let recTran):
-                    Text("TBI - Recurring Transaction Reserve: \(recTran)")
+                    Text("TBI - Recurring Transaction Reserve: \(recTran.name)")
                 case .report_Tax: Text("TBI - Report Tax")
                 case .search: Text("TBI - Search")
                 case .settings: Text("TBI - Settings")
@@ -159,18 +161,18 @@ struct ContentView: View {
                     TagDetailView(tag: tag) { action in
                         self.changeRoute(action)
                     }
-                case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag)")
+                case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag.name)")
                 case .tag_List: Text("TBI - Tag List")
                 case .transaction_Create: Text("TBI - Transaction Create")
                 case .transaction_Detail(let transaction):
                     AccountTransactionDetailsView(transaction) { action in self.changeRoute(action) }
-                case .transaction_Edit(let transaction): Text("TBI - Transaction Edit \(transaction)")
+                case .transaction_Edit(let transaction): Text("TBI - Transaction Edit \(transaction.name)")
                 case .transaction_List(let account):
                     AccountTransactionListView(account) { action in self.changeRoute(action) }
                 }
             }
         }
-        .padding(20)
+        //.padding(20)
         .frame(
             minWidth: 950, maxWidth: .infinity, minHeight: 500,
             maxHeight: .infinity)

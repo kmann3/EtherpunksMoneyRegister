@@ -24,11 +24,9 @@ struct CurrencyFieldView: View {
                 .keyboardType(.decimalPad)
 #endif
                 .onAppear {
-                    debugPrint(formatDecimal(amount))
                     text = formatDecimal(amount)
                 }
                 .onChange(of: text) {
-                    debugPrint("text: \(text)")
                     // Use self.text directly inside
                     let filtered = filterInputForDecimal(text)
 
@@ -37,7 +35,6 @@ struct CurrencyFieldView: View {
                     if let decimal = Decimal(string: filtered) {
                         amount = decimal
                     }
-                    debugPrint("amount: \(amount)")
                 }
                 .onChange(of: isFocused) {
                     if !isFocused {

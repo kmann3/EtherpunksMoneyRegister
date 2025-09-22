@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SwiftUICore
+import SwiftUI
 
 enum NavView: Hashable, CaseIterable {
     case account_Create

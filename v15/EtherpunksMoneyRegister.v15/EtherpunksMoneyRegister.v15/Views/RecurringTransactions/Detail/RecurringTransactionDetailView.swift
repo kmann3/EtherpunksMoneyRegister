@@ -26,7 +26,8 @@ struct RecurringTransactionDetailView: View {
                 }
             }
             HStack {
-                Text("Transaction Type: \(self.viewModel.recTran.transactionType)")
+                // Fix: Convert transactionType to string to avoid deprecated interpolation
+                Text("Transaction Type: " + self.viewModel.recTran.transactionType.description)
                 Spacer()
             }
 
@@ -77,3 +78,4 @@ struct RecurringTransactionDetailView: View {
 #Preview {
     RecurringTransactionDetailView(MoneyDataSource.shared.previewer.discordRecurringTransaction) { action in print(action) }
 }
+
