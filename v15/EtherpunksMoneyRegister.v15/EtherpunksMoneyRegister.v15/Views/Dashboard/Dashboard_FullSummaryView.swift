@@ -42,7 +42,8 @@ struct Dashboard_FullSummaryView: View {
                 Text(
                     accounts.reduce(Decimal(0)) { $0 + $1.currentBalance },
                     format: .currency(
-                        code: Locale.current.currency?.identifier ?? "USD")
+                        code: Locale.current.currency?.identifier ?? "USD"
+                    )
                 )
                 .font(.headline)
                 .foregroundStyle(.secondary)
@@ -83,7 +84,8 @@ struct Dashboard_FullSummaryView: View {
                 Text(
                     accounts.reduce(Decimal(0)) { $0 + $1.outstandingBalance },
                     format: .currency(
-                        code: Locale.current.currency?.identifier ?? "USD")
+                        code: Locale.current.currency?.identifier ?? "USD"
+                    )
                 )
                 .font(.headline)
                 .foregroundStyle(.secondary)
@@ -95,14 +97,18 @@ struct Dashboard_FullSummaryView: View {
             RoundedRectangle(cornerRadius: 20)
                 .stroke(
                     Color(
-                        .sRGB, red: 200 / 255, green: 200 / 255,
-                        blue: 200 / 255, opacity: 0.9
-                    ))
+                        .sRGB,
+                        red: 200 / 255,
+                        green: 200 / 255,
+                        blue: 200 / 255,
+                        opacity: 0.9
+                    )
+                )
         )
         .contentShape(Rectangle())
-#if os(macOS)
+        #if os(macOS)
             .padding(.all, 10)
-#endif
+        #endif
     }
 }
 

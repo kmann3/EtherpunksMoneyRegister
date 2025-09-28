@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA6B2B492E893B9D003C3101 /* UUIDV7 in Frameworks */ = {isa = PBXBuildFile; productRef = AA6B2B482E893B9D003C3101 /* UUIDV7 */; };
 		AA9DFF692D42336C000FE204 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = AA9DFF682D42336C000FE204 /* SQLite */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA6B2B492E893B9D003C3101 /* UUIDV7 in Frameworks */,
 				AA9DFF692D42336C000FE204 /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,6 +129,7 @@
 			name = EtherpunksMoneyRegister.v15;
 			packageProductDependencies = (
 				AA9DFF682D42336C000FE204 /* SQLite */,
+				AA6B2B482E893B9D003C3101 /* UUIDV7 */,
 			);
 			productName = EtherpunksMoneyRegister.v15;
 			productReference = AAE200312D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15.app */;
@@ -206,6 +209,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				AA9DFF672D423361000FE204 /* XCRemoteSwiftPackageReference "SQLite" */,
+				AA6B2AAF2E893804003C3101 /* XCRemoteSwiftPackageReference "swift-uuidv7" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AAE200322D3F70FB00480DB6 /* Products */;
@@ -295,6 +299,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EtherpunksMoneyRegister.v15/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -336,6 +341,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EtherpunksMoneyRegister.v15/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -609,6 +615,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		AA6B2AAF2E893804003C3101 /* XCRemoteSwiftPackageReference "swift-uuidv7" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mhayes853/swift-uuidv7";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.0;
+			};
+		};
 		AA9DFF672D423361000FE204 /* XCRemoteSwiftPackageReference "SQLite" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
@@ -620,6 +634,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		AA6B2B482E893B9D003C3101 /* UUIDV7 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AA6B2AAF2E893804003C3101 /* XCRemoteSwiftPackageReference "swift-uuidv7" */;
+			productName = UUIDV7;
+		};
 		AA9DFF682D42336C000FE204 /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AA9DFF672D423361000FE204 /* XCRemoteSwiftPackageReference "SQLite" */;

@@ -16,29 +16,23 @@ struct Dashboard_RecurringItemView: View {
             HStack {
                 Text(recurringItem.name)
                     .frame(maxWidth: 200, alignment: .leading)
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(Color.primary)
                 Spacer()
                 Text(recurringItem.nextDueDate?.toSummaryDateMMMDEEE() ?? "")
                     .frame(maxWidth: 200, alignment: .center)
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(Color.primary)
                 Spacer()
                 Text(
                     recurringItem.amount.toDisplayString()
                 )
                 .frame(maxWidth: 150, alignment: .trailing)
-                .foregroundStyle(Color.white)
+                .foregroundStyle(Color.primary)
             }
         }
-        #if os(macOS)
-        .background(Color.black.opacity(0.91))
-        #endif
-        #if os(iOS)
-        .background(Color.clear)
-        #endif
         .contentShape(Rectangle())
-        #if os(macOS)
-            .padding(.all, 1)
-        #endif
+#if os(macOS)
+        .padding(.all, 1)
+#endif
     }
 }
 

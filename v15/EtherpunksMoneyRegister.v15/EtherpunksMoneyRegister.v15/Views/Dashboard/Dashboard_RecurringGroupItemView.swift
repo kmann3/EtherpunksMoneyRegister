@@ -15,9 +15,10 @@ struct Dashboard_RecurringGroupView: View {
         Button(action: action) {
             VStack {
                 Text("Group: \(recurringGroup.name)")
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(Color.primary)
                     .frame(alignment: .leading)
                     .padding(.bottom, 5)
+                    .font(.title2)
                 Divider()
 
                 if recurringGroup.recurringTransactions != nil {
@@ -26,7 +27,8 @@ struct Dashboard_RecurringGroupView: View {
                     ) { recurringTransaction in
                         HStack {
                             Text("\t - \(recurringTransaction.name) [\(recurringTransaction.nextDueDate?.toSummaryDateMMMDD() ?? "")]")
-                                .foregroundStyle(Color.white)
+                                .foregroundStyle(Color.primary)
+                                .font(.title3)
 
                             Spacer()
                         }
@@ -36,12 +38,6 @@ struct Dashboard_RecurringGroupView: View {
                 }
             }
         }
-        #if os(macOS)
-        .background(Color.black)
-        #endif
-        #if os(iOS)
-        .background(Color.clear)
-        #endif
         .contentShape(Rectangle())
         #if os(macOS)
             .padding(.all, 1)

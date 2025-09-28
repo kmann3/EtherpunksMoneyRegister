@@ -44,6 +44,10 @@ class Previewer {
     public let billGroup: RecurringGroup
     public var discordRecurringTransaction: RecurringTransaction
     public var verizonRecurringTransaction: RecurringTransaction
+    public var incomeRecurringTransaction: RecurringTransaction
+
+    // Fake Recurring TRansactions that are intermentent
+    public var pestControlRecurringTransaction: RecurringTransaction
 
     // Fake attachments
 
@@ -169,6 +173,32 @@ class Previewer {
             data: Data(),
             isTaxRelated: true,
             accountTransaction: self.cvsTransaction
+        )
+
+        pestControlRecurringTransaction = RecurringTransaction(
+            id: UUID(uuidString: "12283638-eab1-4689-85dd-7b542ca55ecb")!,
+            name: "Pest Control Inc",
+            transactionType: TransactionType.debit,
+            amount: 104.00,
+            defaultAccount: bankAccount,
+            notes: "",
+            transactionTags: [billsTag],
+            recurringGroup: nil,
+            frequency: .xmonths,
+            frequencyValue: 3
+        )
+
+        incomeRecurringTransaction = RecurringTransaction(
+            id: UUID(uuidString: "12283638-eca1-4689-85dd-7b542ca55ecb")!,
+            name: "My Job",
+            transactionType: TransactionType.credit,
+            amount: 2145.00,
+            defaultAccount: bankAccount,
+            notes: "",
+            transactionTags: [incomeTag],
+            recurringGroup: nil,
+            frequency: .monthly,
+            frequencyValue: 1
         )
 
         Task {

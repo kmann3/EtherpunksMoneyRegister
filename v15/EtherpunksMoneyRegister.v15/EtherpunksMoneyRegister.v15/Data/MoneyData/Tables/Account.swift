@@ -8,10 +8,11 @@
 import Foundation
 import SwiftData
 import SwiftUI
+import UUIDV7
 
 @Model
 final class Account: ObservableObject, CustomDebugStringConvertible, Identifiable, Hashable {
-    @Attribute(.unique) public var id: String = UUID().uuidString
+    @Attribute(.unique) public var id: String = UUIDV7().uuidString
     public var name: String = ""
     public var startingBalance: Decimal = 0
     public var currentBalance: Decimal = 0
