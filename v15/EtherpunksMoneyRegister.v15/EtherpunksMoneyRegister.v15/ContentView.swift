@@ -40,25 +40,29 @@ struct ContentView: View {
                     Text("Search")
                 }
 
-                Text("")
-
-                HStack {
-                    Text("Accounts")
-                    Spacer()
-                    Button {
-                        self.changeRoute(.account_Create)
-                    } label: {
-                        Text("+")
-                    }
-                }
-
                 Divider()
 
-                ForEach(self.viewModel.accounts, id: \.id) { account in
-                    NavigationLink(value: PathStore.Route.transaction_List(account: account)) {
-                        Text(account.name)
+                Section(header: Text("Accounts")) {
+                    Button("New Account"){
+                        self.changeRoute(.account_Create)
+                    }
+
+                    ForEach(self.viewModel.accounts, id: \.id) { account in
+                        HStack {
+                            NavigationLink(value: PathStore.Route.transaction_List(account: account)) {
+                                Text(account.name)
+                            }
+                            Spacer()
+                            Button("Add Transaction", systemImage: "plus.circle"){
+                                // Popup menu for adding credit/debit transaction
+                            }
+
+                            .labelStyle(.iconOnly)
+                            .buttonStyle(.plain)
+                        }
                     }
                 }
+                .headerProminence(.increased)
             }
             .navigationSplitViewColumnWidth(200)
         } content: {

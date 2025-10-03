@@ -31,6 +31,7 @@ struct DashboardView: View {
                     }
                     .frame(minWidth: 300, maxWidth: 300)
                     .border(.gray)
+
                     Spacer()
 
                     VStack {
@@ -47,7 +48,6 @@ struct DashboardView: View {
                             }
                         }
                         .border(.gray)
-
 
                         List {
                             Section(header: Text("Pending Transactions")) {
