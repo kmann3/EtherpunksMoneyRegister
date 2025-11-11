@@ -20,7 +20,7 @@ struct Dashboard_FullSummaryView: View {
                 Text("Full Summary")
                     .frame(maxWidth: .infinity, alignment: .center)
                     .font(.title2)
-                    .foregroundStyle(.yellow)
+                    .foregroundStyle(.gray)
                     .padding(
                         EdgeInsets(
                             .init(top: 2, leading: 0, bottom: 5, trailing: 0)

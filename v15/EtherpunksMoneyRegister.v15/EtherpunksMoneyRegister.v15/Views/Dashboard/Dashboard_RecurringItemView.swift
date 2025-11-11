@@ -11,6 +11,19 @@ struct Dashboard_RecurringItemView: View {
     var recurringItem: RecurringTransaction
     var action: () -> Void
 
+    var bgColor: Color = Color.clear
+
+    init(recurringItem: RecurringTransaction, action: @escaping () -> Void) {
+        self.recurringItem = recurringItem
+        self.action = action
+
+        if self.recurringItem.transactionType == .debit {
+            self.bgColor = Color.brown.opacity(0.6)
+        } else {
+            self.bgColor = Color.green.opacity(0.5)
+        }
+    }
+    
     var body: some View {
         Button(action: action) {
             HStack {
@@ -29,7 +42,11 @@ struct Dashboard_RecurringItemView: View {
                 .foregroundStyle(Color.primary)
             }
         }
-        .contentShape(Rectangle())
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(self.bgColor)
+        )
+        .contentShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
 #if os(macOS)
         .padding(.all, 1)
 #endif
@@ -38,6 +55,7 @@ struct Dashboard_RecurringItemView: View {
 
 #Preview("Unselected") {
     Dashboard_RecurringItemView(recurringItem: Previewer().discordRecurringTransaction, action: {})
+    
 }
 
 #Preview("Selected") {

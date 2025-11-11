@@ -19,7 +19,7 @@ struct Dashboard_TransactionItemView: View {
     var body: some View {
         Button(action: action) {
             VStack {
-                HStack(spacing: 0) {
+                HStack(spacing: 1) {
                     if transaction.balancedOnUTC != nil {
                         Text(Image(systemName: "checkmark.seal"))
                             .font(.caption2)
@@ -81,8 +81,11 @@ struct Dashboard_TransactionItemView: View {
                 }
             }
         }
-        .background(transaction.backgroundColor)
-        .contentShape(Rectangle())
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(transaction.backgroundColor)
+        )
+        .contentShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
 #if os(macOS)
         .padding(.all, 1)
 #endif

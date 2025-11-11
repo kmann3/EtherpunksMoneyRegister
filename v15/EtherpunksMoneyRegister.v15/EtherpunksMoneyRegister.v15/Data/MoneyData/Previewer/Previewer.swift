@@ -14,7 +14,7 @@ import SwiftUI
 class Previewer {
     public let bankAccount: Account = Account(
         id: UUID(uuidString: "12345678-1234-1234-1234-123456789abc")!,
-        name: "Chase Bank",
+        name: "Fake Bank",
         startingBalance: 2062.00,
         currentBalance: 2062.00,
         outstandingBalance: 0.0,
@@ -190,7 +190,7 @@ class Previewer {
 
         incomeRecurringTransaction = RecurringTransaction(
             id: UUID(uuidString: "12283638-eca1-4689-85dd-7b542ca55ecb")!,
-            name: "My Job",
+            name: "My Job (being a super hero by night, professional gamer by day)",
             transactionType: TransactionType.credit,
             amount: 2145.00,
             defaultAccount: bankAccount,
@@ -440,6 +440,22 @@ class Previewer {
         Previewer.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: modelContext)
 
         modelContext.insert(cvsAttachmentFile)
+
+        // Let's add some temp fake data
+        for i in 1...10 {
+            let newTran = verizonReservedTransaction.Clone()
+            newTran.name = "Verizon Clone \(i.datatypeValue)"
+            modelContext.insert(newTran)
+            Previewer.insertTransaction(account: bankAccount, transaction: newTran, context: modelContext)
+        }
+
+        for i in 1...10 {
+            let newTran = huluPendingTransaction.Clone()
+            newTran.name = "Hulu Clone \(i.datatypeValue)"
+            modelContext.insert(newTran)
+            Previewer.insertTransaction(account: bankAccount, transaction: newTran, context: modelContext)
+        }
+
 
         importTestRecurringData(modelContext: modelContext)
 

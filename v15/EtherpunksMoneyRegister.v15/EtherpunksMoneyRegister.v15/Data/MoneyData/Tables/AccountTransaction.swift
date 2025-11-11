@@ -198,4 +198,28 @@ final class AccountTransaction: ObservableObject, CustomDebugStringConvertible, 
             self.amount = -abs(self.amount)
         }
     }
+
+    
+    /// Clones the current account transaction
+    /// This is primarily used for creating fake data and should not use used in production
+    /// - Returns: Returns a new account transaction similar to this one. EXCEPT no files are copied. It will have ZERO files.
+    func Clone() -> AccountTransaction {
+        return AccountTransaction(
+            account: self.account,
+            name: self.name,
+            transactionType: self.transactionType,
+            amount: self.amount,
+            balance: self.balance,
+            notes: self.notes,
+            confirmationNumber: self.confirmationNumber,
+            isTaxRelated: self.isTaxRelated,
+            fileCount: 0,
+            transactionTags: self.transactionTags,
+            recurringTransaction: self.recurringTransaction,
+            dueDate: self.dueDate,
+            pendingOnUTC: self.pendingOnUTC,
+            clearedOnUTC: self.clearedOnUTC,
+            balancedOnUTC: self.balancedOnUTC
+        )
+    }
 }

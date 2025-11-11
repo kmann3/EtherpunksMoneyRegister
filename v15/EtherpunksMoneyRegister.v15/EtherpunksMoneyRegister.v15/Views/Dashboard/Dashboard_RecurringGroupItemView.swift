@@ -11,6 +11,19 @@ struct Dashboard_RecurringGroupView: View {
     var recurringGroup: RecurringGroup
     var action: () -> Void
 
+    var bgColor: Color = Color.clear
+
+    init(recurringGroup: RecurringGroup, action: @escaping () -> Void) {
+        self.recurringGroup = recurringGroup
+        self.action = action
+
+        if self.recurringGroup.recurringTransactions![0].transactionType == .debit {
+            self.bgColor = Color.brown.opacity(0.6)
+        } else {
+            self.bgColor = Color.green.opacity(0.5)
+        }
+    }
+
     var body: some View {
         Button(action: action) {
             VStack {
@@ -38,7 +51,11 @@ struct Dashboard_RecurringGroupView: View {
                 }
             }
         }
-        .contentShape(Rectangle())
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(self.bgColor)
+        )
+        .contentShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         #if os(macOS)
             .padding(.all, 1)
         #endif
