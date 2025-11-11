@@ -94,10 +94,26 @@ final class MoneyDataSource: Sendable {
         }
     }
 
-    func fetchAccountTransactions(account: Account) -> [AccountTransaction] {
+    func fetchAccountTransactions(account: Account) -> (transactions: [AccountTransaction], remainingTransactionsCount: Int) {
         let id = account.id
         do {
-            return try modelContext.fetch(FetchDescriptor<AccountTransaction>(
+            var descriptor = FetchDescriptor<AccountTransaction>(
+                predicate: #Predicate<AccountTransaction> { transaction in
+                    if transaction.accountId == id {
+                        return true
+                    } else {
+                        return false
+                    }
+                },
+                sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
+            )
+            descriptor.fetchLimit = 1000
+
+            let results = try modelContext.fetch(descriptor)
+            let totalCountRequest = NSFetchRequest<NSNumber>(entityName: "AccountTransaction")
+            totalCountRequest.resultType = .countResultType
+
+            let totalCount = try modelContext.fetchCount(FetchDescriptor<AccountTransaction>(
                 predicate: #Predicate<AccountTransaction> { transaction in
                     if transaction.accountId == id {
                         return true
@@ -107,6 +123,14 @@ final class MoneyDataSource: Sendable {
                 },
                 sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
             ))
+
+            if totalCount > results.count {
+                // more records available
+                return (results, totalCount-results.count)
+            } else {
+                // No more records
+                return (results, 0)
+            }
         } catch {
             fatalError(error.localizedDescription)
         }
@@ -406,7 +430,6 @@ final class MoneyDataSource: Sendable {
                     item.accountTransaction.recurringTransaction = item.recurringTransaction
                     item.accountTransaction.balance! += item.recurringTransaction.amount
                     item.accountTransaction.VerifySignage()
-                    item.accountTransaction.createdOnUTC = Date()
 
                     modelContext.insert(item.accountTransaction)
                 case .ignore:

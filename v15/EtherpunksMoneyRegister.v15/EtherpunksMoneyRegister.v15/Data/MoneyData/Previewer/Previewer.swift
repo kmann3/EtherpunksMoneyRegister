@@ -431,6 +431,7 @@ class Previewer {
         modelContext.insert(medicalTag)
         modelContext.insert(pharmacyTag)
         modelContext.insert(streamingTag)
+
         Previewer.insertTransaction(account: bankAccount, transaction: burgerKingTransaction, context: modelContext)
         Previewer.insertTransaction(account: bankAccount, transaction: cvsTransaction, context: modelContext)
         Previewer.insertTransaction(account: bankAccount, transaction: discordTransaction, context: modelContext)
@@ -445,17 +446,20 @@ class Previewer {
         for i in 1...10 {
             let newTran = verizonReservedTransaction.Clone()
             newTran.name = "Verizon Clone \(i.datatypeValue)"
-            modelContext.insert(newTran)
             Previewer.insertTransaction(account: bankAccount, transaction: newTran, context: modelContext)
         }
 
         for i in 1...10 {
             let newTran = huluPendingTransaction.Clone()
             newTran.name = "Hulu Clone \(i.datatypeValue)"
-            modelContext.insert(newTran)
             Previewer.insertTransaction(account: bankAccount, transaction: newTran, context: modelContext)
         }
 
+        /*for i in 1...2000 {
+            let newTran = burgerKingTransaction.Clone()
+            newTran.name = "Burger King Clone \(i.datatypeValue)"
+            Previewer.insertTransaction(account: bankAccount, transaction: newTran, context: modelContext)
+        }*/
 
         importTestRecurringData(modelContext: modelContext)
 

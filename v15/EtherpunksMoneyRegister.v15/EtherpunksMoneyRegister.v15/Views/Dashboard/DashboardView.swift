@@ -41,6 +41,14 @@ struct DashboardView: View {
                                     Dashboard_TransactionItemView(transaction: reserved) {
 
                                     }
+                                    .contextMenu {
+                                        Button(
+                                            action: {
+                                                print("ID: \(reserved.persistentModelID)")
+                                            },
+                                            label: { Label("Edit: \(reserved.name)", systemImage: "icon") }
+                                        )
+                                    }
 //                                        .onTapGesture {
 //                                            handler(PathStore.Route.transaction_Detail(transaction: reserved))
 //                                        }

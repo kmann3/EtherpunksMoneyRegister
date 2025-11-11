@@ -28,7 +28,7 @@ struct AccountTransactionListView: View {
                                 handler(PathStore.Route.account_Details(account: self.viewModel.account!))
                             }
                     }
-                    Section(header: Text("Transactions"), footer: Text("End of list")) {
+                    Section(header: Text("Transactions"), footer: Text(self.viewModel.endOfListText)) {
                         ForEach(self.viewModel.accountTransactions, id: \.id) { tran in
                             TransactionListItemView(transaction: tran)
                                 .onTapGesture { _ in

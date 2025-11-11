@@ -103,8 +103,14 @@ extension Date {
     func toDebugDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
-        dateFormatter.setLocalizedDateFormatFromTemplate(
-            "EEE, dd MMM yyyy HH:mm:ssZ")
+        dateFormatter.setLocalizedDateFormatFromTemplate("EEE, dd MMM yyyy HH:mm:ss.SSSZ")
+        return dateFormatter.string(from: self)
+    }
+
+    func toIdDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.dateFormat = "yyyy.MM.dd.HH.mm.ss.SSS"
         return dateFormatter.string(from: self)
     }
 }
