@@ -66,7 +66,7 @@ class Previewer {
 
 
         // Recurring Groups
-        billGroup = RecurringGroup(name: "Bills")
+        billGroup = RecurringGroup(name: "Monthly Bills")
 
         // BURGER KING
         burgerKingTransaction = AccountTransaction(
@@ -97,7 +97,7 @@ class Previewer {
         // DISCORD
         discordRecurringTransaction = RecurringTransaction(
             id: UUID(uuidString: "75696d00-50a8-40af-8c00-14b5e4245920")!,
-            name: "Discord",
+            name: "Discord2",
             transactionType: .debit,
             amount: -13.99,
             defaultAccount: bankAccount,
@@ -140,7 +140,7 @@ class Previewer {
         // VERIZON
         verizonRecurringTransaction = RecurringTransaction(
             id: UUID(uuidString: "12283638-eaa1-4689-85dd-7b542ca55ecb")!,
-            name: "Verizon",
+            name: "Verizon2",
             transactionType: TransactionType.debit,
             amount: 104.00,
             defaultAccount: bankAccount,
@@ -150,6 +150,11 @@ class Previewer {
             frequency: .monthly,
             frequencyValue: 28
         )
+        
+//        recurringTransaction.frequency = .monthly
+//        recurringTransaction.frequencyValue = Int(row[frequencyValueCol]!)
+//        recurringTransaction.nextDueDate = getNextDueDate(day: row[frequencyValueCol]!)
+        //try! verizonRecurringTransaction.BumpNextDueDate()
 
         verizonReservedTransaction = AccountTransaction(
             account: bankAccount,
@@ -210,8 +215,8 @@ class Previewer {
             }
         }
 
-        discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
-        verizonRecurringTransaction.nextDueDate = getNextDueDate(day: 28)
+        //discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
+        //verizonRecurringTransaction.nextDueDate = getNextDueDate(day: 28)
 
         print("Done generating data at \(Date().toDebugDate())")
         print("Main account id: \(bankAccount.id)")
@@ -278,12 +283,14 @@ class Previewer {
                 if(row[groupNameCol] != nil) {
                     if(row[groupNameCol] == "bills") {
                         recurringTransaction.recurringGroup = billGroup
-                        if recurringTransaction.name != "Discord" && recurringTransaction.name != "Verizon" {
+                        //if recurringTransaction.name != "Discord" && recurringTransaction.name != "Verizon" {
                             // For some reason if I assign the transaction tags again it causes Swift to crash
                             recurringTransaction.transactionTags = [billsTag]
-                        }
+                        //}
 
                         billGroup.recurringTransactions?.append(recurringTransaction)
+                    } else {
+                        // It's probably not a monthly bill - like an annual thing like Bitwarden or something
                     }
                 } else {
                     recurringTransaction.recurringGroup = nil
@@ -323,10 +330,21 @@ class Previewer {
 
                 switch row[nameCol] {
                 case "Discord":
+                    print("\(discordRecurringTransaction.name) w/ recurring: \(recurringTransaction.name)")
                     discordRecurringTransaction = recurringTransaction
+                    print("\(discordRecurringTransaction.name) w/ recurring: \(recurringTransaction.name)")
+                    discordTransaction.recurringTransaction = recurringTransaction
+                    discordTransaction.recurringTransactionId = recurringTransaction.id
+                    discordRecurringTransaction.transactions = [discordTransaction]
+                    Previewer.insertTransaction(account: bankAccount, transaction: discordTransaction, context: modelContext)
+                    modelContext.insert(discordRecurringTransaction)
                     break
                 case "Verizon":
                     verizonRecurringTransaction = recurringTransaction
+                    verizonReservedTransaction.recurringTransaction = recurringTransaction
+                    verizonReservedTransaction.recurringTransactionId = recurringTransaction.id
+                    Previewer.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: modelContext)
+                    modelContext.insert(verizonRecurringTransaction)
                     break
                 default:
                     modelContext.insert(recurringTransaction)
@@ -343,6 +361,7 @@ class Previewer {
     }
 
     private func calculateDateFromMMDD(mmdd: String) -> Date {
+        // Expect string to be in mmdd format. For example January first would be 01/01
         let calendar = Calendar.current
         
         var components = calendar.dateComponents(
@@ -434,11 +453,11 @@ class Previewer {
 
         Previewer.insertTransaction(account: bankAccount, transaction: burgerKingTransaction, context: modelContext)
         Previewer.insertTransaction(account: bankAccount, transaction: cvsTransaction, context: modelContext)
-        Previewer.insertTransaction(account: bankAccount, transaction: discordTransaction, context: modelContext)
-        modelContext.insert(discordRecurringTransaction)
+        //Previewer.insertTransaction(account: bankAccount, transaction: discordTransaction, context: modelContext)
+        //modelContext.insert(discordRecurringTransaction)
         Previewer.insertTransaction(account: bankAccount, transaction: huluPendingTransaction, context: modelContext)
-        modelContext.insert(verizonRecurringTransaction)
-        Previewer.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: modelContext)
+        //modelContext.insert(verizonRecurringTransaction)
+        //Previewer.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: modelContext)
 
         modelContext.insert(cvsAttachmentFile)
 

@@ -9,13 +9,20 @@
 import Foundation
 import SwiftUI
 
+/*
+ NavigationPath persistence is currently unused because the app uses NavigationSplitView
+ with an explicit NavigationState. The persistence code is being disabled to avoid confusion.
+*/
+
 @Observable
 class PathStore {
+    /*
     var path: NavigationPath {
         didSet {
             save()
         }
     }
+    */
 
     var selectedTab: MenuOptionsEnum = .dashboard
 
@@ -67,6 +74,7 @@ class PathStore {
         }
     }
 
+    /*
     private let savePath = URL.documentsDirectory.appending(path: "SavedPath")
 
     init() {
@@ -108,4 +116,5 @@ class PathStore {
     public func navigateTo(route: Route) {
         path.append(route)
     }
+    */
 }

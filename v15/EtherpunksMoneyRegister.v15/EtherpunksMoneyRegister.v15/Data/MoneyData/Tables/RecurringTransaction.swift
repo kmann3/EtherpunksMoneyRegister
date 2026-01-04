@@ -45,7 +45,7 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
             - amount: \(amount)
             - notes: \(notes)
             - isTaxRelated: \(isTaxRelated)
-            - dueDate: \(nextDueDate?.toDebugDate() ?? "nil")
+            - nextDueDate: \(nextDueDate?.toDebugDate() ?? "nil")
             - recurringGroup: \(String(describing: recurringGroup))
             - frequency: \(frequency)
             - frequencyValue: \(String(describing: frequencyValue))
@@ -90,6 +90,8 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
         self.frequencyDateValue = frequencyDateValue
 
         self.transactionType = transactionType
+        
+        try! self.StartFirstDueDate()
 
         self.VerifySignage()
     }
@@ -104,12 +106,42 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
         case missingFrequencyValues
         case missingNextDueDate
     }
+    
+    private func StartFirstDueDate()  throws {
+        if self.nextDueDate != nil {
+            return
+        }
+        
+        switch self.frequency {
+        case .unknown, .irregular:
+            break
+        case .yearly:
+            break
+        case .monthly:
+            // TBI: Test what happens if the date is the 31's but next month has 28 or 30 days in it
+            self.nextDueDate = self.getNextDueDateMonthly(day: self.frequencyValue!)
+        case .weekly:
+            break
+        case .xdays:
+            if self.frequencyValue == nil {
+                throw BumpDateError.missingFrequencyValues
+            }
+            break
+        case .xmonths:
+            if self.frequencyValue == nil {
+                throw BumpDateError.missingFrequencyValues
+            }
+            break
+        case .xweekOnYDayOfWeek:
+            break
+        }
+    }
 
     public func BumpNextDueDate() throws {
         if self.nextDueDate == nil {
             throw BumpDateError.missingNextDueDate
         }
-
+        
         let calendar = Calendar.current
 
         switch self.frequency {
@@ -155,6 +187,31 @@ final class RecurringTransaction: ObservableObject, CustomDebugStringConvertible
             self.nextDueDate = calendar.date(
                 byAdding: .day, value: difference, to: startOfMonth!)
         }
+    }
+    
+    private func getNextDueDateXMonths(day: Int, months: Int) -> Date {
+        return getNextDueDateMonthly(day: day, addMonths: months)
+    }
+    
+    private func getNextDueDateMonthly(day: Int, addMonths: Int = 0) -> Date {
+        let calendar = Calendar.current
+
+        let currentComponents = calendar.dateComponents(
+            [.year, .month, .day], from: Date())
+
+        var monthsToAdd = 0
+
+        if currentComponents.day! > 16 {
+            monthsToAdd = 1
+        }
+
+        var components = calendar.dateComponents(
+            [.year, .month, .day], from: Date())
+        components.month! += monthsToAdd
+        components.day = day
+
+        let date = calendar.date(from: components)
+        return date!
     }
 
     private func VerifySignage() {
