@@ -34,9 +34,22 @@
 		AAE2004F2D3F70FD00480DB6 /* EtherpunksMoneyRegister.v15UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EtherpunksMoneyRegister.v15UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AAD5118B2F2CFD15005B97FE /* Exceptions for "EtherpunksMoneyRegister.v15" folder in "EtherpunksMoneyRegister.v15" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = AAE200302D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15 */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AAE200332D3F70FB00480DB6 /* EtherpunksMoneyRegister.v15 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AAD5118B2F2CFD15005B97FE /* Exceptions for "EtherpunksMoneyRegister.v15" folder in "EtherpunksMoneyRegister.v15" target */,
+			);
 			path = EtherpunksMoneyRegister.v15;
 			sourceTree = "<group>";
 		};
@@ -283,6 +296,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"EtherpunksMoneyRegister.v15/Preview Content\"";
+				DEVELOPMENT_TEAM = SNH2E6X8CL;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readwrite;
 				ENABLE_HARDENED_RUNTIME = YES;

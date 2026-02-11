@@ -70,13 +70,10 @@ struct SidebarPreviewContainer: View {
 
 struct SidebarPreviewWithMockAccount: View {
     @State var selection: PathStore.Route? = .dashboard
-    let accounts: [Account] = [
-        Previewer().bankAccount
-    ]
     var body: some View {
         SidebarView(
             selection: $selection,
-            accounts: accounts,
+            accounts: [MoneyDataSource.shared.previewer.bankAccount],
             onAction: { _ in }
         )
         .frame(width: 280, height: 600)

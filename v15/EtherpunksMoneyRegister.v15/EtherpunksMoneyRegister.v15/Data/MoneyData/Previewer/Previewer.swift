@@ -462,17 +462,17 @@ class Previewer {
         modelContext.insert(cvsAttachmentFile)
 
         // Let's add some temp fake data
-        for i in 1...10 {
-            let newTran = verizonReservedTransaction.Clone()
-            newTran.name = "Verizon Clone \(i.datatypeValue)"
-            Previewer.insertTransaction(account: bankAccount, transaction: newTran, context: modelContext)
-        }
-
-        for i in 1...10 {
-            let newTran = huluPendingTransaction.Clone()
-            newTran.name = "Hulu Clone \(i.datatypeValue)"
-            Previewer.insertTransaction(account: bankAccount, transaction: newTran, context: modelContext)
-        }
+//        for i in 1...10 {
+//            let newTran = verizonReservedTransaction.Clone()
+//            newTran.name = "Verizon Clone \(i.datatypeValue)"
+//            Previewer.insertTransaction(account: bankAccount, transaction: newTran, context: modelContext)
+//        }
+//
+//        for i in 1...10 {
+//            let newTran = huluPendingTransaction.Clone()
+//            newTran.name = "Hulu Clone \(i.datatypeValue)"
+//            Previewer.insertTransaction(account: bankAccount, transaction: newTran, context: modelContext)
+//        }
 
         /*for i in 1...2000 {
             let newTran = burgerKingTransaction.Clone()

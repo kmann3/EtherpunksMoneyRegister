@@ -13,10 +13,11 @@ struct EtherpunksMoneyRegister_v15App: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-#if os(macOS)
-                .frame(minWidth: 1100, minHeight: 750)
-#endif
         }
+        #if os(macOS)
+        .defaultSize(width: 1200, height: 750)
+        .windowResizability(.contentMinSize)
+        #endif
         .modelContainer(MoneyDataSource.shared.modelContainer)
 
     }

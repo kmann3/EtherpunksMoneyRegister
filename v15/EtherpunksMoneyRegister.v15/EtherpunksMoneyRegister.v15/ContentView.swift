@@ -137,6 +137,7 @@ struct NavigationState {
 struct ContentView: View {
     @State var viewModel = ViewModel()
     @State private var nav = NavigationState()
+    @State private var presentedRecurringTransaction: RecurringTransaction?
 
     @ViewBuilder
     private func contentView(for route: PathStore.Route) -> some View {
@@ -163,7 +164,8 @@ struct ContentView: View {
         case .recurringTransaction_Create_FromTran(let tran):
             Text("TBI - Recurring Transaction Create From Transaction: \(tran.name)")
         case .recurringTransaction_Details(let recTran):
-            RecurringTransactionDetailView(recTran) { action in self.changeRoute(action) }
+            // Detail is shown via popup; keep content column stable
+            Text(recTran.name)
         case .recurringTransaction_Edit(let recTran):
             Text("TBI - Recurring Transaction Edit: \(recTran.name)")
         case .recurringTransaction_List(let recTran):
@@ -219,9 +221,8 @@ struct ContentView: View {
         case .recurringTransaction_Create: Text("TBI - Recurring Transaction Create")
         case .recurringTransaction_Create_FromTran(let tranID): Text("TBI - Recurring Transaction Create From Transaction: \(tranID.name)")
         case .recurringTransaction_Details(let recTran):
-            RecurringTransactionDetailView(recTran) { action in
-                self.changeRoute(action)
-            }
+            // Detail is shown via popup; keep detail column stable
+            Text(recTran.name)
         case .recurringTransaction_Edit(let recTran):
             Text("TBI - Recurring Transaction Edit: \(recTran.name)")
         case .recurringTransaction_List(let recTran):
@@ -275,6 +276,12 @@ struct ContentView: View {
                 break
             }
         }
+        .sheet(item: $presentedRecurringTransaction) { recTran in
+            RecurringTransactionDetailView(recTran) { action in
+                // Allow actions inside the sheet to drive routing
+                self.changeRoute(action)
+            }
+        }
         //.padding(20)
         .frame(
             minWidth: 1200, maxWidth: .infinity, minHeight: 750,
@@ -282,6 +289,10 @@ struct ContentView: View {
     }
 
     func changeRoute(_ route: PathStore.Route) {
+        if case .recurringTransaction_Details(let recTran) = route {
+            self.presentedRecurringTransaction = recTran
+            return
+        }
         self.nav.apply(route)
     }
 }

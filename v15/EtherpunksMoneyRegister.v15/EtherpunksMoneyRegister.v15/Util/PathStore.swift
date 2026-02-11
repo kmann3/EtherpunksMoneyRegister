@@ -118,3 +118,84 @@ class PathStore {
     }
     */
 }
+extension PathStore.Route: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .account_Create:
+            return "account_Create"
+        case .account_Details(let account):
+            return "account_Details(\(account.id))"
+        case .account_Edit(let account):
+            return "account_Edit(\(account.id))"
+        case .account_List:
+            return "account_List"
+
+        case .dashboard:
+            return "dashboard"
+
+        case .recurringGroup_Create:
+            return "recurringGroup_Create"
+        case .recurringGroup_Details(let recGroup):
+            return "recurringGroup_Details(\(recGroup.id))"
+        case .recurringGroup_Edit(let recGroup):
+            return "recurringGroup_Edit(\(recGroup.id))"
+        case .recurringGroup_List(let recGroup):
+            if let recGroup = recGroup {
+                return "recurringGroup_List(\(recGroup.id))"
+            } else {
+                return "recurringGroup_List(nil)"
+            }
+        case .recurringGroup_Reserve(let recGroup):
+            return "recurringGroup_Reserve(\(recGroup.id))"
+
+        case .recurringTransaction_Create:
+            return "recurringTransaction_Create"
+        case .recurringTransaction_Create_FromTran(let tran):
+            return "recurringTransaction_Create_FromTran(\(tran.id))"
+        case .recurringTransaction_Details(let recTran):
+            return "recurringTransaction_Details(\(recTran.id))"
+        case .recurringTransaction_Edit(let recTran):
+            return "recurringTransaction_Edit(\(recTran.id))"
+        case .recurringTransaction_List(let recTran):
+            if let recTran = recTran {
+                return "recurringTransaction_List(\(recTran.id))"
+            } else {
+                return "recurringTransaction_List(nil)"
+            }
+        case .recurringTransaction_Reserve(let recTran):
+            return "recurringTransaction_Reserve(\(recTran.id))"
+
+        case .report_Tax:
+            return "report_Tax"
+
+        case .search:
+            return "search"
+
+        case .settings:
+            return "settings"
+
+        case .tag_Create:
+            return "tag_Create"
+        case .tag_Details(let tag):
+            return "tag_Details(\(tag.id))"
+        case .tag_Edit(let tag):
+            return "tag_Edit(\(tag.id))"
+        case .tag_List(let tag):
+            if let tag = tag {
+                return "tag_List(\(tag.id))"
+            } else {
+                return "tag_List(nil)"
+            }
+
+        case .transaction_Create:
+            return "transaction_Create"
+        case .transaction_Detail(let transaction):
+            return "transaction_Detail(\(transaction.id))"
+        case .transaction_Edit(let transaction):
+            return "transaction_Edit(\(transaction.id))"
+        case .transaction_List(let account):
+            return "transaction_List(\(account.id))"
+        }
+    }
+}
+

@@ -41,10 +41,13 @@ struct DashboardView: View {
                                     Dashboard_TransactionItemView(transaction: reserved) {
 
                                     }
+                                    .onTapGesture {
+                                        handler(PathStore.Route.transaction_Edit(transaction: reserved))
+                                    }
                                     .contextMenu {
                                         Button(
                                             action: {
-                                                print("ID: \(reserved.persistentModelID)")
+                                                handler(PathStore.Route.transaction_Edit(transaction: reserved))
                                             },
                                             label: { Label("Edit: \(reserved.name)", systemImage: "icon") }
                                         )
@@ -64,9 +67,17 @@ struct DashboardView: View {
                                     {
                                         
                                     }
-//                                        .onTapGesture {
-//                                            handler(PathStore.Route.transaction_Detail(transaction: pending))
-//                                        }
+                                    .onTapGesture {
+                                        handler(PathStore.Route.transaction_Edit(transaction: pending))
+                                    }
+                                    .contextMenu {
+                                        Button(
+                                            action: {
+                                                handler(PathStore.Route.transaction_Edit(transaction: pending))
+                                            },
+                                            label: { Label("Edit: \(pending.name)", systemImage: "pencil") }
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -93,7 +104,7 @@ struct DashboardView: View {
                                             action: {
                                                 handler(PathStore.Route.recurringTransaction_Edit(recTran: creditItem))
                                             },
-                                            label: { Label("Edit: \(creditItem.name)", systemImage: "icon") }
+                                            label: { Label("Edit: \(creditItem.name)", systemImage: "pencil") }
                                         )
                                     }
                                 }
@@ -117,7 +128,7 @@ struct DashboardView: View {
                                                 action: {
                                                     handler(PathStore.Route.recurringGroup_Edit(recGroup: group))
                                                 },
-                                                label: { Label("Edit: \(group.name)", systemImage: "icon") }
+                                                label: { Label("Edit: \(group.name)", systemImage: "pencil") }
                                             )
                                         }
 
@@ -141,7 +152,7 @@ struct DashboardView: View {
                                             action: {
                                                 handler(PathStore.Route.recurringTransaction_Edit(recTran: debitItem))
                                             },
-                                            label: { Label("Edit: \(debitItem.name)", systemImage: "icon") }
+                                            label: { Label("Edit: \(debitItem.name)", systemImage: "pencil") }
                                         )
                                     }
                                 }
