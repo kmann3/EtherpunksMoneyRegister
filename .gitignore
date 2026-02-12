@@ -355,19 +355,8 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-/v6/MannsMoneyRegister/MannsMoneyRegister/MannsMoneyRegister/MMR.sqlite3-shm
-/v6/MannsMoneyRegister/MannsMoneyRegister/MannsMoneyRegister/MMR.sqlite3-wal
-/v7/MoneyRegister/MMR.sqlite3-shm
-/v7/MoneyRegister/MMR.sqlite3-wal
-/v7/MoneyRegister/MMR.sqlite3
 
-*.zip
-/v8-WPFMannsMoneyRegister/MMR.sqlite3-shm
-/v8-WPFMannsMoneyRegister/MMR.sqlite3-wal
 /v13/TestPlayground.playground
-v15/EtherpunksMoneyRegister.v15/EtherpunksMoneyRegister.v15.xcodeproj/project.xcworkspace/xcuserdata/kmann.xcuserdatad/UserInterfaceState.xcuserstate
-v16/EtherpunksMoneyRegister.v16/EtherpunksMoneyRegister.v16.xcodeproj/project.xcworkspace/xcuserdata/kmann.xcuserdatad/UserInterfaceState.xcuserstate
-v16/EtherpunksMoneyRegister.v16/EtherpunksMoneyRegister.v16.xcodeproj/project.xcworkspace/xcuserdata/kmann.xcuserdatad/UserInterfaceState.xcuserstate
-v15/EtherpunksMoneyRegister.v15/EtherpunksMoneyRegister.v15.xcodeproj/project.xcworkspace/xcuserdata/kmann.xcuserdatad/UserInterfaceState.xcuserstate
-v15/EtherpunksMoneyRegister.v15/.DS_Store
+*.zip
 *.xcuserstate
+.DS_Store
