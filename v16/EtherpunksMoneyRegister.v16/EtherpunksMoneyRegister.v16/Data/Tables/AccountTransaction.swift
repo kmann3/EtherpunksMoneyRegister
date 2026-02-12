@@ -27,7 +27,7 @@ final class AccountTransaction: Identifiable, Hashable {
     public var confirmationNumber: String = ""
     public var isTaxRelated: Bool = false
     public var fileCount: Int = 0
-    @Relationship(deleteRule: .noAction, inverse: \TransactionTag.accountTransactions) public var transactionTags: [TransactionTag]? = []
+    @Relationship(deleteRule: .noAction, inverse: \TransactionTag.accountTransactions) public var transactionTags: [TransactionTag] = []
     public var recurringTransactionId: String? = nil
     @Relationship(deleteRule: .noAction, inverse: \RecurringTransaction.transactions) public var recurringTransaction: RecurringTransaction? = nil
     public var dueDate: Date? = nil
@@ -104,7 +104,7 @@ final class AccountTransaction: Identifiable, Hashable {
         confirmationNumber: String = "",
         isTaxRelated: Bool = false,
         fileCount: Int = 0,
-        transactionTags: [TransactionTag]? = nil,
+        transactionTags: [TransactionTag] = [],
         recurringTransaction: RecurringTransaction? = nil,
         dueDate: Date? = nil,
         pendingOnUTC: Date? = nil,
@@ -161,7 +161,7 @@ final class AccountTransaction: Identifiable, Hashable {
         self.amount = recurringTransaction.amount
         self.balance = recurringTransaction.defaultAccount.currentBalance
         self.isTaxRelated = recurringTransaction.isTaxRelated
-        self.transactionTags = recurringTransaction.transactionTags
+        self.transactionTags = recurringTransaction.transactionTags ?? []
         self.recurringTransaction = recurringTransaction
         self.recurringTransactionId = recurringTransaction.id
         self.dueDate = recurringTransaction.nextDueDate
@@ -219,7 +219,7 @@ extension AccountTransaction: CustomDebugStringConvertible {
             - confirmationNumber: \(confirmationNumber)
             - isTaxRelated: \(isTaxRelated)
             - fileCount: \(fileCount)
-            - transactionTags: \(transactionTags == nil ? "Tags are nil" : "Tags are loaded")
+            - transactionTags: (Count: \(transactionTags.count))
             - recurringTransactionId: \(String(describing: recurringTransactionId))
             - dueDate: \(dueDate?.toDebugDate() ?? "nil")
             - pendingOnUTC: \(pendingOnUTC?.toDebugDate() ?? "nil")
