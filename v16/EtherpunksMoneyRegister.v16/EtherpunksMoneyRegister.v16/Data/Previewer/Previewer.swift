@@ -9,6 +9,68 @@ import Foundation
 import SQLite
 import SwiftData
 import SwiftUI
+#if DEBUG && os(macOS)
+import AppKit
+import UniformTypeIdentifiers
+#endif
+
+#if DEBUG && os(macOS)
+fileprivate final class DevFileAccess {
+    static let shared = DevFileAccess()
+    private let bookmarkKey = "DevTestDBBookmark"
+
+    func urlForTestDB(promptMessage: String = "Select your tmpData.sqlite3 file") -> URL? {
+        // Try to resolve a previously stored security-scoped bookmark
+        if let data = UserDefaults.standard.data(forKey: bookmarkKey) {
+            var stale = false
+            do {
+                let url = try URL(resolvingBookmarkData: data,
+                                   options: [.withSecurityScope],
+                                   relativeTo: nil,
+                                   bookmarkDataIsStale: &stale)
+                if !stale {
+                    return url
+                } else {
+                    UserDefaults.standard.removeObject(forKey: bookmarkKey)
+                }
+            } catch {
+                // Failed to resolve; drop bookmark and fall through to prompt
+                UserDefaults.standard.removeObject(forKey: bookmarkKey)
+            }
+        }
+
+        // Prompt the user to select the file once
+        let panel = NSOpenPanel()
+        panel.title = "Choose SQLite file"
+        panel.message = promptMessage
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        panel.canCreateDirectories = false
+
+        if #available(macOS 12.0, *) {
+            let types: [UTType] = ["sqlite", "sqlite3", "db"].compactMap { UTType(filenameExtension: $0) }
+            panel.allowedContentTypes = types
+        } else {
+            panel.allowedFileTypes = ["sqlite", "sqlite3", "db"]
+        }
+
+        let response = panel.runModal()
+        guard response == .OK, let url = panel.url else { return nil }
+
+        // Store security-scoped bookmark for next time
+        do {
+            let bookmark = try url.bookmarkData(options: [.withSecurityScope],
+                                                includingResourceValuesForKeys: nil,
+                                                relativeTo: nil)
+            UserDefaults.standard.set(bookmark, forKey: bookmarkKey)
+        } catch {
+            // If bookmarking fails, still return the URL for immediate use
+        }
+        return url
+    }
+}
+#endif
 
 @MainActor
 class Previewer {
@@ -97,7 +159,7 @@ class Previewer {
         // DISCORD
         discordRecurringTransaction = RecurringTransaction(
             id: UUID(uuidString: "75696d00-50a8-40af-8c00-14b5e4245920")!,
-            name: "Discord2",
+            name: "Discord2a",
             transactionType: .debit,
             amount: -13.99,
             defaultAccount: bankAccount,
@@ -223,7 +285,14 @@ class Previewer {
     }
 
     func importTestRecurringData(modelContext: ModelContext) {
-        let path = "/Volumes/MacData/dev/tmpData.sqlite3"
+        guard let fileURL = DevFileAccess.shared.urlForTestDB(promptMessage: "Select tmpData.sqlite3 for import (dev only)") else {
+            print("Test data could not be found to be imported: no file chosen")
+            return
+        }
+        let started = fileURL.startAccessingSecurityScopedResource()
+        defer { if started { fileURL.stopAccessingSecurityScopedResource() } }
+        let path = fileURL.path(percentEncoded: false)
+        debugPrint("Loading up recurring data from: \(path)")
 
         let fileManager = FileManager.default
         if !fileManager.fileExists(atPath: path) {
@@ -479,7 +548,9 @@ class Previewer {
             Previewer.insertTransaction(account: bankAccount, transaction: newTran, context: modelContext)
         }*/
 
+#if DEBUG && os(macOS)
         importTestRecurringData(modelContext: modelContext)
+#endif
 
 
         modelContext.insert(billGroup)
@@ -491,3 +562,4 @@ class Previewer {
         }
     }
 }
+

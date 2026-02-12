@@ -73,6 +73,9 @@ final class RecurringTransaction: Identifiable, Hashable {
         self.recurringGroupId = recurringGroup?.id ?? nil
         self.transactions = transactions
         self.frequency = frequency
+        self.frequencyValue = frequencyValue
+        self.frequencyDayOfWeek = frequencyDayOfWeek
+        self.frequencyDateValue = frequencyDateValue
 
         self.transactionType = transactionType
         
@@ -88,7 +91,7 @@ final class RecurringTransaction: Identifiable, Hashable {
     }
 
     enum BumpDateError: Error {
-        case missingFrequencyValues
+        case missingFrequencyValue
         case missingNextDueDate
     }
     
@@ -105,18 +108,21 @@ final class RecurringTransaction: Identifiable, Hashable {
             break
         case .monthly:
             // TBI: Test what happens if the date is the 31's but next month has 28 or 30 days in it
+            if self.frequencyValue == nil {
+                throw BumpDateError.missingFrequencyValue
+            }
             self.nextDueDate = self.getNextDueDateMonthly(day: self.frequencyValue!)
         case .weekly:
             // TBI
             break
         case .xdays:
             if self.frequencyValue == nil {
-                throw BumpDateError.missingFrequencyValues
+                throw BumpDateError.missingFrequencyValue
             }
             break
         case .xmonths:
             if self.frequencyValue == nil {
-                throw BumpDateError.missingFrequencyValues
+                throw BumpDateError.missingFrequencyValue
             }
             break
         case .xweekOnYDayOfWeek:
