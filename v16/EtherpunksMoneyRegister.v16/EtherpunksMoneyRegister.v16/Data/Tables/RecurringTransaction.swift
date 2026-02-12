@@ -153,21 +153,21 @@ final class RecurringTransaction: Identifiable, Hashable {
                 byAdding: .day, value: 7, to: self.nextDueDate!)
         case .xdays:
             if self.frequencyValue == nil {
-                throw BumpDateError.missingFrequencyValues
+                throw BumpDateError.missingFrequencyValue
             }
             self.nextDueDate = calendar.date(
                 byAdding: .day, value: self.frequencyValue!,
                 to: self.nextDueDate!)
         case .xmonths:
             if self.frequencyValue == nil {
-                throw BumpDateError.missingFrequencyValues
+                throw BumpDateError.missingFrequencyValue
             }
             self.nextDueDate = calendar.date(
                 byAdding: .month, value: self.frequencyValue!,
                 to: self.nextDueDate!)
         case .xweekOnYDayOfWeek:
             if self.frequencyDayOfWeek == nil || self.frequencyValue == nil {
-                throw BumpDateError.missingFrequencyValues
+                throw BumpDateError.missingFrequencyValue
             }
             let nextMonth = calendar.date(
                 byAdding: .month, value: 1, to: self.nextDueDate!)
