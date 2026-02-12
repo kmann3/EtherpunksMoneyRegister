@@ -26,7 +26,7 @@ extension ContentView {
             //ReserveGroupView(recGroup) { action in self.changeRoute(action) }
         case .recurringGroup_Edit(let recGroup):
             Text("TBI - Recurring Group Edit: \(recGroup.name)")
-        case .recurringGroup_List(let recGroup): Text("TBI - Recurring Group List")
+        case .recurringGroup_List(let recGroup): Text("TBI - Recurring Group List \(String(describing: recGroup))")
             //RecurringGroupListView(recGroup) { action in self.changeRoute(action) }
         case .recurringGroup_Reserve(let recGroup): Text("TBI - Recurring Group Reserve: \(recGroup.name)")
             //ReserveGroupView(recGroup) { action in self.changeRoute(action) }
@@ -35,7 +35,7 @@ extension ContentView {
         case .recurringTransaction_Details(let recTran): Text("Recurring Transaction Details \(recTran.name)")
         case .recurringTransaction_Edit(let recTran):
             Text("TBI - Recurring Transaction Edit: \(recTran.name)")
-        case .recurringTransaction_List(let recTran): Text("TBI - Recurring Transaction List")
+        case .recurringTransaction_List(let recTran): Text("TBI - Recurring Transaction List \(String(describing: recTran))")
             //RecurringTransactionListView(recTran) { action in self.changeRoute(action) }
         case .recurringTransaction_Reserve(let recTran): Text("TBI - Recurring Transaction Reserve: \(recTran.name)")
         case .report_Tax: Text("TBI - Report Tax")
@@ -50,7 +50,7 @@ extension ContentView {
         case .transaction_Detail(let transaction): Text("Transaction Detail \(transaction.name)")
             //AccountTransactionDetailsView(transaction) { action in self.changeRoute(action) }
         case .transaction_Edit(let transaction): Text("Transaction Edit \(transaction.name)")
-        case .transaction_List(let account): Text("Transaction List")
+        case .transaction_List(let account): Text("Transaction List \(account.name)")
             //AccountTransactionListView(account) { action in self.changeRoute(action) }
         }
     }
