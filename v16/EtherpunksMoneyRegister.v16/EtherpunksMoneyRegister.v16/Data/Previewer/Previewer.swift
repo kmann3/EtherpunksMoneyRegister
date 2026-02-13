@@ -185,7 +185,6 @@ class Previewer {
 
         discordRecurringTransaction.transactions = [discordTransaction]
 
-        // HULU
         huluPendingTransaction = AccountTransaction(
             account: bankAccount,
             name: "Hulu",
@@ -213,11 +212,6 @@ class Previewer {
             frequencyValue: 28
         )
         
-//        recurringTransaction.frequency = .monthly
-//        recurringTransaction.frequencyValue = Int(row[frequencyValueCol]!)
-//        recurringTransaction.nextDueDate = getNextDueDate(day: row[frequencyValueCol]!)
-        //try! verizonRecurringTransaction.BumpNextDueDate()
-
         verizonReservedTransaction = AccountTransaction(
             account: bankAccount,
             name: "Verizon",
@@ -276,9 +270,6 @@ class Previewer {
                 print("Error generating attachment transaction - monkey logo")
             }
         }
-
-        //discordRecurringTransaction.nextDueDate = getNextDueDate(day: 16)
-        //verizonRecurringTransaction.nextDueDate = getNextDueDate(day: 28)
 
         print("Done generating data at \(Date().toDebugDate())")
         print("Main account id: \(bankAccount.id)")
