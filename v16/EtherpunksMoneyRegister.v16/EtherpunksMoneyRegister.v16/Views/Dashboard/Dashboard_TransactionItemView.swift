@@ -9,15 +9,11 @@ import SwiftUI
 
 struct Dashboard_TransactionItemView: View {
     let transaction: AccountTransaction
-    var action: () -> Void
-
-    init(transaction: AccountTransaction, _ action: @escaping () -> Void) {
+    init(transaction: AccountTransaction) {
         self.transaction = transaction
-        self.action = action
     }
 
     var body: some View {
-        Button(action: action) {
             VStack {
                 HStack(spacing: 1) {
                     if transaction.balancedOnUTC != nil {
@@ -78,7 +74,6 @@ struct Dashboard_TransactionItemView: View {
                             }
                         }
                     }
-                }
             }
         }
         .background(
@@ -102,7 +97,7 @@ struct Dashboard_TransactionItemView: View {
             amount: 13.73,
             balance: 50.00
         )
-    ) {}
+    )
 }
 
 #Preview("Pending") {
@@ -115,7 +110,7 @@ struct Dashboard_TransactionItemView: View {
             balance: 50.00,
             pendingOnUTC: Date()
         )
-    ) {}
+    )
 }
 
 #Preview("Cleared") {
@@ -129,7 +124,7 @@ struct Dashboard_TransactionItemView: View {
             pendingOnUTC: Date(),
             clearedOnUTC: Date()
         )
-    ) {}
+    )
 }
 #Preview("Paycheck") {
     Dashboard_TransactionItemView(
@@ -142,5 +137,5 @@ struct Dashboard_TransactionItemView: View {
             pendingOnUTC: Date(),
             clearedOnUTC: Date()
         )
-    ) {}
+    )
 }
