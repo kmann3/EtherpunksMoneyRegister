@@ -20,8 +20,8 @@ extension ContentView {
             //AccountEditView(account) { action in self.changeRoute(action) }
         case .account_Details(let account): Text(verbatim: "Account Details \(account)")
             //AccountDetailView(account) { action in self.changeRoute(action) }
-        case .dashboard: Text(verbatim: "Dashboard")
-            //DashboardView { action in self.changeRoute(action) }
+        case .dashboard:
+            DashboardView { action in self.changeRoute(action) }
         case .recurringGroup_Create:
             Text(verbatim: "TBI - Recurring Group Create")
         case .recurringGroup_Details(let recGroup):
