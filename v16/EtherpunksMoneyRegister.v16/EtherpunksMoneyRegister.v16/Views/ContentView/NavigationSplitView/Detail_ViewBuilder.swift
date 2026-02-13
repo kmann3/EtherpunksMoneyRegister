@@ -10,6 +10,9 @@ import SwiftUI
 extension ContentView {
     @ViewBuilder
     internal func detailViewBuilder(for route: PathStore.Route) -> some View {
+#if DEBUG
+        let _ = { debugPrint("DetailViewBuilder: \(route)") }()
+#endif
         switch route {
         case .account_Create:
             Text("TBI - Account Create")
