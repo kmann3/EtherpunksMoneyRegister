@@ -38,20 +38,14 @@ struct DashboardView: View {
                     List {
                         Section(header: Text("Reserved Transactions")) {
                             ForEach(viewModel.reservedTransactions) { reserved in
-                                Dashboard_TransactionItemView(transaction: reserved) {
-
+                                Button {
+                                       handler(PathStore.Route.transaction_Edit(transaction: reserved))
+                                } label: {
+                                    Dashboard_TransactionItemView(transaction: reserved)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .contentShape(Rectangle())
                                 }
-                                .onTapGesture {
-                                    handler(PathStore.Route.transaction_Edit(transaction: reserved))
-                                }
-                                .contextMenu {
-                                    Button(
-                                        action: {
-                                            handler(PathStore.Route.transaction_Edit(transaction: reserved))
-                                        },
-                                        label: { Label("Edit: \(reserved.name)", systemImage: "icon") }
-                                    )
-                                }
+                                .buttonStyle(.plain)
                             }
                         }
                     }
@@ -60,21 +54,14 @@ struct DashboardView: View {
                     List {
                         Section(header: Text("Pending Transactions")) {
                             ForEach(viewModel.pendingTransactions) { pending in
-                                Dashboard_TransactionItemView(transaction: pending)
-                                {
-                                    
-                                }
-                                .onTapGesture {
+                               Button {
                                     handler(PathStore.Route.transaction_Edit(transaction: pending))
-                                }
-                                .contextMenu {
-                                    Button(
-                                        action: {
-                                            handler(PathStore.Route.transaction_Edit(transaction: pending))
-                                        },
-                                        label: { Label("Edit: \(pending.name)", systemImage: "pencil") }
-                                    )
-                                }
+                             } label: {
+                                 Dashboard_TransactionItemView(transaction: pending)
+                                     .frame(maxWidth: .infinity, alignment: .leading)
+                                     .contentShape(Rectangle())
+                             }
+                             .buttonStyle(.plain)
                             }
                         }
                     }
