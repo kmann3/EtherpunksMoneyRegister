@@ -356,7 +356,26 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+# Whitelist
+!default.pbxuser
+!default.mode1v3
+!default.mode2v3
+!default.perspectivev3
+
+# Xcode
 /v13/TestPlayground.playground
+.DS_Store
+.swp
+
 *.zip
 *.xcuserstate
-.DS_Store
+*.xccheckout
+*~.nib
+*.pbxuser
+*.perspective
+*.perspectivev3
+*.o
+*.pyc
+
+build/
+xcuserdata/
