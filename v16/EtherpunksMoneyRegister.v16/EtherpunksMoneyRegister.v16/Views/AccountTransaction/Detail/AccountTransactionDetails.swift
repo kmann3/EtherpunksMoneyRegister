@@ -18,7 +18,7 @@ struct AccountTransactionDetailsView: View {
 
     var body: some View {
         List {
-            // TODO: Make the whole role the button - not just the text on the right
+            // TODO: Make the whole row the button - not just the text on the right
             HStack {
                 Text("Name: \(self.viewModel.tran.name)")
                 Spacer()
