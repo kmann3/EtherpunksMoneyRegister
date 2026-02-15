@@ -53,8 +53,8 @@ extension ContentView {
         case .transaction_Detail(let transaction): Text("Transaction Detail \(transaction.name)")
             //AccountTransactionDetailsView(transaction) { action in self.changeRoute(action) }
         case .transaction_Edit(let transaction): Text("Transaction Edit \(transaction.name)")
-        case .transaction_List(let account): Text("Transaction List \(account.name)")
-            //AccountTransactionListView(account) { action in self.changeRoute(action) }
+        case .transaction_List(let account):
+            AccountTransactionListView(account) { action in self.changeRoute(action) }
         }
     }
 }
