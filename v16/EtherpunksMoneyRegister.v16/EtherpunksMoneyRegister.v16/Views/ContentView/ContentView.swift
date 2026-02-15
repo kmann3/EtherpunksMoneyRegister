@@ -40,15 +40,6 @@ struct ContentView: View {
         print("changeRoute: \(route)")
 #endif
         
-        switch route {
-            
-        case .account_Create:
-            break
-            
-        default:
-            break
-        }
-        
         self.nav.apply(route)
     }
 }
