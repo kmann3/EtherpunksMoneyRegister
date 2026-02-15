@@ -40,6 +40,8 @@ struct ContentView: View {
         print("changeRoute: \(route)")
 #endif
         
+        // TODO: Add a Picker for the Detail area such that you can pick a different view that is relate to the content view (e.g. TransactionList -> Transaction Detail and then TransactionList (relative to that specific account) -> Recurring bills used for that account?
+        
         self.nav.apply(route)
     }
 }
