@@ -223,7 +223,7 @@ struct AccountTransactionDetailsView: View {
     }
 }
 
-#Preview ("CVS") {
+#Preview ("CVS (pending and cleared)") {
     AccountTransactionDetailsView(MoneyDataSource.shared.previewer.cvsTransaction) { action in print(action) }
 }
 
