@@ -40,7 +40,6 @@ struct AccountTransactionDetailsView: View {
                     .underline()
                     .foregroundColor(.blue)
                 }
-                .buttonStyle(PlainButtonStyle())
             }
             HStack {
                 Text("Amount: ")
@@ -112,7 +111,6 @@ struct AccountTransactionDetailsView: View {
                         .underline()
                         .foregroundColor(.blue)
                     }
-                    .buttonStyle(PlainButtonStyle())
                 }
             }
 
@@ -135,7 +133,6 @@ struct AccountTransactionDetailsView: View {
                             .padding(2)
 
                     }
-                    .buttonStyle(PlainButtonStyle())
                 }
 
             } else {
@@ -167,7 +164,6 @@ struct AccountTransactionDetailsView: View {
                             .underline()
                             .foregroundColor(.blue)
                     }
-                    .buttonStyle(PlainButtonStyle())
                 }
             } else {
                 HStack {
