@@ -11,7 +11,7 @@ extension ContentView {
     @ViewBuilder
     internal func contentViewBuilder(for route: PathStore.Route) -> some View {
 #if DEBUG
-        let _ = { debugPrint("ContentViewBuilder: \(route)") }()
+        let _ = { print("ContentViewBuilder: \(route)") }()
 #endif
         switch route {
         case .account_Create: Text(verbatim: "TBI - Account Create")

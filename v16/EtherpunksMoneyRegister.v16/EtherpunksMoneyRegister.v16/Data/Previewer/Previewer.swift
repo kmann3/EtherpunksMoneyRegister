@@ -283,7 +283,7 @@ class Previewer {
         let started = fileURL.startAccessingSecurityScopedResource()
         defer { if started { fileURL.stopAccessingSecurityScopedResource() } }
         let path = fileURL.path(percentEncoded: false)
-        debugPrint("Loading up recurring data from: \(path)")
+        print("Loading up recurring data from: \(path)")
 
         let fileManager = FileManager.default
         if !fileManager.fileExists(atPath: path) {
@@ -409,7 +409,7 @@ class Previewer {
                     modelContext.insert(recurringTransaction)
                     break
                 }
-                //debugPrint("Saving: \(recurringTransaction.name)")
+                
                 try modelContext.save()
             }
 

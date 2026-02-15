@@ -434,11 +434,11 @@ final class MoneyDataSource: Sendable {
 //
 //                    modelContext.insert(item.accountTransaction)
 //                case .ignore:
-//                    debugPrint("Ignoring: \(item.accountTransaction.name)")
+//                    print("Ignoring: \(item.accountTransaction.name)")
 //                    item.accountTransaction.recurringTransaction = nil
 //                    modelContext.delete(item.accountTransaction)
 //                case .skip:
-//                    debugPrint("Skipping: \(item.accountTransaction.name)")
+//                    print("Skipping: \(item.accountTransaction.name)")
 //                    item.accountTransaction.recurringTransaction = nil
 //                    modelContext.delete(item.accountTransaction)
 //                    try? item.recurringTransaction.BumpNextDueDate()

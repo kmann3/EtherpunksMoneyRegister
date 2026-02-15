@@ -20,9 +20,9 @@ class QuickLookPreviewController: NSObject, QLPreviewPanelDataSource, QLPreviewP
 
             try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true, attributes: nil)
 
-            debugPrint("tempDir: \(tempDir.path)")
-            debugPrint("fileName: \(fileName)")
-            debugPrint("tempURL: \(tempURL)")
+            print("tempDir: \(tempDir.path)")
+            print("fileName: \(fileName)")
+            print("tempURL: \(tempURL)")
 
             try data.write(to: tempURL)
 

@@ -37,7 +37,7 @@ struct ContentView: View {
     
     func changeRoute(_ route: PathStore.Route) {
 #if DEBUG
-        debugPrint("changeRoute: \(route)")
+        print("changeRoute: \(route)")
 #endif
         
         switch route {

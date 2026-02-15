@@ -23,7 +23,7 @@ struct DashboardView: View {
                     List(viewModel.accounts) { account in
                         Button {
 #if DEBUG
-                                    debugPrint("View: Dashboard | [Account] button press (\(account.name))")
+                                    print("View: Dashboard | [Account] button press (\(account.name))")
 #endif
                             handler(PathStore.Route.transaction_List(account: account))
                         } label: {
@@ -46,7 +46,7 @@ struct DashboardView: View {
                             ForEach(viewModel.reservedTransactions) { reserved in
                                 Button {
 #if DEBUG
-                                            debugPrint("View: Dashboard | [Reserved] button press (\(reserved.name))")
+                                            print("View: Dashboard | [Reserved] button press (\(reserved.name))")
 #endif
                                        handler(PathStore.Route.transaction_Edit(transaction: reserved))
                                 } label: {
@@ -65,7 +65,7 @@ struct DashboardView: View {
                             ForEach(viewModel.pendingTransactions) { pending in
                                Button {
 #if DEBUG
-                                            debugPrint("View: Dashboard | [Pending] button press (\(pending.name))")
+                                            print("View: Dashboard | [Pending] button press (\(pending.name))")
 #endif
                                     handler(PathStore.Route.transaction_Edit(transaction: pending))
                              } label: {
@@ -94,7 +94,7 @@ struct DashboardView: View {
                                     recurringItem: creditItem
                                 ) {
 #if DEBUG
-                                            debugPrint("View: Dashboard | [Recurring Credit] button press (\(creditItem.name))")
+                                            print("View: Dashboard | [Recurring Credit] button press (\(creditItem.name))")
 #endif
                                     handler(PathStore.Route.recurringTransaction_Reserve(recTran: creditItem))
                                 }
@@ -113,7 +113,7 @@ struct DashboardView: View {
                                         recurringGroup: group
                                     ) {
 #if DEBUG
-                                            debugPrint("View: Dashboard | [Recurring Group] button press (\(group.name))")
+                                            print("View: Dashboard | [Recurring Group] button press (\(group.name))")
 #endif
                                         handler(PathStore.Route.recurringGroup_Reserve(recGroup: group))
                                     }
@@ -132,7 +132,7 @@ struct DashboardView: View {
                                     recurringItem: debitItem
                                 ) {
 #if DEBUG
-                                            debugPrint("View: Dashboard | [Recurring Debit] button press (\(debitItem.name))")
+                                            print("View: Dashboard | [Recurring Debit] button press (\(debitItem.name))")
 #endif
                                     handler(PathStore.Route.recurringTransaction_Reserve(recTran: debitItem))
                                 }
