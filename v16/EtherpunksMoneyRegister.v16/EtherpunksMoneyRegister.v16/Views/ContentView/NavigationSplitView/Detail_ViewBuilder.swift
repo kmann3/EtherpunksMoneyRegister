@@ -20,8 +20,8 @@ extension ContentView {
             Text("Account List")
         case .account_Edit(let account): Text("Account Edit \(account.name)")
             //AccountEditView(account) { action in self.changeRoute(action) }
-        case .account_Details(let account): Text("Account Details: \(account.name)")
-            //AccountDetailView(account) { action in self.changeRoute(action) }
+        case .account_Details(let account):
+            AccountDetailView(account) { action in self.changeRoute(action) }
         case .dashboard: Text("TBI - Dashboard")
         case .recurringGroup_Create:
             Text("TBI - Recurring Group Create")
