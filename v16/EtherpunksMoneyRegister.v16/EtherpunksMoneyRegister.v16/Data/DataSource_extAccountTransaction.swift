@@ -7,46 +7,30 @@
 
 import Foundation
 import SwiftData
-import CoreData
 
 extension MoneyDataSource {
-    func fetchAccountTransactions(account: Account) -> (transactions: [AccountTransaction], remainingTransactionsCount: Int) {
+    func fetchAccountTransactions(account: Account) -> (transactions: [AccountTransaction], hasMoreTransactions: Bool) {
         let id = account.id
+        let limit = 5 // TODO: We have an artificially low amount so we can test the loading of more transactions later
+
         do {
             var descriptor = FetchDescriptor<AccountTransaction>(
-                predicate: #Predicate<AccountTransaction> { transaction in
-                    if transaction.accountId == id {
-                        return true
-                    } else {
-                        return false
-                    }
-                },
-                sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
+                predicate: #Predicate<AccountTransaction> { $0.accountId == id },
+                sortBy: [
+                    SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse),
+                    SortDescriptor(\AccountTransaction.id, order: .forward)
+                ]
             )
-            descriptor.fetchLimit = 1000
+            descriptor.fetchLimit = limit + 1
 
-            let results = try modelContext.fetch(descriptor)
-            let totalCountRequest = NSFetchRequest<NSNumber>(entityName: "AccountTransaction")
-            totalCountRequest.resultType = .countResultType
+            var results = try modelContext.fetch(descriptor)
 
-            let totalCount = try modelContext.fetchCount(FetchDescriptor<AccountTransaction>(
-                predicate: #Predicate<AccountTransaction> { transaction in
-                    if transaction.accountId == id {
-                        return true
-                    } else {
-                        return false
-                    }
-                },
-                sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
-            ))
-
-            if totalCount > results.count {
-                // more records available
-                return (results, totalCount-results.count)
-            } else {
-                // No more records
-                return (results, 0)
+            let hasMore = results.count > limit
+            if hasMore {
+                results.removeLast()
             }
+
+            return (results, hasMore ? true : false)
         } catch {
             fatalError(error.localizedDescription)
         }

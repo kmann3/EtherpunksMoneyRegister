@@ -26,18 +26,16 @@ extension AccountTransactionListView {
 
             self.accountList = self.dataSource.fetchAccounts()
 
-            self.loadAccountTransactions()
+            if self.account != nil {
+                self.loadAccountTransactions()
+            }
         }
 
         func loadAccountTransactions() {
-            if self.account != nil {
-                let transactionData = self.dataSource.fetchAccountTransactions(account: self.account!)
-                self.accountTransactions = transactionData.transactions
-                if transactionData.remainingTransactionsCount != 0 {
-                    self.endOfListText = "\(transactionData.remainingTransactionsCount) more..."
-                }
-            } else {
-                debugPrint("Account is null, cannot load transactions")
+            let transactionData = self.dataSource.fetchAccountTransactions(account: self.account!)
+            self.accountTransactions = transactionData.transactions
+            if transactionData.hasMoreTransactions == true {
+                self.endOfListText = "more transactions available and not loaded"
             }
         }
     }
