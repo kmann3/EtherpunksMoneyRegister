@@ -21,11 +21,17 @@ struct DashboardView: View {
                         .padding(5)
 
                     List(viewModel.accounts) { account in
-                        Dashboard_AccountItemView(acctData: account)
-
-                            .onTapGesture {
-                                handler(PathStore.Route.transaction_List(account: account))
-                            }
+                        Button {
+#if DEBUG
+                                    debugPrint("View: Dashboard | [Account] button press (\(account.name))")
+#endif
+                            handler(PathStore.Route.transaction_List(account: account))
+                        } label: {
+                            Dashboard_AccountItemView(acctData: account)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
                     }
                     Spacer()
                 }
@@ -39,6 +45,9 @@ struct DashboardView: View {
                         Section(header: Text("Reserved Transactions")) {
                             ForEach(viewModel.reservedTransactions) { reserved in
                                 Button {
+#if DEBUG
+                                            debugPrint("View: Dashboard | [Reserved] button press (\(reserved.name))")
+#endif
                                        handler(PathStore.Route.transaction_Edit(transaction: reserved))
                                 } label: {
                                     Dashboard_TransactionItemView(transaction: reserved)
@@ -55,6 +64,9 @@ struct DashboardView: View {
                         Section(header: Text("Pending Transactions")) {
                             ForEach(viewModel.pendingTransactions) { pending in
                                Button {
+#if DEBUG
+                                            debugPrint("View: Dashboard | [Pending] button press (\(pending.name))")
+#endif
                                     handler(PathStore.Route.transaction_Edit(transaction: pending))
                              } label: {
                                  Dashboard_TransactionItemView(transaction: pending)
@@ -81,15 +93,10 @@ struct DashboardView: View {
                                 Dashboard_RecurringItemView(
                                     recurringItem: creditItem
                                 ) {
+#if DEBUG
+                                            debugPrint("View: Dashboard | [Recurring Credit] button press (\(creditItem.name))")
+#endif
                                     handler(PathStore.Route.recurringTransaction_Reserve(recTran: creditItem))
-                                }
-                                .contextMenu {
-                                    Button(
-                                        action: {
-                                            handler(PathStore.Route.recurringTransaction_Edit(recTran: creditItem))
-                                        },
-                                        label: { Label("Edit: \(creditItem.name)", systemImage: "pencil") }
-                                    )
                                 }
                             }
                         }
@@ -105,15 +112,10 @@ struct DashboardView: View {
                                     Dashboard_RecurringGroupView(
                                         recurringGroup: group
                                     ) {
+#if DEBUG
+                                            debugPrint("View: Dashboard | [Recurring Group] button press (\(group.name))")
+#endif
                                         handler(PathStore.Route.recurringGroup_Reserve(recGroup: group))
-                                    }
-                                    .contextMenu {
-                                        Button(
-                                            action: {
-                                                handler(PathStore.Route.recurringGroup_Edit(recGroup: group))
-                                            },
-                                            label: { Label("Edit: \(group.name)", systemImage: "pencil") }
-                                        )
                                     }
 
                                     Spacer()
@@ -129,16 +131,12 @@ struct DashboardView: View {
                                 Dashboard_RecurringItemView(
                                     recurringItem: debitItem
                                 ) {
+#if DEBUG
+                                            debugPrint("View: Dashboard | [Recurring Debit] button press (\(debitItem.name))")
+#endif
                                     handler(PathStore.Route.recurringTransaction_Reserve(recTran: debitItem))
                                 }
-                                .contextMenu {
-                                    Button(
-                                        action: {
-                                            handler(PathStore.Route.recurringTransaction_Edit(recTran: debitItem))
-                                        },
-                                        label: { Label("Edit: \(debitItem.name)", systemImage: "pencil") }
-                                    )
-                                }
+
                             }
                         }
                     }
@@ -159,3 +157,4 @@ struct DashboardView: View {
 #Preview {
     DashboardView(viewModel: DashboardView.ViewModel(), handler: { _ in })
 }
+
