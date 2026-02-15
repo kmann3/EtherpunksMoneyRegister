@@ -114,8 +114,8 @@ struct NavigationState {
             self.primary = .tag_List(tag: nil)
             self.secondary = nil
 
-        case .transaction_Create:
-            // TODO: Implement
+        case .transaction_Create(let tran):
+            self.primary = .transaction_List(account: tran.account)
             break
 
         case .transaction_Edit(let tran):

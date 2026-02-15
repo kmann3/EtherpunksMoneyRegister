@@ -45,20 +45,10 @@ class PathStore {
         case tag_Edit(tag: TransactionTag)
         case tag_List(tag: TransactionTag?)
 
-        case transaction_Create
+        case transaction_Create(transaction: AccountTransaction)
         case transaction_Detail(transaction: AccountTransaction)
         case transaction_Edit(transaction: AccountTransaction)
         case transaction_List(account: Account)
-    }
-
-    func getVariable(route: Route) -> Any? {
-        switch route {
-        case .account_Details(let account):
-            return account
-
-        default:
-            return nil
-        }
     }
 }
 
@@ -131,8 +121,8 @@ extension PathStore.Route: CustomStringConvertible {
                 return "tag_List(nil)"
             }
 
-        case .transaction_Create:
-            return "transaction_Create"
+        case .transaction_Create(let transaction):
+            return "transaction_Create\(transaction.id)"
         case .transaction_Detail(let transaction):
             return "transaction_Detail(\(transaction.id))"
         case .transaction_Edit(let transaction):
