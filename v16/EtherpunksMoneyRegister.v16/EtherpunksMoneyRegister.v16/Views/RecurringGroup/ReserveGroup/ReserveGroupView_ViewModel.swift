@@ -1,0 +1,55 @@
+//
+//  ReserveGroupView_ViewModel.swift
+//  EtherpunksMoneyRegister.v16
+//
+//  Created by Kenny Mann on 2/15/26.
+//
+
+import Foundation
+import SwiftData
+import SwiftUI
+
+extension ReserveGroupView {
+    @MainActor
+    class ViewModel {
+        
+        private let dataSource: MoneyDataSource
+
+        var accounts: [Account]
+        var reserveGroup: RecurringGroup
+        var transactionQueue: [AccountTransactionQueueItem] = []
+
+        init(dataSource: MoneyDataSource = MoneyDataSource.shared, reserveGroup: RecurringGroup) {
+            self.dataSource = dataSource
+            self.accounts = dataSource.fetchAccounts()
+            self.reserveGroup = reserveGroup
+
+            self.reserveGroup.recurringTransactions!.sorted(by: ({ $0.name < $1.name })).forEach {
+                self.transactionQueue.append(AccountTransactionQueueItem(recurringTransaction: $0))
+            }
+        }
+
+        func saveTransactions() {
+            //self.dataSource.reserveRecurringTransactions(recurringTransactions: self.transactionQueue)
+        }
+    }
+
+    public class AccountTransactionQueueItem: Identifiable {
+        var id: UUID = .init()
+        var recurringTransaction: RecurringTransaction
+        var accountTransaction: AccountTransaction
+        var action: Action = .enable
+
+        init(recurringTransaction: RecurringTransaction) {
+            self.recurringTransaction = recurringTransaction
+            self.accountTransaction = AccountTransaction(recurringTransaction: recurringTransaction)
+            self.accountTransaction.amount = recurringTransaction.amount
+        }
+    }
+
+    enum Action {
+        case enable
+        case skip
+        case ignore
+    }
+}
