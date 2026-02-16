@@ -1,6 +1,6 @@
 //
 //  QuickLookPreviewController.swift
-//  EtherpunksMoneyRegister.v15
+//  EtherpunksMoneyRegister.v16
 //
 //  Created by Kennith Mann on 4/3/25.
 //

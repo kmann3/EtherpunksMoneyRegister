@@ -1,6 +1,6 @@
 //
 //  CurrencyFieldView.swift
-//  EtherpunksMoneyRegister.v15
+//  EtherpunksMoneyRegister.v16
 //
 //  Created by Kennith Mann on 6/14/25.
 //
