@@ -33,53 +33,56 @@ struct ReserveGroupView: View {
 
             Divider()
 
-            Grid {
-                GridRow {
-                    Text("Account").bold()
-                    Text("Name").bold()
-                    Text("Due Date").bold()
-                    Text("Amount").bold()
-                    Text("Action").bold()
-                }
-
-                ForEach(self.viewModel.transactionQueue) { rt in
+            ScrollView {
+                Grid {
                     GridRow {
-                        Picker("", selection: Binding(
-                            get: { rt.accountTransaction.account },
-                            set: { rt.accountTransaction.account = $0 }
-                        )) {
-                            ForEach(self.viewModel.accounts) { acc in
-                                Text(acc.name).tag(acc)
+                        Text("Account").bold()
+                        Text("Name").bold()
+                        Text("Due Date").bold()
+                        Text("Amount").bold()
+                        Text("Action").bold()
+                    }
+                    
+                    ForEach(self.viewModel.transactionQueue) { rt in
+                        GridRow {
+                            Picker("", selection: Binding(
+                                get: { rt.accountTransaction.account },
+                                set: { rt.accountTransaction.account = $0 }
+                            )) {
+                                ForEach(self.viewModel.accounts) { acc in
+                                    Text(acc.name).tag(acc)
+                                }
                             }
+                            .pickerStyle(.menu)
+                            
+                            Text(rt.accountTransaction.name)
+                            
+                            if rt.accountTransaction.dueDate == nil {
+                                Text("n/a")
+                            } else {
+                                Text(rt.accountTransaction.dueDate!,
+                                     format: .dateTime.month().day())
+                            }
+                            
+                            Text(rt.accountTransaction.amount.toDisplayString())
+                                .frame(maxWidth: .infinity, alignment: .center)
+                            
+                            
+                            
+                            Picker("", selection: Binding(
+                                get: { rt.action },
+                                set: { rt.action = $0 }
+                            )) {
+                                Text("Reserve").tag(ReserveGroupView.Action.enable)
+                                Text("Skip").tag(ReserveGroupView.Action.skip)
+                                Text("Ignore").tag(ReserveGroupView.Action.ignore)
+                            }
+                            
                         }
-                        .pickerStyle(.menu)
-
-                        Text(rt.accountTransaction.name)
-
-                        if rt.accountTransaction.dueDate == nil {
-                            Text("n/a")
-                        } else {
-                            Text(rt.accountTransaction.dueDate!,
-                                 format: .dateTime.month().day())
-                        }
-
-                        Text(rt.accountTransaction.amount.toDisplayString())
-                            .frame(maxWidth: .infinity, alignment: .center)
-
-
-
-                        Picker("", selection: Binding(
-                              get: { rt.action },
-                              set: { rt.action = $0 }
-                          )) {
-                              Text("Reserve").tag(ReserveGroupView.Action.enable)
-                              Text("Skip").tag(ReserveGroupView.Action.skip)
-                              Text("Ignore").tag(ReserveGroupView.Action.ignore)
-                          }
-
                     }
                 }
-            }
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+        }
 
             Divider()
 
@@ -125,7 +128,7 @@ struct ReserveGroupView: View {
                 Spacer()
             }
         }
-        .frame(minWidth: 450)
+        .frame(minWidth: 450, maxHeight: .infinity, alignment: .top)
     }
 }
 
