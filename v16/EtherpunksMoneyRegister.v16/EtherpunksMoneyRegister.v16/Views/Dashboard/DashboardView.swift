@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DashboardView: View {
     @State var viewModel = ViewModel()
+    @State private var selectedReserveGroup: RecurringGroup? = nil
     var handler: (PathStore.Route) -> Void
     
     var body: some View {
@@ -115,7 +116,7 @@ struct DashboardView: View {
 #if DEBUG
                                             print("View: Dashboard | [Recurring Group] button press (\(group.name))")
 #endif
-                                        handler(PathStore.Route.recurringGroup_Reserve(recGroup: group))
+                                        selectedReserveGroup = group
                                     }
 
                                     Spacer()
@@ -145,6 +146,21 @@ struct DashboardView: View {
                 .frame(width: 400)
                 .border(.gray)
             }
+        }
+        .sheet(item: $selectedReserveGroup, onDismiss: {
+        }) { group in
+            ReserveGroupView(group) { returnedQueue in
+                if returnedQueue.count == 0 {
+                    selectedReserveGroup = nil
+                    return
+                }
+        #if DEBUG
+                // TODO: Need to decide where the user might want to go after this usually
+                print("ReserveGroupView returned: \(returnedQueue)")
+        #endif
+                selectedReserveGroup = nil
+            }
+            .frame(minWidth: 500, minHeight: 400)
         }
 #endif
 #if os(iOS)

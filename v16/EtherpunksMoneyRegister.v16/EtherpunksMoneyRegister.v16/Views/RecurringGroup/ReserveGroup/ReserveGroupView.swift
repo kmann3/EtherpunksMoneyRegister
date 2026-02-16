@@ -84,7 +84,9 @@ struct ReserveGroupView: View {
             Divider()
 
             HStack {
-                Button("Cancel") {}
+                Button("Cancel") {
+                    handler([])
+                }
                     .frame(minWidth: 100, alignment: .center)
                     .padding(.bottom, 5)
 
