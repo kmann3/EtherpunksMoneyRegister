@@ -230,4 +230,3 @@ struct AccountTransactionDetailsView: View {
 #Preview ("Verizon") {
     AccountTransactionDetailsView(MoneyDataSource.shared.previewer.verizonReservedTransaction) { action in print(action) }
 }
-
