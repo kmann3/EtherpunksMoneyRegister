@@ -21,7 +21,17 @@ struct AccountTransactionEditView: View {
     
     var body: some View {
         Form {
-            Section("Basics") {
+            Section() {
+                LabeledContent("Account") {
+                    Button {
+                        handler(.account_Edit(account: viewModel.tran.account))
+                    } label: {
+                        Text(viewModel.tran.account.name)
+                            .underline()
+                            .foregroundStyle(.blue)
+                    }
+                    .buttonStyle(.plain) // keeps it looking like a value, not a big button
+                }
                 TextField("Name", text: Binding(
                     get: { self.viewModel.draft.name },
                     set: { self.viewModel.draft.name = $0 }
@@ -52,7 +62,7 @@ struct AccountTransactionEditView: View {
                     .lineLimit(3...6)
             }
 
-            Section("Status") {
+            Section() {
                 Toggle("Pending", isOn: Binding(
                     get: { self.viewModel.draft.hasPending },
                     set: { self.viewModel.draft.hasPending = $0 }
@@ -87,7 +97,7 @@ struct AccountTransactionEditView: View {
                 }
             }
 
-            Section("Tags") {
+            Section() {
                 if self.viewModel.draft.tags.isEmpty {
                     Text("No tags selected")
                         .foregroundStyle(.secondary)
@@ -105,20 +115,12 @@ struct AccountTransactionEditView: View {
                     }
                 }
                 Button("Edit Tags") { showTagPicker = true }
+            } header: {
+                Divider()
+                Text("Tags").bold()
             }
 
             Section("Advanced") {
-                HStack {
-                    Text("Account:")
-                    Button {
-                        handler(.account_Edit(account: viewModel.tran.account))
-                    } label: {
-                        Text(viewModel.tran.account.name)
-                            .underline()
-                            .foregroundColor(.blue)
-                    }
-                }
-
                 if let rec = viewModel.tran.recurringTransaction {
                     HStack {
                         Text("Recurring:")
