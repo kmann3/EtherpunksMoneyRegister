@@ -38,8 +38,9 @@ extension AccountTransactionEditView {
             guard let amount = draft.decimalAmount else { return }
             let tran = self.tran
             tran.name = draft.name
+            tran.account = draft.account // TODO: Send a bool value when saving to adjust accounts accordingly for the loss/gain
             tran.transactionType = draft.transactionType
-            tran.amount = amount
+            tran.amount = amount // TODO: Send a bool value when saving to adjust account accordingly
             tran.isTaxRelated = draft.isTaxRelated
             tran.confirmationNumber = draft.confirmationNumber
             tran.notes = draft.notes
@@ -53,6 +54,7 @@ extension AccountTransactionEditView {
 
         struct Draft {
             var name: String
+            var account: Account
             var transactionType: TransactionType
             var amountString: String
             var isTaxRelated: Bool
@@ -68,6 +70,7 @@ extension AccountTransactionEditView {
 
             init(tran: AccountTransaction) {
                 name = tran.name
+                account = tran.account
                 transactionType = tran.transactionType
                 amountString = tran.amount.description
                 isTaxRelated = tran.isTaxRelated

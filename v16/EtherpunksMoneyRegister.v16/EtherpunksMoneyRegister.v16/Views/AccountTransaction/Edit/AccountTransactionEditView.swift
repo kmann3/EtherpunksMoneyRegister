@@ -12,6 +12,7 @@ struct AccountTransactionEditView: View {
     private var viewModel: ViewModel
     var handler: (PathStore.Route) -> Void
 
+    @Query(sort: \Account.name) private var allAccounts: [Account]
     @State private var showTagPicker = false
 
     init(_ tran: AccountTransaction, _ handler: @escaping (PathStore.Route) -> Void) {
@@ -23,12 +24,15 @@ struct AccountTransactionEditView: View {
         Form {
             Section() {
                 LabeledContent("Account") {
-                    // TODO: Change this to a picker
-                    Button {
-                        
-                    } label: {
-                        Text(viewModel.tran.account.name)
+                    Picker("Account", selection: Binding(
+                        get: { self.viewModel.draft.account },
+                        set: { self.viewModel.draft.account = $0 }
+                    )) {
+                        ForEach(allAccounts) { account in
+                            Text(account.name).tag(account)
+                        }
                     }
+                    .pickerStyle(.menu)
                 }
                 TextField("Name", text: Binding(
                     get: { self.viewModel.draft.name },
@@ -95,7 +99,7 @@ struct AccountTransactionEditView: View {
                 }
             }
 
-            Section() {
+            LabeledContent("Tags") {
                 if self.viewModel.draft.tags.isEmpty {
                     Text("No tags selected")
                         .foregroundStyle(.secondary)
@@ -112,23 +116,18 @@ struct AccountTransactionEditView: View {
                         }
                     }
                 }
-                Button("Edit Tags") { showTagPicker = true }
-            } header: {
-                Divider()
-                Text("Tags").bold()
             }
+            Button("Edit Tags") { showTagPicker = true }
 
-            Section("Advanced") {
-                if let rec = viewModel.tran.recurringTransaction {
-                    HStack {
-                        Text("Recurring:")
-                        Button {
-                            handler(.recurringTransaction_Edit(recTran: rec))
-                        } label: {
-                            Text(rec.name)
-                                .underline()
-                                .foregroundColor(.blue)
-                        }
+            if let rec = viewModel.tran.recurringTransaction {
+                HStack {
+                    Text("Recurring:")
+                    Button {
+                        handler(.recurringTransaction_Edit(recTran: rec))
+                    } label: {
+                        Text(rec.name)
+                            .underline()
+                            .foregroundColor(.blue)
                     }
                 }
             }
@@ -161,15 +160,17 @@ struct AccountTransactionEditView: View {
                 }
             )
         }
-        .frame(minWidth: 150, minHeight: 550)
+        .frame(minWidth: 150, minHeight: 650)
     }
 }
 
 #Preview ("CVS (pending and cleared)") {
     AccountTransactionEditView(MoneyDataSource.shared.previewer.cvsTransaction) { action in print(action) }
+        .modelContainer(MoneyDataSource.shared.modelContainer)
 }
 
 #Preview ("Verizon") {
     AccountTransactionEditView(MoneyDataSource.shared.previewer.verizonReservedTransaction) { action in print(action) }
+        .modelContainer(MoneyDataSource.shared.modelContainer)
 }
 
