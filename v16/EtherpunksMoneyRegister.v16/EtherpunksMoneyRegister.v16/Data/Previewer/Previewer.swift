@@ -272,7 +272,7 @@ class Previewer {
         }
 
         print("Done generating data at \(Date().toDebugDate())")
-        print("Main account id: \(bankAccount.id)")
+        print("Main bank account id: \(bankAccount.id)")
     }
 
     func importTestRecurringData(modelContext: ModelContext) {
@@ -501,6 +501,7 @@ class Previewer {
     }
 
     func commitToDb(_ modelContext: ModelContext) {
+        modelContext.insert(UserPrefs())
         modelContext.insert(bankAccount)
         modelContext.insert(billsTag)
         modelContext.insert(ffTag)

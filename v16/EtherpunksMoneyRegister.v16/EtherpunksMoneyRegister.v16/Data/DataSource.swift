@@ -42,6 +42,7 @@ final class MoneyDataSource: Sendable {
         }()
 
         self.modelContext = modelContainer.mainContext
+        // TODO: Check defaults and make sure they exist; if not create them.
 
 #if DEBUG
         print("-----------------")
