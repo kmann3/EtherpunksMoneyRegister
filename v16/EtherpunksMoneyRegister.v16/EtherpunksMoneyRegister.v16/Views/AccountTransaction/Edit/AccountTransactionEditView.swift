@@ -23,14 +23,12 @@ struct AccountTransactionEditView: View {
         Form {
             Section() {
                 LabeledContent("Account") {
+                    // TODO: Change this to a picker
                     Button {
-                        handler(.account_Edit(account: viewModel.tran.account))
+                        
                     } label: {
                         Text(viewModel.tran.account.name)
-                            .underline()
-                            .foregroundStyle(.blue)
                     }
-                    .buttonStyle(.plain) // keeps it looking like a value, not a big button
                 }
                 TextField("Name", text: Binding(
                     get: { self.viewModel.draft.name },
