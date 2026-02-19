@@ -9,14 +9,14 @@ import SwiftUI
 import SwiftData
 
 struct AccountTransactionEditView: View {
-    private var viewModel: ViewModel
+    @StateObject private var viewModel: ViewModel
     var handler: (PathStore.Route) -> Void
 
     @Query(sort: \Account.name) private var allAccounts: [Account]
     @State private var showTagPicker = false
 
     init(_ tran: AccountTransaction, _ handler: @escaping (PathStore.Route) -> Void) {
-        self.viewModel = ViewModel(tran: tran)
+        _viewModel = StateObject(wrappedValue: ViewModel(tran: tran))
         self.handler = handler
     }
     
@@ -24,20 +24,14 @@ struct AccountTransactionEditView: View {
         Form {
             Section() {
                 LabeledContent("Account") {
-                    Picker("Account", selection: Binding(
-                        get: { self.viewModel.draft.account },
-                        set: { self.viewModel.draft.account = $0 }
-                    )) {
+                    Picker("Account", selection: $viewModel.draft.account) {
                         ForEach(allAccounts) { account in
                             Text(account.name).tag(account)
                         }
                     }
                     .pickerStyle(.menu)
                 }
-                TextField("Name", text: Binding(
-                    get: { self.viewModel.draft.name },
-                    set: { self.viewModel.draft.name = $0 }
-                ))
+                TextField("Name", text: $viewModel.draft.name)
                 Picker("Type", selection: Binding(
                     get: { self.viewModel.draft.transactionType },
                     set: { self.viewModel.draft.transactionType = $0 }
@@ -45,30 +39,15 @@ struct AccountTransactionEditView: View {
                     Text("Debit").tag(TransactionType.debit)
                     Text("Credit").tag(TransactionType.credit)
                 }
-                TextField("Amount", text: Binding(
-                    get: { self.viewModel.draft.amountString },
-                    set: { self.viewModel.draft.amountString = $0 }
-                ))
-                Toggle("Tax Related", isOn: Binding(
-                    get: { self.viewModel.draft.isTaxRelated },
-                    set: { self.viewModel.draft.isTaxRelated = $0 }
-                ))
-                TextField("Confirmation #", text: Binding(
-                    get: { self.viewModel.draft.confirmationNumber },
-                    set: { self.viewModel.draft.confirmationNumber = $0 }
-                ))
-                TextField("Notes", text: Binding(
-                    get: { self.viewModel.draft.notes },
-                    set: { self.viewModel.draft.notes = $0 }
-                ), axis: .vertical)
+                TextField("Amount", text: $viewModel.draft.amountString)
+                Toggle("Tax Related", isOn: $viewModel.draft.isTaxRelated)
+                TextField("Confirmation #", text: $viewModel.draft.confirmationNumber)
+                TextField("Notes", text: $viewModel.draft.notes, axis: .vertical)
                     .lineLimit(3...6)
             }
 
             Section() {
-                Toggle("Pending", isOn: Binding(
-                    get: { self.viewModel.draft.hasPending },
-                    set: { self.viewModel.draft.hasPending = $0 }
-                ))
+                Toggle("Pending", isOn: $viewModel.draft.hasPending)
                 if viewModel.draft.hasPending {
                     DatePicker("Pending On", selection: Binding(
                         get: { self.viewModel.draft.pendingOn ?? Date() },
@@ -76,10 +55,7 @@ struct AccountTransactionEditView: View {
                     ), displayedComponents: [.date, .hourAndMinute])
                 }
 
-                Toggle("Cleared", isOn: Binding(
-                    get: { self.viewModel.draft.hasCleared },
-                    set: { self.viewModel.draft.hasCleared = $0 }
-                ))
+                Toggle("Cleared", isOn: $viewModel.draft.hasCleared)
                 if viewModel.draft.hasCleared {
                     DatePicker("Cleared On", selection: Binding(
                         get: { self.viewModel.draft.clearedOn ?? Date() },
@@ -87,10 +63,7 @@ struct AccountTransactionEditView: View {
                     ), displayedComponents: [.date, .hourAndMinute])
                 }
 
-                Toggle("Has Due Date", isOn: Binding(
-                    get: { self.viewModel.draft.hasDueDate },
-                    set: { self.viewModel.draft.hasDueDate = $0 }
-                ))
+                Toggle("Has Due Date", isOn: $viewModel.draft.hasDueDate)
                 if viewModel.draft.hasDueDate {
                     DatePicker("Due Date", selection: Binding(
                         get: { self.viewModel.draft.dueDate ?? Date() },
@@ -100,7 +73,7 @@ struct AccountTransactionEditView: View {
             }
 
             LabeledContent("Tags") {
-                if self.viewModel.draft.tags.isEmpty {
+                if $viewModel.draft.tags.isEmpty {
                     Text("No tags selected")
                         .foregroundStyle(.secondary)
                 } else {
@@ -130,6 +103,8 @@ struct AccountTransactionEditView: View {
                             .foregroundColor(.blue)
                     }
                 }
+            } else {
+                // Give option to create a recurring transaction
             }
         }
         .navigationTitle("Edit Transaction")

@@ -8,15 +8,17 @@
 import Foundation
 import SwiftData
 import SwiftUI
+import Combine
 
 extension AccountTransactionEditView {
     @MainActor
-    class ViewModel {
+    class ViewModel : ObservableObject {
         private let dataSource: MoneyDataSource
 
         var tran: AccountTransaction
         var files: [TransactionFile] = []
-        var draft: Draft
+        
+        @Published var draft: Draft
 
         init(dataSource: MoneyDataSource = MoneyDataSource.shared, tran: AccountTransaction) {
             self.dataSource = dataSource
@@ -36,6 +38,13 @@ extension AccountTransactionEditView {
         
         func save() {
             guard let amount = draft.decimalAmount else { return }
+            if tran.amount != amount {
+                
+            }
+            
+            if tran.account != draft.account {
+                
+            }
             let tran = self.tran
             tran.name = draft.name
             tran.account = draft.account // TODO: Send a bool value when saving to adjust accounts accordingly for the loss/gain
