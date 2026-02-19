@@ -6,9 +6,8 @@
 //
 
 import Foundation
-import SwiftUI
 
-enum NavView: Hashable, CaseIterable, Codable, CustomStringConvertible  {
+enum NavView: String, Hashable, CaseIterable, Codable, CustomStringConvertible  {
     case account_Create
     case account_Delete
     case account_Details
