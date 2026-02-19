@@ -23,6 +23,8 @@ extension DashboardView {
         var upcomingCreditRecurringTransactions: [RecurringTransaction]
         var upcomingNonGroupDebitRecurringTransactions: [RecurringTransaction]
         var upcomingRecurringGroups: [RecurringGroup] = []
+        
+        var userPrefs: UserPrefs
 
         init(dataSource: MoneyDataSource = MoneyDataSource.shared) {
             self.dataSource = dataSource
@@ -32,6 +34,7 @@ extension DashboardView {
             upcomingNonGroupDebitRecurringTransactions = dataSource.fetchUpcomingRecurringNonGroupDebits()
             upcomingCreditRecurringTransactions = dataSource.fetchUpcomingRecurringTransactions(transactionType: .credit)
             upcomingRecurringGroups = dataSource.fetchUpcomingRecurringGroups()
+            userPrefs = dataSource.fetchUserPrefs()
         }
 
         func refreshScreen() {

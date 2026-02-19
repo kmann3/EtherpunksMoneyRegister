@@ -159,6 +159,10 @@ struct DashboardView: View {
                 print("ReserveGroupView returned: \(returnedQueue)")
         #endif
                 selectedReserveGroup = nil
+                if(self.viewModel.userPrefs.afterReserveGoTo != .dashboard) {
+                    // TODO: Implement code for sending them
+                    // Most likely either want to go to account transactionList or recurring group list?
+                }
             }
             .frame(minWidth: 500, minHeight: 400)
         }

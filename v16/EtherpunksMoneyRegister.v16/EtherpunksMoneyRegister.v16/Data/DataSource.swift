@@ -22,7 +22,8 @@ final class MoneyDataSource: Sendable {
         RecurringGroup.self,
         RecurringTransaction.self,
         TransactionFile.self,
-        TransactionTag.self
+        TransactionTag.self,
+        UserPrefs.self
     ])
 
 #if DEBUG
@@ -56,6 +57,7 @@ final class MoneyDataSource: Sendable {
             try modelContext.delete(model: RecurringTransaction.self)
             try modelContext.delete(model: TransactionFile.self)
             try modelContext.delete(model: TransactionTag.self)
+            try modelContext.delete(model: UserPrefs.self)
         } catch {
             print("Failed to clear database. Err: \(error)")
         }
