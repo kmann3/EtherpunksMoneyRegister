@@ -76,4 +76,19 @@ extension MoneyDataSource {
             fatalError(error.localizedDescription)
         }
     }
+    
+    func updateTransactionFile(tran: AccountTransaction, origAccount: Account, origAmount: Decimal) {
+        if tran.account != origAccount {
+            
+        }
+        
+        if tran.amount != origAmount {
+        }
+        
+        do {
+            try modelContext.save()
+        } catch {
+            fatalError("Failed to save transaction changes: \(error)")
+        }
+    }
 }

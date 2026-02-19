@@ -38,18 +38,13 @@ extension AccountTransactionEditView {
         
         func save() {
             guard let amount = draft.decimalAmount else { return }
-            if tran.amount != amount {
-                
-            }
-            
-            if tran.account != draft.account {
-                
-            }
+            let origAmount = tran.amount
+            let origAccount = tran.account
             let tran = self.tran
             tran.name = draft.name
-            tran.account = draft.account // TODO: Send a bool value when saving to adjust accounts accordingly for the loss/gain
+            tran.account = draft.account
             tran.transactionType = draft.transactionType
-            tran.amount = amount // TODO: Send a bool value when saving to adjust account accordingly
+            tran.amount = amount
             tran.isTaxRelated = draft.isTaxRelated
             tran.confirmationNumber = draft.confirmationNumber
             tran.notes = draft.notes
@@ -58,7 +53,8 @@ extension AccountTransactionEditView {
             tran.dueDate = draft.hasDueDate ? draft.dueDate : nil
             tran.transactionTags = draft.tags
             tran.VerifySignage()
-            // TODO: self.dataSource.updateTransaction()
+            // TODO: Do I need to do anything special for attachments / files?
+            self.dataSource.updateTransactionFile(tran: tran, origAccount: origAccount, origAmount: origAmount)
         }
 
         struct Draft {

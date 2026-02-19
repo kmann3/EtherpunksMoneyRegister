@@ -116,7 +116,9 @@ struct AccountTransactionEditView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
-                    self.viewModel.save()
+                    withAnimation {
+                        self.viewModel.save()
+                    }
                     handler(.transaction_Detail(transaction: viewModel.tran))
                 }
                     .disabled(!self.viewModel.draft.isValid)
@@ -127,7 +129,6 @@ struct AccountTransactionEditView: View {
                 initialSelection: self.viewModel.draft.tags,
                 onDone: { newSelection in
                     self.viewModel.draft.tags = newSelection
-                    // TODO: Ok, so tags come back but they aren't being shown. Need to fix
                     showTagPicker = false
                 },
                 onCancel: {
