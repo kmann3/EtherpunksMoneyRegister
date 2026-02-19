@@ -153,6 +153,7 @@ struct AccountTransactionEditView: View {
                 initialSelection: self.viewModel.draft.tags,
                 onDone: { newSelection in
                     self.viewModel.draft.tags = newSelection
+                    // TODO: Ok, so tags come back but they aren't being shown. Need to fix
                     showTagPicker = false
                 },
                 onCancel: {
@@ -160,6 +161,7 @@ struct AccountTransactionEditView: View {
                 }
             )
         }
+        .frame(minWidth: 150, minHeight: 550)
     }
 }
 
