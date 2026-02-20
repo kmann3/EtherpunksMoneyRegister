@@ -40,7 +40,11 @@ struct AccountTransactionEditView: View {
                     Text("Credit").tag(TransactionType.credit)
                 }
                 TextField("Amount", text: $viewModel.draft.amountString)
-                Toggle("Tax Related", isOn: $viewModel.draft.isTaxRelated)
+                
+                LabeledContent("Tax Related") {
+                    Toggle("", isOn: $viewModel.draft.isTaxRelated)
+                }
+                
                 TextField("Confirmation #", text: $viewModel.draft.confirmationNumber)
                 TextField("Notes", text: $viewModel.draft.notes, axis: .vertical)
                     .lineLimit(3...6)
@@ -48,6 +52,8 @@ struct AccountTransactionEditView: View {
 
             Section() {
                 LabeledContent("Status") {
+                    // Reserved > Pending > Recurring > Cleared
+                    // Red      > Yellow  > Blue      > Green
                     Text("\(self.viewModel.draft.transactionStatus.description)")
                         .background(self.viewModel.draft.backgroundColor)
                 }
