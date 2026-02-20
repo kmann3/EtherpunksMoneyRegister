@@ -7,10 +7,19 @@
 
 import Foundation
 
-enum FileType: Hashable, Codable {
+enum FileType: String, Hashable, Codable, CustomStringConvertible  {
     case confirmation
     case contract
     case documentation
     case receipt
     case statement
+    var description: String {
+        switch self {
+        case .confirmation: return "Confirmation"
+        case .contract: return "Contract"
+        case .documentation: return "Documentation"
+        case .receipt: return "Receipt"
+        case .statement: return "Statement"
+        }
+    }
 }
