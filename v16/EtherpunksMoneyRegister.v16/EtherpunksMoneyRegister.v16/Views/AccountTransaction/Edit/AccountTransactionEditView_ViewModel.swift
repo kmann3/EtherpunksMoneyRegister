@@ -17,6 +17,7 @@ extension AccountTransactionEditView {
 
         var tran: AccountTransaction
         var files: [TransactionFile] = []
+        var filesDidChange: Bool = false
         
         @Published var draft: Draft
 
@@ -26,6 +27,11 @@ extension AccountTransactionEditView {
             self.tran = tran
             self.files = self.dataSource.fetchTransactionFiles(tran: self.tran)
             self.draft = Draft(tran: tran)
+            
+            if self.draft.fileCount > 0 {
+                // Load the files
+                self.files = self.dataSource.fetchTransactionFiles(tran: self.tran)
+            }
         }
 
         func addNewDocument() {
@@ -51,52 +57,12 @@ extension AccountTransactionEditView {
             tran.pendingOnUTC = draft.hasPending ? draft.pendingOn : nil
             tran.clearedOnUTC = draft.hasCleared ? draft.clearedOn : nil
             tran.dueDate = draft.hasDueDate ? draft.dueDate : nil
+            tran.balancedOnUTC = draft.hasBalanced ? draft.balancedOn : nil
             tran.transactionTags = draft.tags
             tran.VerifySignage()
-            // TODO: Do I need to do anything special for attachments / files?
-            self.dataSource.updateTransactionFile(tran: tran, origAccount: origAccount, origAmount: origAmount)
-        }
-
-        struct Draft {
-            var name: String
-            var account: Account
-            var transactionType: TransactionType
-            var amountString: String
-            var isTaxRelated: Bool
-            var confirmationNumber: String
-            var notes: String
-            var pendingOn: Date?
-            var clearedOn: Date?
-            var dueDate: Date?
-            var tags: [TransactionTag]
-            var hasPending: Bool
-            var hasCleared: Bool
-            var hasDueDate: Bool
-
-            init(tran: AccountTransaction) {
-                name = tran.name
-                account = tran.account
-                transactionType = tran.transactionType
-                amountString = tran.amount.description
-                isTaxRelated = tran.isTaxRelated
-                confirmationNumber = tran.confirmationNumber
-                notes = tran.notes
-                pendingOn = tran.pendingOnUTC
-                clearedOn = tran.clearedOnUTC
-                dueDate = tran.dueDate
-                tags = tran.transactionTags
-                hasPending = tran.pendingOnUTC != nil
-                hasCleared = tran.clearedOnUTC != nil
-                hasDueDate = tran.dueDate != nil
-            }
-
-            var isValid: Bool {
-                !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && decimalAmount != nil
-            }
-
-            var decimalAmount: Decimal? {
-                Decimal(string: amountString.trimmingCharacters(in: .whitespacesAndNewlines))
-            }
+            
+            // TODO: Files and filesDidChange
+            self.dataSource.updateTransactionFile(tran: tran, origAccount: origAccount, origAmount: origAmount, files: self.files, filesDidChange: self.filesDidChange)
         }
     }
 }

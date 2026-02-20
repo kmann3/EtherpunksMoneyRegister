@@ -47,29 +47,88 @@ struct AccountTransactionEditView: View {
             }
 
             Section() {
-                Toggle("Pending", isOn: $viewModel.draft.hasPending)
-                if viewModel.draft.hasPending {
-                    DatePicker("Pending On", selection: Binding(
-                        get: { self.viewModel.draft.pendingOn ?? Date() },
-                        set: { self.viewModel.draft.pendingOn = $0 }
-                    ), displayedComponents: [.date, .hourAndMinute])
+                LabeledContent("Pending") {
+                    HStack(spacing: 8) {
+                        Toggle("", isOn: $viewModel.draft.hasPending)
+                            .labelsHidden()
+
+                        if viewModel.draft.hasPending {
+                            DatePicker("",
+                                       selection: Binding(
+                                           get: { self.viewModel.draft.pendingOn ?? Date() },
+                                           set: { self.viewModel.draft.pendingOn = $0 }
+                                       ),
+                                       displayedComponents: [.date]
+                            )
+                            .labelsHidden()
+                            .datePickerStyle(.field)
+                        }
+                    }
                 }
 
-                Toggle("Cleared", isOn: $viewModel.draft.hasCleared)
-                if viewModel.draft.hasCleared {
-                    DatePicker("Cleared On", selection: Binding(
-                        get: { self.viewModel.draft.clearedOn ?? Date() },
-                        set: { self.viewModel.draft.clearedOn = $0 }
-                    ), displayedComponents: [.date, .hourAndMinute])
+                LabeledContent("Cleared") {
+                    HStack(spacing: 8) {
+                        Toggle("", isOn: $viewModel.draft.hasCleared)
+                            .labelsHidden()
+
+                        if viewModel.draft.hasCleared {
+                            DatePicker("",
+                                       selection: Binding(
+                                        get: { self.viewModel.draft.clearedOn ?? Date() },
+                                           set: { self.viewModel.draft.clearedOn = $0 }
+                                       ),
+                                       displayedComponents: [.date]
+                            )
+                            .labelsHidden()
+                            .datePickerStyle(.field)
+                        }
+                    }
+                }
+                
+                LabeledContent("Due Date") {
+                    HStack(spacing: 8) {
+                        Toggle("", isOn: $viewModel.draft.hasDueDate)
+                            .labelsHidden()
+
+                        if viewModel.draft.hasDueDate {
+                            DatePicker("",
+                                       selection: Binding(
+                                        get: { self.viewModel.draft.dueDate ?? Date() },
+                                           set: { self.viewModel.draft.dueDate = $0 }
+                                       ),
+                                       displayedComponents: [.date]
+                            )
+                            .labelsHidden()
+                            .datePickerStyle(.field)
+                        }
+                    }
+                }
+                
+                LabeledContent("Balanced On") {
+                    HStack(spacing: 8) {
+                        Toggle("", isOn: $viewModel.draft.hasBalanced)
+                            .labelsHidden()
+                            .onChange(of: viewModel.draft.hasBalanced) {
+                                // The only one we're skipping is if it's toggled AND the balancedOn has a value - we don't want to update the value, thus we are skipping it
+                                if self.viewModel.draft.hasBalanced == true && self.viewModel.tran.balancedOnUTC == nil {
+                                    // Only update the value if it never had one in the first place.
+                                    self.viewModel.draft.balancedOn = Date()
+                                } else if self.viewModel.draft.hasBalanced == false && self.viewModel.tran.balancedOnUTC == nil {
+                                    // If it was never balanced, then make sure it stays that way
+                                    self.viewModel.draft.balancedOn = nil
+                                } else if self.viewModel.draft.hasBalanced == false && self.viewModel.tran.balancedOnUTC != nil {
+                                    self.viewModel.draft.balancedOn = nil
+                                }
+                            }
+
+                        if viewModel.draft.hasBalanced {
+                            Text("  \(self.viewModel.tran.createdOnUTC.toShortDetailString())")
+                            .labelsHidden()
+                            .datePickerStyle(.field)
+                        }
+                    }
                 }
 
-                Toggle("Has Due Date", isOn: $viewModel.draft.hasDueDate)
-                if viewModel.draft.hasDueDate {
-                    DatePicker("Due Date", selection: Binding(
-                        get: { self.viewModel.draft.dueDate ?? Date() },
-                        set: { self.viewModel.draft.dueDate = $0 }
-                    ), displayedComponents: [.date])
-                }
             }
 
             LabeledContent("Tags") {
@@ -77,24 +136,26 @@ struct AccountTransactionEditView: View {
                     Text("No tags selected")
                         .foregroundStyle(.secondary)
                 } else {
-                    ScrollView(.horizontal, showsIndicators: false) {
+                    // TODO: Consider making floating pill visual instead
+                    // Where the selected ones float to the top, alphabetically
+                    // And unselected and below it, alphabetically
+                    ScrollView(.horizontal, showsIndicators: true) {
                         HStack {
                             ForEach(self.viewModel.draft.tags.sorted(by: { $0.name < $1.name })) { tag in
                                 Text(tag.name)
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 4)
-                                    .background(.thinMaterial)
                                     .clipShape(Capsule())
                             }
                         }
                     }
                 }
+                Button("Edit Tags") { showTagPicker = true }
+                Spacer()
             }
-            Button("Edit Tags") { showTagPicker = true }
-
-            if let rec = viewModel.tran.recurringTransaction {
-                HStack {
-                    Text("Recurring:")
+            
+            LabeledContent("Recurring") {
+                if let rec = viewModel.tran.recurringTransaction {
                     Button {
                         handler(.recurringTransaction_Edit(recTran: rec))
                     } label: {
@@ -102,9 +163,90 @@ struct AccountTransactionEditView: View {
                             .underline()
                             .foregroundColor(.blue)
                     }
+                } else {
+                    HStack {
+                        Text("None")
+                        Button {
+                            // TODO: Implement attach recurring?
+                        } label: {
+                            Text("Create")
+                        }
+                    }
                 }
-            } else {
-                // Give option to create a recurring transaction
+            }
+            
+            LabeledContent("Recurring Group") {
+                if let recGroup = viewModel.tran.recurringTransaction?.recurringGroup {
+                    Button {
+                        handler(.recurringGroup_Edit(recGroup: recGroup))
+                    } label: {
+                        Text(recGroup.name)
+                            .underline()
+                            .foregroundColor(.blue)
+                    }
+                } else {
+                    if let rec = viewModel.tran.recurringTransaction {
+                        Text("Attach to: \(rec.name)")
+                        Button {
+                            // TODO: Implement attach recurring?
+                        } label: {
+                            Text("Create")
+                        }
+                    } else {
+                        Text("None")
+                    }
+                }
+            }
+
+            LabeledContent("Files") {
+                VStack {
+                    HStack {
+                        Text("Count: \(self.viewModel.tran.fileCount)")
+                        Spacer()
+                    }
+
+                    if self.viewModel.files.count > 0 {
+                        ForEach(self.viewModel.files, id: \.self) { file in
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text("Filename: \(file.filename)")
+                                    Button("View") {
+                                        if file.data == nil {
+                                            print("File \(file.filename) has no data")
+                                        } else {
+                                            QuickLookPreviewController().showPreview(for: file.data!, fileName: file.filename)
+                                            
+                                            // TODO: we need to purge temp files
+                                        }
+                                    }
+                                }
+                                
+                                Text("Size: \(file.getFormattedFileSize())")
+                                Text("Created On:  \(file.createdOnUTC.toShortDetailString())")
+                                
+                                HStack {
+                                    Text(
+                                        "Tax Document: \(file.isTaxRelated == true ? "Yes" : "No")"
+                                    )
+                                }
+                                
+                                HStack {
+                                    Text("Notes: \(file.notes)")
+                                }
+                            }
+                            .padding()
+                        }
+                    }
+                }
+            }
+            
+            Divider()
+            
+            LabeledContent("Created On") {
+                Text("\(self.viewModel.tran.createdOnUTC.toDebugDate())")
+            }
+            LabeledContent("ID") {
+                Text("\(self.viewModel.tran.id)")
             }
         }
         .navigationTitle("Edit Transaction")
@@ -140,7 +282,7 @@ struct AccountTransactionEditView: View {
     }
 }
 
-#Preview ("CVS (pending and cleared)") {
+#Preview ("CVS (pending and cleared) w Attachment") {
     AccountTransactionEditView(MoneyDataSource.shared.previewer.cvsTransaction) { action in print(action) }
         .modelContainer(MoneyDataSource.shared.modelContainer)
 }

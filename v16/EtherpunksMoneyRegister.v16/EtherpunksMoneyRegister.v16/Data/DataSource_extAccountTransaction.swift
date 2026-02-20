@@ -77,12 +77,13 @@ extension MoneyDataSource {
         }
     }
     
-    func updateTransactionFile(tran: AccountTransaction, origAccount: Account, origAmount: Decimal) {
+    func updateTransactionFile(tran: AccountTransaction, origAccount: Account, origAmount: Decimal, files: [TransactionFile], filesDidChange: Bool) {
         if tran.account != origAccount {
             
         }
         
         if tran.amount != origAmount {
+            
         }
         
         do {
