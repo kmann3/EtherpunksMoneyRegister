@@ -47,10 +47,19 @@ struct AccountTransactionEditView: View {
             }
 
             Section() {
+                LabeledContent("Status") {
+                    Text("\(self.viewModel.draft.transactionStatus.description)")
+                        .background(self.viewModel.draft.backgroundColor)
+                }
                 LabeledContent("Pending") {
                     HStack(spacing: 8) {
                         Toggle("", isOn: $viewModel.draft.hasPending)
                             .labelsHidden()
+                            .onChange(of: viewModel.draft.hasPending) {
+                                if viewModel.draft.hasPending == false {
+                                    viewModel.draft.pendingOn = nil
+                                }
+                            }
 
                         if viewModel.draft.hasPending {
                             DatePicker("",
@@ -70,33 +79,21 @@ struct AccountTransactionEditView: View {
                     HStack(spacing: 8) {
                         Toggle("", isOn: $viewModel.draft.hasCleared)
                             .labelsHidden()
+                            .onChange(of: viewModel.draft.hasCleared) {
+                            }
+                            .onChange(of: viewModel.draft.hasCleared) {
+                                if viewModel.draft.hasCleared == false {
+                                    viewModel.draft.clearedOn = nil
+                                }
+                            }
 
                         if viewModel.draft.hasCleared {
                             DatePicker("",
                                        selection: Binding(
                                         get: { self.viewModel.draft.clearedOn ?? Date() },
-                                           set: { self.viewModel.draft.clearedOn = $0 }
+                                        set: { self.viewModel.draft.clearedOn = $0 }
                                        ),
-                                       displayedComponents: [.date]
-                            )
-                            .labelsHidden()
-                            .datePickerStyle(.field)
-                        }
-                    }
-                }
-                
-                LabeledContent("Due Date") {
-                    HStack(spacing: 8) {
-                        Toggle("", isOn: $viewModel.draft.hasDueDate)
-                            .labelsHidden()
-
-                        if viewModel.draft.hasDueDate {
-                            DatePicker("",
-                                       selection: Binding(
-                                        get: { self.viewModel.draft.dueDate ?? Date() },
-                                           set: { self.viewModel.draft.dueDate = $0 }
-                                       ),
-                                       displayedComponents: [.date]
+                                       displayedComponents: [.date, .hourAndMinute]
                             )
                             .labelsHidden()
                             .datePickerStyle(.field)
@@ -123,6 +120,25 @@ struct AccountTransactionEditView: View {
 
                         if viewModel.draft.hasBalanced {
                             Text("  \(self.viewModel.tran.createdOnUTC.toShortDetailString())")
+                            .labelsHidden()
+                            .datePickerStyle(.field)
+                        }
+                    }
+                }
+
+                LabeledContent("Due Date") {
+                    HStack(spacing: 8) {
+                        Toggle("", isOn: $viewModel.draft.hasDueDate)
+                            .labelsHidden()
+
+                        if viewModel.draft.hasDueDate {
+                            DatePicker("",
+                                       selection: Binding(
+                                        get: { self.viewModel.draft.dueDate ?? Date() },
+                                           set: { self.viewModel.draft.dueDate = $0 }
+                                       ),
+                                       displayedComponents: [.date]
+                            )
                             .labelsHidden()
                             .datePickerStyle(.field)
                         }
