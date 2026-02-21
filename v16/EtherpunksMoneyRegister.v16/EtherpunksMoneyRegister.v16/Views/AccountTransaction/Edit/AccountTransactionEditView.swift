@@ -24,7 +24,7 @@ struct AccountTransactionEditView: View {
         Form {
             Section() {
                 LabeledContent("Account") {
-                    Picker("Account", selection: $viewModel.draft.account) {
+                    Picker("", selection: $viewModel.draft.account) {
                         ForEach(allAccounts) { account in
                             Text(account.name).tag(account)
                         }
