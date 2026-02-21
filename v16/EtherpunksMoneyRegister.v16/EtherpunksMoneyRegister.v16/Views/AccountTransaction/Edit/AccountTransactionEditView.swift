@@ -10,10 +10,12 @@ import SwiftData
 
 struct AccountTransactionEditView: View {
     @StateObject private var viewModel: ViewModel
+    @Environment(\.modelContext) private var modelContext
     var handler: (PathStore.Route) -> Void
 
     @Query(sort: \Account.name) private var allAccounts: [Account]
     @State private var showTagPicker = false
+    @State private var filePendingDelete: TransactionFile? = nil
 
     init(_ tran: AccountTransaction, _ handler: @escaping (PathStore.Route) -> Void) {
         _viewModel = StateObject(wrappedValue: ViewModel(tran: tran))
@@ -225,7 +227,12 @@ struct AccountTransactionEditView: View {
                     HStack {
                         Text("Count: \(self.viewModel.tran.fileCount)")
                         Spacer()
+                        Button("Add File") {
+                            // TODO: Add code here for adding file
+                        }
                     }
+                    
+                    Divider()
 
                     if self.viewModel.files.count > 0 {
                         ForEach(self.viewModel.files, id: \.self) { file in
@@ -238,8 +245,13 @@ struct AccountTransactionEditView: View {
                                         } else {
                                             QuickLookPreviewController().showPreview(for: file.data!, fileName: file.filename)
                                             
-                                            // TODO: we need to purge temp files
+                                            // TODO: do we need to purge temp files?
                                         }
+                                    }
+                                    
+                                    Spacer()
+                                    Button("Delete") {
+                                        filePendingDelete = file
                                     }
                                 }
                                 
@@ -298,6 +310,25 @@ struct AccountTransactionEditView: View {
                 onCancel: {
                     showTagPicker = false
                 }
+            )
+        }
+        .alert(item: $filePendingDelete) { file in
+            Alert(
+                title: Text("Delete \"\(file.filename)\"?"),
+                message: Text("Are you sure you want to delete \(file.filename)? This action cannot be undone."),
+                primaryButton: .destructive(Text("Delete")) {
+                    // Perform deletion and persist
+                    modelContext.delete(file)
+                    // Update in-memory state used by the view
+                    viewModel.files.removeAll { $0.id == file.id }
+                    viewModel.tran.fileCount = max(0, viewModel.tran.fileCount - 1)
+                    do {
+                        try modelContext.save()
+                    } catch {
+                        print("Failed to delete file: \(error)")
+                    }
+                },
+                secondaryButton: .cancel()
             )
         }
         .frame(minWidth: 150, minHeight: 650)
