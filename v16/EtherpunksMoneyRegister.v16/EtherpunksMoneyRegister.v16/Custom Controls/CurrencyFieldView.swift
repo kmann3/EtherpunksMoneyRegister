@@ -12,66 +12,145 @@ struct CurrencyFieldView: View {
     @State private var text: String = ""
     @FocusState private var isFocused: Bool
 
+    // Use your existing helper if you have one; otherwise configure here.
+    private var currencyFormatter: NumberFormatter {
+        let nf = NumberFormatter.localCurrencyFormatter
+        // Ensure these are sane for your currency
+        nf.minimumFractionDigits = nf.maximumFractionDigits // keep consistent
+        return nf
+    }
+
+    private var decimalSeparator: String {
+        currencyFormatter.decimalSeparator ?? "."
+    }
+
+    private var maxFractionDigits: Int {
+        currencyFormatter.maximumFractionDigits
+    }
+
     var body: some View {
-        HStack {
-            Text(NumberFormatter.localCurrencyFormatter.currencySymbol ?? "$")
+        HStack(alignment: .firstTextBaseline, spacing: 6) {
+            Text(currencyFormatter.currencySymbol ?? "$")
                 .foregroundColor(.secondary)
                 .padding(.leading, 4)
 
             TextField("Amount", text: $text)
                 .focused($isFocused)
+                .multilineTextAlignment(.leading)
+                .monospacedDigit()
 #if os(iOS)
                 .keyboardType(.decimalPad)
-#endif
-                .onAppear {
-                    text = formatDecimal(amount)
-                }
-                .onChange(of: text) {
-                    // Use self.text directly inside
-                    let filtered = filterInputForDecimal(text)
-
-                    self.text = filterInputForText(text)
-
-                    if let decimal = Decimal(string: filtered) {
-                        amount = decimal
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+                        Button("Done") { isFocused = false }
                     }
                 }
+#endif
+                .onAppear {
+                    // Show display-formatted value initially
+                    text = formatForDisplay(amount)
+                }
                 .onChange(of: isFocused) {
-                    if !isFocused {
-                        text = formatDecimal(amount)
+                    if isFocused {
+                        // Switch to a plain, editing-friendly representation
+                        text = formatForEditing(amount)
+                    } else {
+                        // Commit and show display formatting
+                        text = formatForDisplay(amount)
+                    }
+                }
+                .onChange(of: text) {
+                    // Sanitize input according to locale rules
+                    let sanitized = sanitize(text)
+                    if sanitized != text {
+                        // Only assign if actually changed to avoid cursor jitter
+                        text = sanitized
+                    }
+
+                    // Convert to a normalized string with '.' as decimal separator for Decimal parsing
+                    let normalized = normalizedForDecimalParsing(sanitized)
+
+                    if let decimal = Decimal(string: normalized) {
+                        amount = decimal
+                    } else {
+                        // If the field is empty or only a '-', keep amount at 0 (or your preferred behavior)
+                        if sanitized.isEmpty || sanitized == "-" {
+                            amount = 0
+                        }
                     }
                 }
                 .padding(5)
-            
         }
     }
 
-    private func filterInputForDecimal(_ input: String) -> String {
-        let allowed = "0123456789."
-        let filtered = input.filter { allowed.contains($0) }
+    // MARK: - Formatting and sanitization
 
-        // Only one decimal point
-        let parts = filtered.split(separator: ".")
-        if parts.count > 1 {
-            return parts.prefix(2).joined(separator: ".")
-        }
-        return filtered
+    // Display formatting: full currency, grouping separators, etc.
+    private func formatForDisplay(_ decimal: Decimal) -> String {
+        currencyFormatter.string(from: decimal as NSNumber) ?? ""
     }
 
-    private func filterInputForText(_ input: String) -> String {
-        let allowed = "0123456789.,"
-        let filtered = input.filter { allowed.contains($0) }
+    // Editing formatting: no currency symbol, no grouping, locale decimal separator, limited fraction digits
+    private func formatForEditing(_ decimal: Decimal) -> String {
+        // Build a simple editing string using the locale’s decimal separator
+        // Avoid grouping for a cleaner editing experience
+        let components = NSDecimalNumber(decimal: decimal).stringValue.split(separator: ".")
+        let intPart = String(components.first ?? "0")
+        let fracPart = components.count > 1 ? String(components[1]) : nil
 
-        // Only one decimal point
-        let parts = filtered.split(separator: ".")
-        if parts.count > 1 {
-            return parts.prefix(2).joined(separator: ".")
+        if let fracPart, maxFractionDigits > 0 {
+            let trimmed = String(fracPart.prefix(maxFractionDigits))
+            return trimmed.isEmpty ? intPart : intPart + decimalSeparator + trimmed
+        } else {
+            return intPart
         }
-        return filtered
     }
 
-    private func formatDecimal(_ decimal: Decimal) -> String {
-        NumberFormatter.localCurrencyFormatter.string(from: decimal as NSNumber) ?? ""
+    private func sanitize(_ input: String) -> String {
+        // Allow digits, one leading '-', and one decimal separator (locale-aware).
+        // Limit fraction digits to maxFractionDigits.
+        var result = ""
+        var hasSeparator = false
+        var hasMinus = false
+        var fractionCount = 0
+
+        for (idx, ch) in input.enumerated() {
+            if ch.isNumber {
+                if hasSeparator {
+                    if fractionCount < maxFractionDigits {
+                        result.append(ch)
+                        fractionCount += 1
+                    }
+                } else {
+                    result.append(ch)
+                }
+            } else if String(ch) == decimalSeparator {
+                if !hasSeparator && maxFractionDigits > 0 {
+                    hasSeparator = true
+                    result.append(ch)
+                }
+            } else if ch == "-" {
+                // Only allow minus at the very beginning
+                if idx == 0 && !hasMinus {
+                    hasMinus = true
+                    result.insert("-", at: result.startIndex)
+                }
+            } else {
+                continue
+            }
+        }
+
+        // If we ended up with just "-", keep it (user may be starting to type a negative)
+        return result
+    }
+
+    private func normalizedForDecimalParsing(_ input: String) -> String {
+        // Replace locale decimal separator with '.' for Decimal(string:)
+        if decimalSeparator != "." {
+            return input.replacingOccurrences(of: decimalSeparator, with: ".")
+        }
+        return input
     }
 }
 

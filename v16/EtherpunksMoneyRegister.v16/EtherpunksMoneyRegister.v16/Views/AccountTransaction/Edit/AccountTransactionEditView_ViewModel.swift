@@ -34,23 +34,18 @@ extension AccountTransactionEditView {
             }
         }
 
-        func addNewDocument() {
+        func addNewFile() {
             // TODO: Implement addNewDocument for AccountTransactionEditView
-        }
-
-        func addNewPhoto() {
-            // TODO: Implement addNewPhoto for AccountTransactionEditView
         }
         
         func save() {
-            guard let amount = draft.decimalAmount else { return }
             let origAmount = tran.amount
             let origAccount = tran.account
             let tran = self.tran
             tran.name = draft.name
             tran.account = draft.account
             tran.transactionType = draft.transactionType
-            tran.amount = amount
+            tran.amount = draft.amount
             tran.isTaxRelated = draft.isTaxRelated
             tran.confirmationNumber = draft.confirmationNumber
             tran.notes = draft.notes

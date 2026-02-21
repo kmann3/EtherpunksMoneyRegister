@@ -12,7 +12,7 @@ struct Draft {
     var name: String
     var account: Account
     var transactionType: TransactionType
-    var amountString: String
+    var amount: Decimal
     var isTaxRelated: Bool
     var confirmationNumber: String
     var notes: String
@@ -78,7 +78,7 @@ struct Draft {
         name = tran.name
         account = tran.account
         transactionType = tran.transactionType
-        amountString = tran.amount.description
+        amount = tran.amount
         isTaxRelated = tran.isTaxRelated
         confirmationNumber = tran.confirmationNumber
         notes = tran.notes
@@ -97,10 +97,6 @@ struct Draft {
     }
 
     var isValid: Bool {
-        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && decimalAmount != nil
-    }
-
-    var decimalAmount: Decimal? {
-        Decimal(string: amountString.trimmingCharacters(in: .whitespacesAndNewlines))
+        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 }

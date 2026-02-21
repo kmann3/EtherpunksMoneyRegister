@@ -14,7 +14,7 @@ struct AccountTransactionEditView: View {
     var handler: (PathStore.Route) -> Void
 
     @Query(sort: \Account.name) private var allAccounts: [Account]
-    @State private var showTagPicker = false
+    @Query(sort: \TransactionTag.name) private var allTags: [TransactionTag]
     @State private var filePendingDelete: TransactionFile? = nil
 
     init(_ tran: AccountTransaction, _ handler: @escaping (PathStore.Route) -> Void) {
@@ -41,7 +41,8 @@ struct AccountTransactionEditView: View {
                     Text("Debit").tag(TransactionType.debit)
                     Text("Credit").tag(TransactionType.credit)
                 }
-                TextField("Amount", text: $viewModel.draft.amountString)
+                //TextField("Amount", text: $viewModel.draft.amountString)
+                CurrencyFieldView(amount: $viewModel.draft.amount)
                 
                 LabeledContent("Tax Related") {
                     Toggle("", isOn: $viewModel.draft.isTaxRelated)
@@ -156,26 +157,28 @@ struct AccountTransactionEditView: View {
             }
 
             LabeledContent("Tags") {
-                if $viewModel.draft.tags.isEmpty {
-                    Text("No tags selected")
+                if allTags.isEmpty {
+                    Text("No tags available")
                         .foregroundStyle(.secondary)
                 } else {
-                    // TODO: Consider making floating pill visual instead
-                    // Where the selected ones float to the top, alphabetically
-                    // And unselected and below it, alphabetically
-                    ScrollView(.horizontal, showsIndicators: true) {
-                        HStack {
-                            ForEach(self.viewModel.draft.tags.sorted(by: { $0.name < $1.name })) { tag in
-                                Text(tag.name)
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 4)
-                                    .clipShape(Capsule())
-                            }
+                    VStack(alignment: .leading, spacing: 10) {
+                        ForEach(allTags) { tag in
+                            Toggle(tag.name, isOn: Binding(
+                                get: { self.viewModel.draft.tags.contains(where: { $0.id == tag.id }) },
+                                set: { isOn in
+                                    if isOn {
+                                        if !self.viewModel.draft.tags.contains(where: { $0.id == tag.id }) {
+                                            self.viewModel.draft.tags.append(tag)
+                                        }
+                                    } else {
+                                        self.viewModel.draft.tags.removeAll { $0.id == tag.id }
+                                    }
+                                }
+                            ))
                         }
                     }
+                    .padding(.leading, 12)
                 }
-                Button("Edit Tags") { showTagPicker = true }
-                Spacer()
             }
             
             LabeledContent("Recurring") {
@@ -300,26 +303,12 @@ struct AccountTransactionEditView: View {
                     .disabled(!self.viewModel.draft.isValid)
             }
         }
-        .sheet(isPresented: $showTagPicker) {
-            TagPickerView(
-                initialSelection: self.viewModel.draft.tags,
-                onDone: { newSelection in
-                    self.viewModel.draft.tags = newSelection
-                    showTagPicker = false
-                },
-                onCancel: {
-                    showTagPicker = false
-                }
-            )
-        }
         .alert(item: $filePendingDelete) { file in
             Alert(
                 title: Text("Delete \"\(file.filename)\"?"),
                 message: Text("Are you sure you want to delete \(file.filename)? This action cannot be undone."),
                 primaryButton: .destructive(Text("Delete")) {
-                    // Perform deletion and persist
-                    modelContext.delete(file)
-                    // Update in-memory state used by the view
+                    modelContext.delete(file) // TODO: Need to make sure this doesn't save other things associted with tran that I didn't think about
                     viewModel.files.removeAll { $0.id == file.id }
                     viewModel.tran.fileCount = max(0, viewModel.tran.fileCount - 1)
                     do {
