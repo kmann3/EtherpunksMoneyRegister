@@ -50,8 +50,8 @@ extension ContentView {
         case .tag_Edit(let tag): Text("TBI - Tag Edit: \(tag.name)")
         case .tag_List: Text("TBI - Tag List")
         case .transaction_Create: Text("TBI - Transaction Create")
-        case .transaction_Detail(let transaction): Text("Transaction Detail \(transaction.name)")
-            //AccountTransactionDetailsView(transaction) { action in self.changeRoute(action) }
+        case .transaction_Detail(let transaction):
+            AccountTransactionDetailsView(transaction) { action in self.changeRoute(action) }
         case .transaction_Edit(let transaction):
             AccountTransactionEditView(transaction) { action in self.changeRoute(action) }
         case .transaction_List(let account):
