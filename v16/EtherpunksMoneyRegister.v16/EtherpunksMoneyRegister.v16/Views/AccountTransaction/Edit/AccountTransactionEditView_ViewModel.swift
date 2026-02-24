@@ -19,14 +19,14 @@ extension AccountTransactionEditView {
         var files: [TransactionFile] = []
         var filesDidChange: Bool = false
         
-        @Published var draft: Draft
+        @Published var draft: AccountTransactionDraft
 
         init(dataSource: MoneyDataSource = MoneyDataSource.shared, tran: AccountTransaction) {
             self.dataSource = dataSource
 
             self.tran = tran
             self.files = self.dataSource.fetchTransactionFiles(tran: self.tran)
-            self.draft = Draft(tran: tran)
+            self.draft = AccountTransactionDraft(tran: tran)
             
             if self.draft.fileCount > 0 {
                 // Load the files

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Draft {
+struct AccountTransactionDraft {
     var name: String
     var account: Account
     var transactionType: TransactionType
