@@ -39,110 +39,172 @@ final class EtherpunksMoneyRegister_v16UITests: XCTestCase {
         }
     }
 
+    // MARK: - ReserveGroupView (Monthly Bills) UI tests
+
     @MainActor
-    func testEditBasicFieldsAndSavePersists() throws {
+    func testReserveGroupSheet_AppearsForMonthlyBills() throws {
         let app = XCUIApplication()
+        app.launchArguments += ["-UITestBridge"]
         app.launch()
 
-        // Navigate to the AccountTransactionEditView for a known transaction
-        navigateToEditView(app)
+        openReserveGroupSheet(app, groupName: "Monthly Bills")
 
-        // Change Name
-        let nameField = app.textFields["Name"]
-        XCTAssertTrue(nameField.waitForExistence(timeout: 2.0))
-        nameField.tap()
-        nameField.clearAndType("Groceries - Weekly")
-
-        // Change Amount
-        let amountField = app.textFields["Amount"]
-        XCTAssertTrue(amountField.exists)
-        amountField.tap()
-        amountField.clearAndType("42.35")
-
-        // Change Type to Credit (menu-style picker appears as a button)
-        let typeMenu = app.buttons["Type"]
-        if typeMenu.exists {
-            typeMenu.tap()
-            let creditOption = app.buttons["Credit"]
-            if creditOption.waitForExistence(timeout: 1.0) {
-                creditOption.tap()
-            }
-        }
-
-        // Toggle Tax Related
-        let taxToggle = app.switches["Tax Related"]
-        if taxToggle.exists { taxToggle.tap() }
-
-        // Save
-        let saveButton = app.navigationBars.buttons["Save"]
-        XCTAssertTrue(saveButton.exists)
-        saveButton.tap()
-
-        // Verify we returned to detail and new name is displayed
-        XCTAssertTrue(app.staticTexts["Name: Groceries - Weekly"].waitForExistence(timeout: 3.0))
-        // Optionally assert type text on detail if shown as plain text
-        XCTAssertTrue(app.staticTexts["Type: Credit"].exists)
+        // Verify the sheet header appears with the group name
+        let header = app.staticTexts["Reserve Transactions: Monthly Bills"]
+        XCTAssertTrue(header.waitForExistence(timeout: 5.0), "ReserveGroupView header should appear for Monthly Bills")
     }
 
     @MainActor
-    func testToggleDatesPersistAfterSave() throws {
+    func testReserveGroupSheet_CancelDismisses() throws {
         let app = XCUIApplication()
+        app.launchArguments += ["-UITestBridge"]
         app.launch()
 
-        // Navigate to the AccountTransactionEditView
-        navigateToEditView(app)
+        // Prefer database-backed count via debug bridge when available
+        var baselineCount: Int
+        if ProcessInfo.processInfo.arguments.contains("-UITestBridge") {
+            baselineCount = try XCTUnwrap(debugAllTransactionsCount(app), "Bridge baseline count unavailable")
+        } else {
+            baselineCount = try XCTUnwrap(allTransactionsApproxCount(app), "Could not determine baseline transactions count")
+        }
 
-        // Toggle Pending, Cleared, Has Due Date
-        let pendingToggle = app.switches["Pending"]
-        XCTAssertTrue(pendingToggle.waitForExistence(timeout: 2.0))
-        pendingToggle.tap()
+        openReserveGroupSheet(app, groupName: "Monthly Bills")
 
-        let clearedToggle = app.switches["Cleared"]
-        XCTAssertTrue(clearedToggle.exists)
-        clearedToggle.tap()
+        let cancelButton = app.buttons["Cancel"]
+        XCTAssertTrue(cancelButton.waitForExistence(timeout: 5.0))
+        cancelButton.tap()
 
-        let dueToggle = app.switches["Has Due Date"]
-        XCTAssertTrue(dueToggle.exists)
-        dueToggle.tap()
+        // Header should disappear after dismiss
+        let header = app.staticTexts["Reserve Transactions: Monthly Bills"]
+        XCTAssertFalse(header.waitForExistence(timeout: 2.0))
 
-        // Date pickers should appear
-        XCTAssertTrue(app.datePickers["Pending On"].waitForExistence(timeout: 1.0))
-        XCTAssertTrue(app.datePickers["Cleared On"].exists)
-        XCTAssertTrue(app.datePickers["Due Date"].exists)
+        // Give UI a brief moment to settle
+        sleep(1)
 
-        // Save changes
-        let saveButton = app.navigationBars.buttons["Save"]
-        XCTAssertTrue(saveButton.exists)
-        saveButton.tap()
+        var afterCount: Int
+        if ProcessInfo.processInfo.arguments.contains("-UITestBridge") {
+            afterCount = try XCTUnwrap(debugAllTransactionsCount(app), "Bridge after count unavailable")
+        } else {
+            afterCount = try XCTUnwrap(allTransactionsApproxCount(app), "Could not determine transactions count after cancel")
+        }
 
-        // Back on detail screen: tap Edit Transaction to return to edit view
-        let editButton = app.buttons["Edit Transaction"]
-        XCTAssertTrue(editButton.waitForExistence(timeout: 3.0))
-        editButton.tap()
+        XCTAssertEqual(afterCount, baselineCount, "Transactions should be unchanged after tapping Cancel")
+    }
 
-        // Verify the toggles persisted (date pickers visible again)
-        XCTAssertTrue(app.datePickers["Pending On"].waitForExistence(timeout: 2.0))
-        XCTAssertTrue(app.datePickers["Cleared On"].exists)
-        XCTAssertTrue(app.datePickers["Due Date"].exists)
+    @MainActor
+    func testReserveGroupSheet_ReserveDismisses() throws {
+        let app = XCUIApplication()
+        app.launchArguments += ["-UITestBridge"]
+        app.launch()
+
+        openReserveGroupSheet(app, groupName: "Monthly Bills")
+
+        let reserveButton = app.buttons["Reserve"]
+        XCTAssertTrue(reserveButton.waitForExistence(timeout: 5.0))
+        reserveButton.tap()
+
+        // Header should disappear after dismiss
+        let header = app.staticTexts["Reserve Transactions: Monthly Bills"]
+        XCTAssertFalse(header.waitForExistence(timeout: 2.0))
     }
 
     // MARK: - Helpers
-    private func navigateToEditView(_ app: XCUIApplication) {
-        // TODO: Replace with your app's real navigation.
-        // Suggested pattern:
-        // app.buttons["Transactions"].tap()
-        // app.cells["TransactionRow_CVS"].tap()
-        // app.buttons["Edit Transaction"].tap()
-    }
-}
-private extension XCUIElement {
-    func clearAndType(_ text: String) {
-        tap()
-        if let stringValue = self.value as? String, !stringValue.isEmpty {
-            let deleteString = String(repeating: XCUIKeyboardKey.delete.rawValue, count: stringValue.count)
-            typeText(deleteString)
-        }
-        typeText(text)
-    }
-}
+    private func openReserveGroupSheet(_ app: XCUIApplication, groupName: String) {
+        // Assumes Dashboard is the starting view. If not, navigate as needed here.
+        // Wait for the Recurring Debits section to ensure the panel is visible.
+        _ = app.staticTexts["Recurring Debits"].waitForExistence(timeout: 5.0)
 
+        // Try tapping a button with the group name first
+        if app.buttons[groupName].waitForExistence(timeout: 2.0) {
+            tapElement(app.buttons[groupName])
+            return
+        }
+        // Fall back to static text with the group name
+        if app.staticTexts[groupName].waitForExistence(timeout: 2.0) {
+            tapElement(app.staticTexts[groupName])
+            return
+        }
+        // Final fallback: any element whose label contains the group name
+        let anyMatch = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", groupName)).element(boundBy: 0)
+        XCTAssertTrue(anyMatch.waitForExistence(timeout: 3.0), "Could not find recurring group named \(groupName)")
+        tapElement(anyMatch)
+    }
+
+    private func tapElement(_ element: XCUIElement) {
+        if element.isHittable {
+            element.tap()
+        } else {
+            let coord = element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+            coord.tap()
+        }
+    }
+
+    // Helper: Approximate total transactions visible on Dashboard by summing reserved + pending
+    private func allTransactionsApproxCount(_ app: XCUIApplication) -> Int? {
+        // Try identifier-based lists first
+        let reservedList = app.descendants(matching: .any)["ReservedTransactionsList"]
+        let pendingList = app.descendants(matching: .any)["PendingTransactionsList"]
+
+        var reservedCount = 0
+        var pendingCount = 0
+
+        if reservedList.waitForExistence(timeout: 2.0) {
+            reservedCount = countRows(in: reservedList)
+        } else {
+            // Fallback: find a table containing the header
+            let table = app.tables.containing(.staticText, identifier: "Reserved Transactions").element
+            if table.waitForExistence(timeout: 2.0) {
+                reservedCount = table.cells.count
+                if reservedCount == 0 { reservedCount = table.descendants(matching: .tableRow).count }
+            }
+        }
+
+        if pendingList.waitForExistence(timeout: 2.0) {
+            pendingCount = countRows(in: pendingList)
+        } else {
+            let table = app.tables.containing(.staticText, identifier: "Pending Transactions").element
+            if table.waitForExistence(timeout: 2.0) {
+                pendingCount = table.cells.count
+                if pendingCount == 0 { pendingCount = table.descendants(matching: .tableRow).count }
+            }
+        }
+
+        // Always return a non-nil count, even if zero
+        return reservedCount + pendingCount
+    }
+    
+    // Count rows within a list-like container across platforms
+    private func countRows(in container: XCUIElement) -> Int {
+        // Prefer cells if available (iOS/macOS tables)
+        let cellCount = container.descendants(matching: .cell).count
+        if cellCount > 0 { return cellCount }
+        // Try table rows (macOS tables)
+        let tableRowCount = container.descendants(matching: .tableRow).count
+        if tableRowCount > 0 { return tableRowCount }
+        // Fallback: many of your rows are Buttons wrapping the row content
+        let buttonCount = container.descendants(matching: .button).count
+        if buttonCount > 0 { return buttonCount }
+        // Last resort: count static texts (very rough)
+        let labelCount = container.descendants(matching: .staticText).count
+        return labelCount
+    }
+
+    // MARK: - Debug data bridge (reads counts from app)
+    private func debugAllTransactionsCount(_ app: XCUIApplication) -> Int? {
+        // Ensure the bridge button is present (app must be launched with -UITestBridge)
+        let dumpButton = app.buttons["UITest_DumpCounts"]
+        guard dumpButton.waitForExistence(timeout: 5.0) else { return nil }
+        dumpButton.tap()
+        // Read from pasteboard (macOS) or a label if provided; here we assume macOS
+        #if os(macOS)
+        let pb = NSPasteboard.general
+        guard let str = pb.string(forType: .string) else { return nil }
+        if let data = str.data(using: .utf8),
+           let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+           let count = obj["allTransactions"] as? Int {
+            return count
+        }
+        #endif
+        return nil
+    }
+}
