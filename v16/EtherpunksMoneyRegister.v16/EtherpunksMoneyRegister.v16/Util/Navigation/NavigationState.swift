@@ -116,6 +116,7 @@ struct NavigationState {
 
         case .transaction_Create(let tran):
             self.primary = .transaction_List(account: tran.account)
+            self.secondary = .transaction_Create(transaction: tran)
             break
 
         case .transaction_Edit(let tran):

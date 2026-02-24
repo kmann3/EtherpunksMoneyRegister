@@ -48,13 +48,22 @@ struct SidebarView: View {
                 } else {
                     ForEach(self.accounts, id: \.id) { account in
                         HStack {
-                            NavigationLink(value: PathStore.Route.transaction_List(account: account)) {
-                                Text(account.name)
+                            Button(account.name) {
+                                self.onAction(.transaction_List(account: account))
                             }
+                            .font(.title3)
+                            .buttonStyle(.borderless)
                             Spacer()
-                            Button("Add Transaction", systemImage: "plus.circle"){
-                                // TODO: Popup menu for adding credit/debit transaction; Like a quick action
+                            Button("Add Credit", systemImage: "plus.circle"){
+                                self.onAction(.transaction_Create(transaction: AccountTransaction(account: account, transactionType: .credit)))
                             }
+                            .labelStyle(.iconOnly)
+                            .buttonStyle(.plain)
+                            .foregroundStyle(Color(.green))
+                            Button("Add Debit", systemImage: "plus.circle"){
+                                self.onAction(.transaction_Create(transaction: AccountTransaction(account: account, transactionType: .debit)))
+                            }
+                            .foregroundStyle(Color(.red))
                             .labelStyle(.iconOnly)
                             .buttonStyle(.plain)
                         }
