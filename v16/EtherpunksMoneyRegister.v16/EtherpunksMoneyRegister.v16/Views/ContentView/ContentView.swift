@@ -52,10 +52,3 @@ struct ContentView: View {
         .frame(minWidth: 1200, minHeight: 750)
 #endif
 }
-
-extension ContentView {
-    @ViewBuilder
-    private func contentView() -> some View {
-        Text("S")
-    }
-}
