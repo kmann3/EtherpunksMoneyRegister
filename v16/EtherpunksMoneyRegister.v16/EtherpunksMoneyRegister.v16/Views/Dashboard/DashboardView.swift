@@ -6,6 +6,10 @@
 //
 
 import SwiftUI
+#if os(macOS)
+import AppKit
+import SwiftData
+#endif
 
 struct DashboardView: View {
     @State var viewModel = ViewModel()
@@ -59,6 +63,7 @@ struct DashboardView: View {
                             }
                         }
                     }
+                    .accessibilityIdentifier("ReservedTransactionsList")
                     .border(.gray)
 
                     List {
@@ -78,6 +83,7 @@ struct DashboardView: View {
                             }
                         }
                     }
+                    .accessibilityIdentifier("PendingTransactionsList")
                     Spacer()
                 }
                 .frame(width: 300)
@@ -146,6 +152,29 @@ struct DashboardView: View {
                 .frame(width: 400)
                 .border(.gray)
             }
+            #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("-UITestBridge") {
+                Button("Dump Counts") {
+                    do {
+                        // Query SwiftData for all AccountTransaction records
+                        let ctx = MoneyDataSource.shared.modelContext
+                        let all = try ctx.fetch(FetchDescriptor<AccountTransaction>())
+                        let payload: [String: Any] = ["allTransactions": all.count]
+                        let data = try JSONSerialization.data(withJSONObject: payload)
+                        if let str = String(data: data, encoding: .utf8) {
+                            #if os(macOS)
+                            NSPasteboard.general.clearContents()
+                            NSPasteboard.general.setString(str, forType: .string)
+                            #endif
+                        }
+                    } catch {
+                        print("UITestBridge dump failed: \(error)")
+                    }
+                }
+                .accessibilityIdentifier("UITest_DumpCounts")
+                .padding(4)
+            }
+            #endif
         }
         .sheet(item: $selectedReserveGroup, onDismiss: {
         }) { group in
