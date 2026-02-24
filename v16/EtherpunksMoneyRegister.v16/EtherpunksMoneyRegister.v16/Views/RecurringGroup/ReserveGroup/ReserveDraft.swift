@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class ReserveDraftItem: Identifiable {
+public class ReserveDraft: Identifiable {
     public var id: UUID = .init()
     let recurringTransaction: RecurringTransaction
     var account: Account
@@ -40,7 +40,7 @@ enum Action {
 }
 
 @MainActor
-extension ReserveDraftItem: CustomDebugStringConvertible {
+extension ReserveDraft: CustomDebugStringConvertible {
     public var debugDescription: String {
         let due = dueDate.map { ISO8601DateFormatter().string(from: $0) } ?? "nil"
         let tagList = tags.map { $0.name }.joined(separator: ", ")

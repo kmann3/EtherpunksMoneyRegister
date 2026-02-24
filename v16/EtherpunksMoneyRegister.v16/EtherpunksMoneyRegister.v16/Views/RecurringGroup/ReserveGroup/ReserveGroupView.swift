@@ -9,9 +9,9 @@ import SwiftUI
 
 struct ReserveGroupView: View {
     var viewModel: ViewModel
-    var handler: ([AccountTransactionQueueItem])-> Void
+    var handler: ([ReserveDraft])-> Void
 
-    init(_ group: RecurringGroup, _ handler: @escaping ([AccountTransactionQueueItem]) -> Void) {
+    init(_ group: RecurringGroup, _ handler: @escaping ([ReserveDraft]) -> Void) {
         self.viewModel = ViewModel(reserveGroup: group)
         self.handler = handler
     }
@@ -46,8 +46,8 @@ struct ReserveGroupView: View {
                     ForEach(self.viewModel.transactionQueue) { rt in
                         GridRow {
                             Picker("", selection: Binding(
-                                get: { rt.accountTransaction.account },
-                                set: { rt.accountTransaction.account = $0 }
+                                get: { rt.account },
+                                set: { rt.account = $0 }
                             )) {
                                 ForEach(self.viewModel.accounts) { acc in
                                     Text(acc.name).tag(acc)
@@ -55,16 +55,16 @@ struct ReserveGroupView: View {
                             }
                             .pickerStyle(.menu)
                             
-                            Text(rt.accountTransaction.name)
+                            Text(rt.name)
                             
-                            if rt.accountTransaction.dueDate == nil {
+                            if rt.dueDate == nil {
                                 Text("n/a")
                             } else {
-                                Text(rt.accountTransaction.dueDate!,
+                                Text(rt.dueDate!,
                                      format: .dateTime.month().day())
                             }
                             
-                            Text(rt.accountTransaction.amount.toDisplayString())
+                            Text(rt.amount.toDisplayString())
                                 .frame(maxWidth: .infinity, alignment: .center)
                             
                             
@@ -73,9 +73,9 @@ struct ReserveGroupView: View {
                                 get: { rt.action },
                                 set: { rt.action = $0 }
                             )) {
-                                Text("Reserve").tag(ReserveGroupView.Action.enable)
-                                Text("Skip").tag(ReserveGroupView.Action.skip)
-                                Text("Ignore").tag(ReserveGroupView.Action.ignore)
+                                Text("Reserve").tag(Action.enable)
+                                Text("Skip").tag(Action.skip)
+                                Text("Ignore").tag(Action.ignore)
                             }
                             
                         }
