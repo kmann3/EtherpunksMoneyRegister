@@ -2,13 +2,14 @@
 
 ## General
 
-This is a program I plan on using personally. It's more of an ongoing project using whatever framework I'm in the mood for.
+This is a program I plan on using personally. It's more of an ongoing project using whatever framework I'm in the mood for. Written with the goal to replace my spreadsheet eventually
 
 ## Versions
 
-v1-v-whatever are simply varying things I'm toying with. They aren't incremental. It's just "oh, that sounds neat, I want to check that out".
+v1-v-whatever are simply varying things I'm toying with. Most are incremental however some of the older ones were more ADD of the "Oh, that seems neat - I want to check that out" but v5 and beyond was more comitted to the general idea than language.OS
 
-* :white_check_mark: v15 : Swift/SwiftUI/SwiftData
+* :white_check_mark:  v16 : Swift/SwiftUI/SwiftData
+* v15 : Swift/SwiftUI/SwiftData - I tried to cheese with ChatGPT and it made some code so much worse it was easier to start over
 * v13 : Swift/SwiftUI/SwiftData
 * v14 : Swift/SwiftUI/SwiftData
 * v12 : Swift/SwiftUI/SwiftData
@@ -25,48 +26,57 @@ v1-v-whatever are simply varying things I'm toying with. They aren't incremental
 * v2 : C# /  WinForms
 * v1 : C# /  WinForms
 
-
-Currently on v15 - which is Apple focused. MacOS, first. Followed by iOS (mostly iPhone and then iPad), and then by apple Watch.
+Currently on v16 - which is Apple focused. MacOS, first. Followed by iOS (mostly iPhone and then iPad), and then by apple Watch.
 
 Apple focused because I bring my Macbook when I travel instead of a Windows or Linux laptop.
 
 Rough order:
 
-* :orange_circle: Read views
-  * :green_circle: Account
-  * :green_circle: Tag
-  * :green_circle: Transaction
-  * :green_circle: Recurring Group
-  * :green_circle: Recurring Transaction
-  * :green_circle: Files
-  * :red_circle: Search
-  * :red_circle: Reports
-    * :red_circle: Tax related
-* :orange_circle: Edit Views
-  * :orange_circle: Account
-  * :red_circle: Tag
-  * :red_circle: Recurring Group
-  * :red_circle: Recurring Transaction
-  * :red_circle: Transaction
-  * :red_circle: Files
+* :orange_circle: Account
+  * :red_circle: List
+  * :orange_circle: Detail - copied from older code. Need to re-write from newer code so it visually looks more similar to the new style I like
+  * :red_circle: Create
+  * :red_circle: Edit
+* :orange_circle: Account Transaction
+  * :orange_circle: List - still need to work on loading large amounts of transactions. I want it to load the last X (where x is stored in settings) of transactions and load more as needed
+  * :orange_circle: Detail - copied from older code. Need to re-write from newer code so it visually looks more similar to the new style I like
+    * :red_circle: Files
+  * :red_circle: Create - some of the wiring is there but practically nothing
+  * :orange_circle: Edit - Mostly done. Need to work more on saving code
+    * :orange_circle: Files - Barely started. Basic sheets and UI is there
+* :orange_circle: Dashboard
+  * :green_circle: Display
+  * :green_circle: Nav to bank
+  * :green_circle: Nav to reserved transaction
+  * :green_circle: Nav to pending transaction
+  * :orange_circle: Reserve Credit / paycheck
+  * :orange_circle: Reserve Debit Group / bills
+  * :orange_circle: Reserve Debit Item / bill
+* :red_circle: Recurring Group
+  * :red_circle: List
+  * :red_circle: Detail
+  * :red_circle: Create
+  * :red_circle: Edit
+* :red_circle: Recurring Transaction
+  * :red_circle: List
+  * :red_circle: Detail
+  * :red_circle: Create
+  * :red_circle: Edit
 * :red_circle: Reports
-  * Tax related
+  * :red_circle: Tax related
 * :red_circle: Search
-* :red_circle: Polish : (note: Expect a LOT of visual changes here. Prior it's a: 'just get it working, look pretty later')
-  * :red_circle: Dashboard
-  * :red_circle: Account
-  * :red_circle: Transaction
-  * :red_circle: Files
-  * :red_circle: Recurring Group
-  * :red_circle: Recurring Transaction
-  * :red_circle: Search
-  * :red_circle: Report
+* :red_circle: Tag
+  * :red_circle: List
+  * :red_circle: Detail
+  * :red_circle: Create
+  * :red_circle: Edit
 
 ## Various notes / ideas
 
 * Alternate sort methods
 * Export/Import: Test: file data, lookups, and link tables
 * Unit Testing
+* Naming changes: debit/credit bill/paycheck?
 * Hard deletes or soft deletes? Currently everything is a hard delete.
 * Logging: Should there be a history table which talks about all db changes? This might allow for hard deletes while preserving information
 * Session history tracking
@@ -84,3 +94,4 @@ Rough order:
 ## Help Request
 
 * Unit testing. I have no experience here. :(
+* Using ChatGPT to help do these
