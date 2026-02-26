@@ -11,7 +11,7 @@ import SwiftData
 extension MoneyDataSource {
     func fetchAccountTransactions(account: Account) -> (transactions: [AccountTransaction], hasMoreTransactions: Bool) {
         let id = account.id
-        let limit = 5 // TODO: We have an artificially low amount so we can test the loading of more transactions later
+        let limit = 50 // TODO: We have an artificially low amount so we can test the loading of more transactions later
 
         do {
             var descriptor = FetchDescriptor<AccountTransaction>(

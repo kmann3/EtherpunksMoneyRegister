@@ -129,6 +129,8 @@ class Previewer {
 
         // Recurring Groups
         billGroup = RecurringGroup(name: "Monthly Bills")
+        
+        var daysAway: Int = -21
 
         // BURGER KING
         burgerKingTransaction = AccountTransaction(
@@ -137,8 +139,11 @@ class Previewer {
             transactionType: .debit,
             amount: -12.39,
             transactionTags: [ffTag],
-            clearedOnUTC: Date().addingTimeInterval(-1_000_000)
+            //clearedOnUTC: Date().addingTimeInterval(-1_000_000)
+            clearedOnUTC: Date().addDays(day: daysAway)
         )
+        
+        daysAway += 2
 
         // CVS
         cvsTransaction = AccountTransaction(
@@ -151,10 +156,12 @@ class Previewer {
             isTaxRelated: true,
             fileCount: 1,
             transactionTags: [medicalTag, pharmacyTag],
-            pendingOnUTC: Date(),
-            clearedOnUTC: Date(),
-            balancedOnUTC: Date()
+            pendingOnUTC: Date().addDays(day: daysAway),
+            clearedOnUTC: Date().addDays(day: daysAway),
+            balancedOnUTC: Date().addDays(day: daysAway)
         )
+        
+        daysAway += 1
 
         // DISCORD
         discordRecurringTransaction = RecurringTransaction(
@@ -179,9 +186,11 @@ class Previewer {
             isTaxRelated: true,
             transactionTags: [billsTag],
             recurringTransaction: discordRecurringTransaction,
-            pendingOnUTC: Date(),
-            clearedOnUTC: Date()
+            pendingOnUTC: Date().addDays(day: daysAway),
+            clearedOnUTC: Date().addDays(day: daysAway)
         )
+        
+        daysAway += 3
 
         discordRecurringTransaction.transactions = [discordTransaction]
 
@@ -194,9 +203,11 @@ class Previewer {
             confirmationNumber: "1Z49C",
             isTaxRelated: true,
             transactionTags: [billsTag],
-            pendingOnUTC: Date(),
+            pendingOnUTC: Date().addDays(day: daysAway),
             clearedOnUTC: nil
         )
+        
+        daysAway += 1
 
         // VERIZON
         verizonRecurringTransaction = RecurringTransaction(
@@ -510,35 +521,27 @@ class Previewer {
         modelContext.insert(medicalTag)
         modelContext.insert(pharmacyTag)
         modelContext.insert(streamingTag)
+        
+        var dayOffset: Int = -150
+        for i in 1...100 {
+            let newTran = burgerKingTransaction.Clone()
+            newTran.createdOnUTC = Date().addDays(day: dayOffset)
+            newTran.pendingOnUTC = Date().addDays(day: dayOffset)
+            newTran.clearedOnUTC = Date().addDays(day: Int.random(in: 0..<3) + dayOffset)
+            newTran.balancedOnUTC = Date().addDays(day: Int.random(in: 3..<6) + dayOffset)
+            dayOffset += 1
+            newTran.name = "Burger King Clone \(i.datatypeValue)"
+            Previewer.insertTransaction(account: bankAccount, transaction: newTran, context: modelContext)
+        }
 
         Previewer.insertTransaction(account: bankAccount, transaction: burgerKingTransaction, context: modelContext)
         Previewer.insertTransaction(account: bankAccount, transaction: cvsTransaction, context: modelContext)
-        //Previewer.insertTransaction(account: bankAccount, transaction: discordTransaction, context: modelContext)
-        //modelContext.insert(discordRecurringTransaction)
         Previewer.insertTransaction(account: bankAccount, transaction: huluPendingTransaction, context: modelContext)
-        //modelContext.insert(verizonRecurringTransaction)
-        //Previewer.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: modelContext)
 
         modelContext.insert(cvsAttachmentFile)
 
         // Let's add some temp fake data
-//        for i in 1...10 {
-//            let newTran = verizonReservedTransaction.Clone()
-//            newTran.name = "Verizon Clone \(i.datatypeValue)"
-//            Previewer.insertTransaction(account: bankAccount, transaction: newTran, context: modelContext)
-//        }
-//
-//        for i in 1...10 {
-//            let newTran = huluPendingTransaction.Clone()
-//            newTran.name = "Hulu Clone \(i.datatypeValue)"
-//            Previewer.insertTransaction(account: bankAccount, transaction: newTran, context: modelContext)
-//        }
 
-        /*for i in 1...2000 {
-            let newTran = burgerKingTransaction.Clone()
-            newTran.name = "Burger King Clone \(i.datatypeValue)"
-            Previewer.insertTransaction(account: bankAccount, transaction: newTran, context: modelContext)
-        }*/
 
 #if DEBUG && os(macOS)
         importTestRecurringData(modelContext: modelContext)

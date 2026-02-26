@@ -150,6 +150,21 @@ extension Date {
         // Produces strings like -0600, +0530, +0000
         return String(format: "%+03d%02d", hours, minutes)
     }
+    
+    /// https://stackoverflow.com/a/70106411
+    func addDays(day:Int)->Date{
+      return Calendar.current.date(byAdding: .day, value: day, to: Date())!
+    }
+
+    /// https://stackoverflow.com/a/70106411
+    static func addMonths(month:Int)->Date{
+      return Calendar.current.date(byAdding: .month, value: month, to: Date())!
+    }
+
+    /// https://stackoverflow.com/a/70106411
+    static func AddYears(year:Int)->Date{
+      return Calendar.current.date(byAdding: .year, value: year, to: Date())!
+    }
 }
 
 extension NumberFormatter {
