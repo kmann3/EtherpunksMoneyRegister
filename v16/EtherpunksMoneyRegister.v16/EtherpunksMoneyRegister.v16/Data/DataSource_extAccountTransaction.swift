@@ -39,17 +39,7 @@ extension MoneyDataSource {
     func fetchAllPendingTransactions() -> [AccountTransaction] {
         do {
             return try modelContext.fetch(FetchDescriptor<AccountTransaction>(
-                predicate: #Predicate<AccountTransaction> { transaction in
-                    if transaction.clearedOnUTC == nil {
-                        if transaction.pendingOnUTC != nil {
-                            return true
-                        } else {
-                            return false
-                        }
-                    } else {
-                        return false
-                    }
-                },
+                predicate: #Predicate<AccountTransaction> { $0.clearedOnUTC == nil && $0.pendingOnUTC != nil },
                 sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
             ))
         } catch {
@@ -61,13 +51,7 @@ extension MoneyDataSource {
         let id = tran.id
         do {
             return try modelContext.fetch(FetchDescriptor<TransactionFile>(
-                predicate: #Predicate<TransactionFile> {
-                    if $0.transactionId == id {
-                        return true
-                    } else {
-                        return false
-                    }
-                },
+                predicate: #Predicate<TransactionFile> { $0.transactionId == id },
 
                 sortBy: [SortDescriptor(\TransactionFile.createdOnUTC, order: .reverse)]
 
@@ -79,16 +63,22 @@ extension MoneyDataSource {
     
     func updateTransactionFile(tran: AccountTransaction, origAccount: Account, origAmount: Decimal, files: [TransactionFile], filesDidChange: Bool) {
         do {
+            print("Updating transaction")
+            //let transactionId = tran.id
+            let newAccountId = tran.accountId
+            let oldAccountId = origAccount.id
+            
+            print("New AccountID: \(newAccountId!)")
+            print("Old AccountID: \(oldAccountId)")
+            let tranCreatedOnUTC = tran.createdOnUTC
             try modelContext.transaction {
                 // If the account changed, we need to adjust postings on both the original and new accounts
                 if tran.account != origAccount {
-
+                    // TODO: Take care of pending / expecting account balance
                     // First update the old account's subsequent transactions
                     do {
                         let descriptor = FetchDescriptor<AccountTransaction>(
-                            predicate: #Predicate<AccountTransaction> { $0.accountId == origAccount.id &&
-                                                                        $0.id != tran.id &&
-                                                                        $0.createdOnUTC >= tran.createdOnUTC },
+                            predicate: #Predicate<AccountTransaction> { $0.accountId == oldAccountId && $0.createdOnUTC >= tranCreatedOnUTC },
                             sortBy: [
                                 SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse),
                                 SortDescriptor(\AccountTransaction.name, order: .forward)
@@ -98,8 +88,11 @@ extension MoneyDataSource {
                         let results = try modelContext.fetch(descriptor)
 
                         for transaction in results {
-                            transaction.balance = transaction.balance! - origAmount
+                            transaction.balance = transaction.balance! + origAmount
                         }
+                        
+                        origAccount.currentBalance = origAccount.currentBalance + origAmount
+                        
                     } catch {
                         throw error
                     }
@@ -107,10 +100,7 @@ extension MoneyDataSource {
                     // Next update the new account's subsequent transactions
                     do {
                         let descriptor = FetchDescriptor<AccountTransaction>(
-                            // Use the new account's id (tran.account.id), not the transaction's id
-                            predicate: #Predicate<AccountTransaction> { $0.accountId == tran.account.id &&
-                                                                        $0.id != tran.id &&
-                                                                        $0.createdOnUTC > tran.createdOnUTC },
+                            predicate: #Predicate<AccountTransaction> { $0.accountId == newAccountId && $0.createdOnUTC > tranCreatedOnUTC },
                             sortBy: [
                                 SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse),
                                 SortDescriptor(\AccountTransaction.name, order: .forward)
@@ -121,6 +111,8 @@ extension MoneyDataSource {
                         for transaction in results {
                             transaction.balance = transaction.balance! + origAmount
                         }
+                        
+                        tran.account.currentBalance = tran.account.currentBalance + tran.amount
                     } catch {
                         throw error
                     }
@@ -131,9 +123,7 @@ extension MoneyDataSource {
                     
                     do {
                         let descriptor = FetchDescriptor<AccountTransaction>(
-                            // Use the new account's id (tran.account.id), not the transaction's id
-                            predicate: #Predicate<AccountTransaction> { $0.accountId == tran.account.id &&
-                                                                        $0.createdOnUTC > tran.createdOnUTC },
+                            predicate: #Predicate<AccountTransaction> { $0.accountId == newAccountId && $0.createdOnUTC > tranCreatedOnUTC },
                             sortBy: [
                                 SortDescriptor(\AccountTransaction.createdOnUTC, order: .forward),
                                 SortDescriptor(\AccountTransaction.name, order: .forward) // This should never be hit but just in case, let's just be consistent with adding a name filter
@@ -148,6 +138,8 @@ extension MoneyDataSource {
                         for transaction in results {
                             transaction.balance = transaction.balance! + difference
                         }
+                        
+                        tran.account.currentBalance = tran.account.currentBalance + difference
                     } catch {
                         throw error
                     }
@@ -157,9 +149,11 @@ extension MoneyDataSource {
 
                 // Persist all changes as a single atomic operation
                 try modelContext.save()
+                print("Update complete")
             }
         } catch {
             fatalError("Failed to save transaction changes (rolled back): \(error)")
         }
     }
 }
+
