@@ -53,16 +53,6 @@
 			path = EtherpunksMoneyRegister.v16;
 			sourceTree = "<group>";
 		};
-		DD3704232F3C6D3F00D0ED8E /* EtherpunksMoneyRegister.v16Tests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = EtherpunksMoneyRegister.v16Tests;
-			sourceTree = "<group>";
-		};
-		DD37042D2F3C6D3F00D0ED8E /* EtherpunksMoneyRegister.v16UITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = EtherpunksMoneyRegister.v16UITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,8 +86,6 @@
 			isa = PBXGroup;
 			children = (
 				DD3704112F3C6D3E00D0ED8E /* EtherpunksMoneyRegister.v16 */,
-				DD3704232F3C6D3F00D0ED8E /* EtherpunksMoneyRegister.v16Tests */,
-				DD37042D2F3C6D3F00D0ED8E /* EtherpunksMoneyRegister.v16UITests */,
 				DD37047A2F3C6F1500D0ED8E /* Frameworks */,
 				DD3704102F3C6D3E00D0ED8E /* Products */,
 			);
@@ -160,9 +148,6 @@
 			dependencies = (
 				DD3704222F3C6D3F00D0ED8E /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				DD3704232F3C6D3F00D0ED8E /* EtherpunksMoneyRegister.v16Tests */,
-			);
 			name = EtherpunksMoneyRegister.v16Tests;
 			packageProductDependencies = (
 			);
@@ -183,9 +168,6 @@
 			dependencies = (
 				DD37042C2F3C6D3F00D0ED8E /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				DD37042D2F3C6D3F00D0ED8E /* EtherpunksMoneyRegister.v16UITests */,
-			);
 			name = EtherpunksMoneyRegister.v16UITests;
 			packageProductDependencies = (
 			);
@@ -201,7 +183,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2620;
-				LastUpgradeCheck = 2620;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					DD37040E2F3C6D3E00D0ED8E = {
 						CreatedOnToolsVersion = 26.2;
@@ -311,6 +293,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = SNH2E6X8CL;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -369,6 +352,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = SNH2E6X8CL;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -453,6 +437,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = SNH2E6X8CL;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -476,6 +461,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
@@ -516,6 +502,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SNH2E6X8CL;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -532,6 +519,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 6.0;
 			};
@@ -543,6 +531,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = SNH2E6X8CL;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
@@ -569,6 +558,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = SNH2E6X8CL;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
@@ -594,6 +584,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = SNH2E6X8CL;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
@@ -619,6 +610,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = SNH2E6X8CL;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
