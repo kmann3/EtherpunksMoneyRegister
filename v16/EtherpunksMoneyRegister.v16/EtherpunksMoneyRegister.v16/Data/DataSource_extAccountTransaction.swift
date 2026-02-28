@@ -18,7 +18,7 @@ extension MoneyDataSource {
                 predicate: #Predicate<AccountTransaction> { $0.accountId == id },
                 sortBy: [
                     SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse),
-                    SortDescriptor(\AccountTransaction.id, order: .forward)
+                    SortDescriptor(\AccountTransaction.name, order: .forward)
                 ]
             )
             descriptor.fetchLimit = limit + 1
@@ -78,18 +78,88 @@ extension MoneyDataSource {
     }
     
     func updateTransactionFile(tran: AccountTransaction, origAccount: Account, origAmount: Decimal, files: [TransactionFile], filesDidChange: Bool) {
-        if tran.account != origAccount {
-            
-        }
-        
-        if tran.amount != origAmount {
-            
-        }
-        
         do {
-            try modelContext.save()
+            try modelContext.transaction {
+                // If the account changed, we need to adjust postings on both the original and new accounts
+                if tran.account != origAccount {
+
+                    // First update the old account's subsequent transactions
+                    do {
+                        let descriptor = FetchDescriptor<AccountTransaction>(
+                            predicate: #Predicate<AccountTransaction> { $0.accountId == origAccount.id &&
+                                                                        $0.id != tran.id &&
+                                                                        $0.createdOnUTC >= tran.createdOnUTC },
+                            sortBy: [
+                                SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse),
+                                SortDescriptor(\AccountTransaction.name, order: .forward)
+                            ]
+                        )
+
+                        let results = try modelContext.fetch(descriptor)
+
+                        for transaction in results {
+                            transaction.balance = transaction.balance! - origAmount
+                        }
+                    } catch {
+                        throw error
+                    }
+
+                    // Next update the new account's subsequent transactions
+                    do {
+                        let descriptor = FetchDescriptor<AccountTransaction>(
+                            // Use the new account's id (tran.account.id), not the transaction's id
+                            predicate: #Predicate<AccountTransaction> { $0.accountId == tran.account.id &&
+                                                                        $0.id != tran.id &&
+                                                                        $0.createdOnUTC > tran.createdOnUTC },
+                            sortBy: [
+                                SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse),
+                                SortDescriptor(\AccountTransaction.name, order: .forward)
+                            ]
+                        )
+
+                        let results = try modelContext.fetch(descriptor)
+                        for transaction in results {
+                            transaction.balance = transaction.balance! + origAmount
+                        }
+                    } catch {
+                        throw error
+                    }
+
+                } else if tran.amount != origAmount {
+                    // If only the amount changed, you may need to cascade balance adjustments here.
+                    // Placeholder for amount-change-only logic.
+                    
+                    do {
+                        let descriptor = FetchDescriptor<AccountTransaction>(
+                            // Use the new account's id (tran.account.id), not the transaction's id
+                            predicate: #Predicate<AccountTransaction> { $0.accountId == tran.account.id &&
+                                                                        $0.createdOnUTC > tran.createdOnUTC },
+                            sortBy: [
+                                SortDescriptor(\AccountTransaction.createdOnUTC, order: .forward),
+                                SortDescriptor(\AccountTransaction.name, order: .forward) // This should never be hit but just in case, let's just be consistent with adding a name filter
+                            ]
+                        )
+                        
+                        let difference: Decimal = tran.amount - origAmount
+                        
+                        print("Update transaction file with difference: \(difference) from old value: \(origAmount) to new value: \(tran.amount)")
+
+                        let results = try modelContext.fetch(descriptor)
+                        for transaction in results {
+                            transaction.balance = transaction.balance! + difference
+                        }
+                    } catch {
+                        throw error
+                    }
+                }
+
+                // TODO: Handle files efficiently without re-saving large payloads every time.
+
+                // Persist all changes as a single atomic operation
+                try modelContext.save()
+            }
         } catch {
-            fatalError("Failed to save transaction changes: \(error)")
+            fatalError("Failed to save transaction changes (rolled back): \(error)")
         }
     }
 }
