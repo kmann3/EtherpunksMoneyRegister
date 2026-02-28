@@ -44,6 +44,7 @@ extension AccountTransactionEditView {
             let tran = self.tran
             tran.name = draft.name
             tran.account = draft.account
+            tran.accountId = draft.account.id
             tran.transactionType = draft.transactionType
             tran.amount = draft.amount
             tran.isTaxRelated = draft.isTaxRelated
