@@ -67,9 +67,9 @@ extension MoneyDataSource {
             try modelContext.transaction {
                 let accountId = account.id
                 
-                var balance = account.startingBalance
-                var outstandingBalance = 0
-                var outstandingItemCount = 0
+                var balance: Decimal = account.startingBalance
+                var outstandingBalance: Decimal = 0
+                var outstandingItemCount: Int64 = 0
                 
                 let descriptor = FetchDescriptor<AccountTransaction>(
                     predicate: #Predicate<AccountTransaction> { $0.accountId == accountId },
@@ -82,10 +82,22 @@ extension MoneyDataSource {
                 let results = try modelContext.fetch(descriptor)
 
                 for transaction in results {
-                    // TODO: calculate
+                    balance = balance + transaction.amount
+                    
+                    if (transaction.isPending || transaction.isReserved) {
+                        outstandingBalance = outstandingBalance + transaction.amount
+                        outstandingItemCount = outstandingItemCount + 1
+                    }
                 }
+                
+                account.currentBalance = balance
+                account.outstandingBalance = outstandingBalance
+                account.outstandingItemCount = outstandingItemCount
             }
+            
+            try modelContext.save()
         }  catch {
+            modelContext.rollback()
             fatalError(error.localizedDescription)
         }
     }
@@ -209,6 +221,7 @@ extension MoneyDataSource {
                 print("Update complete")
             }
         } catch {
+            modelContext.rollback()
             fatalError("Failed to save transaction changes (rolled back): \(error)")
         }
     }
