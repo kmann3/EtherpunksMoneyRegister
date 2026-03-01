@@ -62,6 +62,7 @@ extension MoneyDataSource {
     }
     
     func recalculateAccountBalance(account: Account) {
+        // TODO: Add code for letting user pick a starting point instead of recalculating the entire account?
         do {
             try modelContext.transaction {
                 let accountId = account.id
