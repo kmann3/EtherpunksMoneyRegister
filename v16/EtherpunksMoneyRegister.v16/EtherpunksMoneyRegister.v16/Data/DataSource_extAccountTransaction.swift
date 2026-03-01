@@ -61,7 +61,35 @@ extension MoneyDataSource {
         }
     }
     
-    func updateTransactionFile(tran: AccountTransaction, origAccount: Account, origAmount: Decimal, files: [TransactionFile], filesDidChange: Bool) {
+    func recalculateAccountBalance(account: Account) {
+        do {
+            try modelContext.transaction {
+                let accountId = account.id
+                
+                var balance = account.startingBalance
+                var outstandingBalance = 0
+                var outstandingItemCount = 0
+                
+                let descriptor = FetchDescriptor<AccountTransaction>(
+                    predicate: #Predicate<AccountTransaction> { $0.accountId == accountId },
+                    sortBy: [
+                        SortDescriptor(\AccountTransaction.createdOnUTC, order: .forward),
+                        SortDescriptor(\AccountTransaction.name, order: .forward)
+                    ]
+                )
+                
+                let results = try modelContext.fetch(descriptor)
+
+                for transaction in results {
+                    // TODO: calculate
+                }
+            }
+        }  catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+    
+    func updateAccountTransaction(tran: AccountTransaction, origAccount: Account, origAmount: Decimal, files: [TransactionFile], filesDidChange: Bool) {
         do {
             print("Updating transaction")
             //let transactionId = tran.id
@@ -77,10 +105,13 @@ extension MoneyDataSource {
                     // TODO: Take care of pending / expecting account balance
                     // First update the old account's subsequent transactions
                     do {
+                        let oldTransactionId = tran.id
                         let descriptor = FetchDescriptor<AccountTransaction>(
-                            predicate: #Predicate<AccountTransaction> { $0.accountId == oldAccountId && $0.createdOnUTC >= tranCreatedOnUTC },
+                            // Use greater than or equal to in case we did a batch create and all the createdOn's are the same
+                            // We skip the transactionId so we don't double up
+                            predicate: #Predicate<AccountTransaction> { $0.accountId == oldAccountId && $0.createdOnUTC >= tranCreatedOnUTC && $0.id != oldTransactionId },
                             sortBy: [
-                                SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse),
+                                SortDescriptor(\AccountTransaction.createdOnUTC, order: .forward),
                                 SortDescriptor(\AccountTransaction.name, order: .forward)
                             ]
                         )
@@ -88,10 +119,17 @@ extension MoneyDataSource {
                         let results = try modelContext.fetch(descriptor)
 
                         for transaction in results {
-                            transaction.balance = transaction.balance! + origAmount
+                            transaction.balance = transaction.balance! + origAmount // Since the transaction amount could have changed as well as the account being changed - just use origAmount
                         }
                         
-                        origAccount.currentBalance = origAccount.currentBalance + origAmount
+                        origAccount.currentBalance = origAccount.currentBalance - origAmount
+                        
+                        // Now we edit the outstanding
+                        // TODO: What if it was previously oustanding but is no longer?
+                        if (tran.isPending || tran.isReserved) {
+                            origAccount.outstandingItemCount = origAccount.outstandingItemCount  - 1
+                            origAccount.currentBalance = origAccount.currentBalance - origAmount
+                        }
                         
                     } catch {
                         throw error
@@ -99,20 +137,30 @@ extension MoneyDataSource {
 
                     // Next update the new account's subsequent transactions
                     do {
+                        let oldTransactionId = tran.id
                         let descriptor = FetchDescriptor<AccountTransaction>(
-                            predicate: #Predicate<AccountTransaction> { $0.accountId == newAccountId && $0.createdOnUTC > tranCreatedOnUTC },
+                            // Use greater than or equal to in case we did a batch create and all the createdOn's are the same
+                            // We skip the transactionId so we don't double up
+                            predicate: #Predicate<AccountTransaction> { $0.accountId == newAccountId && $0.createdOnUTC >= tranCreatedOnUTC && $0.id != oldTransactionId },
                             sortBy: [
-                                SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse),
+                                SortDescriptor(\AccountTransaction.createdOnUTC, order: .forward),
                                 SortDescriptor(\AccountTransaction.name, order: .forward)
                             ]
                         )
 
                         let results = try modelContext.fetch(descriptor)
                         for transaction in results {
-                            transaction.balance = transaction.balance! + origAmount
+                            transaction.balance = transaction.balance! + tran.amount // Since the new transaction might have changed the amount then use it instead of origAmount
                         }
                         
                         tran.account.currentBalance = tran.account.currentBalance + tran.amount
+                        
+                        // Now we edit the outstanding
+                        if (tran.isPending || tran.isReserved) {
+                            tran.account.outstandingItemCount = tran.account.outstandingItemCount  + 1
+                            tran.account.currentBalance = tran.account.currentBalance + origAmount
+                        }
+
                     } catch {
                         throw error
                     }
@@ -122,8 +170,11 @@ extension MoneyDataSource {
                     // Placeholder for amount-change-only logic.
                     
                     do {
+                        let oldTransactionId = tran.id
                         let descriptor = FetchDescriptor<AccountTransaction>(
-                            predicate: #Predicate<AccountTransaction> { $0.accountId == newAccountId && $0.createdOnUTC > tranCreatedOnUTC },
+                            // Use greater than or equal to in case we did a batch create and all the createdOn's are the same
+                            // We skip the transactionId so we don't double up
+                            predicate: #Predicate<AccountTransaction> { $0.accountId == newAccountId && $0.createdOnUTC >= tranCreatedOnUTC && $0.id != oldTransactionId },
                             sortBy: [
                                 SortDescriptor(\AccountTransaction.createdOnUTC, order: .forward),
                                 SortDescriptor(\AccountTransaction.name, order: .forward) // This should never be hit but just in case, let's just be consistent with adding a name filter
@@ -140,6 +191,11 @@ extension MoneyDataSource {
                         }
                         
                         tran.account.currentBalance = tran.account.currentBalance + difference
+                        
+                        // Now we edit the outstanding
+                        if (tran.isPending || tran.isReserved) {
+                            tran.account.currentBalance = tran.account.currentBalance + difference
+                        }
                     } catch {
                         throw error
                     }

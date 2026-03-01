@@ -58,7 +58,7 @@ extension AccountTransactionEditView {
             tran.VerifySignage()
             
             // TODO: Files and filesDidChange
-            self.dataSource.updateTransactionFile(tran: tran, origAccount: origAccount, origAmount: origAmount, files: self.files, filesDidChange: self.filesDidChange)
+            self.dataSource.updateAccountTransaction(tran: tran, origAccount: origAccount, origAmount: origAmount, files: self.files, filesDidChange: self.filesDidChange)
         }
     }
 }
