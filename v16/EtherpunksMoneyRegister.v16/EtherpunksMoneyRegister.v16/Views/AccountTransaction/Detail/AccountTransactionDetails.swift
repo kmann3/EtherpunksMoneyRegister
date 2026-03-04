@@ -200,7 +200,7 @@ struct AccountTransactionDetailsView: View {
                                         print("File \(file.filename) has no data")
                                     } else {
                                         QuickLookPreviewController().showPreview(for: file.data!, fileName: file.filename)
-
+                            
                                         // TODO: we need to purge temp files
                                     }
                                 }
@@ -240,7 +240,7 @@ struct AccountTransactionDetailsView: View {
     AccountTransactionDetailsView(MoneyDataSource.shared.previewer.burgerKingTransaction) { action in print(action) }
 }
 
-#Preview ("CVS (Balanced)") {
+#Preview ("CVS (Balanced) w/ File") {
     AccountTransactionDetailsView(MoneyDataSource.shared.previewer.cvsTransaction) { action in print(action) }
 }
 
