@@ -481,7 +481,7 @@ class Previewer {
 
     func downloadEtherpunkMonkeyAsync() async -> Data? {
         let monkeyUrlString =
-        "https://www.etherpunk.com/wp-content/uploads/2020/01/monkey1.png"
+        "https://etherpunk.com/wp-content/uploads/2026/01/cropped-Etherpunk-Monkey_180.png"
 
         guard let url = URL(string: monkeyUrlString) else {
             print("Invalid URL: \(monkeyUrlString)")
