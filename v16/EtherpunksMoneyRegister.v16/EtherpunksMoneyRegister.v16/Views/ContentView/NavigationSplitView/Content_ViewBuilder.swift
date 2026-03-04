@@ -10,9 +10,6 @@ import SwiftUI
 extension ContentView {
     @ViewBuilder
     internal func contentViewBuilder(for route: PathStore.Route) -> some View {
-#if DEBUG
-        let _ = { print("ContentViewBuilder: \(route)") }()
-#endif
         switch route {
         case .account_Create: Text(verbatim: "TBI - Account Create")
         case .account_List: Text(verbatim: "Account List")
@@ -67,3 +64,4 @@ extension ContentView {
         }
     }
 }
+

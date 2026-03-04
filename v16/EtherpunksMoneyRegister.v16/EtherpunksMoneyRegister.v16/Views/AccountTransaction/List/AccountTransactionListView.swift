@@ -23,9 +23,6 @@ struct AccountTransactionListView: View {
                     Section(header: Text("Account Details")) {
                         VStack {
                             Button {
-#if DEBUG
-                                    print("View: Account Transaction | [Account] button press (\(self.viewModel.account!.name))")
-#endif
                                 handler(PathStore.Route.account_Details(account: self.viewModel.account!))
                             } label: {
                                 AccountItemView(acctData: self.viewModel.account!)
@@ -40,9 +37,6 @@ struct AccountTransactionListView: View {
                     Section(header: Text("Transactions"), footer: Text(self.viewModel.endOfListText)) {
                         ForEach(self.viewModel.accountTransactions, id: \.id) { tran in
                             Button {
-#if DEBUG
-                                    print("View: Account Transaction | [Transaction] button press (\(tran.name))")
-#endif
                                 handler(PathStore.Route.transaction_Detail(transaction: tran))
                             } label: {
                                 TransactionListItemView(transaction: tran)
