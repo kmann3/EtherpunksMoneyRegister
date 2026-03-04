@@ -29,20 +29,24 @@ struct AccountTransactionDraft {
     
     var recurringTransaction: RecurringTransaction? = nil
     
+    /// The background color indicating the status of the transaction.
     public var backgroundColor: Color {
         switch self.transactionStatus {
         case .balanced:
+            Color.clear
+        case .cleared:
+            // green
             Color(
                 .sRGB, red: 0 / 255, green: 150 / 255, blue: 25 / 255,
                 opacity: 0.5)
-        case .cleared:
-            Color.clear
-        case .empty:
-            Color.clear
+        case .empty: // This should never happen. Let's make it a purple so it stands out
+            Color(
+                .sRGB, red: 255 / 255, green: 0 / 255, blue: 255 / 255,
+                opacity: 0.5)
         case .recurring:
             // blue
             Color(
-                .sRGB, red: 0 / 255, green: 80 / 255, blue: 150 / 255,
+                .sRGB, red: 0 / 255, green: 115 / 255, blue: 210 / 255,
                 opacity: 0.5)
         case .pending:
             // yellow
@@ -58,16 +62,16 @@ struct AccountTransactionDraft {
     }
     
     public var transactionStatus: TransactionStatus {
-        if self.pendingOn == nil && self.clearedOn == nil {
+        if self.hasPending == false && self.hasCleared == false {
             return .reserved
-        } else if self.pendingOn != nil && self.clearedOn == nil {
+        } else if self.hasPending != false && self.hasCleared == false {
             return .pending
         } else {
             if self.recurringTransaction != nil {
                 return .recurring
-            } else if self.balancedOn != nil {
+            } else if self.hasBalanced != false {
                 return .balanced
-            } else if self.clearedOn != nil {
+            } else if self.hasCleared != false {
                 return .cleared
             }
             return .empty

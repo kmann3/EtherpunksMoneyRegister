@@ -47,14 +47,22 @@ struct TransactionListItemView: View {
 
             HStack(spacing: 0) {
                 if transaction.transactionTags.count > 0 {
-                    ForEach(transaction.transactionTags) { tag in
-                        Text("\(tag.name) ")
-                            .font(.callout)
-                    }
+                    Text(transaction.transactionTags
+                        .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+                        .map { $0.name }
+                        .joined(separator: ", "))
+                    
                     Spacer()
+                    
+                    // TODO: Have the notes field consistently in the middle
+                    if transaction.notes.isEmpty == false {
+                        Text(Image(systemName: "clipboard"))
+                    }
+                    
+                    Spacer()
+                    
                     if transaction.fileCount > 0 {
                         Text(Image(systemName: "paperclip"))
-                            .font(.caption2)
                         Text("x\(transaction.fileCount)")
                     }
                 }

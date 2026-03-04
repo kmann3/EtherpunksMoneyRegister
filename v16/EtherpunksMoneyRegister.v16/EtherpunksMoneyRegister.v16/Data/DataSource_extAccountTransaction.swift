@@ -206,7 +206,7 @@ extension MoneyDataSource {
                         
                         let difference: Decimal = tran.amount - origAmount
                         
-                        print("Update transaction file with difference: \(difference) from old value: \(origAmount) to new value: \(tran.amount)")
+                        DLog("Update transaction file with difference: \(difference) from old value: \(origAmount) to new value: \(tran.amount)")
 
                         let results = try modelContext.fetch(descriptor)
                         for transaction in results {
@@ -228,7 +228,6 @@ extension MoneyDataSource {
 
                 // Persist all changes as a single atomic operation
                 try modelContext.save()
-                print("Update complete")
             }
         } catch {
             modelContext.rollback()

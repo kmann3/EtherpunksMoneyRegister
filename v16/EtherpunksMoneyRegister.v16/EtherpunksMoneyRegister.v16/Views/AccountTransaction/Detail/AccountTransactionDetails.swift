@@ -79,18 +79,23 @@ struct AccountTransactionDetailsView: View {
 
             Text("Balanced On:  \(self.viewModel.tran.balancedOnUTC?.toShortDetailString() ?? "nil")")
 
-            Text(
-                "Transaction Status: \(self.viewModel.tran.transactionStatus.description)"
-            )
+            HStack {
+                Text("Transaction Status:")
+                Text("\(self.viewModel.tran.transactionStatus.description)")
+                    .background(self.viewModel.tran.backgroundColor)
+            }
 
-            // Reserved > Pending > Recurring > Cleared
-            // Red      > Yellow  > Blue      > Green
+            // Reserved > Pending > Recurring > Cleared > Balanced
+            // Red      > Yellow  > Blue      > Green   > Clear
 
             Text("Pending: \(self.viewModel.tran.pendingOnUTC?.toShortDetailString() ?? "")")
-                .background(self.viewModel.tran.backgroundColor)
+                .background(self.viewModel.tran.transactionStatus == .pending ? self.viewModel.tran.backgroundColor : Color.clear)
 
             Text("Cleared: \(self.viewModel.tran.clearedOnUTC?.toShortDetailString() ?? "")")
-                .background(self.viewModel.tran.backgroundColor)
+                .background(self.viewModel.tran.transactionStatus == .cleared ? self.viewModel.tran.backgroundColor : Color.clear)
+
+            Text("Balanced: \(self.viewModel.tran.balancedOnUTC?.toShortDetailString() ?? "")")
+                .background(self.viewModel.tran.transactionStatus == .balanced ? self.viewModel.tran.backgroundColor : Color.clear)
 
             // Recurring Transaction
 
@@ -223,10 +228,22 @@ struct AccountTransactionDetailsView: View {
     }
 }
 
-#Preview ("CVS (pending and cleared)") {
+#Preview ("Verizon (Reserved)") {
+    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.verizonReservedTransaction) { action in print(action) }
+}
+
+#Preview ("Hulu (Pending)") {
+    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.huluPendingTransaction) { action in print(action) }
+}
+
+#Preview ("Burger King (Cleared)") {
+    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.burgerKingTransaction) { action in print(action) }
+}
+
+#Preview ("CVS (Balanced)") {
     AccountTransactionDetailsView(MoneyDataSource.shared.previewer.cvsTransaction) { action in print(action) }
 }
 
-#Preview ("Verizon") {
-    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.verizonReservedTransaction) { action in print(action) }
+#Preview ("Discord (Recurring)") {
+    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.discordTransaction) { action in print(action) }
 }

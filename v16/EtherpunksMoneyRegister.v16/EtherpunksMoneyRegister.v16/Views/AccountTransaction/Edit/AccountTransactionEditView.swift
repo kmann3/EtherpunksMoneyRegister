@@ -55,18 +55,22 @@ struct AccountTransactionEditView: View {
 
             Section() {
                 LabeledContent("Status") {
-                    // Reserved > Pending > Recurring > Cleared
-                    // Red      > Yellow  > Blue      > Green
+                    // Reserved > Pending > Recurring > Cleared > Balanced
+                    // Red      > Yellow  > Blue      > Green   > Clear
                     Text("\(self.viewModel.draft.transactionStatus.description)")
                         .background(self.viewModel.draft.backgroundColor)
                 }
+                
                 LabeledContent("Pending") {
                     HStack(spacing: 8) {
                         Toggle("", isOn: $viewModel.draft.hasPending)
                             .labelsHidden()
                             .onChange(of: viewModel.draft.hasPending) {
-                                if viewModel.draft.hasPending == false {
-                                    viewModel.draft.pendingOn = nil
+                                if viewModel.draft.hasPending == true {
+                                    if(viewModel.draft.pendingOn == nil && viewModel.tran.pendingOnUTC == nil) {
+                                        // This is probably a new transaction or one that didn't have a date before. We don't want to overwrite it with a new one.
+                                        viewModel.draft.pendingOn = Date()
+                                    }
                                 }
                             }
 
@@ -89,10 +93,11 @@ struct AccountTransactionEditView: View {
                         Toggle("", isOn: $viewModel.draft.hasCleared)
                             .labelsHidden()
                             .onChange(of: viewModel.draft.hasCleared) {
-                            }
-                            .onChange(of: viewModel.draft.hasCleared) {
-                                if viewModel.draft.hasCleared == false {
-                                    viewModel.draft.clearedOn = nil
+                                if viewModel.draft.hasCleared == true {
+                                    if(viewModel.draft.clearedOn == nil && viewModel.tran.clearedOnUTC == nil) {
+                                        // This is probably a new transaction or one that didn't have a date before. We don't want to overwrite it with a new one.
+                                        viewModel.draft.clearedOn = Date()
+                                    }
                                 }
                             }
 
@@ -102,7 +107,7 @@ struct AccountTransactionEditView: View {
                                         get: { self.viewModel.draft.clearedOn ?? Date() },
                                         set: { self.viewModel.draft.clearedOn = $0 }
                                        ),
-                                       displayedComponents: [.date, .hourAndMinute]
+                                       displayedComponents: [.date]
                             )
                             .labelsHidden()
                             .datePickerStyle(.field)
@@ -326,7 +331,7 @@ struct AccountTransactionEditView: View {
                 secondaryButton: .cancel()
             )
         }
-        .frame(minWidth: 150, minHeight: 650)
+        .frame(minWidth: 150, minHeight: 800)
     }
 }
 

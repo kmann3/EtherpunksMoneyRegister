@@ -60,7 +60,6 @@ extension AccountTransactionEditView {
             tran.VerifySignage()
             
             // TODO: Files and filesDidChange ; I'm not even sure if there's a clean way to do this other than "just let it handle itself and just save it. Seems like updating a fat file could be painful?
-            
             if self.isNewTransaction {
                 self.dataSource.insertAccountTransaction(transaction: tran)
             } else {
