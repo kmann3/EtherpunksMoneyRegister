@@ -9,6 +9,7 @@ import Foundation
 import SwiftData
 
 extension MoneyDataSource {
+    
     func fetchAccountTransactions(account: Account) -> (transactions: [AccountTransaction], hasMoreTransactions: Bool) {
         let id = account.id
         let limit = 50 // TODO: We have an artificially low amount so we can test the loading of more transactions later
@@ -61,6 +62,20 @@ extension MoneyDataSource {
         }
     }
     
+    func insertAccountTransaction(transaction: AccountTransaction) {
+        do {
+            modelContext.insert(transaction)
+            if transaction.isPending || transaction.isReserved {
+                transaction.account.outstandingItemCount = transaction.account.outstandingItemCount  + 1
+                transaction.account.outstandingBalance = transaction.account.outstandingBalance + transaction.amount
+            }
+            transaction.account.currentBalance = transaction.account.currentBalance + transaction.amount
+            try modelContext.save()
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+    
     func recalculateAccountBalance(account: Account) {
         // TODO: Add code for letting user pick a starting point instead of recalculating the entire account?
         do {
@@ -104,13 +119,10 @@ extension MoneyDataSource {
     
     func updateAccountTransaction(tran: AccountTransaction, origAccount: Account, origAmount: Decimal, files: [TransactionFile], filesDidChange: Bool) {
         do {
-            print("Updating transaction")
-            //let transactionId = tran.id
+            let transactionId = tran.id
             let newAccountId = tran.accountId
             let oldAccountId = origAccount.id
-            
-            print("New AccountID: \(newAccountId!)")
-            print("Old AccountID: \(oldAccountId)")
+
             let tranCreatedOnUTC = tran.createdOnUTC
             try modelContext.transaction {
                 // If the account changed, we need to adjust postings on both the original and new accounts
@@ -118,11 +130,10 @@ extension MoneyDataSource {
                     // TODO: Take care of pending / expecting account balance
                     // First update the old account's subsequent transactions
                     do {
-                        let oldTransactionId = tran.id
                         let descriptor = FetchDescriptor<AccountTransaction>(
                             // Use greater than or equal to in case we did a batch create and all the createdOn's are the same
                             // We skip the transactionId so we don't double up
-                            predicate: #Predicate<AccountTransaction> { $0.accountId == oldAccountId && $0.createdOnUTC >= tranCreatedOnUTC && $0.id != oldTransactionId },
+                            predicate: #Predicate<AccountTransaction> { $0.accountId == oldAccountId && $0.createdOnUTC >= tranCreatedOnUTC && $0.id != transactionId },
                             sortBy: [
                                 SortDescriptor(\AccountTransaction.createdOnUTC, order: .forward),
                                 SortDescriptor(\AccountTransaction.name, order: .forward)
@@ -150,11 +161,10 @@ extension MoneyDataSource {
 
                     // Next update the new account's subsequent transactions
                     do {
-                        let oldTransactionId = tran.id
                         let descriptor = FetchDescriptor<AccountTransaction>(
                             // Use greater than or equal to in case we did a batch create and all the createdOn's are the same
                             // We skip the transactionId so we don't double up
-                            predicate: #Predicate<AccountTransaction> { $0.accountId == newAccountId && $0.createdOnUTC >= tranCreatedOnUTC && $0.id != oldTransactionId },
+                            predicate: #Predicate<AccountTransaction> { $0.accountId == newAccountId && $0.createdOnUTC >= tranCreatedOnUTC && $0.id != transactionId },
                             sortBy: [
                                 SortDescriptor(\AccountTransaction.createdOnUTC, order: .forward),
                                 SortDescriptor(\AccountTransaction.name, order: .forward)

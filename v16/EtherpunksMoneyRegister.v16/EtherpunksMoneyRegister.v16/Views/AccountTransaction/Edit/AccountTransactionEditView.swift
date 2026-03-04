@@ -17,8 +17,8 @@ struct AccountTransactionEditView: View {
     @Query(sort: \TransactionTag.name) private var allTags: [TransactionTag]
     @State private var filePendingDelete: TransactionFile? = nil
 
-    init(_ tran: AccountTransaction, _ handler: @escaping (PathStore.Route) -> Void) {
-        _viewModel = StateObject(wrappedValue: ViewModel(tran: tran))
+    init(_ tran: AccountTransaction, isNewTransaction: Bool = false,_ handler: @escaping (PathStore.Route) -> Void) {
+        _viewModel = StateObject(wrappedValue: ViewModel(tran: tran, isNewTransaction: isNewTransaction))
         self.handler = handler
     }
     
@@ -110,6 +110,7 @@ struct AccountTransactionEditView: View {
                     }
                 }
                 
+                // TODO: Perhaps have a view exclusivelt for balancing? Going through a sheet and checking off as it's balanced?
                 LabeledContent("Balanced On") {
                     HStack(spacing: 8) {
                         Toggle("", isOn: $viewModel.draft.hasBalanced)
@@ -198,6 +199,7 @@ struct AccountTransactionEditView: View {
                         } label: {
                             Text("Create")
                         }
+                        .disabled(self.viewModel.isNewTransaction)
                     }
                 }
             }
@@ -290,7 +292,11 @@ struct AccountTransactionEditView: View {
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
-                    handler(.transaction_Detail(transaction: viewModel.tran))
+                    if (self.viewModel.isNewTransaction) {
+                        handler(.transaction_List(account: self.viewModel.tran.account))
+                    } else {
+                        handler(.transaction_Detail(transaction: viewModel.tran))
+                    }
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
@@ -331,6 +337,11 @@ struct AccountTransactionEditView: View {
 
 #Preview ("Verizon") {
     AccountTransactionEditView(MoneyDataSource.shared.previewer.verizonReservedTransaction) { action in print(action) }
+        .modelContainer(MoneyDataSource.shared.modelContainer)
+}
+
+#Preview ("New") {
+    AccountTransactionEditView(AccountTransaction(account: MoneyDataSource.shared.previewer.bankAccount), isNewTransaction: true) { action in print(action) }
         .modelContainer(MoneyDataSource.shared.modelContainer)
 }
 

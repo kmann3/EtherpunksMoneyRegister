@@ -18,13 +18,15 @@ extension AccountTransactionEditView {
         var tran: AccountTransaction
         var files: [TransactionFile] = []
         var filesDidChange: Bool = false
+        var isNewTransaction: Bool = false
         
         @Published var draft: AccountTransactionDraft
 
-        init(dataSource: MoneyDataSource = MoneyDataSource.shared, tran: AccountTransaction) {
+        init(dataSource: MoneyDataSource = MoneyDataSource.shared, tran: AccountTransaction, isNewTransaction: Bool) {
             self.dataSource = dataSource
 
             self.tran = tran
+            self.isNewTransaction = isNewTransaction
             self.files = self.dataSource.fetchTransactionFiles(tran: self.tran)
             self.draft = AccountTransactionDraft(tran: tran)
             
@@ -57,8 +59,13 @@ extension AccountTransactionEditView {
             tran.transactionTags = draft.tags
             tran.VerifySignage()
             
-            // TODO: Files and filesDidChange
-            self.dataSource.updateAccountTransaction(tran: tran, origAccount: origAccount, origAmount: origAmount, files: self.files, filesDidChange: self.filesDidChange)
+            // TODO: Files and filesDidChange ; I'm not even sure if there's a clean way to do this other than "just let it handle itself and just save it. Seems like updating a fat file could be painful?
+            
+            if self.isNewTransaction {
+                self.dataSource.insertAccountTransaction(transaction: tran)
+            } else {
+                self.dataSource.updateAccountTransaction(tran: tran, origAccount: origAccount, origAmount: origAmount, files: self.files, filesDidChange: self.filesDidChange)
+            }
         }
     }
 }
