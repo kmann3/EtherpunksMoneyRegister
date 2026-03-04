@@ -27,9 +27,6 @@ struct DashboardView: View {
 
                     List(viewModel.accounts) { account in
                         Button {
-#if DEBUG
-                                    print("View: Dashboard | [Account] button press (\(account.name))")
-#endif
                             handler(PathStore.Route.transaction_List(account: account))
                         } label: {
                             Dashboard_AccountItemView(acctData: account)
@@ -50,10 +47,7 @@ struct DashboardView: View {
                         Section(header: Text("Reserved Transactions")) {
                             ForEach(viewModel.reservedTransactions) { reserved in
                                 Button {
-#if DEBUG
-                                            print("View: Dashboard | [Reserved] button press (\(reserved.name))")
-#endif
-                                       handler(PathStore.Route.transaction_Edit(transaction: reserved))
+                                   handler(PathStore.Route.transaction_Edit(transaction: reserved))
                                 } label: {
                                     Dashboard_TransactionItemView(transaction: reserved)
                                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -69,17 +63,14 @@ struct DashboardView: View {
                     List {
                         Section(header: Text("Pending Transactions")) {
                             ForEach(viewModel.pendingTransactions) { pending in
-                               Button {
-#if DEBUG
-                                            print("View: Dashboard | [Pending] button press (\(pending.name))")
-#endif
-                                    handler(PathStore.Route.transaction_Edit(transaction: pending))
-                             } label: {
-                                 Dashboard_TransactionItemView(transaction: pending)
-                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                     .contentShape(Rectangle())
-                             }
-                             .buttonStyle(.plain)
+                             Button {
+                                handler(PathStore.Route.transaction_Edit(transaction: pending))
+                         } label: {
+                             Dashboard_TransactionItemView(transaction: pending)
+                                 .frame(maxWidth: .infinity, alignment: .leading)
+                                 .contentShape(Rectangle())
+                         }
+                         .buttonStyle(.plain)
                             }
                         }
                     }
@@ -100,9 +91,6 @@ struct DashboardView: View {
                                 Dashboard_RecurringItemView(
                                     recurringItem: creditItem
                                 ) {
-#if DEBUG
-                                            print("View: Dashboard | [Recurring Credit] button press (\(creditItem.name))")
-#endif
                                     handler(PathStore.Route.recurringTransaction_Reserve(recTran: creditItem))
                                 }
                             }
@@ -119,9 +107,6 @@ struct DashboardView: View {
                                     Dashboard_RecurringGroupView(
                                         recurringGroup: group
                                     ) {
-#if DEBUG
-                                            print("View: Dashboard | [Recurring Group] button press (\(group.name))")
-#endif
                                         selectedReserveGroup = group
                                     }
 
@@ -138,9 +123,6 @@ struct DashboardView: View {
                                 Dashboard_RecurringItemView(
                                     recurringItem: debitItem
                                 ) {
-#if DEBUG
-                                            print("View: Dashboard | [Recurring Debit] button press (\(debitItem.name))")
-#endif
                                     handler(PathStore.Route.recurringTransaction_Reserve(recTran: debitItem))
                                 }
 
@@ -183,10 +165,7 @@ struct DashboardView: View {
                     selectedReserveGroup = nil
                     return
                 }
-        #if DEBUG
-                // TODO: Need to decide where the user might want to go after this usually
-                print("ReserveGroupView returned: \(returnedQueue)")
-        #endif
+
                 selectedReserveGroup = nil
                 if(self.viewModel.userPrefs.afterReserveGoTo != .dashboard) {
                     // TODO: Implement code for sending them
