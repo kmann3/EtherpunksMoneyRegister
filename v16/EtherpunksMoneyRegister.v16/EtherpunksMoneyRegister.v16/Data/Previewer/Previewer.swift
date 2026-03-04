@@ -281,9 +281,6 @@ class Previewer {
                 print("Error generating attachment transaction - monkey logo")
             }
         }
-
-        print("Done generating data at \(Date().toDebugDate())")
-        print("Main bank account id: \(bankAccount.id)")
     }
 
     func importTestRecurringData(modelContext: ModelContext) {

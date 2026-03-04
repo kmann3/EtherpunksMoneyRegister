@@ -158,5 +158,9 @@ extension Account: CustomDebugStringConvertible {
             - createdOnUTC: \(createdOnUTC.toDebugDate())
             """
     }
+    
+    public var shortDescription: String {
+        return "Account: \(name) Bal: \(currentBalance) ID: \(id)"
+    }
 }
 
