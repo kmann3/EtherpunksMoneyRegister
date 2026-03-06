@@ -57,7 +57,7 @@ extension ReserveGroupView {
                 tran.balance = account.currentBalance
                 ctx.insert(tran)
             }
-            do { try ctx.save() } catch { print("Reserve save failed: \(error)") }
+            do { try ctx.save() } catch { DLog("Reserve save failed: \(error)") }
         }
     }
 }

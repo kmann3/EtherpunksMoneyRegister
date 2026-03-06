@@ -133,5 +133,5 @@ struct ReserveGroupView: View {
 }
 
 #Preview {
-    ReserveGroupView(MoneyDataSource.shared.previewer.billGroup) { action in print(action) }
+    ReserveGroupView(MoneyDataSource.shared.previewer.billGroup) { action in DLog(action.description) }
 }

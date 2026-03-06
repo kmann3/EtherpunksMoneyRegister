@@ -52,9 +52,5 @@ struct AccountTransactionListView: View {
 }
 
 #Preview {
-    AccountTransactionListView(MoneyDataSource.shared.previewer.bankAccount) { action in print(action) }
-}
-
-#Preview {
-    AccountTransactionListView { action in print(action) }
+    AccountTransactionListView(MoneyDataSource.shared.previewer.bankAccount) { action in DLog(action.description) }
 }

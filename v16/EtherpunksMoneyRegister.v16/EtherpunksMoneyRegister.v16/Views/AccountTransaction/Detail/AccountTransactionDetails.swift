@@ -106,7 +106,7 @@ struct AccountTransactionDetailsView: View {
                         if self.viewModel.tran.recurringTransaction != nil {
                             handler(PathStore.Route.recurringTransaction_Edit(recTran: self.viewModel.tran.recurringTransaction!))
                         } else {
-                            debugPrint("error with recurring transaction")
+                            DLog("error with recurring transaction on transaction: \(self.viewModel.tran) w/ ID: \(self.viewModel.tran.id)")
                         }
                     } label: {
                         Text(
@@ -162,7 +162,7 @@ struct AccountTransactionDetailsView: View {
                         if viewModel.tran.recurringTransaction!.recurringGroup != nil {
                             handler(PathStore.Route.recurringGroup_Details(recGroup: self.viewModel.tran.recurringTransaction!.recurringGroup!))
                         } else {
-                            print("group not loaded")
+                            DLog("group not loaded? transaction: \(self.viewModel.tran.name) w/ ID: \(self.viewModel.tran.id)")
                         }
                     } label: {
                         Text(self.viewModel.tran.recurringTransaction!.recurringGroup!.name)
@@ -197,7 +197,7 @@ struct AccountTransactionDetailsView: View {
                                 Text("Filename: \(file.filename)")
                                 Button("View") {
                                     if file.data == nil {
-                                        print("File \(file.filename) has no data")
+                                        DLog("File \(file.filename) has no data w/ \(self.viewModel.tran.name) ID: \(self.viewModel.tran.id)")
                                     } else {
                                         QuickLookPreviewController().showPreview(for: file.data!, fileName: file.filename)
                             
@@ -229,21 +229,21 @@ struct AccountTransactionDetailsView: View {
 }
 
 #Preview ("Verizon (Reserved)") {
-    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.verizonReservedTransaction) { action in print(action) }
+    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.verizonReservedTransaction) { action in DLog(action.description) }
 }
 
 #Preview ("Hulu (Pending)") {
-    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.huluPendingTransaction) { action in print(action) }
+    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.huluPendingTransaction) { action in DLog(action.description) }
 }
 
 #Preview ("Burger King (Cleared)") {
-    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.burgerKingTransaction) { action in print(action) }
+    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.burgerKingTransaction) { action in DLog(action.description) }
 }
 
 #Preview ("CVS (Balanced) w/ File") {
-    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.cvsTransaction) { action in print(action) }
+    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.cvsTransaction) { action in DLog(action.description) }
 }
 
 #Preview ("Discord (Recurring)") {
-    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.discordTransaction) { action in print(action) }
+    AccountTransactionDetailsView(MoneyDataSource.shared.previewer.discordTransaction) { action in DLog(action.description) }
 }

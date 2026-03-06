@@ -45,11 +45,11 @@ final class MoneyDataSource: Sendable {
         // TODO: Check defaults and make sure they exist; if not create them.
 
 #if DEBUG
-        print("-----------------")
-        print(Date().toDebugDate())
-        print("-----------------")
-        print("Database Location: \(modelContext.sqliteLocation)")
-        print("-----------------")
+        DLog("-----------------")
+        DLog(Date().toDebugDate())
+        DLog("-----------------")
+        DLog("Database Location: \(modelContext.sqliteLocation)")
+        DLog("-----------------")
 
         do {
             try modelContext.delete(model: Account.self)
@@ -60,7 +60,7 @@ final class MoneyDataSource: Sendable {
             try modelContext.delete(model: TransactionTag.self)
             try modelContext.delete(model: UserPrefs.self)
         } catch {
-            print("Failed to clear database. Err: \(error)")
+            DLog("Failed to clear database. Err: \(error)")
         }
 
         self.previewer = Previewer()

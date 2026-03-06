@@ -251,7 +251,7 @@ struct AccountTransactionEditView: View {
                                     Text("Filename: \(file.filename)")
                                     Button("View") {
                                         if file.data == nil {
-                                            print("File \(file.filename) has no data")
+                                            DLog("File \(file.filename) has no data")
                                         } else {
                                             QuickLookPreviewController().showPreview(for: file.data!, fileName: file.filename)
                                             
@@ -325,7 +325,7 @@ struct AccountTransactionEditView: View {
                     do {
                         try modelContext.save()
                     } catch {
-                        print("Failed to delete file: \(error)")
+                        DLog("Failed to delete file: \(error)")
                     }
                 },
                 secondaryButton: .cancel()
@@ -336,17 +336,17 @@ struct AccountTransactionEditView: View {
 }
 
 #Preview ("CVS (pending and cleared) w Attachment") {
-    AccountTransactionEditView(MoneyDataSource.shared.previewer.cvsTransaction) { action in print(action) }
+    AccountTransactionEditView(MoneyDataSource.shared.previewer.cvsTransaction) { action in DLog(action.description) }
         .modelContainer(MoneyDataSource.shared.modelContainer)
 }
 
 #Preview ("Verizon") {
-    AccountTransactionEditView(MoneyDataSource.shared.previewer.verizonReservedTransaction) { action in print(action) }
+    AccountTransactionEditView(MoneyDataSource.shared.previewer.verizonReservedTransaction) { action in DLog(action.description) }
         .modelContainer(MoneyDataSource.shared.modelContainer)
 }
 
 #Preview ("New") {
-    AccountTransactionEditView(AccountTransaction(account: MoneyDataSource.shared.previewer.bankAccount), isNewTransaction: true) { action in print(action) }
+    AccountTransactionEditView(AccountTransaction(account: MoneyDataSource.shared.previewer.bankAccount), isNewTransaction: true) { action in DLog(action.description) }
         .modelContainer(MoneyDataSource.shared.modelContainer)
 }
 

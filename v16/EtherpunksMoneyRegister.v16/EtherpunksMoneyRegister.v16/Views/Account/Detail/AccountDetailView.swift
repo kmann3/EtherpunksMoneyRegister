@@ -41,5 +41,5 @@ struct AccountDetailView: View {
 }
 
 #Preview {
-    AccountDetailView(MoneyDataSource.shared.previewer.bankAccount) { action in print(action) }
+    AccountDetailView(MoneyDataSource.shared.previewer.bankAccount) { action in DLog(action.description) }
 }

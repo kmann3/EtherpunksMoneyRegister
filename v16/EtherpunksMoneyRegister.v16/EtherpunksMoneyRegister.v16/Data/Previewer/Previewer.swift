@@ -278,24 +278,24 @@ class Previewer {
             if monkeyData != nil {
                 cvsAttachmentFile.data = monkeyData!
             } else {
-                print("Error generating attachment transaction - monkey logo")
+                DLog("Error generating attachment transaction - monkey logo")
             }
         }
     }
 
     func importTestRecurringData(modelContext: ModelContext) {
         guard let fileURL = DevFileAccess.shared.urlForTestDB(promptMessage: "Select tmpData.sqlite3 for import (dev only)") else {
-            print("Test data could not be found to be imported: no file chosen")
+            DLog("Test data could not be found to be imported: no file chosen")
             return
         }
         let started = fileURL.startAccessingSecurityScopedResource()
         defer { if started { fileURL.stopAccessingSecurityScopedResource() } }
         let path = fileURL.path(percentEncoded: false)
-        print("Loading up recurring data from: \(path)")
+        DLog("Loading up recurring data from: \(path)")
 
         let fileManager = FileManager.default
         if !fileManager.fileExists(atPath: path) {
-            print("Test data could not be found to be imported at \(path)")
+            DLog("Test data could not be found to be imported at \(path)")
             return
         }
 
@@ -388,7 +388,7 @@ class Previewer {
                     recurringTransaction.nextDueDate = recurringTransaction.frequencyDateValue
                     break
                 default:
-                    print("Error parsing frequency: \(row[frequencyCol])")
+                    DLog("Error parsing frequency: \(row[frequencyCol])")
                 }
 
                 if recurringTransaction.nextDueDate! < Date() {
@@ -421,7 +421,7 @@ class Previewer {
 
             try modelContext.save()
         } catch {
-            print(error)
+            DLog(error.localizedDescription)
         }
     }
 
@@ -482,7 +482,7 @@ class Previewer {
         "https://etherpunk.com/wp-content/uploads/2026/01/cropped-Etherpunk-Monkey_180.png"
 
         guard let url = URL(string: monkeyUrlString) else {
-            print("Invalid URL: \(monkeyUrlString)")
+            DLog("Invalid URL for EtherpunkMonkey: \(monkeyUrlString)")
             return nil
         }
 
@@ -548,7 +548,7 @@ class Previewer {
         do {
             try modelContext.save()
         } catch {
-            print(error)
+            DLog(error.localizedDescription)
         }
     }
 }

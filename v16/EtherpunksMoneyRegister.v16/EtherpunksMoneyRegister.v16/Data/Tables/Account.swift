@@ -58,7 +58,7 @@ final class Account: Identifiable, Hashable {
             self.lastBalancedUTC = Date(
                 timeIntervalSinceReferenceDate: localTimeInterval)
         } else {
-            print("Failed to convert UTC string to Date object.")
+            debugPrint("Failed to convert UTC string to Date object.")
             self.lastBalancedUTC = nil
         }
 
@@ -70,7 +70,7 @@ final class Account: Identifiable, Hashable {
             self.lastBalancedUTC = Date(
                 timeIntervalSinceReferenceDate: localTimeInterval)
         } else {
-            print("Failed to convert UTC string to Date object.")
+            debugPrint("Failed to convert UTC string to Date object.")
         }
 
     }

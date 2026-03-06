@@ -6,11 +6,3 @@ import Foundation
     print(message())
 #endif
 }
-
-/// Debug-only logging helper with category/context.
-/// TODO: Replace category with enum. Perhaps us nav?
-//@inlinable public func DLog(_ category: String, _ message: @autoclosure () -> String) {
-//#if DEBUG
-//    print("[\(category)] \(message())")
-//#endif
-//}

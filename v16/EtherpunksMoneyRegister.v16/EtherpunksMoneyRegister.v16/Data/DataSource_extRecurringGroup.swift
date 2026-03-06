@@ -44,7 +44,7 @@ extension MoneyDataSource {
             do {
                 try modelContext.save()
             } catch {
-                print(error)
+                DLog(error.localizedDescription)
                 modelContext.rollback()
             }
         }

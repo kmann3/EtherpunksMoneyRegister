@@ -20,9 +20,9 @@ class QuickLookPreviewController: NSObject, QLPreviewPanelDataSource, QLPreviewP
 
             try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true, attributes: nil)
 
-            print("tempDir: \(tempDir.path)")
-            print("fileName: \(fileName)")
-            print("tempURL: \(tempURL)")
+            DLog("tempDir: \(tempDir.path)")
+            DLog("fileName: \(fileName)")
+            DLog("tempURL: \(tempURL)")
 
             try data.write(to: tempURL)
 
@@ -36,18 +36,18 @@ class QuickLookPreviewController: NSObject, QLPreviewPanelDataSource, QLPreviewP
 
             QLPreviewPanel.shared().makeKeyAndOrderFront(nil)
         } catch {
-            print("Failed to write data to file: \(error)")
+            DLog("Failed to write data to file: \(error)")
         }
     }
 
     func previewPanelDidClose(_ panel: QLPreviewPanel!) {
-        print("Attempting to delete temp file")
+        DLog("Attempting to delete temp file")
         if let url = previewItemURL {
             do {
                 try FileManager.default.removeItem(at: url)
-                print("Deleted temporary file: \(url.path)")
+                DLog("Deleted temporary file: \(url.path)")
             } catch {
-                print("Error deleting temporary file: \(error)")
+                DLog("Error deleting temporary file: \(error)")
             }
         }
 
