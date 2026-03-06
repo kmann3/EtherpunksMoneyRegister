@@ -65,8 +65,6 @@ final class MoneyDataSource: Sendable {
 
         self.previewer = Previewer()
         previewer.commitToDb(modelContext)
-        DLog("Done generating data at \(Date().toDebugDate())")
-        DLog("Main bank account id: \(previewer.bankAccount.shortDescription)")
 #endif
     }
 

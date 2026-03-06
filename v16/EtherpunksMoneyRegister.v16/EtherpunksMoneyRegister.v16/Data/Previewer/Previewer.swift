@@ -397,9 +397,7 @@ class Previewer {
 
                 switch row[nameCol] {
                 case "Discord":
-                    print("\(discordRecurringTransaction.name) w/ recurring: \(recurringTransaction.name)")
                     discordRecurringTransaction = recurringTransaction
-                    print("\(discordRecurringTransaction.name) w/ recurring: \(recurringTransaction.name)")
                     discordTransaction.recurringTransaction = recurringTransaction
                     discordTransaction.recurringTransactionId = recurringTransaction.id
                     discordRecurringTransaction.transactions = [discordTransaction]
