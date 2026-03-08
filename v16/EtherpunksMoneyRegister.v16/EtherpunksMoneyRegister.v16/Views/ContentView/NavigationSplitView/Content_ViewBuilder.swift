@@ -11,10 +11,11 @@ extension ContentView {
     @ViewBuilder
     internal func contentViewBuilder(for route: PathStore.Route) -> some View {
         switch route {
-        case .account_Create: Text(verbatim: "TBI - Account Create")
+        case .account_Create:
+            AccountEditView(Account(), isNewAccount: true) { action in self.changeRoute(action) }
         case .account_List: Text(verbatim: "Account List")
-        case .account_Edit(let account): Text(verbatim: "TBI: Account Edit \(account)")
-            //AccountEditView(account) { action in self.changeRoute(action) }
+        case .account_Edit(let account):
+            AccountEditView(account) { action in self.changeRoute(action) }
         case .account_Details(let account):
             AccountDetailView(account) { action in self.changeRoute(action) }
         case .dashboard:
