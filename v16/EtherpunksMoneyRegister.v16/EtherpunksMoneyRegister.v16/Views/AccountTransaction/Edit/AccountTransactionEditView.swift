@@ -41,7 +41,6 @@ struct AccountTransactionEditView: View {
                     Text("Debit").tag(TransactionType.debit)
                     Text("Credit").tag(TransactionType.credit)
                 }
-                //TextField("Amount", text: $viewModel.draft.amountString)
                 CurrencyFieldView(amount: $viewModel.draft.amount)
                 
                 LabeledContent("Tax Related") {
