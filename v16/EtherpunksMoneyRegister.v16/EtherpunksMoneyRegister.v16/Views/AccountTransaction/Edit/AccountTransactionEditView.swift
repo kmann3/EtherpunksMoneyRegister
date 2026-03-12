@@ -292,7 +292,7 @@ struct AccountTransactionEditView: View {
                 Text("\(self.viewModel.tran.id)")
             }
         }
-        .navigationTitle("Edit Transaction")
+        .navigationTitle(self.viewModel.isNewTransaction ? "New Transaction" : "Edit Transaction: \(self.viewModel.draft.name)")
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
