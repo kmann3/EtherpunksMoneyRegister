@@ -38,6 +38,27 @@ struct AccountEditView: View {
                 }
             }
         }
+        .navigationTitle(self.viewModel.isNewAccount ? "New Account" : "Edit Account: \(self.viewModel.draft.name)")
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel") {
+                    if (self.viewModel.isNewAccount) {
+                        handler(.dashboard)
+                    } else {
+                        handler(.transaction_List(account: self.viewModel.account))
+                    }
+                }
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Save") {
+                    withAnimation {
+                        self.viewModel.save()
+                    }
+                    handler(.transaction_List(account: self.viewModel.account))
+                }
+                .disabled(!self.viewModel.draft.isValid)
+            }
+        }
     }
 }
 

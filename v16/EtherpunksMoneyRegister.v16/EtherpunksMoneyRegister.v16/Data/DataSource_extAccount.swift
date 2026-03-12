@@ -26,6 +26,15 @@ extension MoneyDataSource {
         }
     }
     
+    func insertAccount(_ account: Account) {
+        do {
+            modelContext.insert(account)
+            try modelContext.save()
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+    
     func updateAccount(_ account: Account, origBalance: Decimal) {
         do {
             try modelContext.transaction {

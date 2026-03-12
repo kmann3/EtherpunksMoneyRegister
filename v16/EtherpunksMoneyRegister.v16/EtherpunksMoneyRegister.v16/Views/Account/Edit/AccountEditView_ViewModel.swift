@@ -25,5 +25,19 @@ extension AccountEditView {
             self.isNewAccount = isNewAccount
             self.draft = AccountDraft(account: account)
         }
+        
+        func save() {
+            let origBalance = account.startingBalance
+            let account = self.account
+            account.name = draft.name
+            account.notes = draft.notes
+            account.lastBalancedUTC = draft.lastBalancedUTC
+            account.startingBalance = draft.startingBalance
+            if self.isNewAccount {
+                self.dataSource.insertAccount(account)
+            } else {
+                self.dataSource.updateAccount(account, origBalance: origBalance)
+            }
+        }
     }
 }
