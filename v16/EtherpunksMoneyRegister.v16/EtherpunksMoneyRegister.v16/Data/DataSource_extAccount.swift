@@ -41,6 +41,7 @@ extension MoneyDataSource {
                 // Check if starting amount changed, and recalculate all transactions if needed
                 if origBalance != account.startingBalance {
                     let difference = account.startingBalance - origBalance
+                    account.currentBalance = account.currentBalance + difference
                     
                     // Fetch all transactions for the account
                     let accountId = account.id
