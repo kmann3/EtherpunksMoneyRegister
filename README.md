@@ -33,10 +33,11 @@ Apple focused because I bring my Macbook when I travel instead of a Windows or L
 Rough order:
 
 * :orange_circle: Account
-  * :red_circle: List
+  * :red_circle: List - Is this even needed?
   * :orange_circle: Detail - copied from older code. Need to re-write from newer code so it visually looks more similar to the new style I like
-  * :red_circle: Create
-  * :red_circle: Edit
+  * :green_circle: Create
+  * :green_circle: Edit
+
 * :orange_circle: Account Transaction
   * :orange_circle: List - still need to work on loading large amounts of transactions. I want it to load the last X (where x is stored in settings) of transactions and load more as needed
   * :orange_circle: Detail - copied from older code. Need to re-write from newer code so it visually looks more similar to the new style I like
@@ -44,6 +45,7 @@ Rough order:
   * :red_circle: Create - some of the wiring is there but practically nothing
   * :orange_circle: Edit - Mostly done. Need to work more on saving code
     * :orange_circle: Files - Barely started. Basic sheets and UI is there
+
 * :orange_circle: Dashboard
   * :green_circle: Display
   * :green_circle: Nav to bank
@@ -52,11 +54,13 @@ Rough order:
   * :orange_circle: Reserve Credit / paycheck
   * :orange_circle: Reserve Debit Group / bills
   * :orange_circle: Reserve Debit Item / bill
+
 * :red_circle: Recurring Group
   * :red_circle: List
   * :red_circle: Detail
   * :red_circle: Create
   * :red_circle: Edit
+
 * :red_circle: Recurring Transaction
   * :red_circle: List
   * :red_circle: Detail
@@ -64,7 +68,9 @@ Rough order:
   * :red_circle: Edit
 * :red_circle: Reports
   * :red_circle: Tax related
+
 * :red_circle: Search
+
 * :red_circle: Tag
   * :red_circle: List
   * :red_circle: Detail
