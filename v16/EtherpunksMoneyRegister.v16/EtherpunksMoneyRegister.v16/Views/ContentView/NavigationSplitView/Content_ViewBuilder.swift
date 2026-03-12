@@ -12,10 +12,10 @@ extension ContentView {
     internal func contentViewBuilder(for route: PathStore.Route) -> some View {
         switch route {
         case .account_Create:
-            AccountEditView(Account(), isNewAccount: true) { action in self.changeRoute(action) }
+            AccountEditView(Account(), isNewAccount: true, { action in self.changeRoute(action) }, onSave: { viewModel.reloadAccounts() })
         case .account_List: Text(verbatim: "Account List")
         case .account_Edit(let account):
-            AccountEditView(account) { action in self.changeRoute(action) }
+            AccountEditView(account, isNewAccount: false, { action in self.changeRoute(action) }, onSave: { viewModel.reloadAccounts() })
         case .account_Details(let account):
             AccountDetailView(account) { action in self.changeRoute(action) }
         case .dashboard:

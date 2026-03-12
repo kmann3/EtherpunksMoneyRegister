@@ -57,6 +57,7 @@ extension MoneyDataSource {
                 }
                 
                 // Save happens automatically if no error is thrown ; This feels like I should manually save still.
+                try modelContext.save()
             }
         } catch {
             fatalError(error.localizedDescription)

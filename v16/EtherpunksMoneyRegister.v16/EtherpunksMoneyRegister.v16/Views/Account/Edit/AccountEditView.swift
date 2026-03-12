@@ -10,10 +10,12 @@ import SwiftUI
 struct AccountEditView: View {
     @StateObject private var viewModel: ViewModel
     var handler: (PathStore.Route) -> Void
+    var onSave: (() -> Void)?
 
-    init(_ account: Account, isNewAccount: Bool = false,_ handler: @escaping (PathStore.Route) -> Void) {
+    init(_ account: Account, isNewAccount: Bool = false, _ handler: @escaping (PathStore.Route) -> Void, onSave: (() -> Void)? = nil) {
         _viewModel = StateObject(wrappedValue: ViewModel(account: account, isNewAccount: isNewAccount))
         self.handler = handler
+        self.onSave = onSave
     }
     
     var body: some View {
@@ -54,6 +56,7 @@ struct AccountEditView: View {
                     withAnimation {
                         self.viewModel.save()
                     }
+                    onSave?()
                     handler(.transaction_List(account: self.viewModel.account))
                 }
                 .disabled(!self.viewModel.draft.isValid)

@@ -21,5 +21,10 @@ extension ContentView {
             self.dataSource = dataSource
             self.accounts = dataSource.fetchAccounts()
         }
+        
+        func reloadAccounts() {
+            print("reloaded")
+            self.accounts = dataSource.fetchAccounts()
+        }
     }
 }
