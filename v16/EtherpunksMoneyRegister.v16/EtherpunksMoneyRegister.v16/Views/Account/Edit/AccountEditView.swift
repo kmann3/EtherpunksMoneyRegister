@@ -71,5 +71,5 @@ struct AccountEditView: View {
 }
 
 #Preview("New Bank") {
-    AccountEditView(Account(name: "ASD"), isNewAccount: true) { action in DLog(action.description)}
+    AccountEditView(Account(), isNewAccount: true) { action in DLog(action.description)}
 }
