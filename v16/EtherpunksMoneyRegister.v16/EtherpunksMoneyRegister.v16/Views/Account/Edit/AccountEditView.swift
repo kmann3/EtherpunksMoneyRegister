@@ -22,6 +22,7 @@ struct AccountEditView: View {
         Form {
             Section() {
                 TextField("Name", text: $viewModel.draft.name)
+                
                 CurrencyFieldView(amount: $viewModel.draft.startingBalance)
                 
                 TextField("Notes", text: $viewModel.draft.notes, axis: .vertical)
