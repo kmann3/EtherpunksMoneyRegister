@@ -68,7 +68,8 @@ struct TransactionListItemView: View {
                 }
             }
         }
-        .background(transaction.backgroundColor)
+        // TODO: Check environment for light mode or dark mode instead of assuming dark mode
+        .background(transaction.backgroundColor == .clear ? .black.opacity(0.05) : transaction.backgroundColor.opacity(0.90))
     }
 }
 
