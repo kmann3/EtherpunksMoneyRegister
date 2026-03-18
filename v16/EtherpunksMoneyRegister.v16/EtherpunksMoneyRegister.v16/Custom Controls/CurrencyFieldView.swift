@@ -27,14 +27,14 @@ struct CurrencyFieldView: View {
     private var maxFractionDigits: Int {
         currencyFormatter.maximumFractionDigits
     }
+    
+    private var currencySymbol: String {
+        currencyFormatter.currencySymbol ?? "$"
+    }
 
     var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: 6) {
-            Text(currencyFormatter.currencySymbol ?? "$")
-                .foregroundColor(.secondary)
-                .padding(.leading, 4)
-
-            TextField("Amount", text: $text)
+            TextField("Amount \(currencySymbol)", text: $text)
                 .focused($isFocused)
                 .multilineTextAlignment(.leading)
                 .monospacedDigit()
