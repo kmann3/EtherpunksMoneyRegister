@@ -65,6 +65,8 @@ struct TransactionListItemView: View {
                         Text(Image(systemName: "paperclip"))
                         Text("x\(transaction.fileCount)")
                     }
+                    
+                    Spacer()
                 }
             }
         }
@@ -73,6 +75,18 @@ struct TransactionListItemView: View {
     }
 }
 
-#Preview {
+#Preview("CVS / balanced / attachment + notes") {
     TransactionListItemView(transaction: MoneyDataSource.shared.previewer.cvsTransaction)
+}
+
+#Preview("Burger King / cleared") {
+    TransactionListItemView(transaction: MoneyDataSource.shared.previewer.burgerKingTransaction)
+}
+
+#Preview("Discord / recurring / notes") {
+    TransactionListItemView(transaction: MoneyDataSource.shared.previewer.discordTransaction)
+}
+
+#Preview("Verizon / reserved") {
+    TransactionListItemView(transaction: MoneyDataSource.shared.previewer.verizonReservedTransaction)
 }
