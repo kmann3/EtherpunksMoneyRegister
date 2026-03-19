@@ -58,27 +58,27 @@ struct NavigationState {
             self.secondary = .recurringGroup_Reserve(recGroup: recGroup)
 
         case .recurringTransaction_Create:
-            self.primary = .recurringTransaction_List(recTran: nil)
+            self.primary = .recurringTransaction_List
             self.secondary = .recurringTransaction_Create
 
         case .recurringTransaction_Create_FromTran(let tran):
-            self.primary = .recurringTransaction_List(recTran: nil)
+            self.primary = .recurringTransaction_List
             self.secondary = .recurringTransaction_Create_FromTran(tran: tran)
 
         case .recurringTransaction_Details(let recTran):
-            self.primary = .recurringTransaction_List(recTran: recTran)
+            self.primary = .recurringTransaction_List
             self.secondary = .recurringTransaction_Details(recTran: recTran)
 
         case .recurringTransaction_Edit(let recTran):
-            self.primary = .recurringTransaction_List(recTran: recTran)
+            self.primary = .recurringTransaction_List
             self.secondary = .recurringTransaction_Edit(recTran: recTran)
 
         case .recurringTransaction_List:
-            self.primary = .recurringTransaction_List(recTran: nil)
+            self.primary = .recurringTransaction_List
             self.secondary = nil
 
         case .recurringTransaction_Reserve(let recTran):
-            self.primary = .recurringTransaction_List(recTran: recTran)
+            self.primary = .recurringTransaction_List
             self.secondary = .recurringTransaction_Reserve(recTran: recTran)
 
         case .report_Tax:

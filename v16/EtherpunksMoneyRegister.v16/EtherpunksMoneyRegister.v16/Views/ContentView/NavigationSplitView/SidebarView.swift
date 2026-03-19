@@ -22,7 +22,7 @@ struct SidebarView: View {
                 Text("Recurring Groups")
             }
 
-            NavigationLink(value: PathStore.Route.recurringTransaction_List(recTran: nil)) {
+            NavigationLink(value: PathStore.Route.recurringTransaction_List) {
                 Text("Recurring Transactions")
             }
 

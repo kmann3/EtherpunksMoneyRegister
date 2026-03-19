@@ -38,8 +38,8 @@ extension ContentView {
             Text(recTran.name)
         case .recurringTransaction_Edit(let recTran):
             Text(verbatim: "TBI - Recurring Transaction Edit: \(recTran.name)")
-        case .recurringTransaction_List(let recTran): Text(verbatim: "RecurringTransactionListView \(String(describing: recTran))")
-            //RecurringTransactionListView(recTran) { action in self.changeRoute(action) }
+        case .recurringTransaction_List:
+            RecurringTransactionListView() { action in self.changeRoute(action) }
         case .recurringTransaction_Reserve(let recTran):
             Text(verbatim: "TBI - Recurring Transaction Reserve: \(recTran.name)")
         case .report_Tax:

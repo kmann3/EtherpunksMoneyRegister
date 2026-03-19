@@ -31,7 +31,7 @@ class PathStore {
         case recurringTransaction_Create_FromTran(tran: AccountTransaction)
         case recurringTransaction_Details(recTran: RecurringTransaction)
         case recurringTransaction_Edit(recTran: RecurringTransaction)
-        case recurringTransaction_List(recTran: RecurringTransaction?)
+        case recurringTransaction_List
         case recurringTransaction_Reserve(recTran: RecurringTransaction)
 
         case report_Tax
@@ -90,12 +90,8 @@ extension PathStore.Route: CustomStringConvertible {
             return "recurringTransaction_Details(\(recTran.id))"
         case .recurringTransaction_Edit(let recTran):
             return "recurringTransaction_Edit(\(recTran.id))"
-        case .recurringTransaction_List(let recTran):
-            if let recTran = recTran {
-                return "recurringTransaction_List(\(recTran.id))"
-            } else {
-                return "recurringTransaction_List(nil)"
-            }
+        case .recurringTransaction_List:
+            return "recurringTransaction_List"
         case .recurringTransaction_Reserve(let recTran):
             return "recurringTransaction_Reserve(\(recTran.id))"
 
