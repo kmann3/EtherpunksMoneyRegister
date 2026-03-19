@@ -48,6 +48,27 @@ extension MoneyDataSource {
         }
     }
     
+    func fetchAllReservedTransactions() -> [AccountTransaction] {
+        do {
+            return try modelContext.fetch(FetchDescriptor<AccountTransaction>(
+                predicate: #Predicate<AccountTransaction> { transaction in
+                    if transaction.clearedOnUTC == nil {
+                        if transaction.pendingOnUTC == nil {
+                            return true
+                        } else {
+                            return false
+                        }
+                    } else {
+                        return false
+                    }
+                },
+                sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
+            ))
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+    
     func fetchTransactionFiles(tran: AccountTransaction) -> [TransactionFile] {
         let id = tran.id
         do {

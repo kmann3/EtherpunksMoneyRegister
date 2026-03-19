@@ -9,6 +9,28 @@ import Foundation
 import SwiftData
 
 extension MoneyDataSource {
+    func fetchAllRecurringGroups() -> [RecurringGroup] {
+        do {
+            return try modelContext.fetch(FetchDescriptor<RecurringGroup>(
+                sortBy: [SortDescriptor(\RecurringGroup.name, order: .forward)]
+            ))
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+    
+    func fetchUpcomingRecurringGroups() -> [RecurringGroup] {
+        do {
+            return try modelContext.fetch(FetchDescriptor<RecurringGroup>(
+                sortBy: [
+                    SortDescriptor(\RecurringGroup.name)
+                ]
+            ))
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+    
     func reserveTransactions(groups: [RecurringGroup], transactions: [RecurringTransaction], account: Account) {
         // TODO: This method may not be completed. I did this months ago and I can't remember where it is in the process.
         try? modelContext.transaction {
