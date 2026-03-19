@@ -17,7 +17,17 @@ struct RecurringTransactionListView: View {
     }
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            ForEach(self.viewModel.recurringTransactionList) { tran in
+                Button {
+                    handler(PathStore.Route.recurringTransaction_Details(recTran: tran))
+                } label: {
+                    // Need to indicate deposit/credit
+                    Text("\(tran.name)")
+                }
+                .buttonStyle(.plain)
+            }
+        }
     }
 }
 
