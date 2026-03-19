@@ -47,7 +47,7 @@ struct AccountTransactionListView: View {
                 }
             }
         }
-        .frame(width: 400)
+        .frame(minWidth: 400, maxWidth: 500)
     }
 }
 
