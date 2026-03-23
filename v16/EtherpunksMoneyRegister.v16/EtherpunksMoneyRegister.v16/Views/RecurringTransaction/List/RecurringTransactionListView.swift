@@ -18,14 +18,27 @@ struct RecurringTransactionListView: View {
     
     var body: some View {
         List {
-            ForEach(self.viewModel.recurringTransactionList) { tran in
-                Button {
-                    handler(PathStore.Route.recurringTransaction_Details(recTran: tran))
-                } label: {
-                    // Need to indicate deposit/credit
-                    Text("\(tran.name)")
+            Section("Credit") {
+                ForEach(self.viewModel.recurringTransactionList.filter { $0.transactionType == .credit }) { tran in
+                    Button {
+                        handler(PathStore.Route.recurringTransaction_Details(recTran: tran))
+                    } label: {
+                        // Need to indicate deposit/credit
+                        Text("\(tran.name)")
+                    }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
+            }
+            Section("Debit") {
+                ForEach(self.viewModel.recurringTransactionList.filter { $0.transactionType == .debit }) { tran in
+                    Button {
+                        handler(PathStore.Route.recurringTransaction_Details(recTran: tran))
+                    } label: {
+                        // Need to indicate deposit/credit
+                        Text("\(tran.name)")
+                    }
+                    .buttonStyle(.plain)
+                }
             }
         }
     }

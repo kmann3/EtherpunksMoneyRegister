@@ -26,8 +26,8 @@ extension ContentView {
             //ReserveGroupView(recGroup) { action in self.changeRoute(action) }
         case .recurringGroup_Edit(let recGroup):
             Text("TBI - Recurring Group Edit: \(recGroup.name)")
-        case .recurringGroup_List(let recGroup): Text("TBI - Recurring Group List \(String(describing: recGroup))")
-            //RecurringGroupListView(recGroup) { action in self.changeRoute(action) }
+        case .recurringGroup_List:
+            RecurringGroupListView { action in self.changeRoute(action) }
         case .recurringGroup_Reserve(let recGroup): Text("TBI - Recurring Group Reserve: \(recGroup.name)")
             //ReserveGroupView(recGroup) { action in self.changeRoute(action) }
         case .recurringTransaction_Create: Text("TBI - Recurring Transaction Create")
