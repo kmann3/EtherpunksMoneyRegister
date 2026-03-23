@@ -73,12 +73,8 @@ extension PathStore.Route: CustomStringConvertible {
             return "recurringGroup_Details(\(recGroup.id))"
         case .recurringGroup_Edit(let recGroup):
             return "recurringGroup_Edit(\(recGroup.id))"
-        case .recurringGroup_List(let recGroup):
-            if let recGroup = recGroup {
-                return "recurringGroup_List(\(recGroup.id))"
-            } else {
-                return "recurringGroup_List(nil)"
-            }
+        case .recurringGroup_List:
+            return "recurringGroup_List(nil)"
         case .recurringGroup_Reserve(let recGroup):
             return "recurringGroup_Reserve(\(recGroup.id))"
 
