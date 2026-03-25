@@ -38,23 +38,23 @@ struct NavigationState {
             self.secondary = nil
 
         case .recurringGroup_Create:
-            self.primary = .recurringGroup_List(recGroup: nil)
+            self.primary = .recurringGroup_List
             self.secondary = .recurringGroup_Create
 
         case .recurringGroup_Details(let recGroup):
-            self.primary = .recurringGroup_List(recGroup: recGroup)
+            self.primary = .recurringGroup_List
             self.secondary = .recurringGroup_Details(recGroup: recGroup)
 
         case .recurringGroup_Edit(let recGroup):
-            self.primary = .recurringGroup_List(recGroup: recGroup)
+            self.primary = .recurringGroup_List
             self.secondary = .recurringGroup_Edit(recGroup: recGroup)
 
         case .recurringGroup_List:
-            self.primary = .recurringGroup_List(recGroup: nil)
+            self.primary = .recurringGroup_List
             self.secondary = nil
 
         case .recurringGroup_Reserve(let recGroup):
-            self.primary = .recurringGroup_List(recGroup: recGroup)
+            self.primary = .recurringGroup_List
             self.secondary = .recurringGroup_Reserve(recGroup: recGroup)
 
         case .recurringTransaction_Create:

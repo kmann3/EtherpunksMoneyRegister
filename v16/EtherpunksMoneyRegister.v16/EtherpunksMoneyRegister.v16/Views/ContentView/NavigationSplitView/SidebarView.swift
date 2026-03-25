@@ -18,7 +18,7 @@ struct SidebarView: View {
                 Text("Dashboard")
             }
 
-            NavigationLink(value: PathStore.Route.recurringGroup_List(recGroup: nil)) {
+            NavigationLink(value: PathStore.Route.recurringGroup_List) {
                 Text("Recurring Groups")
             }
 
