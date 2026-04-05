@@ -18,19 +18,18 @@ struct RecurringGroupListView: View {
     
     var body: some View {
         List {
-            Section("Credit") {
-                ForEach(self.viewModel.recurringGroupList) { group in
-                    Button {
-                        handler(PathStore.Route.recurringGroup_Details(recGroup: group))
-                    } label: {
-                        Text("\(group.name)")
-                    }
-                    .buttonStyle(.plain)
+            ForEach(self.viewModel.recurringGroupList) { group in
+                Button {
+                    handler(PathStore.Route.recurringGroup_Details(recGroup: group))
+                } label: {
+                    RecurringGroupItem(item: group)
                 }
+                .buttonStyle(.plain)
             }
-
         }
+        .frame(minWidth: 400, maxWidth: 500)
     }
+    
 }
 
 #Preview {
