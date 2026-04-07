@@ -11,10 +11,11 @@ import SwiftUI
 struct RecurringGroupDraft {
     var name: String
     // TBI: RecurringGroup rest of variables here
-
-    init(item: RecurringGroup) {
-        name = item.name
-        // TBI: RecurringGroup rest of variables here
+    var recurringTransactions: [RecurringTransaction]? = nil
+    
+    init(group: RecurringGroup) {
+        name = group.name
+        recurringTransactions = group.recurringTransactions
     }
 
     var isValid: Bool {

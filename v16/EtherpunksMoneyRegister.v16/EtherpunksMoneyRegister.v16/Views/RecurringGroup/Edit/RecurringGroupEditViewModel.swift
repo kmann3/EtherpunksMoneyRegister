@@ -25,7 +25,7 @@ extension RecurringGroupEditView {
             self.group = group
             self.isNew = isNew
 
-            self.draft = RecurringGroupDraft(item: group)
+            self.draft = RecurringGroupDraft(group: group)
         }
 
         func save() {
