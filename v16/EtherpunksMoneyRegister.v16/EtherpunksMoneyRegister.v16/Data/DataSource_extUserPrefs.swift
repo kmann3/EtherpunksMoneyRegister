@@ -14,6 +14,7 @@ extension MoneyDataSource {
         do {
             return try modelContext.fetch(FetchDescriptor<UserPrefs>()).first!
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }

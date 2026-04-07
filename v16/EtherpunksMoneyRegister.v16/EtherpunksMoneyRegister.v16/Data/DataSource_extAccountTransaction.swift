@@ -33,6 +33,7 @@ extension MoneyDataSource {
 
             return (results, hasMore ? true : false)
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
@@ -44,6 +45,7 @@ extension MoneyDataSource {
                 sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
             ))
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
@@ -65,12 +67,13 @@ extension MoneyDataSource {
                 sortBy: [SortDescriptor(\AccountTransaction.createdOnUTC, order: .reverse)]
             ))
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
     
-    func fetchTransactionFiles(tran: AccountTransaction) -> [TransactionFile] {
-        let id = tran.id
+    func fetchTransactionFiles(transaction: AccountTransaction) -> [TransactionFile] {
+        let id = transaction.id
         do {
             return try modelContext.fetch(FetchDescriptor<TransactionFile>(
                 predicate: #Predicate<TransactionFile> { $0.transactionId == id },
@@ -79,6 +82,7 @@ extension MoneyDataSource {
 
             ))
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
@@ -93,6 +97,7 @@ extension MoneyDataSource {
             transaction.account.currentBalance = transaction.account.currentBalance + transaction.amount
             try modelContext.save()
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
@@ -134,20 +139,21 @@ extension MoneyDataSource {
             try modelContext.save()
         }  catch {
             modelContext.rollback()
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
     
-    func updateAccountTransaction(tran: AccountTransaction, origAccount: Account, origAmount: Decimal, files: [TransactionFile], filesDidChange: Bool) {
+    func updateAccountTransaction(transaction: AccountTransaction, origAccount: Account, origAmount: Decimal, files: [TransactionFile], filesDidChange: Bool) {
         do {
-            let transactionId = tran.id
-            let newAccountId = tran.accountId
+            let transactionId = transaction.id
+            let newAccountId = transaction.accountId
             let oldAccountId = origAccount.id
 
-            let tranCreatedOnUTC = tran.createdOnUTC
+            let tranCreatedOnUTC = transaction.createdOnUTC
             try modelContext.transaction {
                 // If the account changed, we need to adjust postings on both the original and new accounts
-                if tran.account != origAccount {
+                if transaction.account != origAccount {
                     // TODO: Take care of pending / expecting account balance
                     // First update the old account's subsequent transactions
                     do {
@@ -171,7 +177,7 @@ extension MoneyDataSource {
                         
                         // Now we edit the outstanding
                         // TODO: What if it was previously oustanding but is no longer?
-                        if (tran.isPending || tran.isReserved) {
+                        if (transaction.isPending || transaction.isReserved) {
                             origAccount.outstandingItemCount = origAccount.outstandingItemCount  - 1
                             origAccount.currentBalance = origAccount.currentBalance - origAmount
                         }
@@ -193,28 +199,28 @@ extension MoneyDataSource {
                         )
 
                         let results = try modelContext.fetch(descriptor)
-                        for transaction in results {
-                            transaction.balance = transaction.balance! + tran.amount // Since the new transaction might have changed the amount then use it instead of origAmount
+                        for t in results {
+                            t.balance = t.balance! + transaction.amount // Since the new transaction might have changed the amount then use it instead of origAmount
                         }
                         
-                        tran.account.currentBalance = tran.account.currentBalance + tran.amount
+                        transaction.account.currentBalance = transaction.account.currentBalance + transaction.amount
                         
                         // Now we edit the outstanding
-                        if (tran.isPending || tran.isReserved) {
-                            tran.account.outstandingItemCount = tran.account.outstandingItemCount  + 1
-                            tran.account.currentBalance = tran.account.currentBalance + origAmount
+                        if (transaction.isPending || transaction.isReserved) {
+                            transaction.account.outstandingItemCount = transaction.account.outstandingItemCount  + 1
+                            transaction.account.currentBalance = transaction.account.currentBalance + origAmount
                         }
 
                     } catch {
                         throw error
                     }
 
-                } else if tran.amount != origAmount {
+                } else if transaction.amount != origAmount {
                     // If only the amount changed, you may need to cascade balance adjustments here.
                     // Placeholder for amount-change-only logic.
                     
                     do {
-                        let oldTransactionId = tran.id
+                        let oldTransactionId = transaction.id
                         let descriptor = FetchDescriptor<AccountTransaction>(
                             // Use greater than or equal to in case we did a batch create and all the createdOn's are the same
                             // We skip the transactionId so we don't double up
@@ -225,20 +231,20 @@ extension MoneyDataSource {
                             ]
                         )
                         
-                        let difference: Decimal = tran.amount - origAmount
+                        let difference: Decimal = transaction.amount - origAmount
                         
-                        DLog("Update transaction file with difference: \(difference) from old value: \(origAmount) to new value: \(tran.amount)")
+                        DLog("Update transaction file with difference: \(difference) from old value: \(origAmount) to new value: \(transaction.amount)")
 
                         let results = try modelContext.fetch(descriptor)
                         for transaction in results {
                             transaction.balance = transaction.balance! + difference
                         }
                         
-                        tran.account.currentBalance = tran.account.currentBalance + difference
+                        transaction.account.currentBalance = transaction.account.currentBalance + difference
                         
                         // Now we edit the outstanding
-                        if (tran.isPending || tran.isReserved) {
-                            tran.account.currentBalance = tran.account.currentBalance + difference
+                        if (transaction.isPending || transaction.isReserved) {
+                            transaction.account.currentBalance = transaction.account.currentBalance + difference
                         }
                     } catch {
                         throw error
@@ -252,6 +258,7 @@ extension MoneyDataSource {
             }
         } catch {
             modelContext.rollback()
+            DLog(error.localizedDescription)
             fatalError("Failed to save transaction changes (rolled back): \(error)")
         }
     }

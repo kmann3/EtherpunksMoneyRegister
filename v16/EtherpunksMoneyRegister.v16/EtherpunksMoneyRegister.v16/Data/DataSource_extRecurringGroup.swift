@@ -15,6 +15,7 @@ extension MoneyDataSource {
                 sortBy: [SortDescriptor(\RecurringGroup.name, order: .forward)]
             ))
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
@@ -27,6 +28,17 @@ extension MoneyDataSource {
                 ]
             ))
         } catch {
+            DLog(error.localizedDescription)
+            fatalError(error.localizedDescription)
+        }
+    }
+    
+    func insertRecurringGroup(_ recurringGroup: RecurringGroup) {
+        do {
+            modelContext.insert(recurringGroup)
+            try modelContext.save()
+        } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
@@ -69,6 +81,15 @@ extension MoneyDataSource {
                 DLog(error.localizedDescription)
                 modelContext.rollback()
             }
+        }
+    }
+    
+    func updateRecurringGroup(_ group: RecurringGroup) {
+        do {
+            try modelContext.save()
+        } catch {
+            DLog(error.localizedDescription)
+            fatalError(error.localizedDescription)
         }
     }
 }

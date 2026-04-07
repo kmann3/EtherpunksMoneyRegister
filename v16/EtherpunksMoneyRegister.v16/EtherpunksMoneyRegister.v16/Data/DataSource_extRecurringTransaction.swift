@@ -15,6 +15,7 @@ extension MoneyDataSource {
                 sortBy: [SortDescriptor(\RecurringTransaction.name, order: .forward)]
             ))
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
@@ -35,6 +36,7 @@ extension MoneyDataSource {
                 ]
             ))
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
@@ -49,6 +51,7 @@ extension MoneyDataSource {
                 ]
             ))
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }

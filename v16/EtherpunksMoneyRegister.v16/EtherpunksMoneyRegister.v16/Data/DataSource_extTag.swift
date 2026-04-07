@@ -14,6 +14,7 @@ extension MoneyDataSource {
             modelContext.insert(tag)
             try modelContext.save()
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
@@ -28,6 +29,7 @@ extension MoneyDataSource {
                 sortBy: [SortDescriptor(\TransactionTag.name)]
             ))
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
@@ -61,6 +63,7 @@ extension MoneyDataSource {
         do {
             try modelContext.save()
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }

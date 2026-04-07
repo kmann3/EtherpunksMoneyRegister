@@ -16,8 +16,8 @@ struct RecurringGroupEditView: View {
     //@Query(sort: \RecurringGroup.name) private var allRecurringGroups: [RecurringGroup]
     
 
-    init(_ item: RecurringGroup, isNew: Bool = false, _ handler: @escaping (PathStore.Route) -> Void) {
-        _viewModel = StateObject(wrappedValue: ViewModel(item: item, isNew: isNew))
+    init(_ group: RecurringGroup, isNew: Bool = false, _ handler: @escaping (PathStore.Route) -> Void) {
+        _viewModel = StateObject(wrappedValue: ViewModel(group: group, isNew: isNew))
         self.handler = handler
     }
     

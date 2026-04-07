@@ -14,6 +14,7 @@ extension MoneyDataSource {
         do {
             return try modelContext.fetch(FetchDescriptor<Account>(sortBy: [SortDescriptor(\.name)]))
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
@@ -22,6 +23,7 @@ extension MoneyDataSource {
         do {
             return try modelContext.fetch(FetchDescriptor<Account>(sortBy: [SortDescriptor(\.name)]))
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
@@ -31,6 +33,7 @@ extension MoneyDataSource {
             modelContext.insert(account)
             try modelContext.save()
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
@@ -60,6 +63,7 @@ extension MoneyDataSource {
                 try modelContext.save()
             }
         } catch {
+            DLog(error.localizedDescription)
             fatalError(error.localizedDescription)
         }
     }
