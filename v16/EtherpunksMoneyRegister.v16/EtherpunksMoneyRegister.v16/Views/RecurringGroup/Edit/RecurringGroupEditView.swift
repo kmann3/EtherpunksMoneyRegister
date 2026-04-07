@@ -24,7 +24,7 @@ struct RecurringGroupEditView: View {
     var body: some View {
         Form {
             Section() {
-                Text("TBI:  RecurringGroupEditView: \(self.viewModel.item.name)")
+                Text("TBI:  RecurringGroupEditView: \(self.viewModel.group.name)")
                 //LabeledContent("Account") {
                 //Picker("", selection: $viewModel.draft.account) {
                 //    ForEach(allAccounts) { account in
@@ -49,9 +49,9 @@ struct RecurringGroupEditView: View {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
                     if (self.viewModel.isNew) {
-                        //handler(.transaction_List(account: self.viewModel.tran.account))
+                        handler(.recurringGroup_List)
                     } else {
-                        //handler(.transaction_Detail(transaction: viewModel.tran))
+                        handler(.recurringGroup_Details(recGroup: self.viewModel.group))
                     }
                 }
             }
@@ -60,7 +60,7 @@ struct RecurringGroupEditView: View {
                     withAnimation {
                         self.viewModel.save()
                     }
-                    //handler(.transaction_Detail(transaction: viewModel.tran))
+                    handler(.recurringGroup_Details(recGroup: self.viewModel.group))
                 }
                     .disabled(!self.viewModel.draft.isValid)
             }
