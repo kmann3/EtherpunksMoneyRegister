@@ -27,12 +27,12 @@ extension AccountTransactionEditView {
 
             self.tran = tran
             self.isNewTransaction = isNewTransaction
-            self.files = self.dataSource.fetchTransactionFiles(tran: self.tran)
+            self.files = self.dataSource.fetchTransactionFiles(transaction: self.tran)
             self.draft = AccountTransactionDraft(tran: tran)
             
             if self.draft.fileCount > 0 {
                 // Load the files
-                self.files = self.dataSource.fetchTransactionFiles(tran: self.tran)
+                self.files = self.dataSource.fetchTransactionFiles(transaction: self.tran)
             }
         }
 
@@ -63,7 +63,7 @@ extension AccountTransactionEditView {
             if self.isNewTransaction {
                 self.dataSource.insertAccountTransaction(transaction: tran)
             } else {
-                self.dataSource.updateAccountTransaction(tran: tran, origAccount: origAccount, origAmount: origAmount, files: self.files, filesDidChange: self.filesDidChange)
+                self.dataSource.updateAccountTransaction(transaction: tran, origAccount: origAccount, origAmount: origAmount, files: self.files, filesDidChange: self.filesDidChange)
             }
         }
     }

@@ -21,7 +21,7 @@ extension AccountTransactionDetailsView {
             self.dataSource = dataSource
 
             self.tran = tran
-            self.files = self.dataSource.fetchTransactionFiles(tran: self.tran)
+            self.files = self.dataSource.fetchTransactionFiles(transaction: self.tran)
         }
 
         func addNewDocument() {
