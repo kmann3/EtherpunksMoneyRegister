@@ -53,10 +53,10 @@ extension MoneyDataSource {
 
         let query = try! modelContext.fetch(fetchDescriptor)
 
-        return (query.first?.accountTransactions?.count ?? 0,
+        return (query.first?.accountTransactions.count ?? 0,
                 query.first?.createdOnUTC ?? nil,
-                query.first?.accountTransactions?.sorted(by: { $0.createdOnUTC > $1.createdOnUTC }) ?? [],
-                query.first?.recurringTransactions?.sorted(by: { $0.name < $1.name }) ?? [])
+                query.first?.accountTransactions.sorted(by: { $0.createdOnUTC > $1.createdOnUTC }) ?? [],
+                query.first?.recurringTransactions.sorted(by: { $0.name < $1.name }) ?? [])
     }
     
     func updateTag(_ tag: TransactionTag) {

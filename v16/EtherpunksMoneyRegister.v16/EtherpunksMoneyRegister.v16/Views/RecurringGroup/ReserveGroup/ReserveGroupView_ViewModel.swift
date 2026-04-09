@@ -24,7 +24,7 @@ extension ReserveGroupView {
             self.accounts = dataSource.fetchAccounts()
             self.reserveGroup = reserveGroup
 
-            self.reserveGroup.recurringTransactions!.sorted(by: ({ $0.name < $1.name })).forEach {
+            self.reserveGroup.recurringTransactions.sorted(by: ({ $0.name < $1.name })).forEach {
                 self.transactionQueue.append(ReserveDraft(from: $0))
             }
         }

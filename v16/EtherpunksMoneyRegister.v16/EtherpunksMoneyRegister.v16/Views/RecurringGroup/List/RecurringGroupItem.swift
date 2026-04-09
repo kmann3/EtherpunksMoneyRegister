@@ -20,10 +20,10 @@ struct RecurringGroupItem: View {
             HStack {
                 Spacer()
                 VStack {
-                    if(item.recurringTransactions == nil) {
+                    if(item.recurringTransactions.count == 0) {
                             Text("No items")
                     } else {
-                        ForEach(item.recurringTransactions!.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }) { rt in
+                        ForEach(item.recurringTransactions.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }) { rt in
                             Text(rt.name)
                         }
                     }

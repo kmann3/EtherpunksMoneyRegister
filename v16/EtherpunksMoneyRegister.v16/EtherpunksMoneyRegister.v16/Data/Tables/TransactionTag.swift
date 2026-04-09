@@ -12,14 +12,14 @@ import SwiftData
 final class TransactionTag: Identifiable, Hashable {
     @Attribute(.unique) public var id: String = UUID().uuidString
     public var name: String = ""
-    @Relationship(deleteRule: .noAction) public var accountTransactions: [AccountTransaction]? = nil
-    @Relationship(deleteRule: .noAction) public var recurringTransactions: [RecurringTransaction]? = nil // The delete rule should be nullify by during debugging, it's a pain to clear all the values here without giving errors. Blame SwiftData for being poorly made.
+    @Relationship(deleteRule: .noAction) public var accountTransactions: [AccountTransaction] = []
+    @Relationship(deleteRule: .noAction) public var recurringTransactions: [RecurringTransaction] = [] // The delete rule should be nullify by during debugging, it's a pain to clear all the values here without giving errors. Blame SwiftData for being poorly made.
     public var createdOnUTC: Date = Date()
 
     init(
         id: UUID = UUID(),
         name: String = "",
-        accountTransactions: [AccountTransaction]? = nil
+        accountTransactions: [AccountTransaction] = []
     ) {
         self.id = id.uuidString
         self.name = name

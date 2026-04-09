@@ -164,7 +164,7 @@ final class AccountTransaction: Identifiable, Hashable {
         self.amount = recurringTransaction.amount
         self.balance = recurringTransaction.defaultAccount.currentBalance
         self.isTaxRelated = recurringTransaction.isTaxRelated
-        self.transactionTags = recurringTransaction.transactionTags ?? []
+        self.transactionTags = recurringTransaction.transactionTags
         self.recurringTransaction = recurringTransaction
         self.recurringTransactionId = recurringTransaction.id
         self.dueDate = recurringTransaction.nextDueDate

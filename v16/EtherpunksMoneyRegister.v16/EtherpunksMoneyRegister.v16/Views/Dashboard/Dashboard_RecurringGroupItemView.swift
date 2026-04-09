@@ -17,7 +17,7 @@ struct Dashboard_RecurringGroupView: View {
         self.recurringGroup = recurringGroup
         self.action = action
 
-        if self.recurringGroup.recurringTransactions![0].transactionType == .debit {
+        if self.recurringGroup.recurringTransactions[0].transactionType == .debit {
             self.bgColor = Color.brown.opacity(0.6)
         } else {
             self.bgColor = Color.green.opacity(0.5)
@@ -34,9 +34,9 @@ struct Dashboard_RecurringGroupView: View {
                     .font(.title2)
                 Divider()
 
-                if recurringGroup.recurringTransactions != nil {
+                if recurringGroup.recurringTransactions.count > 0 {
                     ForEach(
-                        recurringGroup.recurringTransactions!.sorted(by: { ($0.nextDueDate!, $0.name) < ($1.nextDueDate!, $1.name) })
+                        recurringGroup.recurringTransactions.sorted(by: { ($0.nextDueDate!, $0.name) < ($1.nextDueDate!, $1.name) })
                     ) { recurringTransaction in
                         HStack {
                             Text("\t - \(recurringTransaction.name) [\(recurringTransaction.nextDueDate?.toSummaryDateMMMDD() ?? "")]")

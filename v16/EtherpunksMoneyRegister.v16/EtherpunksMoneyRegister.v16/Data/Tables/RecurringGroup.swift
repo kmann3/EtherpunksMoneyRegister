@@ -12,13 +12,13 @@ import SwiftData
 final class RecurringGroup: Identifiable, Hashable {
     @Attribute(.unique) public var id: String = UUID().uuidString
     public var name: String = ""
-    @Relationship(deleteRule: .nullify) public var recurringTransactions: [RecurringTransaction]? = nil
+    @Relationship(deleteRule: .nullify) public var recurringTransactions: [RecurringTransaction] = []
     public var createdOnUTC: Date = Date()
 
 
     init(
         name: String = "",
-        recurringTransactions: [RecurringTransaction]? = nil
+        recurringTransactions: [RecurringTransaction] = []
     ) {
         self.name = name
         self.recurringTransactions = recurringTransactions

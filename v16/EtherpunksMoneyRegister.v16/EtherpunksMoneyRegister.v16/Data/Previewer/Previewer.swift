@@ -355,13 +355,13 @@ class Previewer {
                             recurringTransaction.transactionTags = [billsTag]
                         //}
 
-                        billGroup.recurringTransactions?.append(recurringTransaction)
+                        billGroup.recurringTransactions.append(recurringTransaction)
                     } else {
                         // It's probably not a monthly bill - like an annual thing like Bitwarden or something
                     }
                 } else {
                     recurringTransaction.recurringGroup = nil
-                    recurringTransaction.transactionTags = nil
+                    recurringTransaction.transactionTags = []
                 }
 
                 switch(row[frequencyCol]) {

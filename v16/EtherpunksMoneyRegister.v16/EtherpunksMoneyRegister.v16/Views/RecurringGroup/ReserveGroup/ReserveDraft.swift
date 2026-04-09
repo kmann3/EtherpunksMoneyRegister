@@ -29,7 +29,7 @@ public class ReserveDraft: Identifiable {
         self.amount = rec.amount
         self.dueDate = rec.nextDueDate
         self.isTaxRelated = rec.isTaxRelated
-        self.tags = rec.transactionTags ?? []
+        self.tags = rec.transactionTags
     }
 }
 

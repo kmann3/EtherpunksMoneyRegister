@@ -21,7 +21,7 @@ final class Account: Identifiable, Hashable {
     public var notes: String = ""
     public var sortIndex: Int64 = 0
     public var lastBalancedUTC: Date? = nil
-    @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account) public var transactions: [AccountTransaction]? = nil
+    @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account) public var transactions: [AccountTransaction] = []
     public var transactionCount: Int64 = 0
     public var createdOnUTC: Date = Date()
 

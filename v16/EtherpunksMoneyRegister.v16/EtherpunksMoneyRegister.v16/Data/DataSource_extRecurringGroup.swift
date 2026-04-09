@@ -49,8 +49,8 @@ extension MoneyDataSource {
 
             if groups.count > 0 {
                 groups.forEach { item in
-                    if item.recurringTransactions != nil {
-                        item.recurringTransactions!.forEach { transaction in
+                    if item.recurringTransactions.count > 0 {
+                        item.recurringTransactions.forEach { transaction in
                             account.currentBalance += transaction.amount
                             account.outstandingBalance += transaction.amount
                             account.outstandingItemCount += 1

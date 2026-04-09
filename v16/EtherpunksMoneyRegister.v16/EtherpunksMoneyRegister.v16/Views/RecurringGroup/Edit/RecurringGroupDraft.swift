@@ -11,7 +11,7 @@ import SwiftUI
 struct RecurringGroupDraft {
     var name: String
     // TBI: RecurringGroup rest of variables here
-    var recurringTransactions: [RecurringTransaction]? = nil
+    var recurringTransactions: [RecurringTransaction] = []
     
     init(group: RecurringGroup) {
         name = group.name
@@ -19,6 +19,6 @@ struct RecurringGroupDraft {
     }
 
     var isValid: Bool {
-        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !recurringTransactions.isEmpty
     }
 }

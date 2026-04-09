@@ -23,10 +23,10 @@ final class RecurringTransaction: Identifiable, Hashable {
     public var notes: String = ""
     public var isTaxRelated: Bool = false
     public var nextDueDate: Date? = nil
-    @Relationship(deleteRule: .noAction, inverse: \TransactionTag.recurringTransactions) public var transactionTags: [TransactionTag]? = nil
+    @Relationship(deleteRule: .noAction, inverse: \TransactionTag.recurringTransactions) public var transactionTags: [TransactionTag] = []
     public var recurringGroupId: String? = nil
     @Relationship(deleteRule: .noAction, inverse: \RecurringGroup.recurringTransactions) public var recurringGroup: RecurringGroup? = nil
-    public var transactions: [AccountTransaction]? = nil
+    public var transactions: [AccountTransaction] = []
     public var frequency: RecurringFrequency {
         get { RecurringFrequency(rawValue: frequencyRaw) ?? .unknown }
         set { frequencyRaw = newValue.rawValue }
@@ -52,9 +52,9 @@ final class RecurringTransaction: Identifiable, Hashable {
         notes: String = "",
         isTaxRelated: Bool = false,
         nextDueDate: Date? = nil,
-        transactionTags: [TransactionTag]? = nil,
+        transactionTags: [TransactionTag] = [],
         recurringGroup: RecurringGroup? = nil,
-        transactions: [AccountTransaction]? = nil,
+        transactions: [AccountTransaction] = [],
         frequency: RecurringFrequency = .unknown,
         frequencyValue: Int? = nil,
         frequencyDayOfWeek: DayOfWeek? = nil,
