@@ -16,32 +16,22 @@ struct RecurringGroupEditView: View {
     //@Query(sort: \RecurringGroup.name) private var allRecurringGroups: [RecurringGroup]
     
 
-    init(_ group: RecurringGroup, isNew: Bool = false, _ handler: @escaping (PathStore.Route) -> Void) {
-        _viewModel = StateObject(wrappedValue: ViewModel(group: group, isNew: isNew))
+    init(_ recurringGroup: RecurringGroup, isNew: Bool = false, _ handler: @escaping (PathStore.Route) -> Void) {
+        _viewModel = StateObject(wrappedValue: ViewModel(recurringGroup: recurringGroup, isNew: isNew))
         self.handler = handler
     }
     
     var body: some View {
         Form {
             Section() {
-                Text("TBI:  RecurringGroupEditView: \(self.viewModel.group.name)")
-                //LabeledContent("Account") {
-                //Picker("", selection: $viewModel.draft.account) {
-                //    ForEach(allAccounts) { account in
-                //        Text(account.name).tag(account)
-                //    }
-                //}
-                //.pickerStyle(.menu)
-                //TextField("Name", text: $viewModel.draft.name)
-                //Picker("Type", selection: Binding(
-                //get: { self.viewModel.draft.transactionType },
-                //set: { self.viewModel.draft.transactionType = $0 }
-                //)) {
-                //    Text("Debit").tag(TransactionType.debit)
-                //    Text("Credit").tag(TransactionType.credit)
-                //}
-                //CurrencyFieldView(amount: $viewModel.draft.amount)
-            
+                Text("TBI:  RecurringGroupEditView: \(self.viewModel.recurringGroup.name)")
+                TextField("Name", text: $viewModel.draft.name)
+                
+                
+                Section("Misc") {
+                    Text("Id: \(self.viewModel.recurringGroup.id)")
+                    Text("Created On: \(self.viewModel.recurringGroup.createdOnUTC.toDebugDate())")
+                }
             }
         }
         .navigationTitle(self.viewModel.isNew ? "New RecurringGroup" : "Edit RecurringGroup: \(self.viewModel.draft.name)")
@@ -51,7 +41,7 @@ struct RecurringGroupEditView: View {
                     if (self.viewModel.isNew) {
                         handler(.recurringGroup_List)
                     } else {
-                        handler(.recurringGroup_Details(recGroup: self.viewModel.group))
+                        handler(.recurringGroup_Details(recGroup: self.viewModel.recurringGroup))
                     }
                 }
             }
@@ -60,7 +50,7 @@ struct RecurringGroupEditView: View {
                     withAnimation {
                         self.viewModel.save()
                     }
-                    handler(.recurringGroup_Details(recGroup: self.viewModel.group))
+                    handler(.recurringGroup_Details(recGroup: self.viewModel.recurringGroup))
                 }
                     .disabled(!self.viewModel.draft.isValid)
             }

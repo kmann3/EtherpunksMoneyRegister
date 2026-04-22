@@ -15,27 +15,27 @@ extension RecurringGroupEditView {
     class ViewModel : ObservableObject {
         private let dataSource: MoneyDataSource
         
-        var group: RecurringGroup
+        var recurringGroup: RecurringGroup
         var isNew: Bool = false
         
         @Published var draft: RecurringGroupDraft
 
-        init(group: RecurringGroup, isNew: Bool, dataSource: MoneyDataSource = MoneyDataSource.shared) {
+        init(recurringGroup: RecurringGroup, isNew: Bool, dataSource: MoneyDataSource = MoneyDataSource.shared) {
             self.dataSource = dataSource
-            self.group = group
+            self.recurringGroup = recurringGroup
             self.isNew = isNew
 
-            self.draft = RecurringGroupDraft(group: group)
+            self.draft = RecurringGroupDraft(group: recurringGroup)
         }
 
         func save() {
-            self.group.name = draft.name
+            self.recurringGroup.name = draft.name
             // TODO: Implement rest of the data
 
             if self.isNew {
-                self.dataSource.insertRecurringGroup(self.group)
+                self.dataSource.insertRecurringGroup(self.recurringGroup)
             } else {
-                self.dataSource.updateRecurringGroup(self.group)
+                self.dataSource.updateRecurringGroup(self.recurringGroup)
             }
         }
     }
