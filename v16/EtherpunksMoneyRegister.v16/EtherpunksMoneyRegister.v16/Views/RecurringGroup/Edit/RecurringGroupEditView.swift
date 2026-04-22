@@ -26,12 +26,6 @@ struct RecurringGroupEditView: View {
             Section() {
                 Text("TBI:  RecurringGroupEditView: \(self.viewModel.recurringGroup.name)")
                 TextField("Name", text: $viewModel.draft.name)
-                
-                
-                Section("Misc") {
-                    Text("Id: \(self.viewModel.recurringGroup.id)")
-                    Text("Created On: \(self.viewModel.recurringGroup.createdOnUTC.toDebugDate())")
-                }
             }
         }
         .navigationTitle(self.viewModel.isNew ? "New RecurringGroup" : "Edit RecurringGroup: \(self.viewModel.draft.name)")
@@ -55,7 +49,6 @@ struct RecurringGroupEditView: View {
                     .disabled(!self.viewModel.draft.isValid)
             }
         }
-        .frame(minWidth: 400, maxWidth: 500)
     }
 }
 
