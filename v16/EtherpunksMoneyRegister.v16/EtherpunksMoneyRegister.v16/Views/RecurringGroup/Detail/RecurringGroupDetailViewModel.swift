@@ -14,11 +14,11 @@ extension RecurringGroupDetailView {
     class ViewModel {
         private let dataSource: MoneyDataSource
         
-        var group: RecurringGroup
+        var recurringGroup: RecurringGroup
         
-        init(group: RecurringGroup, dataSource: MoneyDataSource = MoneyDataSource.shared) {
+        init(recurringGroup: RecurringGroup, dataSource: MoneyDataSource = MoneyDataSource.shared) {
             self.dataSource = dataSource
-            self.group = group
+            self.recurringGroup = recurringGroup
         }
     }
 }

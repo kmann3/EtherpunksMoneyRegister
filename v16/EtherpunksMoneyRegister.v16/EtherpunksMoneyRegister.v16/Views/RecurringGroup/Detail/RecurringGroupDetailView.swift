@@ -11,14 +11,27 @@ struct RecurringGroupDetailView: View {
     var viewModel: ViewModel
     var handler: (PathStore.Route) -> Void
 
-    init(_ group: RecurringGroup, _ handler: @escaping (PathStore.Route) -> Void) {
-        viewModel = ViewModel(group: group)
+    init(_ recurringGroup: RecurringGroup, _ handler: @escaping (PathStore.Route) -> Void) {
+        viewModel = ViewModel(recurringGroup: recurringGroup)
         self.handler = handler
     }
     
     var body: some View {
-        Text("TBI:  RecurringGroupDetailView: \(self.viewModel.group.name)")
-        .frame(minWidth: 400, maxWidth: 500)
+        List {
+            Section("General Information") {
+                HStack {
+                    Text("Name: \(self.viewModel.recurringGroup.name)")
+                    Spacer()
+                    Button("Edit Recurring Group") { handler(PathStore.Route.recurringGroup_Edit(recGroup: self.viewModel.recurringGroup)) }
+                }
+            }
+
+            Section("Misc") {
+                Text("Id: \(self.viewModel.recurringGroup.id)")
+                Text("Created On: \(self.viewModel.recurringGroup.createdOnUTC.toDebugDate())")
+            }
+        }
+        .frame(width: 450)
     }
     
 }
