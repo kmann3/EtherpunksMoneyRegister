@@ -23,7 +23,7 @@ extension ContentView {
         case .recurringGroup_Create:
             Text(verbatim: "TBI - Recurring Group Create")
         case .recurringGroup_Details(let recGroup):
-            Text(verbatim: "TBI - Recurring Group Details: \(recGroup.name)")
+            RecurringGroupDetailView(recGroup) { action in self.changeRoute(action) }
         case .recurringGroup_Edit(let recGroup):
             Text(verbatim: "TBI - Recurring Group Edit: \(recGroup.name)")
         case .recurringGroup_List:
@@ -34,8 +34,7 @@ extension ContentView {
         case .recurringTransaction_Create_FromTran(let tran):
             Text(verbatim: "TBI - Recurring Transaction Create From Transaction: \(tran.name)")
         case .recurringTransaction_Details(let recTran):
-            // Detail is shown via popup; keep content column stable
-            Text(recTran.name)
+            RecurringTransactionDetailView(recTran) { action in self.changeRoute(action) }
         case .recurringTransaction_Edit(let recTran):
             Text(verbatim: "TBI - Recurring Transaction Edit: \(recTran.name)")
         case .recurringTransaction_List:
