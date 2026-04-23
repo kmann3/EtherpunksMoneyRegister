@@ -13,7 +13,7 @@ struct RecurringGroupEditView: View {
     @Environment(\.modelContext) private var modelContext
     var handler: (PathStore.Route) -> Void
 
-    //@Query(sort: \RecurringGroup.name) private var allRecurringGroups: [RecurringGroup]
+    @Query(sort: \RecurringTransaction.name) private var allRecurringTransactions: [RecurringTransaction]
     
 
     init(_ recurringGroup: RecurringGroup, isNew: Bool = false, _ handler: @escaping (PathStore.Route) -> Void) {
@@ -26,6 +26,8 @@ struct RecurringGroupEditView: View {
             Section() {
                 Text("TBI:  RecurringGroupEditView: \(self.viewModel.recurringGroup.name)")
                 TextField("Name", text: $viewModel.draft.name)
+                // List the selected ones
+                // List the unselected ones
             }
         }
         .navigationTitle(self.viewModel.isNew ? "New RecurringGroup" : "Edit RecurringGroup: \(self.viewModel.draft.name)")
