@@ -83,7 +83,7 @@ struct DashboardView: View {
                 Spacer()
                 VStack {
                     List {
-                        Section(header: Text("Recurring Credit")) {
+                        Section(header: Text("Upcoming Income")) {
                             ForEach(
                                 viewModel.upcomingCreditRecurringTransactions.sorted(by: { $0.nextDueDate ?? Date() < $1.nextDueDate ?? Date() }),
                                 id: \.self
@@ -100,7 +100,7 @@ struct DashboardView: View {
                     .border(.gray)
 
                     List {
-                        Section(header: Text("Recurring Debits")) {
+                        Section(header: Text("Upcoming Bills")) {
                             ForEach(viewModel.upcomingRecurringGroups, id: \.self) { group in
                                 HStack {
                                     Spacer()

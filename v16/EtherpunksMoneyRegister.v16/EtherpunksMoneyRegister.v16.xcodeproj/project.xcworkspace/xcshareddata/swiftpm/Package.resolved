@@ -1,13 +1,13 @@
 {
-  "originHash" : "d068ab53a65462fd46482b218d0bfeaa4c75a16185420f7ed2c776a816c40785",
+  "originHash" : "8b1802eaf8adf54ebe3818b9334aa266ac0b9fcf5f83d05260841f4118f954af",
   "pins" : [
     {
       "identity" : "sqlite.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/stephencelis/SQLite.swift",
       "state" : {
-        "revision" : "0c08856385fe24f7b76d8c51842d78a196e8e817",
-        "version" : "0.15.5"
+        "revision" : "964c300fb0736699ce945c9edb56ecd62eba27a3",
+        "version" : "0.16.0"
       }
     },
     {
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mhayes853/swift-uuidv7",
       "state" : {
-        "revision" : "01f4584e5050799c9b51df5dab2c0fd38c39b676",
-        "version" : "0.4.0"
+        "revision" : "c7a578f20ca5e6e018ef4ba8bf8517550047864f",
+        "version" : "0.6.1"
       }
     }
   ],
