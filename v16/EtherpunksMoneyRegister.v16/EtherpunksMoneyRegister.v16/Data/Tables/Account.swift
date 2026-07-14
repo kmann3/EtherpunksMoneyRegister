@@ -72,7 +72,6 @@ final class Account: Identifiable, Hashable {
         } else {
             debugPrint("Failed to convert UTC string to Date object.")
         }
-
     }
 
     init(
