@@ -7,9 +7,11 @@
 
 import Foundation
 import SwiftData
+import UUIDV7
 
 @Model
 final class RecurringTransaction: Identifiable, Hashable {
+    public var id: UUIDV7 = UUIDV7()
     public var name: String = ""
     public var transactionType: TransactionType {
         get { TransactionType(rawValue: transactionTypeRaw) ?? .debit }

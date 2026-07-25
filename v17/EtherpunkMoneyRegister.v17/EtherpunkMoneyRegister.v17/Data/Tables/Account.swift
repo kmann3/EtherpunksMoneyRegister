@@ -7,10 +7,11 @@
 
 import Foundation
 import SwiftData
-import SwiftUI
+import UUIDV7
 
 @Model
 final class Account: Identifiable, Hashable {
+    public var id: UUIDV7 = UUIDV7()
     public var name: String = ""
     public var startingBalance: Decimal = 0
     public var currentBalance: Decimal = 0

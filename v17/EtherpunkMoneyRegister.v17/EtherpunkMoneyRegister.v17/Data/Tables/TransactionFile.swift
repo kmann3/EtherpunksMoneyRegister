@@ -7,9 +7,11 @@
 
 import Foundation
 import SwiftData
+import UUIDV7
 
 @Model
 final class TransactionFile: Identifiable, Hashable {
+    public var id: UUIDV7 = UUIDV7()
     public var name: String = ""
     public var filename: String = ""
     public var notes: String = ""

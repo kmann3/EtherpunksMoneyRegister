@@ -1,0 +1,15 @@
+{
+  "originHash" : "bc6b99dcbb283424f420447ec162ca8865735a8ebf6dddbcd708a13ccb4e2a61",
+  "pins" : [
+    {
+      "identity" : "swift-uuidv7",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mhayes853/swift-uuidv7",
+      "state" : {
+        "revision" : "c7a578f20ca5e6e018ef4ba8bf8517550047864f",
+        "version" : "0.6.1"
+      }
+    }
+  ],
+  "version" : 3
+}

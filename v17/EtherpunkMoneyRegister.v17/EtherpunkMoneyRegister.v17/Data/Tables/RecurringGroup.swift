@@ -7,9 +7,11 @@
 
 import Foundation
 import SwiftData
+import UUIDV7
 
 @Model
 final class RecurringGroup: Identifiable, Hashable {
+    public var id: UUIDV7 = UUIDV7()
     public var name: String = ""
     @Relationship(deleteRule: .nullify) public var recurringTransactions: [RecurringTransaction]? = []
     public var createdOnUTC: Date = Date()

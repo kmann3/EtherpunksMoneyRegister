@@ -8,9 +8,11 @@
 import Foundation
 import SwiftData
 import SwiftUI
+import UUIDV7
 
 @Model
 final class AccountTransaction: Identifiable, Hashable {
+    public var id: UUIDV7 = UUIDV7()
     public var account: Account? = nil
     public var name: String = ""
     public var transactionType: TransactionType {
