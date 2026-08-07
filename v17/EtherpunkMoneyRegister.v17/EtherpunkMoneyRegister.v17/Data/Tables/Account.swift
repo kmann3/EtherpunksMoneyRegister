@@ -126,4 +126,3 @@ extension Account: CustomDebugStringConvertible {
         return "Account: \(name) Bal: \(currentBalance)"
     }
 }
-
