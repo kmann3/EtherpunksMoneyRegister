@@ -26,8 +26,8 @@ final class AccountTransaction: Identifiable, Hashable {
     public var confirmationNumber: String = ""
     public var isTaxRelated: Bool = false
     public var fileCount: Int = 0
-    @Relationship(deleteRule: .cascade, inverse: \TransactionFile.transaction) public var transactionFiles: [TransactionFile]? = []
-    @Relationship(deleteRule: .noAction, inverse: \TransactionTag.accountTransactions) public var transactionTags: [TransactionTag]? = []
+    @Relationship(deleteRule: .cascade, inverse: \TransactionFile.transaction) public var transactionFiles: [TransactionFile] = []
+    @Relationship(deleteRule: .noAction, inverse: \TransactionTag.accountTransactions) public var transactionTags: [TransactionTag] = []
     @Relationship(deleteRule: .noAction, inverse: \RecurringTransaction.transactions) public var recurringTransaction: RecurringTransaction? = nil
     public var dueDate: Date? = nil
     public var pendingOnUTC: Date? = nil
@@ -97,6 +97,7 @@ final class AccountTransaction: Identifiable, Hashable {
     }
 
     init(
+        id: UUIDV7 = UUIDV7(),
         account: Account,
         name: String = "",
         transactionType: TransactionType = .debit,
@@ -113,6 +114,7 @@ final class AccountTransaction: Identifiable, Hashable {
         clearedOnUTC: Date? = nil,
         balancedOnUTC: Date? = nil
     ) {
+        self.id = id
         self.account = account
         self.name = name
         self.transactionType = transactionType
@@ -190,7 +192,7 @@ final class AccountTransaction: Identifiable, Hashable {
             confirmationNumber: self.confirmationNumber,
             isTaxRelated: self.isTaxRelated,
             fileCount: 0,
-            transactionTags: self.transactionTags ?? [],
+            transactionTags: self.transactionTags,
             recurringTransaction: self.recurringTransaction,
             dueDate: self.dueDate,
             pendingOnUTC: self.pendingOnUTC,
@@ -214,7 +216,7 @@ extension AccountTransaction: CustomDebugStringConvertible {
             - confirmationNumber: \(confirmationNumber)
             - isTaxRelated: \(isTaxRelated)
             - fileCount: \(fileCount)
-            - transactionTags: (Count: \(transactionTags?.count ?? -1))
+            - transactionTags: (Count: \(transactionTags.count))
             - recurringTransaction Name: \(recurringTransaction?.name ?? "nil")
             - dueDate: \(dueDate?.toDebugDate() ?? "nil")
             - pendingOnUTC: \(pendingOnUTC?.toDebugDate() ?? "nil")
@@ -227,5 +229,4 @@ extension AccountTransaction: CustomDebugStringConvertible {
             """
     }
 }
-
 
