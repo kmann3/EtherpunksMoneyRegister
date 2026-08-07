@@ -19,6 +19,5 @@ struct EtherpunksMoneyRegister_v16App: App {
         .windowResizability(.contentMinSize)
         #endif
         .modelContainer(MoneyDataSource.shared.modelContainer)
-
     }
 }
