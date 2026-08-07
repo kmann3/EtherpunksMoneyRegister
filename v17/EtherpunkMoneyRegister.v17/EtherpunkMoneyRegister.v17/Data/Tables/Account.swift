@@ -20,12 +20,12 @@ final class Account: Identifiable, Hashable {
     public var notes: String = ""
     public var sortIndex: Int64 = 0
     public var lastBalancedUTC: Date? = nil
-    @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account) public var transactions: [AccountTransaction]? = []
+    @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account) public var transactions: [AccountTransaction] = []
     public var transactionCount: Int64 = 0
     public var createdOnUTC: Date = Date()
 
     init(
-        id: UUID,
+        id: UUIDV7,
         name: String = "",
         startingBalance: Decimal = 0,
         currentBalance: Decimal = 0,
@@ -36,6 +36,7 @@ final class Account: Identifiable, Hashable {
         lastBalancedUTC: String,
         createdOnUTC: String
     ) {
+        self.id = id
         self.name = name
         self.startingBalance = startingBalance
         self.currentBalance = currentBalance
@@ -114,6 +115,7 @@ extension Account: CustomDebugStringConvertible {
     public var debugDescription: String {
         return """
             Account:
+            - id: \(id)
             - name: \(name)
             - startingBalance: \(startingBalance)
             - currentBalance: \(currentBalance)
