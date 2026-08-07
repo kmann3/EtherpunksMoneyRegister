@@ -93,6 +93,7 @@ extension MoneyDataSource {
             if transaction.isPending || transaction.isReserved {
                 transaction.account.outstandingItemCount = transaction.account.outstandingItemCount  + 1
                 transaction.account.outstandingBalance = transaction.account.outstandingBalance + transaction.amount
+                transaction.account.transactionCount = transaction.account.transactionCount + 1
             }
             transaction.account.currentBalance = transaction.account.currentBalance + transaction.amount
             try modelContext.save()
