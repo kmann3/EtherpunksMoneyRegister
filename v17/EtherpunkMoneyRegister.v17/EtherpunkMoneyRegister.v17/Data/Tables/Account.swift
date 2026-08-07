@@ -18,7 +18,6 @@ final class Account: Identifiable, Hashable {
     public var outstandingBalance: Decimal = 0
     public var outstandingItemCount: Int64 = 0
     public var notes: String = ""
-    public var sortIndex: Int64 = 0
     public var lastBalancedUTC: Date? = nil
     @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account) public var transactions: [AccountTransaction] = []
     public var transactionCount: Int64 = 0
@@ -32,7 +31,6 @@ final class Account: Identifiable, Hashable {
         outstandingBalance: Decimal = 0,
         outstandingItemCount: Int64 = 0,
         notes: String = "",
-        sortIndex: Int64 = .max,
         lastBalancedUTC: String,
         createdOnUTC: String
     ) {
@@ -43,7 +41,6 @@ final class Account: Identifiable, Hashable {
         self.outstandingBalance = outstandingBalance
         self.outstandingItemCount = outstandingItemCount
         self.notes = notes
-        self.sortIndex = sortIndex
 
         let utcDateFormatter = DateFormatter()
         utcDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
@@ -80,7 +77,6 @@ final class Account: Identifiable, Hashable {
         outstandingBalance: Decimal = 0,
         outstandingItemCount: Int64 = 0,
         notes: String = "",
-        sortIndex: Int64 = .max,
         lastBalancedUTC: Date? = nil
     ) {
         self.name = name
@@ -89,7 +85,6 @@ final class Account: Identifiable, Hashable {
         self.outstandingBalance = outstandingBalance
         self.outstandingItemCount = outstandingItemCount
         self.notes = notes
-        self.sortIndex = sortIndex
         self.lastBalancedUTC = lastBalancedUTC
     }
 
@@ -122,7 +117,6 @@ extension Account: CustomDebugStringConvertible {
             - oustandingBalance: \(outstandingBalance)
             - outstandingItemCount: \(outstandingItemCount)
             - notes: \(notes)
-            - sortIndex: \(sortIndex)
             - transactions: (TBI - Summary?)
             - transactionCount: \(transactionCount)
             """
