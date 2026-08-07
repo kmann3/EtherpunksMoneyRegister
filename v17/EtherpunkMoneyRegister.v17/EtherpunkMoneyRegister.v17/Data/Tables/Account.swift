@@ -25,7 +25,7 @@ final class Account: Identifiable, Hashable {
     public var createdOnUTC: Date = Date()
 
     init(
-        id: UUIDV7,
+        id: UUIDV7 = UUIDV7(),
         name: String = "",
         startingBalance: Decimal = 0,
         currentBalance: Decimal = 0,
