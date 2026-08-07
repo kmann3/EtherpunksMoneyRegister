@@ -10,30 +10,15 @@ import SwiftData
 
 @main
 struct EtherpunkMoneyRegister_v17App: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Account.self,
-            AccountTransaction.self,
-            RecurringGroup.self,
-            RecurringTransaction.self,
-            TransactionFile.self,
-            TransactionTag.self
-        ])
-        
-        let mC = ModelConfiguration(cloudKitDatabase: .automatic)
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [mC])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(sharedModelContainer)
+        #if os(macOS)
+        .defaultSize(width: 1200, height: 750)
+        .windowResizability(.contentMinSize)
+        #endif
+        //.modelContainer(MoneyDataSource.shared.modelContainer)
     }
 }
+
