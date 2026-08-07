@@ -48,7 +48,7 @@ struct SidebarView: View {
                 } else {
                     ForEach(self.accounts, id: \.id) { account in
                         HStack {
-                            Button(account.name) {
+                            Button("\(account.name) (\(account.transactionCount))") {
                                 self.onAction(.transaction_List(account: account))
                             }
                             .font(.title3)
