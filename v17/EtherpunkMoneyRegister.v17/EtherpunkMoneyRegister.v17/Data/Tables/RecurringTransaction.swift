@@ -23,9 +23,9 @@ final class RecurringTransaction: Identifiable, Hashable {
     public var notes: String = ""
     public var isTaxRelated: Bool = false
     public var nextDueDate: Date? = nil
-    @Relationship(deleteRule: .noAction, inverse: \TransactionTag.recurringTransactions) public var transactionTags: [TransactionTag]? = []
+    @Relationship(deleteRule: .noAction, inverse: \TransactionTag.recurringTransactions) public var transactionTags: [TransactionTag] = []
     @Relationship(deleteRule: .noAction, inverse: \RecurringGroup.recurringTransactions) public var recurringGroup: RecurringGroup? = nil
-    @Relationship(deleteRule: .nullify) public var transactions: [AccountTransaction]? = []
+    @Relationship(deleteRule: .nullify) public var transactions: [AccountTransaction] = []
     public var frequency: RecurringFrequency {
         get { RecurringFrequency(rawValue: frequencyRaw) ?? .unknown }
         set { frequencyRaw = newValue.rawValue }
@@ -43,6 +43,7 @@ final class RecurringTransaction: Identifiable, Hashable {
     private var frequencyDayOfWeekRaw: DayOfWeek.RawValue? = nil
 
     init(
+        id: UUIDV7 = UUIDV7(),
         name: String,
         transactionType: TransactionType = .debit,
         amount: Decimal = 0.0,
@@ -58,6 +59,7 @@ final class RecurringTransaction: Identifiable, Hashable {
         frequencyDayOfWeek: DayOfWeek? = nil,
         frequencyDateValue: Date? = nil
     ) {
+        self.id = id
         self.name = name
         self.amount = amount
         self.defaultAccount = defaultAccount
@@ -218,6 +220,7 @@ extension RecurringTransaction: CustomDebugStringConvertible {
     public var debugDescription: String {
         return """
             RecurringTransaction:
+            - id: \(id)
             - name: \(name)
             - default account: \(defaultAccount?.name ?? "")
             - transactionType: \(transactionType)

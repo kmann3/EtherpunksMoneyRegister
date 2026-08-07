@@ -32,24 +32,27 @@ final class TransactionTag: Identifiable, Hashable {
     /// All account transactions associated with this tag.
     ///
     /// - Note: Relationships are not deleted automatically when the tag is deleted.
-    @Relationship(deleteRule: .noAction) public var accountTransactions: [AccountTransaction]? = []
+    @Relationship(deleteRule: .noAction) public var accountTransactions: [AccountTransaction] = []
     
     /// All recurring transactions associated with this tag.
     ///
     /// - Note: Relationships are not deleted automatically when the tag is deleted.
-    @Relationship(deleteRule: .noAction) public var recurringTransactions: [RecurringTransaction]? = []
+    @Relationship(deleteRule: .noAction) public var recurringTransactions: [RecurringTransaction] = []
     
     /// The UTC creation timestamp for this tag.
     public var createdOnUTC: Date = Date()
 
     /// Initialize a `TransactionTag` with a name and associated transactions.
     /// - Parameters:
+    ///   - id: The unique identifier for the tag.
     ///   - name: A descriptive label for the tag.
     ///   - accountTransactions: Initial set of transactions associated with the tag.
     init(
+        id: UUIDV7 = UUIDV7(),
         name: String = "",
         accountTransactions: [AccountTransaction] = []
     ) {
+        self.id = id
         self.name = name
         self.accountTransactions = accountTransactions
     }
@@ -62,8 +65,10 @@ extension TransactionTag: CustomDebugStringConvertible {
     public var debugDescription: String {
         return """
             TransactionTag:
+            - id: \(id)
             - name: \(name)
             - createdOnUTC: \(createdOnUTC.toDebugDate())
             """
     }
 }
+

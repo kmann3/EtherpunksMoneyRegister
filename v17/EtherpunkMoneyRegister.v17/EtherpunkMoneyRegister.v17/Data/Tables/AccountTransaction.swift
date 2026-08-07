@@ -207,6 +207,7 @@ extension AccountTransaction: CustomDebugStringConvertible {
     public var debugDescription: String {
         return """
             AccountTransaction:
+            - id: \(id)
             - account: \(account?.name ?? "")
             - name: \(name)
             - transactionType: \(transactionType)

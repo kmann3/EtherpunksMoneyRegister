@@ -13,14 +13,16 @@ import UUIDV7
 final class RecurringGroup: Identifiable, Hashable {
     public var id: UUIDV7 = UUIDV7()
     public var name: String = ""
-    @Relationship(deleteRule: .nullify) public var recurringTransactions: [RecurringTransaction]? = []
+    @Relationship(deleteRule: .nullify) public var recurringTransactions: [RecurringTransaction] = []
     public var createdOnUTC: Date = Date()
 
 
     init(
+        id: UUIDV7 = UUIDV7(),
         name: String = "",
         recurringTransactions: [RecurringTransaction] = []
     ) {
+        self.id = id
         self.name = name
         self.recurringTransactions = recurringTransactions
     }
@@ -35,9 +37,11 @@ extension RecurringGroup: CustomDebugStringConvertible {
     public var debugDescription: String {
         return """
             RecurringGroup:
+            - id: \(id)
             - name: \(name)
-            - recurringTransactions Count: \(recurringTransactions?.count ?? -1)
+            - recurringTransactions Count: \(recurringTransactions.count)
             - createdOnUTC: \(createdOnUTC.toDebugDate())
             """
     }
 }
+

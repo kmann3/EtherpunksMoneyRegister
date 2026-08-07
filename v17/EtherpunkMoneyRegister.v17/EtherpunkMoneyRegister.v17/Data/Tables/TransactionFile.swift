@@ -25,6 +25,7 @@ final class TransactionFile: Identifiable, Hashable {
     public var createdOnUTC: Date = Date()
 
     init(
+        id: UUIDV7 = UUIDV7(),
         name: String,
         filename: String,
         notes: String,
@@ -32,6 +33,7 @@ final class TransactionFile: Identifiable, Hashable {
         isTaxRelated: Bool,
         accountTransaction: AccountTransaction
     ) {
+        self.id = id
         self.name = name
         self.filename = filename
         self.notes = notes
@@ -56,6 +58,7 @@ extension TransactionFile: CustomDebugStringConvertible {
     public var debugDescription: String {
         return """
             TransactionFile:
+            - id: \(id)
             - name: \(name)
             - fileName: \(filename)
             - notes: \(notes)
@@ -66,3 +69,4 @@ extension TransactionFile: CustomDebugStringConvertible {
             """
     }
 }
+
