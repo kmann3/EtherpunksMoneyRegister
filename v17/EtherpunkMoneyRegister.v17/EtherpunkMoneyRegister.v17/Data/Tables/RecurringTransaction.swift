@@ -25,6 +25,7 @@ final class RecurringTransaction: Identifiable, Hashable {
     public var nextDueDate: Date? = nil
     @Relationship(deleteRule: .noAction, inverse: \TransactionTag.recurringTransactions) public var transactionTags: [TransactionTag] = []
     @Relationship(deleteRule: .noAction, inverse: \RecurringGroup.recurringTransactions) public var recurringGroup: RecurringGroup? = nil
+    public var recurringGroupId: UUIDV7? = nil
     @Relationship(deleteRule: .nullify) public var transactions: [AccountTransaction] = []
     public var frequency: RecurringFrequency {
         get { RecurringFrequency(rawValue: frequencyRaw) ?? .unknown }

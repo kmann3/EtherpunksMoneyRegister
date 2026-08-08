@@ -36,7 +36,7 @@ final class DataSource: Sendable {
             let config = ModelConfiguration(isStoredInMemoryOnly: false)
 
             do {
-                return try ModelContainer(for: MoneyDataSource.shema, configurations: [config])
+                return try ModelContainer(for: DataSource.shema, configurations: [config])
             } catch {
                 fatalError("fatal error: Could not create ModelContainer: \(error)")
             }
@@ -55,9 +55,9 @@ final class DataSource: Sendable {
             try modelContext.delete(model: AccountTransaction.self)
             try modelContext.delete(model: RecurringGroup.self)
             try modelContext.delete(model: RecurringTransaction.self)
+            try modelContext.delete(model: Sync.self)
             try modelContext.delete(model: TransactionFile.self)
             try modelContext.delete(model: TransactionTag.self)
-            try modelContext.delete(model: UserPrefs.self)
         } catch {
             DLog("Failed to clear database. Err: \(error)")
         }

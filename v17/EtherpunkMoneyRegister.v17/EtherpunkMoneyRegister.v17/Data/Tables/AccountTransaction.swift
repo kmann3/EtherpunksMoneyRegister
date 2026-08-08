@@ -13,7 +13,7 @@ import UUIDV7
 @Model
 final class AccountTransaction: Identifiable, Hashable {
     public var id: UUIDV7 = UUIDV7()
-    public var account: Account? = nil
+    public var account: Account
     public var name: String = ""
     public var transactionType: TransactionType {
         get { TransactionType(rawValue: transactionTypeRaw) ?? .debit }
@@ -183,7 +183,7 @@ final class AccountTransaction: Identifiable, Hashable {
     /// - Returns: Returns a new account transaction similar to this one. EXCEPT no files are copied. It will have ZERO files.
     func Clone() -> AccountTransaction {
         return AccountTransaction(
-            account: self.account!,
+            account: self.account,
             name: self.name,
             transactionType: self.transactionType,
             amount: self.amount,
@@ -208,7 +208,7 @@ extension AccountTransaction: CustomDebugStringConvertible {
         return """
             AccountTransaction:
             - id: \(id)
-            - account: \(account?.name ?? "")
+            - account: \(account.name)
             - name: \(name)
             - transactionType: \(transactionType)
             - amount: \(amount)

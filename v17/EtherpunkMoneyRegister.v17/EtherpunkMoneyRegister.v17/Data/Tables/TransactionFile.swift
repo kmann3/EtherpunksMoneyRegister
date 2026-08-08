@@ -17,7 +17,7 @@ final class TransactionFile: Identifiable, Hashable {
     public var notes: String = ""
     public var data: Data? = nil
     public var isTaxRelated: Bool = false
-    public var transactionId: String? = nil
+    public var transactionId: UUIDV7
     @Relationship(deleteRule: .noAction) public var transaction: AccountTransaction? = nil
 
     // TODO: Files might also have different tags such as: receipt, documentation, confirmation; Consider enums? Or just actual tags?
@@ -40,6 +40,7 @@ final class TransactionFile: Identifiable, Hashable {
         self.data = data
         self.isTaxRelated = isTaxRelated
         self.transaction = accountTransaction
+        self.transactionId = accountTransaction.id
     }
 
     func getFormattedFileSize() -> String {
