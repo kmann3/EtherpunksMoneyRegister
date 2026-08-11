@@ -29,6 +29,7 @@ final class AccountTransaction: Identifiable, Hashable {
     @Relationship(deleteRule: .cascade, inverse: \TransactionFile.transaction) public var transactionFiles: [TransactionFile] = []
     @Relationship(deleteRule: .noAction, inverse: \TransactionTag.accountTransactions) public var transactionTags: [TransactionTag] = []
     @Relationship(deleteRule: .noAction, inverse: \RecurringTransaction.transactions) public var recurringTransaction: RecurringTransaction? = nil
+    public var recurringTransactionId: UUIDV7? = nil
     public var dueDate: Date? = nil
     public var pendingOnUTC: Date? = nil
     public var clearedOnUTC: Date? = nil
@@ -155,7 +156,7 @@ final class AccountTransaction: Identifiable, Hashable {
     }
 
     init(recurringTransaction: RecurringTransaction) {
-        self.account = recurringTransaction.defaultAccount
+        self.account = recurringTransaction.defaultAccount!
         self.name = recurringTransaction.name
         self.transactionType = recurringTransaction.transactionType
         self.amount = recurringTransaction.amount

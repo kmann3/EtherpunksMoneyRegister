@@ -12,7 +12,16 @@ import UUIDV7
 @Model
 final class Account: Identifiable, Hashable {
     public var id: UUIDV7 = UUIDV7()
-    public var name: String = ""
+    public var name: String {
+        get { _name }
+        set {
+            _previousName = _name
+            let cleaned = newValue.trimmingCharacters(in: .whitespacesAndNewlines)
+            _name = cleaned
+        }
+    }
+    private var _name: String = ""
+    private var _previousName: String = ""
     public var startingBalance: Decimal = 0
     public var currentBalance: Decimal = 0
     public var outstandingBalance: Decimal = 0
@@ -100,8 +109,18 @@ final class Account: Identifiable, Hashable {
         self.name = name
     }
 
+    init(id: UUIDV7, name: String) {
+        self.name = name
+    }
+
     init()
     {
+    }
+    
+    public func difference() -> String {
+        // Need to return an array of difference we can use for a solid UPDATE query
+        // For example: ["name", "Foo"] which would be UPDATE Account SET name='foo' sort of thing?
+        return "Prev: \(_previousName), New: \(_name)"
     }
 }
 
@@ -111,7 +130,7 @@ extension Account: CustomDebugStringConvertible {
         return """
             Account:
             - id: \(id)
-            - name: \(name)
+            - name: \(_name) [prev: \(_previousName)]
             - startingBalance: \(startingBalance)
             - currentBalance: \(currentBalance)
             - oustandingBalance: \(outstandingBalance)

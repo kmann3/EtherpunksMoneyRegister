@@ -6,7 +6,7 @@
 //
 
 import Foundation
-//import SQLite
+import SQLite
 import SwiftData
 import SwiftUI
 import UUIDV7
@@ -321,8 +321,9 @@ class Previewer {
 
             var accountDictionary = ["12345678-1234-1234-1234-123456789abc": bankAccount]
             for row in try db.prepare(accountTable) {
+                let newId: UUIDV7 = UUIDV7(uuidString: row[accountIdCol2].uuidString)!
                 let account: Account = Account(
-                    id: row[accountIdCol2],
+                    id: newId,
                     name: row[accountNameCol2]
                 )
                 if account.name == "Chase" {
@@ -339,8 +340,9 @@ class Previewer {
             billGroup.recurringTransactions = []
 
             for row in try db.prepare(recurringTransactionTable) {
+                let newId: UUIDV7 = UUIDV7(uuidString: row[idCol].uuidString)!
                 let recurringTransaction: RecurringTransaction = RecurringTransaction(
-                    id: row[idCol],
+                    id: newId,
                     name: row[nameCol],
                     transactionType: row[transactionTypeCol] == "debit" ? TransactionType.debit : TransactionType.credit,
                     amount: Decimal.init(string: row[amountCol])!,
@@ -507,7 +509,6 @@ class Previewer {
     }
 
     func commitToDb(_ modelContext: ModelContext) {
-        modelContext.insert(UserPrefs())
         modelContext.insert(bankAccount)
         modelContext.insert(billsTag)
         modelContext.insert(ffTag)
