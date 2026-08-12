@@ -14,6 +14,7 @@ import UUIDV7
 @Model
 final class Sync: Identifiable, Hashable {
     public var id: UUIDV7 = UUIDV7()
+    
     public var tableName: TableName {
         get { TableName(rawValue: tableNameRaw) ?? .accountTransaction }
         set { tableNameRaw = newValue.rawValue }
@@ -23,9 +24,7 @@ final class Sync: Identifiable, Hashable {
     public var itemId: UUIDV7 = UUIDV7.init(uuidString: "00000000-0000-0000-0000-00000000000").unsafelyUnwrapped
     
     public var createdOnUTC: Date = Date()
-
-
- 
+    
     init(
         id: UUIDV7 = UUIDV7(),
         itemId: UUIDV7,

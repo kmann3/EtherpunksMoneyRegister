@@ -12,23 +12,14 @@ import UUIDV7
 @Model
 final class Account: Identifiable, Hashable {
     public var id: UUIDV7 = UUIDV7()
-    public var name: String {
-        get { _name }
-        set {
-            _previousName = _name
-            let cleaned = newValue.trimmingCharacters(in: .whitespacesAndNewlines)
-            _name = cleaned
-        }
-    }
-    private var _name: String = ""
-    private var _previousName: String = ""
+    public var name: String = ""
     public var startingBalance: Decimal = 0
     public var currentBalance: Decimal = 0
     public var outstandingBalance: Decimal = 0
     public var outstandingItemCount: Int64 = 0
+    public var accountTransactions: [AccountTransaction] = []
     public var notes: String = ""
     public var lastBalancedUTC: Date? = nil
-    @Relationship(deleteRule: .cascade, inverse: \AccountTransaction.account) public var transactions: [AccountTransaction] = []
     public var transactionCount: Int64 = 0
     public var createdOnUTC: Date = Date()
 
@@ -116,12 +107,6 @@ final class Account: Identifiable, Hashable {
     init()
     {
     }
-    
-    public func difference() -> String {
-        // Need to return an array of difference we can use for a solid UPDATE query
-        // For example: ["name", "Foo"] which would be UPDATE Account SET name='foo' sort of thing?
-        return "Prev: \(_previousName), New: \(_name)"
-    }
 }
 
 @MainActor
@@ -130,13 +115,12 @@ extension Account: CustomDebugStringConvertible {
         return """
             Account:
             - id: \(id)
-            - name: \(_name) [prev: \(_previousName)]
+            - name: \(name)
             - startingBalance: \(startingBalance)
             - currentBalance: \(currentBalance)
             - oustandingBalance: \(outstandingBalance)
             - outstandingItemCount: \(outstandingItemCount)
             - notes: \(notes)
-            - transactions: (TBI - Summary?)
             - transactionCount: \(transactionCount)
             """
     }

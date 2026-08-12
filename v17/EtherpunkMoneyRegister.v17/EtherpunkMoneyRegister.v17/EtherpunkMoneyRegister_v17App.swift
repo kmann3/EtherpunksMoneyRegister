@@ -18,7 +18,7 @@ struct EtherpunkMoneyRegister_v17App: App {
         .defaultSize(width: 1200, height: 750)
         .windowResizability(.contentMinSize)
         #endif
-        //.modelContainer(MoneyDataSource.shared.modelContainer)
+        .modelContainer(DataSource.shared.modelContainer)
     }
 }
 

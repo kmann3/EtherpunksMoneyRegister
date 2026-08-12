@@ -11,12 +11,15 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Account.createdOnUTC, order: .reverse) private var items: [Account]
+    let foo: DataSource = DataSource.init()
 
     var body: some View {
         NavigationViewWrapper {
             List {
                 Button("Add") {
-                    addItem()
+                    //addItem()
+                    //var foo: DataSource = DataSource.init()
+                    //debugPrint(foo.previewer.cvsTransaction.name)
                 }
                 ForEach(items) { item in
                     NavigationLink {

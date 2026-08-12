@@ -19,7 +19,6 @@ import UUIDV7
 /// `TransactionTag` instances are used to apply labels to both single and recurring transactions,
 /// supporting categorization and custom filtering mechanisms throughout the UI.
 ///
-/// - Important: Tags do not enforce deletion rules on associated transactions.
 /// - SeeAlso: `AccountTransaction`, `RecurringTransaction`
 @Model
 final class TransactionTag: Identifiable, Hashable {

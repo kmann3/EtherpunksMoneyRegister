@@ -19,7 +19,7 @@ final class RecurringTransaction: Identifiable, Hashable {
     }
     
     public var amount: Decimal = 0
-    public var defaultAccount: Account? = nil
+    public var defaultAccountId: UUIDV7? = nil
     public var notes: String = ""
     public var isTaxRelated: Bool = false
     public var nextDueDate: Date? = nil
@@ -48,7 +48,7 @@ final class RecurringTransaction: Identifiable, Hashable {
         name: String,
         transactionType: TransactionType = .debit,
         amount: Decimal = 0.0,
-        defaultAccount: Account,
+        defaultAccountId: UUIDV7,
         notes: String = "",
         isTaxRelated: Bool = false,
         nextDueDate: Date? = nil,
@@ -63,7 +63,7 @@ final class RecurringTransaction: Identifiable, Hashable {
         self.id = id
         self.name = name
         self.amount = amount
-        self.defaultAccount = defaultAccount
+        self.defaultAccountId = defaultAccountId
         self.notes = notes
         self.isTaxRelated = isTaxRelated
         self.nextDueDate = nextDueDate
@@ -223,7 +223,7 @@ extension RecurringTransaction: CustomDebugStringConvertible {
             RecurringTransaction:
             - id: \(id)
             - name: \(name)
-            - default account: \(defaultAccount?.name ?? "")
+            - default account: \(defaultAccountId?.uuidString ?? "")
             - transactionType: \(transactionType)
             - amount: \(amount)
             - notes: \(notes)

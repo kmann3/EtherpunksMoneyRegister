@@ -22,7 +22,7 @@ final class DataSource: Sendable {
         AccountTransaction.self,
         RecurringGroup.self,
         RecurringTransaction.self,
-        Sync.self,
+        //Sync.self,
         TransactionFile.self,
         TransactionTag.self
     ])
@@ -55,7 +55,7 @@ final class DataSource: Sendable {
             try modelContext.delete(model: AccountTransaction.self)
             try modelContext.delete(model: RecurringGroup.self)
             try modelContext.delete(model: RecurringTransaction.self)
-            try modelContext.delete(model: Sync.self)
+            //try modelContext.delete(model: Sync.self)
             try modelContext.delete(model: TransactionFile.self)
             try modelContext.delete(model: TransactionTag.self)
         } catch {

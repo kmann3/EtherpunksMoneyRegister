@@ -7,15 +7,14 @@
 
 import Foundation
 import SQLite
-import SwiftData
 import SwiftUI
 import UUIDV7
-#if DEBUG && os(macOS)
+#if os(macOS)
 import AppKit
 import UniformTypeIdentifiers
 #endif
 
-#if DEBUG && os(macOS)
+#if os(macOS)
 fileprivate final class DevFileAccess {
     static let shared = DevFileAccess()
     private let bookmarkKey = "DevTestDBBookmark"
@@ -50,12 +49,18 @@ fileprivate final class DevFileAccess {
         panel.canCreateDirectories = false
 
         if #available(macOS 12.0, *) {
-            let types: [UTType] = ["sqlite", "sqlite3", "db"].compactMap { UTType(filenameExtension: $0) }
-            panel.allowedContentTypes = types
+            let exts = ["sqlite", "sqlite3", "db"]
+            let types = exts.compactMap { UTType(filenameExtension: $0) }
+            if !types.isEmpty {
+                panel.allowedContentTypes = types
+            } else {
+                panel.allowedFileTypes = exts
+            }
         } else {
             panel.allowedFileTypes = ["sqlite", "sqlite3", "db"]
         }
 
+        NSApp.activate(ignoringOtherApps: true)
         let response = panel.runModal()
         guard response == .OK, let url = panel.url else { return nil }
 
@@ -76,7 +81,7 @@ fileprivate final class DevFileAccess {
 @MainActor
 class Previewer {
     public let bankAccount: Account = Account(
-        id: UUIDV7(uuidString: "12345678-1234-1234-1234-123456789abc")!,
+        id: UUIDV7(uuidString: "00000000-0000-7000-A000-000000000000")!,
         name: "Fake Bank",
         startingBalance: 2062.00,
         currentBalance: 2062.00,
@@ -134,7 +139,7 @@ class Previewer {
 
         // BURGER KING
         burgerKingTransaction = AccountTransaction(
-            account: bankAccount,
+            accountId: bankAccount.id,
             name: "Burger King",
             transactionType: .debit,
             amount: -12.39,
@@ -143,11 +148,14 @@ class Previewer {
             clearedOnUTC: Date().addDays(day: daysAway)
         )
         
+        burgerKingTransaction.changeLogs = ("\(Date().toSummaryDateyyyyMMddHHmmSS()) - Created by System\n")
+        burgerKingTransaction.changeLogs.append("\(Date().toSummaryDateyyyyMMddHHmmSS()) - Modify\n\tname: prev: McDonand's, new: Burger King\n\tamount: prev: 12.39, new: -12.39\n\ttags: prev: [], new: [fast-food]\n")
+        
         daysAway += 2
 
         // CVS
         cvsTransaction = AccountTransaction(
-            account: bankAccount,
+            accountId: bankAccount.id,
             name: "CVS",
             transactionType: .debit,
             amount: -88.34,
@@ -165,11 +173,10 @@ class Previewer {
 
         // DISCORD
         discordRecurringTransaction = RecurringTransaction(
-            id: UUIDV7(uuidString: "75696d00-50a8-40af-8c00-14b5e4245920")!,
             name: "Discord2a",
             transactionType: .debit,
             amount: -13.99,
-            defaultAccount: bankAccount,
+            defaultAccountId: bankAccount.id,
             transactionTags: [billsTag],
             recurringGroup: billGroup,
             frequency: .monthly,
@@ -177,7 +184,7 @@ class Previewer {
         )
 
         discordTransaction = AccountTransaction(
-            account: bankAccount,
+            accountId: bankAccount.id,
             name: "Discord",
             transactionType: .debit,
             amount: -10.81,
@@ -185,7 +192,7 @@ class Previewer {
             confirmationNumber: "1mamz9Zvnz94n",
             isTaxRelated: true,
             transactionTags: [billsTag],
-            recurringTransaction: discordRecurringTransaction,
+            recurringTransactionId: discordRecurringTransaction.id,
             pendingOnUTC: Date().addDays(day: daysAway),
             clearedOnUTC: Date().addDays(day: daysAway)
         )
@@ -195,7 +202,7 @@ class Previewer {
         discordRecurringTransaction.transactions = [discordTransaction]
 
         huluPendingTransaction = AccountTransaction(
-            account: bankAccount,
+            accountId: bankAccount.id,
             name: "Hulu",
             transactionType: .debit,
             amount: -23.41,
@@ -211,11 +218,10 @@ class Previewer {
 
         // VERIZON
         verizonRecurringTransaction = RecurringTransaction(
-            id: UUIDV7(uuidString: "12283638-eaa1-4689-85dd-7b542ca55ecb")!,
             name: "Verizon2",
             transactionType: TransactionType.debit,
             amount: 104.00,
-            defaultAccount: bankAccount,
+            defaultAccountId: bankAccount.id,
             notes: "",
             transactionTags: [billsTag],
             recurringGroup: billGroup,
@@ -224,7 +230,7 @@ class Previewer {
         )
         
         verizonReservedTransaction = AccountTransaction(
-            account: bankAccount,
+            accountId: bankAccount.id,
             name: "Verizon",
             transactionType: .debit,
             amount: -104.00,
@@ -232,7 +238,7 @@ class Previewer {
             confirmationNumber: "",
             isTaxRelated: true,
             transactionTags: [billsTag],
-            recurringTransaction: verizonRecurringTransaction,
+            recurringTransactionId: verizonRecurringTransaction.id,
             dueDate: Date(),
             pendingOnUTC: nil,
             clearedOnUTC: nil
@@ -248,11 +254,10 @@ class Previewer {
         )
 
         pestControlRecurringTransaction = RecurringTransaction(
-            id: UUIDV7(uuidString: "12283638-eab1-4689-85dd-7b542ca55ecb")!,
             name: "Pest Control Inc",
             transactionType: TransactionType.debit,
             amount: 104.00,
-            defaultAccount: bankAccount,
+            defaultAccountId: bankAccount.id,
             notes: "",
             transactionTags: [billsTag],
             recurringGroup: nil,
@@ -261,11 +266,10 @@ class Previewer {
         )
 
         incomeRecurringTransaction = RecurringTransaction(
-            id: UUIDV7(uuidString: "12283638-eca1-4689-85dd-7b542ca55ecb")!,
             name: "My Job (being a super hero by night, professional gamer by day)",
             transactionType: TransactionType.credit,
             amount: 2145.00,
-            defaultAccount: bankAccount,
+            defaultAccountId: bankAccount.id,
             notes: "",
             transactionTags: [incomeTag],
             recurringGroup: nil,
@@ -284,6 +288,7 @@ class Previewer {
     }
 
     func importTestRecurringData(modelContext: ModelContext) {
+    #if os(macOS)
         guard let fileURL = DevFileAccess.shared.urlForTestDB(promptMessage: "Select tmpData.sqlite3 for import (dev only)") else {
             DLog("Test data could not be found to be imported: no file chosen")
             return
@@ -334,6 +339,7 @@ class Previewer {
                 }
             }
             
+            DLog("Database Location: \(modelContext.sqliteLocation)")
             try modelContext.save()
 
 
@@ -346,7 +352,7 @@ class Previewer {
                     name: row[nameCol],
                     transactionType: row[transactionTypeCol] == "debit" ? TransactionType.debit : TransactionType.credit,
                     amount: Decimal.init(string: row[amountCol])!,
-                    defaultAccount: accountDictionary[row[accountIdCol].uuidString] ?? bankAccount
+                    defaultAccountId: accountDictionary[row[accountIdCol].uuidString]?.id ?? bankAccount.id
                     )
 
                 if(row[groupNameCol] != nil) {
@@ -400,7 +406,7 @@ class Previewer {
                 switch row[nameCol] {
                 case "Discord":
                     discordRecurringTransaction = recurringTransaction
-                    discordTransaction.recurringTransaction = recurringTransaction
+                    //discordTransaction.recurringTransaction = recurringTransaction
                     discordTransaction.recurringTransactionId = recurringTransaction.id
                     discordRecurringTransaction.transactions = [discordTransaction]
                     Previewer.insertTransaction(account: bankAccount, transaction: discordTransaction, context: modelContext)
@@ -408,7 +414,7 @@ class Previewer {
                     break
                 case "Verizon":
                     verizonRecurringTransaction = recurringTransaction
-                    verizonReservedTransaction.recurringTransaction = recurringTransaction
+                    //verizonReservedTransaction.recurringTransaction = recurringTransaction
                     verizonReservedTransaction.recurringTransactionId = recurringTransaction.id
                     Previewer.insertTransaction(account: bankAccount, transaction: verizonReservedTransaction, context: modelContext)
                     modelContext.insert(verizonRecurringTransaction)
@@ -425,6 +431,10 @@ class Previewer {
         } catch {
             DLog(error.localizedDescription)
         }
+    #else
+        DLog("importTestRecurringData is only available on macOS.")
+        return
+    #endif
     }
 
     private func calculateDateFromMMDD(mmdd: String) -> Date {
@@ -538,10 +548,14 @@ class Previewer {
 
         // Let's add some temp fake data
 
-
-#if DEBUG && os(macOS)
-        importTestRecurringData(modelContext: modelContext)
-#endif
+    #if os(macOS)
+        // Defer to next run loop so a window exists and the panel can present cleanly.
+        //DispatchQueue.main.async {
+            self.importTestRecurringData(modelContext: modelContext)
+        //}
+    #else
+        DLog("Skipping importTestRecurringData: macOS-only tool.")
+    #endif
 
 
         modelContext.insert(billGroup)

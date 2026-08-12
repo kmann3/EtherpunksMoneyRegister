@@ -91,6 +91,14 @@ extension Date {
         return dateFormatter.string(from: self)
     }
 
+    /// 2026.08.11 @ 19:00:00
+    func toSummaryDateyyyyMMddHHmmSS() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy.MM.dd @ HH:mm:ss"
+        return formatter.string(from: self)
+    }
+
     /// Jan 05 @ 08:31:50
     func toShortDetailString() -> String {
         let dateFormatter = DateFormatter()
@@ -191,3 +199,4 @@ extension ModelContext {
         }
     }
 }
+
