@@ -539,7 +539,11 @@ class Previewer {
 
 
 #if DEBUG && os(macOS)
-        importTestRecurringData(modelContext: modelContext)
+        // A modal file picker can reenter shared data-source initialization in Canvas.
+        // Previews use the sample data above without importing an external database.
+        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] != "1" {
+            importTestRecurringData(modelContext: modelContext)
+        }
 #endif
 
 
